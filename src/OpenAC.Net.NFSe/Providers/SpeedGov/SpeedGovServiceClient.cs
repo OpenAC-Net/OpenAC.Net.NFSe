@@ -35,7 +35,7 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers.SpeedGov
+namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class SpeedGovServiceClient : NFSeSOAP11ServiceClient, IServiceClient
     {

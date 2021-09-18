@@ -37,7 +37,7 @@ using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers.SpeedGov
+namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class ProviderSpeedGov : ProviderABRASF
     {

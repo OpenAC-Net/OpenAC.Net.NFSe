@@ -38,10 +38,6 @@ using System.Runtime.Serialization;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Providers.Curitiba;
-using OpenAC.Net.NFSe.Providers.Sigiss;
-using OpenAC.Net.NFSe.Providers.SpeedGov;
-using OpenAC.Net.NFSe.Providers.SystemPro;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -61,6 +57,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.BHISS, typeof(ProviderBHISS)},
                 {NFSeProvider.Betha, typeof(ProviderBetha)},
                 {NFSeProvider.Betha2, typeof(ProviderBetha2)},
+                {NFSeProvider.CITTA, typeof(ProviderCITTA)},
                 {NFSeProvider.Coplan, typeof(ProviderCoplan)},
                 {NFSeProvider.Curitiba, typeof(ProviderCuritiba)},
                 {NFSeProvider.DBSeller, typeof(ProviderDBSeller)},
@@ -84,7 +81,9 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.ISSe, typeof(ProviderISSe)},
                 {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},
                 {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
-                {NFSeProvider.SystemPro, typeof(ProviderSystemPro)}
+                {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
+                {NFSeProvider.Americana, typeof(ProviderAmericana)},
+                {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)}
             };
 
             Load();
@@ -134,8 +133,16 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="stream">O stream.</param>
         public static void Save(Stream stream)
         {
+            foreach (var m in Municipios)
+            {
+                if (!m.UrlHomologacao.ContainsKey(TipoUrl.Autenticacao))
+                    m.UrlHomologacao.Add(TipoUrl.Autenticacao, string.Empty);
+                if (!m.UrlProducao.ContainsKey(TipoUrl.Autenticacao))
+                    m.UrlProducao.Add(TipoUrl.Autenticacao, string.Empty);
+            }
             var formatter = new DataContractSerializer(typeof(MunicipiosNFSe));
-            formatter.WriteObject(stream, new MunicipiosNFSe { Municipios = Municipios.OrderBy(x => x.Nome).ToArray() });
+            using (var writer = System.Xml.XmlWriter.Create(stream, new System.Xml.XmlWriterSettings { Indent = true }))
+                formatter.WriteObject(writer, new MunicipiosNFSe { Municipios = Municipios.OrderBy(x => x.Nome).ToArray() });
         }
 
         /// <summary>

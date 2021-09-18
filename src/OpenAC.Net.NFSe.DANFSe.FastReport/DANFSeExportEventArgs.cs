@@ -1,9 +1,8 @@
 ﻿using System;
-using ACBr.Net.DFe.Core.Common;
 using FastReport.Export;
 using OpenAC.Net.DFe.Core.Common;
 
-namespace ACBr.Net.NFSe.DANFSe.FastReport
+namespace OpenAC.Net.NFSe.DANFSe.FastReport
 {
     public sealed class DANFSeExportEventArgs : EventArgs
     {

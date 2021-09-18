@@ -32,15 +32,17 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
+
+#if !NETSTANDARD2_0
+
+#endif
 
 namespace OpenAC.Net.NFSe
 {
     /// <summary>
     /// Classe base para impressão de DANFSe
     /// </summary>
-    [TypeConverter(typeof(OpenExpandableObjectConverter))]
     public abstract class OpenDANFSeBase : DFeReportClass<OpenNFSe>
     {
         #region Properties

@@ -119,6 +119,10 @@
       <Pack>True</Pack>
       <PackagePath>content\Schemas\Abaco</PackagePath>
     </None>
+    <None Include="Schemas\Americana\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\Americana</PackagePath>
+    </None>
     <None Include="Schemas\ABRASFv1\*.*">
       <Pack>True</Pack>
       <PackagePath>content\Schemas\ABRASFv1</PackagePath>
@@ -138,6 +142,10 @@
     <None Include="Schemas\BHISS\*.*">
       <Pack>True</Pack>
       <PackagePath>content\Schemas\BHISS</PackagePath>
+    </None>
+    <None Include="Schemas\CITTA\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\CITTA</PackagePath>
     </None>
     <None Include="Schemas\Coplan\*.*">
       <Pack>True</Pack>
@@ -237,6 +245,9 @@
     <None Update="Schemas\Abaco\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Schemas\Americana\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Schemas\ABRASFv1\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -250,6 +261,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Schemas\BHISS\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Schemas\CITTA\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Schemas\Coplan\*.*">

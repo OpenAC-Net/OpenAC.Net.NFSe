@@ -140,13 +140,16 @@ namespace OpenAC.Net.NFSe.Demo
                 var codigo = "0001";
                 if (InputBox.Show("Código de cancelamento", "Código de cancelamento.", ref codigo).Equals(DialogResult.Cancel)) return;
 
-                var serie = "0";
-                if (InputBox.Show("Numero NFSe", "Digite o numero da NFSe.", ref serie).Equals(DialogResult.Cancel)) return;
+                var numeroNFSe = "0";
+                if (InputBox.Show("Numero NFSe", "Digite o numero da NFSe.", ref numeroNFSe).Equals(DialogResult.Cancel)) return;
+
+                var serieNFSe = "0";
+                if (InputBox.Show("Série NFSe", "Digite a série da NFSe.", ref serieNFSe).Equals(DialogResult.Cancel)) return;
 
                 var motivo = "";
                 if (InputBox.Show("Motivo Cancelamento", "Digite o motivo do cancelamento.", ref motivo).Equals(DialogResult.Cancel)) return;
 
-                var ret = openNFSe.CancelarNFSe(codigo, serie, motivo);
+                var ret = openNFSe.CancelarNFSe(codigo, numeroNFSe, serieNFSe, 0, motivo);
                 ProcessarRetorno(ret);
             });
         }
@@ -203,7 +206,7 @@ namespace OpenAC.Net.NFSe.Demo
             {
                 if (lstMunicipios.SelectedItems.Count < 1) return;
 
-                if (MessageBox.Show(@"Você tem certeza?", @"OpenNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
+                if (MessageBox.Show(@"Você tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
 
                 var municipio = ((OpenMunicipioNFSe)lstMunicipios.SelectedItems[0].Tag).Clone();
                 if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
@@ -218,7 +221,7 @@ namespace OpenAC.Net.NFSe.Demo
             {
                 if (lstMunicipios.SelectedItems.Count < 1) return;
 
-                if (MessageBox.Show(@"Você tem certeza?", @"OpenNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
+                if (MessageBox.Show(@"Você tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
 
                 var municipio = lstMunicipios.SelectedItems[0];
                 lstMunicipios.Items.Remove(municipio);
@@ -425,6 +428,16 @@ namespace OpenAC.Net.NFSe.Demo
             openNFSe.Configuracoes.WebServices.Ambiente = cmbAmbiente.GetSelectedValue<DFeTipoAmbiente>();
         }
 
+        private void txtWebserviceUsuario_TextChanged(object sender, EventArgs e)
+        {
+            openNFSe.Configuracoes.WebServices.Usuario = txtWebserviceUsuario.Text;
+        }
+
+        private void txtWebserviceSenha_TextChanged(object sender, EventArgs e)
+        {
+            openNFSe.Configuracoes.WebServices.Senha = txtWebserviceSenha.Text;
+        }
+
         #endregion ValueChanged
 
         #region Overrides
@@ -453,7 +466,9 @@ namespace OpenAC.Net.NFSe.Demo
 
             openNFSe.NotasServico.Clear();
             var nfSe = openNFSe.NotasServico.AddNew();
-            nfSe.IdentificacaoRps.Numero = "1";
+            var numeroRps = "1";
+            if (InputBox.Show("Nº RPS", "Informe o número do RPS.", ref numeroRps).Equals(DialogResult.Cancel)) return;
+            nfSe.IdentificacaoRps.Numero = numeroRps;
             nfSe.IdentificacaoRps.Serie = municipio.Provedor.IsIn(NFSeProvider.Curitiba) ? "F" : "1";
             nfSe.IdentificacaoRps.Tipo = TipoRps.RPS;
             nfSe.IdentificacaoRps.DataEmissao = DateTime.Now;
@@ -462,7 +477,9 @@ namespace OpenAC.Net.NFSe.Demo
             nfSe.RegimeEspecialTributacao = RegimeEspecialTributacao.SimplesNacional;
             nfSe.IncentivadorCultural = NFSeSimNao.Nao;
 
-            nfSe.Servico.ItemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.Curitiba) ? "0107" : "01.07";
+            var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.Curitiba) ? "0107" : "01.07";
+            if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
+            nfSe.Servico.ItemListaServico = itemListaServico;
 
             nfSe.Servico.CodigoTributacaoMunicipio = "01.07.00 / 00010700";
             nfSe.Servico.CodigoCnae = "";
@@ -481,7 +498,7 @@ namespace OpenAC.Net.NFSe.Demo
             nfSe.Servico.Valores.ValorOutrasRetencoes = 0;
             nfSe.Servico.Valores.BaseCalculo = 100;
             nfSe.Servico.Valores.Aliquota = 2;
-            nfSe.Servico.Valores.ValorLiquidoNfse = 0;
+            nfSe.Servico.Valores.ValorLiquidoNfse = 100;
             nfSe.Servico.Valores.ValorIssRetido = 0;
             nfSe.Servico.Valores.DescontoCondicionado = 0;
             nfSe.Servico.Valores.DescontoIncondicionado = 0;
@@ -730,7 +747,7 @@ namespace OpenAC.Net.NFSe.Demo
 
             var infoTarget = new FileTarget
             {
-                FileName = "${basedir:dir=Logs:file=OpenNFSe.log}",
+                FileName = "${basedir:dir=Logs:file=ACBrNFSe.log}",
                 Layout = "${processid}|${longdate}|${level:uppercase=true}|" +
                          "${event-context:item=Context}|${logger}|${message}",
                 CreateDirs = true,
@@ -738,7 +755,7 @@ namespace OpenAC.Net.NFSe.Demo
                 MaxArchiveFiles = 93,
                 ArchiveEvery = FileArchivePeriod.Day,
                 ArchiveNumbering = ArchiveNumberingMode.Date,
-                ArchiveFileName = "${basedir}/Logs/Archive/${date:format=yyyy}/${date:format=MM}/OpenNFSe_{{#}}.log",
+                ArchiveFileName = "${basedir}/Logs/Archive/${date:format=yyyy}/${date:format=MM}/ACBrNFSe_{{#}}.log",
                 ArchiveDateFormat = "dd.MM.yyyy"
             };
 
@@ -764,6 +781,9 @@ namespace OpenAC.Net.NFSe.Demo
             txtNumero.Text = config.Get("PrestadorNumero", string.Empty);
             txtComplemento.Text = config.Get("PrestadorComplemento", string.Empty);
             txtBairro.Text = config.Get("PrestadorBairro", string.Empty);
+
+            txtWebserviceUsuario.Text = config.Get("LoginREST", string.Empty);
+            txtWebserviceSenha.Text = config.Get("SenhaREST", string.Empty);
 
             var codMunicipio = config.Get("Municipio", 0);
             if (codMunicipio > 0)
@@ -802,6 +822,9 @@ namespace OpenAC.Net.NFSe.Demo
             config.Set("Certificado", txtCertificado.Text);
             config.Set("Senha", txtSenha.Text);
             config.Set("NumeroSerie", txtNumeroSerie.Text);
+
+            config.Set("UsuarioWebservice", txtWebserviceUsuario.Text);
+            config.Set("SenhaWebservice", txtWebserviceSenha.Text);
 
             config.Save();
         }

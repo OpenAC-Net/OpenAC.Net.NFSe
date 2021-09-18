@@ -36,7 +36,7 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers.SystemPro
+namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class SystemProServiceClient : NFSeSOAP11ServiceClient, IServiceClient
     {
@@ -56,26 +56,22 @@ namespace OpenAC.Net.NFSe.Providers.SystemPro
 
         public string Enviar(string cabec, string msg)
         {
-            var message = new StringBuilder();
-            message.Append("<v2:EnviarLoteRps soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<xml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
-            message.Append("</xml>");
-            message.Append("</v2:EnviarLoteRps>");
-
-            return Execute("EnviarLoteRps", message.ToString(), "EnviarLoteRpsResponse");
+            throw new NotImplementedException();
         }
 
         public string EnviarSincrono(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<v2:EnviarLoteRpsSincrono soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<xml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
-            message.Append("</xml>");
-            message.Append("</v2:EnviarLoteRpsSincrono>");
+            message.Append("<ns2:EnviarLoteRpsSincrono xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfseDadosMsg>");
+            message.Append("</ns2:EnviarLoteRpsSincrono>");
 
-            return Execute("EnviarLoteRpsSincrono", message.ToString(), "EnviarLoteRpsSincronoResponse");
+            return Execute("*", message.ToString(), "EnviarLoteRpsSincronoResponse");
         }
 
         public string ConsultarSituacao(string cabec, string msg)
@@ -86,13 +82,16 @@ namespace OpenAC.Net.NFSe.Providers.SystemPro
         public string ConsultarLoteRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<v2:ConsultarLoteRps soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<xml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
-            message.Append("</xml>");
-            message.Append("</v2:ConsultarLoteRps>");
+            message.Append("<ns2:ConsultarLoteRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfseDadosMsg>");
+            message.Append("</ns2:ConsultarLoteRps>");
 
-            return Execute("ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResponse");
+            return Execute("*", message.ToString(), "ConsultarLoteRpsResponse");
         }
 
         public string ConsultarSequencialRps(string cabec, string msg)
@@ -103,37 +102,46 @@ namespace OpenAC.Net.NFSe.Providers.SystemPro
         public string ConsultarNFSeRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<v2:ConsultarNfseRps soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<xml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
-            message.Append("</xml>");
-            message.Append("</v2:ConsultarNfseRps>");
+            message.Append("<ns2:ConsultarNfseRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfseDadosMsg>");
+            message.Append("</ns2:ConsultarNfseRps>");
 
-            return Execute("ConsultarNfseRps", message.ToString(), "ConsultarNfseRpsResponse");
+            return Execute("*", message.ToString(), "ConsultarNfseRpsResponse");
         }
 
         public string ConsultarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<v2:ConsultarNfseFaixa soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<xml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
-            message.Append("</xml>");
-            message.Append("</v2:ConsultarNfseFaixa>");
+            message.Append("<ns2:ConsultarNfseFaixa xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfseDadosMsg>");
+            message.Append("</ns2:ConsultarNfseFaixa>");
 
-            return Execute("ConsultarNfseFaixa", message.ToString(), "ConsultarNfseFaixaResponse");
+            return Execute("*", message.ToString(), "ConsultarNfseFaixaResponse");
         }
 
         public string CancelarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<v2:CancelarNfse soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<xml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
-            message.Append("</xml>");
-            message.Append("</v2:CancelarNfse>");
+            message.Append("<ns2:CancelarNfse xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfseDadosMsg>");
+            message.Append("</ns2:CancelarNfse>");
 
-            return Execute("CancelarNfse", message.ToString(), "CancelarNfseResponse");
+            return Execute("*", message.ToString(), "CancelarNfseResponse");
         }
 
         public string CancelarNFSeLote(string cabec, string msg)
@@ -143,23 +151,12 @@ namespace OpenAC.Net.NFSe.Providers.SystemPro
 
         public string SubstituirNFSe(string cabec, string msg)
         {
-            var message = new StringBuilder();
-            message.Append("<v2:SubstituirNfse soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<xml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
-            message.Append("</xml>");
-            message.Append("</v2:SubstituirNfse>");
-
-            return Execute("SubstituirNfse", message.ToString(), "SubstituirNfseResponse");
+            throw new NotImplementedException();
         }
 
         private string Execute(string action, string message, params string[] responseTag)
         {
-            var baseUrl = Endpoint.Address.Uri.GetLeftPart(UriPartial.Authority);
-            var soapNs = $"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-                         $"xmlns:v2=\"{baseUrl}/v2.01\"";
-
-            return Execute($"https://nfse-ws.hom-ecity.maringa.pr.gov.br/v2.01#{action}", message, responseTag, soapNs);
+            return Execute(action, message, responseTag, new string[0]);
         }
 
         protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
@@ -171,6 +168,41 @@ namespace OpenAC.Net.NFSe.Providers.SystemPro
             var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);
         }
+
+        //protected override Message WriteSoapEnvelope(string message, string soapAction, string soapHeader, string[] soapNamespaces)
+        //{
+        //    var envelope = new StringBuilder();
+        //    envelope.Append("<Soap:Envelope xmlns:Soap=\"http://schemas.xmlsoap.org/soap/envelope/\">");
+        //    envelope.Append("<Soap:Body>");
+        //    envelope.Append(message);
+        //    envelope.Append("</Soap:Body>");
+        //    envelope.Append("</Soap:Envelope>");
+
+        //    //envelope.Append("<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">");
+        //    //envelope.Append(soapHeader.IsEmpty() ? "<SOAP-ENV:Header/>" : $"<SOAP-ENV:Header>{soapHeader}</SOAP-ENV:Header>");
+        //    //envelope.Append("<S:Body>");
+        //    //envelope.Append(message);
+        //    //envelope.Append("</S:Body>");
+        //    //envelope.Append("</S:Envelope>");
+
+        //    //Separei em uma variável para conseguir visualizar o envelope em formato XML durante a depuração
+        //    string EnvelopeString = envelope.ToString();
+        //    StringReader SR = new StringReader(EnvelopeString);
+        //    XmlReader XmlR = XmlReader.Create(SR);
+        //    var request = Message.CreateMessage(XmlR, int.MaxValue, Endpoint.Binding.MessageVersion);
+
+        //    //Define a action no Header por ser SOAP 1.1
+        //    var requestMessage = new HttpRequestMessageProperty();
+        //    requestMessage.Headers["SOAPAction"] = soapAction;
+
+        //    //Define a action no content type por ser SOAP 1.2
+        //    //var requestMessage = new HttpRequestMessageProperty();
+        //    //requestMessage.Headers["Content-Type"] = $"application/soap+xml;charset=UTF-8;action=\"{soapAction}\"";
+
+        //    request.Properties[HttpRequestMessageProperty.Name] = requestMessage;
+
+        //    return request;
+        //}
 
         #endregion Methods
     }

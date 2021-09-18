@@ -73,6 +73,7 @@ namespace OpenAC.Net.NFSe.Demo
             txtPConsultarSituacao.Text = target.UrlProducao[TipoUrl.ConsultarSituacao];
             txtPConsultarSequencialRps.Text = target.UrlProducao[TipoUrl.ConsultarSequencialRps];
             txtPSubstituirNFSe.Text = target.UrlProducao[TipoUrl.SubstituirNFSe];
+            txtPAutenticacao.Text = target.UrlProducao[TipoUrl.Autenticacao];
 
             txtHEnviar.Text = target.UrlHomologacao[TipoUrl.Enviar];
             txtHEnviarSincrono.Text = target.UrlHomologacao[TipoUrl.EnviarSincrono];
@@ -84,6 +85,7 @@ namespace OpenAC.Net.NFSe.Demo
             txtHConsultarSituacao.Text = target.UrlHomologacao[TipoUrl.ConsultarSituacao];
             txtHConsultarSequencialRps.Text = target.UrlHomologacao[TipoUrl.ConsultarSequencialRps];
             txtHSubstituirNFSe.Text = target.UrlHomologacao[TipoUrl.SubstituirNFSe];
+            txtHAutenticacao.Text = target.UrlHomologacao[TipoUrl.Autenticacao];
         }
 
         private void Salvar()
@@ -106,6 +108,7 @@ namespace OpenAC.Net.NFSe.Demo
             target.UrlProducao[TipoUrl.ConsultarSituacao] = txtPConsultarSituacao.Text;
             target.UrlProducao[TipoUrl.ConsultarSequencialRps] = txtPConsultarSequencialRps.Text;
             target.UrlProducao[TipoUrl.SubstituirNFSe] = txtPSubstituirNFSe.Text;
+            target.UrlProducao[TipoUrl.Autenticacao] = txtPAutenticacao.Text;
 
             target.UrlHomologacao[TipoUrl.Enviar] = txtHEnviar.Text;
             target.UrlHomologacao[TipoUrl.EnviarSincrono] = txtHEnviarSincrono.Text;
@@ -117,6 +120,7 @@ namespace OpenAC.Net.NFSe.Demo
             target.UrlHomologacao[TipoUrl.ConsultarSituacao] = txtHConsultarSituacao.Text;
             target.UrlHomologacao[TipoUrl.ConsultarSequencialRps] = txtHConsultarSequencialRps.Text;
             target.UrlHomologacao[TipoUrl.SubstituirNFSe] = txtHSubstituirNFSe.Text;
+            target.UrlHomologacao[TipoUrl.Autenticacao] = txtHAutenticacao.Text;
         }
 
         #endregion Methods

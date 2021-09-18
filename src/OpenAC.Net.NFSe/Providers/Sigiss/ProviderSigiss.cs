@@ -38,7 +38,7 @@ using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers.Sigiss
+namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class ProviderSigiss : ProviderBase
     {

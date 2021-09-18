@@ -36,7 +36,7 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers.Sigiss
+namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class SigissServiceClient : NFSeSOAP11ServiceClient, IServiceClient
     {

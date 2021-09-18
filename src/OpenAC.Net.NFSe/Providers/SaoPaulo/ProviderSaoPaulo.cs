@@ -76,7 +76,7 @@ namespace OpenAC.Net.NFSe.Providers
             ret.IdentificacaoNFSe.Chave = rootDoc.ElementAnyNs("ChaveNFe")?.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
             ret.Prestador.InscricaoMunicipal = rootDoc.ElementAnyNs("ChaveNFe")?.ElementAnyNs("InscricaoPrestador")?.GetValue<string>() ?? string.Empty;
 
-            ret.IdentificacaoNFSe.DataEmissao = rootDoc.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
+            ret.IdentificacaoNFSe.DataEmissao = rootDoc.ElementAnyNs("DataEmissaoNFe")?.GetValue<DateTime>() ?? DateTime.MinValue;
             ret.NumeroLote = rootDoc.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
 
             // RPS
@@ -190,6 +190,7 @@ namespace OpenAC.Net.NFSe.Providers
                 ret.Prestador.Endereco.Uf = endPrestador.ElementAnyNs("UF")?.GetValue<string>() ?? string.Empty;
                 ret.Prestador.Endereco.Cep = endPrestador.ElementAnyNs("CEP")?.GetValue<string>() ?? string.Empty;
             }
+            ret.Prestador.DadosContato.Email = rootDoc.ElementAnyNs("EmailPrestador")?.GetValue<string>() ?? string.Empty;
 
             ret.Tomador.CpfCnpj = rootDoc.ElementAnyNs("CPFCNPJTomador")?.ElementAnyNs("CNPJ")?.GetValue<string>() ?? string.Empty;
             if (ret.Tomador.CpfCnpj == "")
@@ -207,6 +208,7 @@ namespace OpenAC.Net.NFSe.Providers
                 ret.Tomador.Endereco.Uf = endTomador.ElementAnyNs("UF")?.GetValue<string>() ?? string.Empty;
                 ret.Tomador.Endereco.Cep = endTomador.ElementAnyNs("CEP")?.GetValue<string>() ?? string.Empty;
             }
+            ret.Tomador.DadosContato.Email = rootDoc.ElementAnyNs("EmailTomador")?.GetValue<string>() ?? string.Empty;
 
             return ret;
         }
@@ -583,9 +585,27 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (!retornoWebservice.Sucesso) return;
 
-            var notasServico = xmlRet.Root.ElementsAnyNs("NFe").Select(nfse => LoadXml(nfse.ToString())).ToList();
-            retornoWebservice.Nota = notasServico[0];
-            notasServico.AddRange(notasServico);
+            var xmlNFSe = xmlRet.Root.ElementAnyNs("NFe");
+            var numeroNFSe = xmlNFSe.ElementAnyNs("ChaveNFe")?.ElementAnyNs("NumeroNFe")?.GetValue<string>() ?? string.Empty;
+            var chaveNFSe = xmlNFSe.ElementAnyNs("ChaveNFe")?.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+            var dataNFSe = xmlNFSe.ElementAnyNs("DataEmissaoNFe")?.GetValue<DateTime>() ?? DateTime.Now;
+            var numeroRps = xmlNFSe.ElementAnyNs("ChaveRPS")?.ElementAnyNs("NumeroRPS")?.GetValue<string>() ?? string.Empty;
+
+            GravarNFSeEmDisco(xmlNFSe.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+
+            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+            if (nota == null)
+            {
+                nota = notas.Load(xmlNFSe.ToString());
+            }
+            else
+            {
+                nota.IdentificacaoNFSe.Numero = numeroNFSe;
+                nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+            }
+
+            retornoWebservice.Nota = nota;
         }
 
         protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice)

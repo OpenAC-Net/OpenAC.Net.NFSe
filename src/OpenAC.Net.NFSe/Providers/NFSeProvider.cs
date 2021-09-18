@@ -44,6 +44,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         BHISS = 8,
 
+        CITTA = 28,
+
         Coplan = 3,
 
         Curitiba = 26,
@@ -99,6 +101,10 @@ namespace OpenAC.Net.NFSe.Providers
         WebIss = 10,
 
         [Description("WebIss v2")]
-        WebIss2 = 11
+        WebIss2 = 11,
+
+        Americana = 29,
+
+        SigissWeb = 30
     }
 }

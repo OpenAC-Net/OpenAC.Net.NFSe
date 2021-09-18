@@ -1,19 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using ACBr.Net.Core;
-using ACBr.Net.Core.Extensions;
-using ACBr.Net.DFe.Core.Common;
 using FastReport;
 using FastReport.Export.Html;
 using FastReport.Export.Pdf;
+using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
-using OpenAC.Net.NFSe;
 
-namespace ACBr.Net.NFSe.DANFSe.FastReport
+namespace OpenAC.Net.NFSe.DANFSe.FastReport
 {
-    [TypeConverter(typeof(ACBrExpandableObjectConverter))]
+    [TypeConverter(typeof(OpenExpandableObjectConverter))]
     public sealed class DANFSeFastReport : OpenDANFSeBase
     {
         #region Fields

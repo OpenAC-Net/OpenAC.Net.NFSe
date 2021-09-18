@@ -391,7 +391,8 @@ namespace OpenAC.Net.NFSe.Providers
             {
                 using (var cliente = GetClient(TipoUrl.EnviarSincrono))
                 {
-                    retornoWebservice.XmlRetorno = cliente.EnviarSincrono(GerarCabecalho(), retornoWebservice.XmlEnvio);
+                    string Cabecalho = GerarCabecalho();//Separei o cabecalho em string pois dificultava o debug do envio, obrigando sempre a passar pelo GerarCabecalho
+                    retornoWebservice.XmlRetorno = cliente.EnviarSincrono(Cabecalho, retornoWebservice.XmlEnvio);
                     retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
                     retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
                 }

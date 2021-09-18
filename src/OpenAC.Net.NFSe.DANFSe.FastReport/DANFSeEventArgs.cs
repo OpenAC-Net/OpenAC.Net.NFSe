@@ -1,7 +1,6 @@
 ﻿using System;
-using OpenAC.Net.NFSe;
 
-namespace ACBr.Net.NFSe.DANFSe.FastReport
+namespace OpenAC.Net.NFSe.DANFSe.FastReport
 {
     public class DANFSeEventArgs : EventArgs
     {

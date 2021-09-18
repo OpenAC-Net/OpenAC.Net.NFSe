@@ -42,6 +42,7 @@ namespace OpenAC.Net.NFSe.Providers
         ConsultarNFSe,
         CancelarNFSe,
         CancelarNFSeLote,
-        SubstituirNFSe
+        SubstituirNFSe,
+        Autenticacao,
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -156,7 +155,7 @@ namespace OpenAC.Net.NFSe.Providers
         private string Execute(string message, string responseTag)
         {
             var result = ValidarUsernamePassword();
-            if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
+            if (!result) throw new DFe.Core.OpenDFeCommunicationException("Faltou informar username e/ou password");
 
             return Execute("", message, "", responseTag);
         }

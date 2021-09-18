@@ -7,8 +7,8 @@
     <ProjectGuid>{BA9DBAB3-31F1-4D98-AD4D-CD73CF0B6921}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACBr.Net.NFSe.DANFSe.FastReport</RootNamespace>
-    <AssemblyName>ACBr.Net.NFSe.DANFSe.FastReport</AssemblyName>
+    <RootNamespace>OpenAC.Net.NFSe.DANFSe.FastReport</RootNamespace>
+    <AssemblyName>OpenAC.Net.NFSe.DANFSe.FastReport</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

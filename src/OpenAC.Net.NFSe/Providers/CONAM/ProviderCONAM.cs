@@ -399,6 +399,8 @@ namespace OpenAC.Net.NFSe.Providers
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
             var sucesso = true;
 
+            
+
             var xmlElement = xmlRet.Root.ElementAnyNs("Sdt_consultaprotocoloout");
 
             var situacao = "";

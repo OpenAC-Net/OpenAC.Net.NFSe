@@ -32,7 +32,7 @@
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers.SystemPro
+namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class ProviderSystemPro : ProviderABRASF201
     {
@@ -49,6 +49,16 @@ namespace OpenAC.Net.NFSe.Providers.SystemPro
 
         #region Protected Methods
 
+        protected override string GerarCabecalho()
+        {
+            var cabecalho = new System.Text.StringBuilder();
+            //cabecalho.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            cabecalho.Append("<cabecalho versao=\"0.01\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
+            cabecalho.Append("<versaoDados>2.01</versaoDados>");
+            cabecalho.Append("</cabecalho>");
+            return cabecalho.ToString();
+        }
+
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
@@ -61,7 +71,7 @@ namespace OpenAC.Net.NFSe.Providers.SystemPro
 
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
-            return new SystemProServiceClient(this, tipo);
+            return new SystemProServiceClient(this, tipo, Certificado);
         }
 
         #endregion Protected Methods

@@ -47,7 +47,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// </summary>
         public OpenMunicipioNFSe()
         {
-            UrlHomologacao = new NFSeUrlDictionary(9)
+            UrlHomologacao = new NFSeUrlDictionary(10)
             {
                 { TipoUrl.Enviar, string.Empty },
                 { TipoUrl.EnviarSincrono, string.Empty },
@@ -58,10 +58,11 @@ namespace OpenAC.Net.NFSe.Providers
                 { TipoUrl.ConsultarLoteRps, string.Empty },
                 { TipoUrl.ConsultarSituacao, string.Empty },
                 { TipoUrl.ConsultarSequencialRps, string.Empty },
-                { TipoUrl.SubstituirNFSe, string.Empty}
+                { TipoUrl.SubstituirNFSe, string.Empty},
+                { TipoUrl.Autenticacao, string.Empty}
             };
 
-            UrlProducao = new NFSeUrlDictionary(9)
+            UrlProducao = new NFSeUrlDictionary(10)
             {
                 { TipoUrl.Enviar, string.Empty },
                 { TipoUrl.EnviarSincrono, string.Empty },
@@ -72,7 +73,8 @@ namespace OpenAC.Net.NFSe.Providers
                 { TipoUrl.ConsultarLoteRps, string.Empty },
                 { TipoUrl.ConsultarSituacao, string.Empty },
                 { TipoUrl.ConsultarSequencialRps, string.Empty },
-                { TipoUrl.SubstituirNFSe, string.Empty }
+                { TipoUrl.SubstituirNFSe, string.Empty },
+                { TipoUrl.Autenticacao, string.Empty }
             };
         }
 

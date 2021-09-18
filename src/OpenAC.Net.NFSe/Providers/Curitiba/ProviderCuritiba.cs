@@ -1,4 +1,35 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : OpenAC.Net.NFSe
+// Author           : Diego Martins
+// Created          : 08-29-2021
+//
+// Last Modified By : Rafael Dias
+// Last Modified On : 07-11-2018
+// ***********************************************************************
+// <copyright file="ProviderCuritiba.cs" company="OpenAC .Net">
+//		        		   The MIT License (MIT)
+//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//
+//	 Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+//	 The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//	 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +42,10 @@ using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers.Curitiba
+namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class ProviderCuritiba : ProviderBase
     {
-        
         #region Constructors
 
         public ProviderCuritiba(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
@@ -23,11 +53,12 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
             Name = "Curitiba";
         }
 
-        #endregion
-        
+        #endregion Constructors
+
         #region Methods
 
         #region LoadXML
+
         public override NotaServico LoadXml(XDocument xml)
         {
             Guard.Against<XmlException>(xml == null, "Xml invalido.");
@@ -325,6 +356,7 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
 
             return ret;
         }
+
         #endregion LoadXML
 
         #region RPS
@@ -905,7 +937,7 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
             return construcao;
         }
 
-        #endregion
+        #endregion RPS
 
         #region Services
 
@@ -941,7 +973,7 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
             xmlLote.Append("</RecepcionarLoteRps >");
 
             var document = XDocument.Parse(xmlLote.ToString());
-            
+
             retornoWebservice.XmlEnvio = document.AsString();
         }
 
@@ -1110,7 +1142,7 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "InfPedidoCancelamento", "", Certificado);
         }
 
-        #endregion
+        #endregion Services
 
         #region Protected Methods
 
@@ -1124,10 +1156,9 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
             return "xmlns=\"http://www.e-governeapps2.com.br/\"";
         }
 
-        private void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, 
+        private void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet,
             string elementName = "ListaMensagemRetorno", string messageElement = "MensagemRetorno")
         {
-            
             var listaMenssagens = xmlRet?.ElementAnyNs(elementName);
             if (listaMenssagens == null) return;
 
@@ -1177,27 +1208,27 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
         }
 
         protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
-        {            
+        {
         }
 
         protected override void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice)
-        {            
+        {
         }
 
         protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
-        {                       
+        {
         }
 
         protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice)
-        {         
+        {
         }
 
         protected override void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice)
-        {            
+        {
         }
 
         protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
-        {         
+        {
         }
 
         protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice)
@@ -1206,7 +1237,7 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
         }
 
         protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice)
-        {            
+        {
         }
 
         protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
@@ -1385,8 +1416,8 @@ namespace OpenAC.Net.NFSe.Providers.Curitiba
             return $"<cabecalho versao=\"1.00\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"><versaoDados>1.00</versaoDados></cabecalho>";
         }
 
-        #endregion
+        #endregion Protected Methods
 
-        #endregion
+        #endregion Methods
     }
 }
