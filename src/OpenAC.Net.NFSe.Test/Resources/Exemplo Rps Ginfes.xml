@@ -1,0 +1,49 @@
+<Rps xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd">
+	<tipos:InfRps Id="105207">
+		<tipos:IdentificacaoRps>
+			<tipos:Numero>105207</tipos:Numero>
+			<tipos:Serie>1</tipos:Serie>
+			<tipos:Tipo>1</tipos:Tipo>
+		</tipos:IdentificacaoRps>
+		<tipos:DataEmissao>2011-07-14T09:29:54</tipos:DataEmissao>
+		<tipos:NaturezaOperacao>1</tipos:NaturezaOperacao>
+		<tipos:OptanteSimplesNacional>2</tipos:OptanteSimplesNacional>
+		<tipos:IncentivadorCultural>2</tipos:IncentivadorCultural>
+		<tipos:Status>1</tipos:Status>
+		<tipos:Servico>
+			<tipos:Valores>
+				<tipos:ValorServicos>200.00</tipos:ValorServicos>
+				<tipos:IssRetido>1</tipos:IssRetido>
+				<tipos:ValorIss>4.00</tipos:ValorIss>
+				<tipos:ValorIssRetido>4.00</tipos:ValorIssRetido>
+				<tipos:BaseCalculo>200.00</tipos:BaseCalculo>
+				<tipos:Aliquota>0.0200</tipos:Aliquota>
+				<tipos:ValorLiquidoNfse>196.00</tipos:ValorLiquidoNfse>
+			</tipos:Valores>
+			<tipos:ItemListaServico>1305</tipos:ItemListaServico>
+			<tipos:CodigoTributacaoMunicipio>13.04/107602/1641</tipos:CodigoTributacaoMunicipio>
+			<tipos:Discriminacao>SERVICOS DE IMPRESSAO - ARQUIVAMENTO - 5366070/49119900 /UN/100,00000/2,00000/200,00000/NAO SUJEITO AO ICMS CONF. PORT. CAT. N 54 DE 16/10/8, RESPOSTA A CONSULTA N 847/1981 E RESPOSTA A CONSULTA N 109/1982. MATERIAL DESTINADO EXCLUSIVAMENTE A USO DO ENCOMENDANTE. "ISS RECOLHIDO PELO PRESTADOR DE SERVICOS NO MUNICIPIO DE SBC CONF.LEI FEDERAL 116/03 E MUNICIPAL 5360/04"</tipos:Discriminacao>
+			<tipos:CodigoMunicipio>3548708</tipos:CodigoMunicipio>
+		</tipos:Servico>
+		<tipos:Prestador>
+			<tipos:Cnpj>03514896000115</tipos:Cnpj>
+			<tipos:InscricaoMunicipal>85841</tipos:InscricaoMunicipal>
+		</tipos:Prestador>
+		<tipos:Tomador>
+			<tipos:IdentificacaoTomador>
+				<tipos:CpfCnpj>
+					<tipos:Cnpj>00063960001091</tipos:Cnpj>
+				</tipos:CpfCnpj>
+			</tipos:IdentificacaoTomador>
+			<tipos:RazaoSocial>WAL MART BRASIL LTDA</tipos:RazaoSocial>
+			<tipos:Endereco>
+				<tipos:Endereco>MARECHAL DEODORO</tipos:Endereco>
+				<tipos:Numero>2785</tipos:Numero>
+				<tipos:Bairro>CENTRO</tipos:Bairro>
+				<tipos:CodigoMunicipio>3548708</tipos:CodigoMunicipio>
+				<tipos:Uf>SP</tipos:Uf>
+				<tipos:Cep>12345678</tipos:Cep>
+			</tipos:Endereco>
+		</tipos:Tomador>
+	</tipos:InfRps>
+</Rps>
