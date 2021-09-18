@@ -10,8 +10,6 @@ Se *OpenNFSe* for um componente vital em sua aplicação comercial ou de código
 
 Biblioteca para emissão e trasmissão de NFSe.
 
-Biblioteca para emissão e trasmissão de NFSe.
-
 **Provedores Implementados**
 - Belo Horizonte.
 - Coplan.
