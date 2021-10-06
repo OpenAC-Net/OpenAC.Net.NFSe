@@ -1374,9 +1374,8 @@ namespace OpenAC.Net.NFSe.Providers
             MensagemErro(retornoWebservice, xmlCancelarNfseResult);
             if (retornoWebservice.Erros.Any()) return;
 
-            var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("RetCancelamento")?
-                                                     .ElementAnyNs("NfseCancelamento")?
-                                                     .ElementAnyNs("Confirmacao");
+            var confirmacaoCancelamento = xmlCancelarNfseResult.ElementAnyNs("Cancelamento")?
+                                                                .ElementAnyNs("Confirmacao");
 
             if (confirmacaoCancelamento == null)
             {
