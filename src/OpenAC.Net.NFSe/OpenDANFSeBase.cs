@@ -33,6 +33,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
 
 #if !NETSTANDARD2_0
 
@@ -43,9 +45,20 @@ namespace OpenAC.Net.NFSe
     /// <summary>
     /// Classe base para impressão de DANFSe
     /// </summary>
-    public abstract class OpenDANFSeBase : DFeReportClass<OpenNFSe>
+    public abstract class OpenDANFSeBase : DFeReportClass<FiltroDFeReport>, IDANFSeConfig
     {
+        #region Constructors
+
+        protected OpenDANFSeBase(ConfigNFSe config)
+        {
+            Configuracoes = config;
+        }
+
+        #endregion
+
         #region Properties
+
+        public ConfigNFSe Configuracoes { get; }
 
 #if NETFULL
         public Image LogoPrefeitura { get; set; }
@@ -62,39 +75,28 @@ namespace OpenAC.Net.NFSe
         /// <summary>
         /// Imprime as NFSe/RPS.
         /// </summary>
-        public abstract void Imprimir();
+        public abstract void Imprimir(NotaServico[] notas);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirPDF();
+        public abstract void ImprimirPDF(NotaServico[] notas);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirPDF(Stream stream);
+        public abstract void ImprimirPDF(NotaServico[] notas, Stream stream);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirHTML();
+        public abstract void ImprimirHTML(NotaServico[] notas);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirHTML(Stream stream);
+        public abstract void ImprimirHTML(NotaServico[] notas, Stream stream);
 
         #endregion Methods
-
-        #region Overrides
-
-        /// <inheritdoc />
-        protected override void ParentChanged(OpenNFSe oldParent, OpenNFSe newParent)
-        {
-            if (oldParent != null && oldParent.DANFSe == this) oldParent.DANFSe = null;
-            if (newParent != null && newParent.DANFSe != this) newParent.DANFSe = this;
-        }
-
-        #endregion Overrides
     }
 }

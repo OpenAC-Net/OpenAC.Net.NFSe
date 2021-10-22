@@ -1,16 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using FastReport;
 using FastReport.Export.Html;
 using FastReport.Export.Pdf;
-using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.DANFSe.FastReport
 {
-    [TypeConverter(typeof(OpenExpandableObjectConverter))]
+
     public sealed class DANFSeFastReport : OpenDANFSeBase
     {
         #region Fields
@@ -28,15 +28,24 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport
 
         #endregion Events
 
+        #region Constructors
+
+        public DANFSeFastReport(ConfigNFSe config) : base(config)
+        {
+        }
+
+        #endregion
+
+
         #region Methods
 
-        public void ShowDesign()
+        public void ShowDesign(NotaServico[] notas)
         {
             isDesign = true;
 
             try
             {
-                Imprimir();
+                Imprimir(notas, null);
             }
             finally
             {
@@ -44,34 +53,20 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport
             }
         }
 
-        public override void Imprimir()
+        public override void Imprimir(NotaServico[] notas)
         {
-            Imprimir(null);
+            Imprimir(notas, null);
         }
 
-        public override void ImprimirPDF()
-        {
-            var oldFiltro = Filtro;
-
-            try
-            {
-                Filtro = FiltroDFeReport.PDF;
-                Imprimir(null);
-            }
-            finally
-            {
-                Filtro = oldFiltro;
-            }
-        }
-
-        public override void ImprimirPDF(Stream stream)
+        /// <inheritdoc />
+        public override void ImprimirPDF(NotaServico[] notas)
         {
             var oldFiltro = Filtro;
 
             try
             {
                 Filtro = FiltroDFeReport.PDF;
-                Imprimir(stream);
+                Imprimir(notas, null);
             }
             finally
             {
@@ -79,14 +74,31 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport
             }
         }
 
-        public override void ImprimirHTML()
+        /// <inheritdoc />
+        public override void ImprimirPDF(NotaServico[] notas, Stream stream)
+        {
+            var oldFiltro = Filtro;
+
+            try
+            {
+                Filtro = FiltroDFeReport.PDF;
+                Imprimir(notas, stream);
+            }
+            finally
+            {
+                Filtro = oldFiltro;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void ImprimirHTML(NotaServico[] notas)
         {
             var oldFiltro = Filtro;
 
             try
             {
                 Filtro = FiltroDFeReport.HTML;
-                Imprimir(null);
+                Imprimir(notas, null);
             }
             finally
             {
@@ -94,14 +106,15 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport
             }
         }
 
-        public override void ImprimirHTML(Stream stream)
+        /// <inheritdoc />
+        public override void ImprimirHTML(NotaServico[] notas,Stream stream)
         {
             var oldFiltro = Filtro;
 
             try
             {
                 Filtro = FiltroDFeReport.HTML;
-                Imprimir(stream);
+                Imprimir(notas, stream);
             }
             finally
             {
@@ -109,13 +122,13 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport
             }
         }
 
-        private void Imprimir(Stream stream)
+        private void Imprimir(NotaServico[] notas, Stream stream)
         {
             using (internalReport = new Report())
             {
                 PrepararImpressao();
 
-                internalReport.RegisterData(Parent.NotasServico.ToArray(), "NotaServico");
+                internalReport.RegisterData(notas, "NotaServico");
                 internalReport.Prepare();
 
                 if (isDesign)
@@ -217,8 +230,8 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport
 
             internalReport.SetParameterValue("Logo", Logo.ToByteArray());
             internalReport.SetParameterValue("LogoPrefeitura", LogoPrefeitura.ToByteArray());
-            internalReport.SetParameterValue("MunicipioPrestador", Parent.Configuracoes.WebServices.Municipio);
-            internalReport.SetParameterValue("Ambiente", (int)Parent.Configuracoes.WebServices.Ambiente);
+            internalReport.SetParameterValue("MunicipioPrestador", Configuracoes.WebServices.Municipio);
+            internalReport.SetParameterValue("Ambiente", (int)Configuracoes.WebServices.Ambiente);
             internalReport.SetParameterValue("SoftwareHouse", SoftwareHouse);
             internalReport.SetParameterValue("Site", Site);
 
@@ -228,19 +241,5 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport
         }
 
         #endregion Methods
-
-        #region Overrides
-
-        protected override void OnInitialize()
-        {
-            //
-        }
-
-        protected override void OnDisposing()
-        {
-            //
-        }
-
-        #endregion Overrides
     }
 }

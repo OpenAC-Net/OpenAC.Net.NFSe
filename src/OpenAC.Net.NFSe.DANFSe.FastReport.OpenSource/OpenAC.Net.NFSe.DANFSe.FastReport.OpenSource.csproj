@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard2.0;net5.0-windows</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
     <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2021</Copyright>
@@ -35,6 +35,10 @@
     <DefineConstants>NET45;NETFULL</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0-windows'">
+    <DefineConstants>NET45;NETFULL</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
     <OutputPath>..\..\bin\Debug\</OutputPath>
     <DocumentationFile>..\..\bin\Debug\net452\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource.xml</DocumentationFile>
@@ -60,14 +64,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.OpenSource" Version="2021.4.3" />
+    <PackageReference Include="FastReport.OpenSource" Version="2021.4.6" />
     <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2021.4.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="OpenAC.Net.Core" Version="1.0.0" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.0.0" />
+    <PackageReference Include="OpenAC.Net.Core" Version="1.0.0.1" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">

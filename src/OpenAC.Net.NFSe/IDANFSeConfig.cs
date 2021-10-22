@@ -4,9 +4,9 @@
 // Created          : 01-31-2016
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 06-07-2016
+// Last Modified On : 08-06-2017
 // ***********************************************************************
-// <copyright file="ConfigNFSe.cs" company="OpenAC .Net">
+// <copyright file="OpenDANFSeBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
 //
@@ -29,48 +29,43 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
-using OpenAC.Net.Core;
+using System.Drawing;
 using OpenAC.Net.DFe.Core.Common;
-using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Configuracao
+namespace OpenAC.Net.NFSe
 {
-    public sealed class ConfigNFSe : DFeConfigBase<OpenNFSe, ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
+    public interface IDANFSeConfig
     {
-        #region Constructor
+#if NETFULL
+        Image LogoPrefeitura { get; set; }
+#else
+        byte[] LogoPrefeitura { get; set; }
+#endif
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigNFSe"/> class.
-        /// </summary>
-        internal ConfigNFSe(OpenNFSe parent) : base(parent)
-        {
-        }
+        LayoutImpressao Layout { get; set; }
 
-        #endregion Constructor
+#if NETFULL
+        Image Logo { get; set; }
+#else
+        byte[] Logo { get; set; }
+#endif
 
-        #region Properties
+        FiltroDFeReport Filtro { get; set; }
 
-        /// <summary>
-        /// Gets the prestado padrão.
-        /// </summary>
-        /// <value>The prestado padrão.</value>
-        public DadosPrestador PrestadorPadrao { get; set; }
+        bool MostrarPreview { get; set; }
 
-        #endregion Properties
+        bool MostrarSetup { get; set; }
 
-        #region Methods
+        bool UsarPathPDF { get; set; }
 
-        /// <inheritdoc />
-        protected override void CreateConfigs()
-        {
-            Geral = new ConfigGeralNFSe(Parent);
-            WebServices = new ConfigWebServicesNFSe(Parent);
-            Certificados = new ConfigCertificadosNFSe(Parent);
-            Arquivos = new ConfigArquivosNFSe(Parent);
-            PrestadorPadrao = new DadosPrestador();
-        }
+        string Impressora { get; set; }
 
-        #endregion Methods
+        int NumeroCopias { get; set; }
+
+        string NomeArquivo { get; set; }
+
+        string SoftwareHouse { get; set; }
+
+        string Site { get; set; }
     }
 }

@@ -50,7 +50,6 @@
             this.tabPage17 = new System.Windows.Forms.TabPage();
             this.btnGerarHTML = new System.Windows.Forms.Button();
             this.btnGerarPDF = new System.Windows.Forms.Button();
-            this.btnDesignDANFSe = new System.Windows.Forms.Button();
             this.btnImprimirDANFSe = new System.Windows.Forms.Button();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPageRespostas = new System.Windows.Forms.TabPage();
@@ -328,7 +327,7 @@
             this.tabPage15.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage15.Name = "tabPage15";
             this.tabPage15.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage15.Size = new System.Drawing.Size(836, 219);
+            this.tabPage15.Size = new System.Drawing.Size(842, 219);
             this.tabPage15.TabIndex = 1;
             this.tabPage15.Text = "Consultas";
             this.tabPage15.UseVisualStyleBackColor = true;
@@ -384,7 +383,7 @@
             this.tabPage16.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage16.Name = "tabPage16";
             this.tabPage16.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage16.Size = new System.Drawing.Size(836, 219);
+            this.tabPage16.Size = new System.Drawing.Size(842, 219);
             this.tabPage16.TabIndex = 2;
             this.tabPage16.Text = "Cancelamento";
             this.tabPage16.UseVisualStyleBackColor = true;
@@ -404,12 +403,11 @@
             // 
             this.tabPage17.Controls.Add(this.btnGerarHTML);
             this.tabPage17.Controls.Add(this.btnGerarPDF);
-            this.tabPage17.Controls.Add(this.btnDesignDANFSe);
             this.tabPage17.Controls.Add(this.btnImprimirDANFSe);
             this.tabPage17.Location = new System.Drawing.Point(4, 29);
             this.tabPage17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage17.Name = "tabPage17";
-            this.tabPage17.Size = new System.Drawing.Size(836, 219);
+            this.tabPage17.Size = new System.Drawing.Size(842, 219);
             this.tabPage17.TabIndex = 3;
             this.tabPage17.Text = "Impressão";
             this.tabPage17.UseVisualStyleBackColor = true;
@@ -435,17 +433,6 @@
             this.btnGerarPDF.Text = "Gerar PDF";
             this.btnGerarPDF.UseVisualStyleBackColor = true;
             this.btnGerarPDF.Click += new System.EventHandler(this.btnGerarPDF_Click);
-            // 
-            // btnDesignDANFSe
-            // 
-            this.btnDesignDANFSe.Location = new System.Drawing.Point(9, 54);
-            this.btnDesignDANFSe.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnDesignDANFSe.Name = "btnDesignDANFSe";
-            this.btnDesignDANFSe.Size = new System.Drawing.Size(266, 35);
-            this.btnDesignDANFSe.TabIndex = 32;
-            this.btnDesignDANFSe.Text = "Mostrar Design";
-            this.btnDesignDANFSe.UseVisualStyleBackColor = true;
-            this.btnDesignDANFSe.Click += new System.EventHandler(this.btnDesignDANFSe_Click);
             // 
             // btnImprimirDANFSe
             // 
@@ -506,7 +493,7 @@
             this.tabPageNFSe.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageNFSe.Name = "tabPageNFSe";
             this.tabPageNFSe.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageNFSe.Size = new System.Drawing.Size(836, 409);
+            this.tabPageNFSe.Size = new System.Drawing.Size(842, 409);
             this.tabPageNFSe.TabIndex = 3;
             this.tabPageNFSe.Text = "NFSe";
             this.tabPageNFSe.UseVisualStyleBackColor = true;
@@ -518,7 +505,7 @@
             this.wbbNFSe.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wbbNFSe.MinimumSize = new System.Drawing.Size(30, 31);
             this.wbbNFSe.Name = "wbbNFSe";
-            this.wbbNFSe.Size = new System.Drawing.Size(828, 399);
+            this.wbbNFSe.Size = new System.Drawing.Size(834, 399);
             this.wbbNFSe.TabIndex = 2;
             // 
             // tabPageXmlEnvio
@@ -528,7 +515,7 @@
             this.tabPageXmlEnvio.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageXmlEnvio.Name = "tabPageXmlEnvio";
             this.tabPageXmlEnvio.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageXmlEnvio.Size = new System.Drawing.Size(836, 409);
+            this.tabPageXmlEnvio.Size = new System.Drawing.Size(842, 409);
             this.tabPageXmlEnvio.TabIndex = 5;
             this.tabPageXmlEnvio.Text = "Xml Envio";
             this.tabPageXmlEnvio.UseVisualStyleBackColor = true;
@@ -540,7 +527,7 @@
             this.wbbDados.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wbbDados.MinimumSize = new System.Drawing.Size(30, 31);
             this.wbbDados.Name = "wbbDados";
-            this.wbbDados.Size = new System.Drawing.Size(828, 399);
+            this.wbbDados.Size = new System.Drawing.Size(834, 399);
             this.wbbDados.TabIndex = 2;
             // 
             // tabPageXmlResposta
@@ -550,7 +537,7 @@
             this.tabPageXmlResposta.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageXmlResposta.Name = "tabPageXmlResposta";
             this.tabPageXmlResposta.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageXmlResposta.Size = new System.Drawing.Size(836, 409);
+            this.tabPageXmlResposta.Size = new System.Drawing.Size(842, 409);
             this.tabPageXmlResposta.TabIndex = 1;
             this.tabPageXmlResposta.Text = "Xml Resposta";
             this.tabPageXmlResposta.UseVisualStyleBackColor = true;
@@ -562,7 +549,7 @@
             this.wbbResposta.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wbbResposta.MinimumSize = new System.Drawing.Size(30, 31);
             this.wbbResposta.Name = "wbbResposta";
-            this.wbbResposta.Size = new System.Drawing.Size(828, 399);
+            this.wbbResposta.Size = new System.Drawing.Size(834, 399);
             this.wbbResposta.TabIndex = 1;
             // 
             // tabPageEnvelopeEnvio
@@ -571,7 +558,7 @@
             this.tabPageEnvelopeEnvio.Location = new System.Drawing.Point(4, 29);
             this.tabPageEnvelopeEnvio.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageEnvelopeEnvio.Name = "tabPageEnvelopeEnvio";
-            this.tabPageEnvelopeEnvio.Size = new System.Drawing.Size(836, 409);
+            this.tabPageEnvelopeEnvio.Size = new System.Drawing.Size(842, 409);
             this.tabPageEnvelopeEnvio.TabIndex = 6;
             this.tabPageEnvelopeEnvio.Text = "Envelope Envio";
             this.tabPageEnvelopeEnvio.UseVisualStyleBackColor = true;
@@ -583,7 +570,7 @@
             this.wbbEnvelopeEnvio.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wbbEnvelopeEnvio.MinimumSize = new System.Drawing.Size(30, 31);
             this.wbbEnvelopeEnvio.Name = "wbbEnvelopeEnvio";
-            this.wbbEnvelopeEnvio.Size = new System.Drawing.Size(836, 409);
+            this.wbbEnvelopeEnvio.Size = new System.Drawing.Size(842, 409);
             this.wbbEnvelopeEnvio.TabIndex = 3;
             // 
             // tabPageEnvelopeRetorno
@@ -593,7 +580,7 @@
             this.tabPageEnvelopeRetorno.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageEnvelopeRetorno.Name = "tabPageEnvelopeRetorno";
             this.tabPageEnvelopeRetorno.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageEnvelopeRetorno.Size = new System.Drawing.Size(836, 409);
+            this.tabPageEnvelopeRetorno.Size = new System.Drawing.Size(842, 409);
             this.tabPageEnvelopeRetorno.TabIndex = 4;
             this.tabPageEnvelopeRetorno.Text = "Envelope Retorno";
             this.tabPageEnvelopeRetorno.UseVisualStyleBackColor = true;
@@ -605,7 +592,7 @@
             this.wbbRetorno.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wbbRetorno.MinimumSize = new System.Drawing.Size(30, 31);
             this.wbbRetorno.Name = "wbbRetorno";
-            this.wbbRetorno.Size = new System.Drawing.Size(828, 399);
+            this.wbbRetorno.Size = new System.Drawing.Size(834, 399);
             this.wbbRetorno.TabIndex = 2;
             // 
             // tabPageLog
@@ -615,7 +602,7 @@
             this.tabPageLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageLog.Name = "tabPageLog";
             this.tabPageLog.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageLog.Size = new System.Drawing.Size(836, 409);
+            this.tabPageLog.Size = new System.Drawing.Size(842, 409);
             this.tabPageLog.TabIndex = 2;
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
@@ -630,7 +617,7 @@
             this.rtbLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(828, 399);
+            this.rtbLog.Size = new System.Drawing.Size(834, 399);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             // 
@@ -1391,7 +1378,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage3.Size = new System.Drawing.Size(1282, 719);
+            this.tabPage3.Size = new System.Drawing.Size(1282, 731);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Gerenciador de Cidades";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1690,7 +1677,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.TabPage tabPage17;
         private System.Windows.Forms.Button btnGerarPDF;
-        private System.Windows.Forms.Button btnDesignDANFSe;
         private System.Windows.Forms.Button btnImprimirDANFSe;
         private System.Windows.Forms.Button btnGerarHTML;
         private System.Windows.Forms.TabPage tabPageEnvelopeEnvio;

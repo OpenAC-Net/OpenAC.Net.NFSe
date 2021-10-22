@@ -30,8 +30,6 @@
 // ***********************************************************************
 
 using System;
-using System.ComponentModel;
-using System.IO;
 using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
@@ -56,27 +54,11 @@ namespace OpenAC.Net.NFSe
         /// <summary>
         /// Configurações do Componente
         /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ConfigNFSe Configuracoes { get; private set; }
-
-        /// <summary>
-        /// Componente de impressão
-        /// </summary>
-        public OpenDANFSeBase DANFSe
-        {
-            get => danfSe;
-            set
-            {
-                danfSe = value;
-                if (danfSe != null && danfSe.Parent != this)
-                    danfSe.Parent = this;
-            }
-        }
 
         /// <summary>
         /// Coleção de NFSe para processar e/ou processadas
         /// </summary>
-        [Browsable(false)]
         public NotaServicoCollection NotasServico { get; private set; }
 
         #endregion Propriedades
@@ -88,9 +70,8 @@ namespace OpenAC.Net.NFSe
         /// </summary>
         /// <param name="lote">Numero do lote.</param>
         /// <param name="sincrono">Se for informado <c>true</c> o envio será sincrono.</param>
-        /// <param name="imprimir">Se for informado <c>true</c> imprime as RPS, se o envio foi executado com sucesso.</param>
         /// <returns>RetornoWebservice.</returns>
-        public RetornoEnviar Enviar(int lote, bool sincrono = false, bool imprimir = false)
+        public RetornoEnviar Enviar(int lote, bool sincrono = false)
 
         {
             Guard.Against<OpenException>(provider == null, "ERRO: Nenhuma cidade informada.");
@@ -109,9 +90,6 @@ namespace OpenAC.Net.NFSe
                 var ret = sincrono
                     ? provider.EnviarSincrono(lote, NotasServico)
                     : provider.Enviar(lote, NotasServico);
-
-                if (ret.Sucesso && imprimir)
-                    DANFSe?.Imprimir();
 
                 return ret;
             }
@@ -566,51 +544,6 @@ namespace OpenAC.Net.NFSe
             {
                 ServicePointManager.SecurityProtocol = oldProtocol;
             }
-        }
-
-        /// <summary>
-        /// Imprime o DANFse
-        /// </summary>
-        public void Imprimir()
-        {
-            Guard.Against<ArgumentNullException>(DANFSe == null, "Nenhum componente de impressão especificado.");
-            DANFSe?.Imprimir();
-        }
-
-        /// <summary>
-        /// Imprime o PDF do DANFse
-        /// </summary>
-        public void ImprimirPDF()
-        {
-            Guard.Against<ArgumentNullException>(DANFSe == null, "Nenhum componente de impressão especificado.");
-            DANFSe?.ImprimirPDF();
-        }
-
-        /// <summary>
-        /// Imprime o PDF do DANFse para uma stream
-        /// </summary>
-        public void ImprimirPDF(Stream stream)
-        {
-            Guard.Against<ArgumentNullException>(DANFSe == null, "Nenhum componente de impressão especificado.");
-            DANFSe?.ImprimirPDF(stream);
-        }
-
-        /// <summary>
-        /// Imprime o HTML do DANFse
-        /// </summary>
-        public void ImprimirHTML()
-        {
-            Guard.Against<ArgumentNullException>(DANFSe == null, "Nenhum componente de impressão especificado.");
-            DANFSe?.ImprimirHTML();
-        }
-
-        /// <summary>
-        /// Imprime o HTML do DANFse para uma stream
-        /// </summary>
-        public void ImprimirHTML(Stream stream)
-        {
-            Guard.Against<ArgumentNullException>(DANFSe == null, "Nenhum componente de impressão especificado.");
-            DANFSe?.ImprimirHTML(stream);
         }
 
         #endregion Methods

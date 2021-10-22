@@ -31,16 +31,7 @@ namespace OpenAC.Net.NFSe.Demo
         public FormMain()
         {
             InitializeComponent();
-            openNFSe = new OpenNFSe
-            {
-                DANFSe = new DANFSeFastReportOpenSource()
-                {
-                    MostrarPreview = true
-                }
-            };
-
-            //((DANFSeFastReportOpenSource)openNFSe.DANFSe).OnExport += (sender, args) => args.Export.ShowDialog();
-
+            openNFSe = new OpenNFSe();
             config = OpenConfig.CreateOrLoad(Path.Combine(Application.StartupPath, "nfse.config"));
         }
 
@@ -272,25 +263,17 @@ namespace OpenAC.Net.NFSe.Demo
         private void btnImprimirDANFSe_Click(object sender, EventArgs e)
         {
             GerarRps();
-            openNFSe.Imprimir();
-        }
-
-        private void btnDesignDANFSe_Click(object sender, EventArgs e)
-        {
-            // Design apenas na versão Full do FastReports
-            //((DANFSeFastReport)openNFSe.DANFSe).ShowDesign();
+            openNFSe.Imprimir(o => o.MostrarPreview = true);
         }
 
         private void btnGerarPDF_Click(object sender, EventArgs e)
         {
-            openNFSe.DANFSe.NomeArquivo = "NFSe.pdf";
-            openNFSe.ImprimirPDF();
+            openNFSe.ImprimirPDF(o => o.NomeArquivo = "NFSe.pdf");
         }
 
         private void btnGerarHTML_Click(object sender, EventArgs e)
         {
-            openNFSe.DANFSe.NomeArquivo = "NFSe.html";
-            openNFSe.ImprimirHTML();
+            openNFSe.ImprimirPDF(o => o.NomeArquivo = "NFSe.html");
         }
 
         private void lstMunicipios_MouseDoubleClick(object sender, MouseEventArgs e)

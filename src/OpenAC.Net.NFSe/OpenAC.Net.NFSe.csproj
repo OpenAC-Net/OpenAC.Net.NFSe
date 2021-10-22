@@ -11,7 +11,6 @@
     <Authors>Projeto OpenAC .Net</Authors>
     <PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <!--<PackageIconUrl>https://avatars2.githubusercontent.com/u/7342977?v=3&amp;amp;s=200</PackageIconUrl>-->
     <RepositoryUrl>https://github.com/OpenAC-Net/OpenAC.Net.NFSe</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>OpenAC.Net NFSe OpenNFSe</PackageTags>
@@ -19,32 +18,35 @@
       Biblioteca para emissão e trasmissão de NFSe.
 
       **Provedores Implementados**
-      - Ginfes.
-      - DSF.
-      - WebISS.
-      - WebIss2.
-      - São Paulo.
-      - Coplan.
-      - Nota Carioca.
       - Belo Horizonte.
+      - Coplan.
+      - DSF.
       - Equiplano.
-      - SmarAPD ABRASAF.
       - Fiorilli.
+      - Ginfes.
       - Goiânia.
       - ISSe.
+      - Nota Carioca.
       - NFe Cidades (GovDigital).
-      - IISNet (Em Teste).
-      - Porto Alegre (Em Teste).
+      - SmarAPD ABRASAF.
+      - São Paulo.
+      - WebISS.
+      - WebIss2.
+
+      **Provedores Em Teste**
       - Abaco (Em Teste).
       - Betha v1 (Em Teste).
       - Betha v2 (Em Teste).
-      - FissLex (Em Teste).
-      - Pronim v2 (Em Teste).
-      - Vitoria (Em Testes).
-      - DBSeller (Em Testes).
-      - SpeedGov (Em Testes).
+      - CITTA (Em Testes).
       - Curitiba (Em Testes).
+      - DBSeller (Em Testes).
+      - FissLex (Em Teste).
+      - IISNet (Em Teste).
+      - Porto Alegre (Em Teste).
+      - Pronim v2 (Em Teste).
+      - SpeedGov (Em Testes).
       - SystemPro (Em Testes).
+      - Vitoria (Em Testes).
     </Description>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -57,10 +59,6 @@
     <IncludeSymbols>true</IncludeSymbols>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageReleaseNotes>
-      [+] Adicionado o provedor de Curitiba.
-      [+] Adicionado o provedor de SpeedGov.
-    </PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
@@ -96,8 +94,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="OpenAC.Net.Core" Version="1.0.0" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.0.0" />
+    <PackageReference Include="OpenAC.Net.Core" Version="1.0.0.1" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.1.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

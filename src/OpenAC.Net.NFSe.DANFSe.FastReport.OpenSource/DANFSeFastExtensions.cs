@@ -1,12 +1,12 @@
-// ***********************************************************************
-// Assembly         : OpenAC.Net.NFSe
+ï»¿// ***********************************************************************
+// Assembly         : OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 // Author           : Rafael Dias
-// Created          : 01-31-2016
+// Created          : 21-10-2021
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 06-07-2016
+// Last Modified On : 21-10-2021
 // ***********************************************************************
-// <copyright file="ConfigNFSe.cs" company="OpenAC .Net">
+// <copyright file="DANFSeFastExtensions.cs" company="OpenAC.Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
 //
@@ -29,48 +29,31 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
-using OpenAC.Net.Core;
-using OpenAC.Net.DFe.Core.Common;
-using OpenAC.Net.NFSe.Nota;
+using System;
 
-namespace OpenAC.Net.NFSe.Configuracao
+namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 {
-    public sealed class ConfigNFSe : DFeConfigBase<OpenNFSe, ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
+    public static class DANFSeFastExtensions
     {
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigNFSe"/> class.
-        /// </summary>
-        internal ConfigNFSe(OpenNFSe parent) : base(parent)
+        public static void Imprimir(this OpenNFSe nfse, Action<IDANFSeConfig> danfeConfig = null)
         {
+            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+            danfeConfig?.Invoke(danfse);
+            danfse.Imprimir(nfse.NotasServico.ToArray());
         }
 
-        #endregion Constructor
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the prestado padrão.
-        /// </summary>
-        /// <value>The prestado padrão.</value>
-        public DadosPrestador PrestadorPadrao { get; set; }
-
-        #endregion Properties
-
-        #region Methods
-
-        /// <inheritdoc />
-        protected override void CreateConfigs()
+        public static void ImprimirPDF(this OpenNFSe nfse, Action<IDANFSeConfig> danfeConfig = null)
         {
-            Geral = new ConfigGeralNFSe(Parent);
-            WebServices = new ConfigWebServicesNFSe(Parent);
-            Certificados = new ConfigCertificadosNFSe(Parent);
-            Arquivos = new ConfigArquivosNFSe(Parent);
-            PrestadorPadrao = new DadosPrestador();
+            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+            danfeConfig?.Invoke(danfse);
+            danfse.ImprimirPDF(nfse.NotasServico.ToArray());
         }
 
-        #endregion Methods
+        public static void ImprimirHTML(this OpenNFSe nfse, Action<IDANFSeConfig> danfeConfig = null)
+        {
+            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+            danfeConfig?.Invoke(danfse);
+            danfse.ImprimirHTML(nfse.NotasServico.ToArray());
+        }
     }
 }

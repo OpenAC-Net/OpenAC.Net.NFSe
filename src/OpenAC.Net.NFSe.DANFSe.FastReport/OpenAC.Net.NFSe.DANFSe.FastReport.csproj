@@ -46,9 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DANFSeFastReport.cs">
-      <SubType>OpenAC .Net</SubType>
-    </Compile>
+    <Compile Include="DANFSeFastExtensions.cs" />
+    <Compile Include="DANFSeFastReport.cs" />
     <Compile Include="DANFSeEventArgs.cs" />
     <Compile Include="DANFSeExportEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,13 +59,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FastReport.Net.Demo">
-      <Version>2021.4.3</Version>
+      <Version>2021.4.9</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core">
-      <Version>1.0.0</Version>
+      <Version>1.0.0.1</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.DFe.Core">
-      <Version>1.0.0</Version>
+      <Version>1.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
