@@ -35,24 +35,24 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 {
     public static class DANFSeFastExtensions
     {
-        public static void Imprimir(this OpenNFSe nfse, Action<IDANFSeConfig> danfeConfig = null)
+        public static void Imprimir(this OpenNFSe nfse, Action<IDANFSeOptions> options = null)
         {
             var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            danfeConfig?.Invoke(danfse);
+            options?.Invoke(danfse);
             danfse.Imprimir(nfse.NotasServico.ToArray());
         }
 
-        public static void ImprimirPDF(this OpenNFSe nfse, Action<IDANFSeConfig> danfeConfig = null)
+        public static void ImprimirPDF(this OpenNFSe nfse, Action<IDANFSeOptions> options = null)
         {
             var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            danfeConfig?.Invoke(danfse);
+            options?.Invoke(danfse);
             danfse.ImprimirPDF(nfse.NotasServico.ToArray());
         }
 
-        public static void ImprimirHTML(this OpenNFSe nfse, Action<IDANFSeConfig> danfeConfig = null)
+        public static void ImprimirHTML(this OpenNFSe nfse, Action<IDANFSeOptions> options = null)
         {
             var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            danfeConfig?.Invoke(danfse);
+            options?.Invoke(danfse);
             danfse.ImprimirHTML(nfse.NotasServico.ToArray());
         }
     }

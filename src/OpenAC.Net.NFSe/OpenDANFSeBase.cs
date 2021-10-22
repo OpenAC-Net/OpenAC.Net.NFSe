@@ -45,7 +45,7 @@ namespace OpenAC.Net.NFSe
     /// <summary>
     /// Classe base para impressão de DANFSe
     /// </summary>
-    public abstract class OpenDANFSeBase : DFeReportClass<FiltroDFeReport>, IDANFSeConfig
+    public abstract class OpenDANFSeBase : DFeReportClass<FiltroDFeReport>, IDANFSeOptions
     {
         #region Constructors
 

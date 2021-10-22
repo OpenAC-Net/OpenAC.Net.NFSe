@@ -6,7 +6,7 @@
 // Last Modified By : Rafael Dias
 // Last Modified On : 08-06-2017
 // ***********************************************************************
-// <copyright file="OpenDANFSeBase.cs" company="OpenAC .Net">
+// <copyright file="IDANFSeOptions.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
 //
@@ -34,7 +34,7 @@ using OpenAC.Net.DFe.Core.Common;
 
 namespace OpenAC.Net.NFSe
 {
-    public interface IDANFSeConfig
+    public interface IDANFSeOptions
     {
 #if NETFULL
         Image LogoPrefeitura { get; set; }
