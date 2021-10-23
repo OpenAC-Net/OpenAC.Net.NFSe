@@ -29,22 +29,25 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
-using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Configuracao
 {
-    public sealed class ConfigNFSe : DFeConfigBase<OpenNFSe, ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
+    public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
     {
         #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigNFSe"/> class.
         /// </summary>
-        internal ConfigNFSe(OpenNFSe parent) : base(parent)
+        public ConfigNFSe()
         {
+            Geral = new ConfigGeralNFSe();
+            WebServices = new ConfigWebServicesNFSe();
+            Certificados = new ConfigCertificadosNFSe();
+            Arquivos = new ConfigArquivosNFSe();
+            PrestadorPadrao = new DadosPrestador();
         }
 
         #endregion Constructor
@@ -58,19 +61,5 @@ namespace OpenAC.Net.NFSe.Configuracao
         public DadosPrestador PrestadorPadrao { get; set; }
 
         #endregion Properties
-
-        #region Methods
-
-        /// <inheritdoc />
-        protected override void CreateConfigs()
-        {
-            Geral = new ConfigGeralNFSe(Parent);
-            WebServices = new ConfigWebServicesNFSe(Parent);
-            Certificados = new ConfigCertificadosNFSe(Parent);
-            Arquivos = new ConfigArquivosNFSe(Parent);
-            PrestadorPadrao = new DadosPrestador();
-        }
-
-        #endregion Methods
     }
 }

@@ -37,6 +37,7 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Collection;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Nota
 {
@@ -84,12 +85,19 @@ namespace OpenAC.Net.NFSe.Nota
         /// <returns>NotaServico carregada.</returns>
         public NotaServico Load(string xml, Encoding encoding = null)
         {
-            Guard.Against<OpenException>(config?.Parent?.provider == null, "ERRO: Nenhuma cidade informada.");
+            var provider = ProviderManager.GetProvider(config);
 
-            var nota = config?.Parent?.provider.LoadXml(xml, encoding);
-            nota.XmlOriginal = xml;
-            Add(nota);
-            return nota;
+            try
+            {
+                var nota = provider.LoadXml(xml, encoding);
+                nota.XmlOriginal = xml;
+                Add(nota);
+                return nota;
+            }
+            finally
+            {
+                provider.Dispose();
+            }
         }
 
         /// <summary>
@@ -99,16 +107,23 @@ namespace OpenAC.Net.NFSe.Nota
         /// <returns>NotaServico carregada.</returns>
         public NotaServico Load(Stream stream)
         {
-            Guard.Against<OpenException>(config?.Parent?.provider == null, "ERRO: Nenhuma cidade informada.");
+            var provider = ProviderManager.GetProvider(config);
 
-            var nota = config?.Parent?.provider.LoadXml(stream);
+            var nota = provider.LoadXml(stream);
 
-            stream.Position = 0;
-            using (var sr = new StreamReader(stream))
-                nota.XmlOriginal = sr.ReadToEnd();
+            try
+            {
+                stream.Position = 0;
+                using (var sr = new StreamReader(stream))
+                    nota.XmlOriginal = sr.ReadToEnd();
 
-            Add(nota);
-            return nota;
+                Add(nota);
+                return nota;
+            }
+            finally
+            {
+                provider.Dispose();
+            }
         }
 
         /// <summary>
@@ -118,12 +133,19 @@ namespace OpenAC.Net.NFSe.Nota
         /// <returns>NotaServico carregada.</returns>
         public NotaServico Load(XDocument xml)
         {
-            Guard.Against<OpenException>(config?.Parent?.provider == null, "ERRO: Nenhuma cidade informada.");
+            var provider = ProviderManager.GetProvider(config);
 
-            var nota = config?.Parent?.provider.LoadXml(xml);
-            nota.XmlOriginal = xml.AsString();
-            Add(nota);
-            return nota;
+            try
+            {
+                var nota = provider.LoadXml(xml);
+                nota.XmlOriginal = xml.AsString();
+                Add(nota);
+                return nota;
+            }
+            finally
+            {
+                provider.Dispose();
+            }
         }
 
         #endregion Methods

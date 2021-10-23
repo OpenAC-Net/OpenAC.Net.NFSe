@@ -30,25 +30,22 @@
 // ***********************************************************************
 
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Configuracao
 {
-    [TypeConverter(typeof(OpenExpandableObjectConverter))]
-    public sealed class ConfigArquivosNFSe : DFeArquivosConfigBase<OpenNFSe>
+    public sealed class ConfigArquivosNFSe : DFeArquivosConfigBase
     {
         #region Constructor
 
         /// <summary>
         /// Inicializa uma nova instancia da classe <see cref="ConfigArquivosNFSe"/>.
         /// </summary>
-        internal ConfigArquivosNFSe(OpenNFSe parent) : base(parent)
+        internal ConfigArquivosNFSe()
         {
             EmissaoPathNFSe = false;
 
@@ -75,29 +72,24 @@ namespace OpenAC.Net.NFSe.Configuracao
         /// Gets or sets a value indicating whether [emissao path n fe].
         /// </summary>
         /// <value><c>true</c> if [emissao path n fe]; otherwise, <c>false</c>.</value>
-        [Browsable(true)]
-        [DefaultValue(false)]
         public bool EmissaoPathNFSe { get; set; }
 
         /// <summary>
         /// Gets or sets the path n fe.
         /// </summary>
         /// <value>The path n fe.</value>
-        [Browsable(true)]
         public string PathNFSe { get; set; }
 
         /// <summary>
         /// Gets or sets the path lote.
         /// </summary>
         /// <value>The path lote.</value>
-        [Browsable(true)]
         public string PathLote { get; set; }
 
         /// <summary>
         /// Gets or sets the path lote.
         /// </summary>
         /// <value>The path lote.</value>
-        [Browsable(true)]
         public string PathRps { get; set; }
 
         #endregion Properties
