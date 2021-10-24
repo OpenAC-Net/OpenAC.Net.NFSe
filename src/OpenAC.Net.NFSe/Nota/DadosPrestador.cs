@@ -44,7 +44,7 @@ namespace OpenAC.Net.NFSe.Nota
 
         #region Constructors
 
-        internal DadosPrestador()
+        public DadosPrestador()
         {
             CpfCnpj = string.Empty;
             InscricaoMunicipal = string.Empty;
