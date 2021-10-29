@@ -89,7 +89,7 @@ namespace OpenAC.Net.NFSe.Nota
         /// </summary>
         public NotaServico(ConfigNFSe config, DadosPrestador prestador) : this(config)
         {
-            Prestador = prestador.Clone();
+            Prestador = prestador;
         }
 
         #endregion Constructor
