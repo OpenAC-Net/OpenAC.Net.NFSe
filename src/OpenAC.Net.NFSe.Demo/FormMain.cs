@@ -699,7 +699,7 @@ namespace OpenAC.Net.NFSe.Demo
         {
             ExecuteSafe(() =>
             {
-                var arquivo = Helpers.OpenFile("Arquivo de cidades NFSe (*.nfse) | *.nfse |Todos os arquivos | *.*", "Selecione o arquivo de cidades");
+                var arquivo = Helpers.OpenFile("Arquivo de cidades NFSe (*.nfse)|*.nfse|Todos os arquivos|*.*", "Selecione o arquivo de cidades");
                 if (arquivo.IsEmpty()) return;
 
                 ProviderManager.Load(arquivo);
@@ -783,6 +783,12 @@ namespace OpenAC.Net.NFSe.Demo
             txtCertificado.Text = config.Get("Certificado", string.Empty);
             txtSenha.Text = config.Get("Senha", string.Empty);
             txtNumeroSerie.Text = config.Get("NumeroSerie", string.Empty);
+
+            txtSchemas.Text = config.Get("PastaSchemas", string.Empty);
+            txtArquivoCidades.Text = config.Get("ArquivoCidades", string.Empty);
+            chkSalvarArquivos.Checked = config.Get("SalvarNfse", string.Empty) == "1";
+            txtPathXml.Text = config.Get("CaminhoXML", string.Empty);
+
         }
 
         private void SaveConfig()
@@ -808,6 +814,12 @@ namespace OpenAC.Net.NFSe.Demo
 
             config.Set("UsuarioWebservice", txtWebserviceUsuario.Text);
             config.Set("SenhaWebservice", txtWebserviceSenha.Text);
+
+            config.Set("PastaSchemas", txtSchemas.Text);
+            config.Set("ArquivoCidades", txtArquivoCidades.Text);
+
+            config.Set("SalvarNfse", chkSalvarArquivos.Checked ? "1" : "0");
+            config.Set("CaminhoXML", txtPathXml.Text);
 
             config.Save();
         }
