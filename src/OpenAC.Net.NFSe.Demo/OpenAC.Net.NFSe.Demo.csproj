@@ -90,7 +90,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -112,7 +111,7 @@
       <Version>1.0.0.1</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.DFe.Core">
-      <Version>1.2.0</Version>
+      <Version>1.2.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

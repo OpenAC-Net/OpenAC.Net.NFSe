@@ -67,14 +67,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.OpenSource" Version="2021.4.6" />
-    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2021.4.0" />
+    <PackageReference Include="FastReport.OpenSource" Version="2021.4.13" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2021.4.13" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core" Version="1.0.0.1" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.2.0" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
