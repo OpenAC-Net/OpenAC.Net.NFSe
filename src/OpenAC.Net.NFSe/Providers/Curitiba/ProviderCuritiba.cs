@@ -70,11 +70,11 @@ namespace OpenAC.Net.NFSe.Providers
             var isRps = false;
             var isNFSe = false;
 
-            var rootGrupo = xml.ElementAnyNs("CompNfse");
+            var rootGrupo = xml.ElementAnyNs("tcCompNfse");
             if (rootGrupo != null)
             {
                 isNFSe = true;
-                rootDoc = rootGrupo.ElementAnyNs("tcCompNfse").ElementAnyNs("Nfse")?.ElementAnyNs("InfNfse");
+                rootDoc = rootGrupo.ElementAnyNs("Nfse")?.ElementAnyNs("InfNfse");
                 rootCanc = rootGrupo.ElementAnyNs("NfseCancelamento");
                 rootSub = rootGrupo.ElementAnyNs("NfseSubstituicao");
             }
@@ -1354,7 +1354,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var notasServico = new List<NotaServico>();
 
-            foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
+            foreach (var compNfse in listaNfse.ElementAnyNs("CompNfse").ElementsAnyNs("tcCompNfse"))
             {
                 // Carrega a nota fiscal na coleção de Notas Fiscais
                 var nota = LoadXml(compNfse.AsString());
