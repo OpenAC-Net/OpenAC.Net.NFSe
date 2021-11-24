@@ -108,7 +108,7 @@ namespace OpenAC.Net.NFSe.Providers
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_inss", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorInss)));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "rps", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "serie_rps", 1, 3, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
-            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "data_emissao", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "data_emissao", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.ToString("dd/MM/yyyy")));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "sistema_gerador", 1, 15, Ocorrencia.Obrigatoria, "OpenAC.Net.NFSe"));
 
             return xmldoc.Root.AsString(identado, showDeclaration, Encoding.UTF8);
