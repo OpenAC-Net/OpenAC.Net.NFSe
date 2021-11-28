@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <OpenNFSe xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
   <Municipios>
     <Municipio>
@@ -10498,6 +10498,107 @@
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
           <Url>https://www.gp.srv.br/tributario_sinop/servlet/anfse_web_service?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url></Url>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
+      <Codigo>5107958</Codigo>
+      <CodigoSiafi>9185</CodigoSiafi>
+      <IdEntidade>0</IdEntidade>
+      <Nome>Tangará da Serra</Nome>
+      <Provedor>RLZ</Provedor>
+      <TamanhoIm>0</TamanhoIm>
+      <UF>MT</UF>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url></Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://tangaradaserra.prefeitura.rlz.com.br/api/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url></Url>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url></Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://cidadaoonline.tangaradaserra.mt.gov.br/webservice/nfse?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>

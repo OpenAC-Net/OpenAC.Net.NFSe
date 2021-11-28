@@ -221,7 +221,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (nota.Tomador.CpfCnpj.IsEmpty()) return null;
 
-            var tomador = new XElement("TomadorServico");
+            var tomador = new XElement("Tomador");
 
             var idTomador = new XElement("IdentificacaoTomador");
             tomador.Add(idTomador);
