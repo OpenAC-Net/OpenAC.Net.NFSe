@@ -2280,43 +2280,43 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://nfse.carazinho.rs.gov.br</Url>
+          <Url>https://nfse.carazinho.rs.gov.br/webservice/index/producao?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -6256,6 +6256,107 @@
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
           <Url>http://nfe.machadinho.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url></Url>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
+      <Codigo>4311775</Codigo>
+      <CodigoSiafi>0</CodigoSiafi>
+      <IdEntidade>0</IdEntidade>
+      <Nome>Maquine</Nome>
+      <Provedor>DBSeller</Provedor>
+      <TamanhoIm>0</TamanhoIm>
+      <UF>RS</UF>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url></Url>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
