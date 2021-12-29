@@ -6274,43 +6274,43 @@
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url></Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/homologacao</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -6320,43 +6320,43 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://nfe.maquine.rs.gov.br</Url>
+          <Url>https://nfe.maquine.rs.gov.br/webservice/index/producao</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
