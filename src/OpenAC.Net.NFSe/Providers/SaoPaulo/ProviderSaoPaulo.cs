@@ -536,6 +536,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {
                     nota.IdentificacaoNFSe.Numero = numeroNFSe;
                     nota.IdentificacaoNFSe.Chave = codigoVerificacao;
+                    nota.XmlOriginal = nfse.ToString();
                 }
 
                 notasServico.Add(nota);
@@ -603,6 +604,7 @@ namespace OpenAC.Net.NFSe.Providers
                 nota.IdentificacaoNFSe.Numero = numeroNFSe;
                 nota.IdentificacaoNFSe.Chave = chaveNFSe;
                 nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                nota.XmlOriginal = xmlNFSe.ToString();
             }
 
             retornoWebservice.Nota = nota;
