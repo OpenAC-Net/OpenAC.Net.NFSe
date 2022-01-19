@@ -1,12 +1,12 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : Rafael Dias
-// Created          : 07-30-2017
+// Author           : Fabio Dias
+// Created          : 12-11-2021
 //
 // Last Modified By : Fabio Dias
 // Last Modified On : 12-11-2021
 // ***********************************************************************
-// <copyright file="NFSeProvider.cs" company="OpenAC .Net">
+// <copyright file="ProviderRLZ.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
 //
@@ -29,85 +29,33 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
+using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    public enum NFSeProvider : byte
+    internal sealed class ProviderRLZ : ProviderABRASF203
     {
-        Abaco = 0,
 
-        Betha = 1,
+        #region Constructors
+        public ProviderRLZ(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+        {
+            Name = "RLZ";
+        }
 
-        [Description("Betha v2")]
-        Betha2 = 2,
+        #endregion
 
-        BHISS = 8,
+        #region Methods
+        protected override IServiceClient GetClient(TipoUrl tipo)
+        {
+            return new RLZServiceClient(this, tipo);
+        }
 
-        CITTA = 28,
-
-        Coplan = 3,
-
-        Curitiba = 26,
-
-        DBSeller = 19,
-
-        DSF = 4,
-
-        Equiplano = 15,
-
-        Fiorilli = 16,
-
-        FissLex = 12,
-
-        Ginfes = 5,
-
-        ISSe = 23,
-
-        ISSNet = 18,
-
-        [Description("NFe Cidades")]
-        NFeCidades = 6,
-
-        [Description("Nota Carioca")]
-        NotaCarioca = 7,
-
-        [Description("Pronim v2")]
-        Pronim2 = 17,
-
-        [Description("São Paulo")]
-        SaoPaulo = 9,
-
-        [Description("SmarAPD ABRASF")]
-        SmarAPDABRASF = 14,
-
-        Sigiss = 20,
-
-        SimplISS = 24,
-
-        SpeedGov = 25,
-
-        SystemPro = 27,
-
-        [Description("CONAM")]
-        Conam = 21,
-
-        [Description("Goiania")]
-        Goiania = 22,
-
-        [Description("Vitoria")]
-        Vitoria = 13,
-
-        WebIss = 10,
-
-        [Description("WebIss v2")]
-        WebIss2 = 11,
-
-        Americana = 29,
-
-        SigissWeb = 30,
-
-        [Description("RLZ Informática")]
-        RLZ
+        #endregion
     }
 }

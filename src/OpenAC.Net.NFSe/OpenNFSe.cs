@@ -339,7 +339,7 @@ namespace OpenAC.Net.NFSe
             try
             {
                 ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.ConsultaNFSe(NotasServico, inicio, fim);
+                return provider.ConsultaNFSe(NotasServico, inicio, fim, 0, "", 1);
             }
             catch (Exception exception)
             {

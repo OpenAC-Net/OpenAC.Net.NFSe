@@ -83,7 +83,8 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
                 {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
                 {NFSeProvider.Americana, typeof(ProviderAmericana)},
-                {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)}
+                {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
+                {NFSeProvider.RLZ, typeof(ProviderRLZ)}
             };
 
             Load();
