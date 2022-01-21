@@ -1236,6 +1236,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
 
             retornoWebservice.Nota = nota;
+            retornoWebservice.Sucesso = true;
         }
 
         /// <inheritdoc />
