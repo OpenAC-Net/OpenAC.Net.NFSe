@@ -148,7 +148,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
         {
-            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").ToString();
+            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value.ToString();
         }
 
         #endregion Methods
