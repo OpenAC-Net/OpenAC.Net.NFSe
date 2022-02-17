@@ -31,6 +31,7 @@
 
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -44,10 +45,12 @@ namespace OpenAC.Net.NFSe.Providers
 
         public SystemProServiceClient(ProviderSystemPro provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
         {
-        }
+            if (Endpoint?.Binding is not BasicHttpBinding binding) return;
 
-        public SystemProServiceClient(ProviderSystemPro provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
-        {
+            ClientCredentials.ClientCertificate.Certificate = certificado;
+            binding.Security.Mode = BasicHttpSecurityMode.Transport;
+            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.Certificate;
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
         }
 
         #endregion Constructors
@@ -169,37 +172,17 @@ namespace OpenAC.Net.NFSe.Providers
             throw new OpenDFeCommunicationException(exMessage);
         }
 
-        //protected override Message WriteSoapEnvelope(string message, string soapAction, string soapHeader, string[] soapNamespaces)
+        //protected override Message WriteSoapEnvelope(string message, string soapAction, string soapHeader,
+        //    string[] soapNamespaces)
         //{
-        //    var envelope = new StringBuilder();
-        //    envelope.Append("<Soap:Envelope xmlns:Soap=\"http://schemas.xmlsoap.org/soap/envelope/\">");
-        //    envelope.Append("<Soap:Body>");
-        //    envelope.Append(message);
-        //    envelope.Append("</Soap:Body>");
-        //    envelope.Append("</Soap:Envelope>");
+        //    var request = base.WriteSoapEnvelope(message, soapAction, soapHeader, soapNamespaces);
 
-        //    //envelope.Append("<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">");
-        //    //envelope.Append(soapHeader.IsEmpty() ? "<SOAP-ENV:Header/>" : $"<SOAP-ENV:Header>{soapHeader}</SOAP-ENV:Header>");
-        //    //envelope.Append("<S:Body>");
-        //    //envelope.Append(message);
-        //    //envelope.Append("</S:Body>");
-        //    //envelope.Append("</S:Envelope>");
+        //    if (!request.Properties.TryGetValue(HttpRequestMessageProperty.Name, out var httpRequestMessageObject))
+        //        return request;
 
-        //    //Separei em uma variável para conseguir visualizar o envelope em formato XML durante a depuração
-        //    string EnvelopeString = envelope.ToString();
-        //    StringReader SR = new StringReader(EnvelopeString);
-        //    XmlReader XmlR = XmlReader.Create(SR);
-        //    var request = Message.CreateMessage(XmlR, int.MaxValue, Endpoint.Binding.MessageVersion);
-
-        //    //Define a action no Header por ser SOAP 1.1
-        //    var requestMessage = new HttpRequestMessageProperty();
-        //    requestMessage.Headers["SOAPAction"] = soapAction;
-
-        //    //Define a action no content type por ser SOAP 1.2
-        //    //var requestMessage = new HttpRequestMessageProperty();
-        //    //requestMessage.Headers["Content-Type"] = $"application/soap+xml;charset=UTF-8;action=\"{soapAction}\"";
-
-        //    request.Properties[HttpRequestMessageProperty.Name] = requestMessage;
+        //    var httpRequestMessage = httpRequestMessageObject as HttpRequestMessageProperty;
+        //    httpRequestMessage.Headers["Authorization"] = "Basic realm=\"certificate\"";
+        //    request.Properties[HttpRequestMessageProperty.Name] = httpRequestMessage;
 
         //    return request;
         //}

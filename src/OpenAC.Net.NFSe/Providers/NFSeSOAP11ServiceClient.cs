@@ -72,14 +72,19 @@ namespace OpenAC.Net.NFSe.Providers
             envelope.Append("</soapenv:Envelope>");
 
             //Separei em uma variável para conseguir visualizar o envelope em formato XML durante a depuração
-            string EnvelopeString = envelope.ToString();
-            StringReader SR = new StringReader(EnvelopeString);
-            XmlReader XmlR = XmlReader.Create(SR);
-            var request = Message.CreateMessage(XmlR, int.MaxValue, Endpoint.Binding.MessageVersion);
+            var envelopeString = envelope.ToString();
+            var stringReader = new StringReader(envelopeString);
+            var reader = XmlReader.Create(stringReader);
+            var request = Message.CreateMessage(reader, int.MaxValue, Endpoint.Binding.MessageVersion);
 
             //Define a action no Header por ser SOAP 1.1
-            var requestMessage = new HttpRequestMessageProperty();
-            requestMessage.Headers["SOAPAction"] = soapAction;
+            var requestMessage = new HttpRequestMessageProperty
+            {
+                Headers =
+                {
+                    ["SOAPAction"] = soapAction
+                }
+            };
 
             request.Properties[HttpRequestMessageProperty.Name] = requestMessage;
             return request;

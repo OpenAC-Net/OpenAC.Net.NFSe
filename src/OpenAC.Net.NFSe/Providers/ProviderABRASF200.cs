@@ -1128,8 +1128,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice,
-            NotaServicoCollection notas)
+        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas)
         {
             throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
         }
@@ -1147,8 +1146,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice,
-            NotaServicoCollection notas)
+        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.NumeroRps < 1)
             {
@@ -1306,8 +1304,7 @@ namespace OpenAC.Net.NFSe.Providers
                 loteBuilder.Append("</Intermediario>");
             }
 
-            if (retornoWebservice.Pagina > 0)
-                loteBuilder.Append($"<Pagina>{retornoWebservice.Pagina}</Pagina>");
+            loteBuilder.Append($"<Pagina>{Math.Max(retornoWebservice.Pagina, 1)}</Pagina>");
             loteBuilder.Append("</ConsultarNfseServicoPrestadoEnvio>");
             retornoWebservice.XmlEnvio = loteBuilder.ToString();
         }

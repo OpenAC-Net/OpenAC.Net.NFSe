@@ -583,6 +583,8 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="serie"></param>
         /// <param name="tipo"></param>
         /// <param name="notas"></param>
+        /// <param name="anoCompetencia"></param>
+        /// <param name="mesCompetencia"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public RetornoConsultarNFSeRps ConsultaNFSeRps(int numero, string serie, TipoRps tipo, NotaServicoCollection notas, int anoCompetencia, int mesCompetencia)
@@ -644,6 +646,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="inicio"></param>
         /// <param name="fim"></param>
         /// <param name="numeroNfse"></param>
+        /// <param name="serieNfse"></param>
         /// <param name="pagina"></param>
         /// <param name="cnpjTomador"></param>
         /// <param name="imTomador"></param>

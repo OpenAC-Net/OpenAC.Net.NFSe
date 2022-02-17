@@ -52,8 +52,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected override string GerarCabecalho()
         {
             var cabecalho = new System.Text.StringBuilder();
-            //cabecalho.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            cabecalho.Append("<cabecalho versao=\"0.01\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
+            cabecalho.Append("<cabecalho versao=\"2.01\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
             cabecalho.Append("<versaoDados>2.01</versaoDados>");
             cabecalho.Append("</cabecalho>");
             return cabecalho.ToString();
@@ -69,10 +68,7 @@ namespace OpenAC.Net.NFSe.Providers
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
         }
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new SystemProServiceClient(this, tipo, Certificado);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new SystemProServiceClient(this, tipo, Certificado);
 
         #endregion Protected Methods
 

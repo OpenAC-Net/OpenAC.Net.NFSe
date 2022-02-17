@@ -74,21 +74,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
     <OutputPath>..\..\bin\Debug\</OutputPath>
     <DocumentationFile>..\..\bin\Debug\net452\OpenAC.Net.NFSe.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
     <OutputPath>..\..\bin\Release\</OutputPath>
     <DocumentationFile>..\..\bin\Release\net452\OpenAC.Net.NFSe.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <OutputPath>..\..\bin\Debug\</OutputPath>
     <DocumentationFile>..\..\bin\Debug\netstandard2.0\OpenAC.Net.NFSe.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <OutputPath>..\..\bin\Release\</OutputPath>
     <DocumentationFile>..\..\bin\Release\netstandard2.0\OpenAC.Net.NFSe.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

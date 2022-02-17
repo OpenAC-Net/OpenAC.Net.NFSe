@@ -487,6 +487,15 @@ namespace OpenAC.Net.NFSe.Demo
             nfSe.Servico.Valores.DescontoIncondicionado = 0;
             nfSe.ValorCredito = 0;
 
+            if (municipio.Provedor == NFSeProvider.DSF)
+            {
+                var servico = nfSe.Servico.ItensServico.AddNew();
+                servico.Descricao = "Teste";
+                servico.Quantidade = 1M;
+                servico.ValorTotal = 100;
+                servico.Tributavel = NFSeSimNao.Sim;
+            }
+
             nfSe.Tomador.CpfCnpj = "44854962283";
             nfSe.Tomador.InscricaoMunicipal = "";
             nfSe.Tomador.RazaoSocial = "Nome";
@@ -788,7 +797,6 @@ namespace OpenAC.Net.NFSe.Demo
             txtArquivoCidades.Text = config.Get("ArquivoCidades", string.Empty);
             chkSalvarArquivos.Checked = config.Get("SalvarNfse", string.Empty) == "1";
             txtPathXml.Text = config.Get("CaminhoXML", string.Empty);
-
         }
 
         private void SaveConfig()

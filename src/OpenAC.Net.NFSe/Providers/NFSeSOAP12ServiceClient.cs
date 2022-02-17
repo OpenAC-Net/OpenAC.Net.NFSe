@@ -82,11 +82,19 @@ namespace OpenAC.Net.NFSe.Providers
             envelope.Append("</soapenv:Body>");
             envelope.Append("</soapenv:Envelope>");
 
-            var request = Message.CreateMessage(XmlReader.Create(new StringReader(envelope.ToString())), int.MaxValue, Endpoint.Binding.MessageVersion);
+            var envelopeString = envelope.ToString();
+            var stringReader = new StringReader(envelopeString);
+            var reader = XmlReader.Create(stringReader);
+            var request = Message.CreateMessage(reader, int.MaxValue, Endpoint.Binding.MessageVersion);
 
             //Define a action no content type por ser SOAP 1.2
-            var requestMessage = new HttpRequestMessageProperty();
-            requestMessage.Headers["Content-Type"] = $"application/soap+xml;charset=UTF-8;action=\"{soapAction}\"";
+            var requestMessage = new HttpRequestMessageProperty
+            {
+                Headers =
+                {
+                    ["Content-Type"] = $"application/soap+xml;charset=UTF-8;action=\"{soapAction}\""
+                }
+            };
 
             request.Properties[HttpRequestMessageProperty.Name] = requestMessage;
 

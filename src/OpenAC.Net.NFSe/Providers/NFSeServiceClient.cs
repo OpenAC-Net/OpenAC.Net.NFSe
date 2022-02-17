@@ -59,7 +59,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// </summary>
         /// <param name="provider"></param>
         /// <param name="tipoUrl"></param>
-        protected NFSeServiceClient(ProviderBase provider, TipoUrl tipoUrl) : this(provider, tipoUrl, provider.Certificado)
+        protected NFSeServiceClient(ProviderBase provider, TipoUrl tipoUrl) : this(provider, tipoUrl, null)
         {
         }
 

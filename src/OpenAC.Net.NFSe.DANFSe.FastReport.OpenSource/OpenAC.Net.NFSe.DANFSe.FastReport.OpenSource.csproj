@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard2.0;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard2.0;net5.0-windows;net6.0-windows</TargetFrameworks>
     <AssemblyName>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</AssemblyName>
     <RootNamespace>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</RootNamespace>
     <SignAssembly>true</SignAssembly>
@@ -18,9 +18,9 @@
     <Description>Biblioteca de impressão de DANFSe usando o FastReport OpenSource.</Description>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.2</FileVersion>
-    <Version>1.0.0.2</Version>
+    <AssemblyVersion>1.0.0.3</AssemblyVersion>
+    <FileVersion>1.0.0.3</FileVersion>
+    <Version>1.0.0.3</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
@@ -39,6 +39,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0-windows'">
+    <DefineConstants>NET45;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows'">
     <DefineConstants>NET45;NETFULL</DefineConstants>
   </PropertyGroup>
 
@@ -67,8 +71,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.OpenSource" Version="2021.4.13" />
-    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2021.4.13" />
+    <PackageReference Include="FastReport.OpenSource" Version="2022.1.9" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2022.1.9" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -82,7 +86,15 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0-windows'">
+    <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

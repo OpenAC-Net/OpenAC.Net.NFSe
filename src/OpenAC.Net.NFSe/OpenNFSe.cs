@@ -327,9 +327,10 @@ namespace OpenAC.Net.NFSe
         /// </summary>
         /// <param name="inicio"></param>
         /// <param name="fim"></param>
+        /// <param name="pagina"></param>
         /// <returns>RetornoWebservice.</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public RetornoConsultarNFSe ConsultaNFSePeriodo(DateTime inicio, DateTime fim)
+        public RetornoConsultarNFSe ConsultaNFSePeriodo(DateTime inicio, DateTime fim, int pagina = 0)
         {
             Guard.Against<OpenException>(inicio.Date > fim.Date, "A data inicial não pode ser maior que a data final.");
 
@@ -339,7 +340,7 @@ namespace OpenAC.Net.NFSe
             try
             {
                 ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.ConsultaNFSe(NotasServico, inicio, fim, 0, "", 1);
+                return provider.ConsultaNFSe(NotasServico, inicio, fim, pagina: pagina);
             }
             catch (Exception exception)
             {
@@ -360,9 +361,10 @@ namespace OpenAC.Net.NFSe
         /// </summary>
         /// <param name="cnpjTomador"></param>
         /// <param name="imTomador"></param>
+        /// <param name="pagina"></param>
         /// <returns>RetornoWebservice.</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public RetornoConsultarNFSe ConsultaNFSeTomador(string cnpjTomador, string imTomador)
+        public RetornoConsultarNFSe ConsultaNFSeTomador(string cnpjTomador, string imTomador, int pagina = 0)
         {
             Guard.Against<OpenException>(cnpjTomador.IsEmpty(), "O CNPJ/CPF do tomador não pode ser vazio.");
 
@@ -372,7 +374,7 @@ namespace OpenAC.Net.NFSe
             try
             {
                 ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.ConsultaNFSe(NotasServico, cnpjTomador: cnpjTomador, imTomador: imTomador);
+                return provider.ConsultaNFSe(NotasServico, cnpjTomador: cnpjTomador, imTomador: imTomador, pagina: pagina);
             }
             catch (Exception exception)
             {
@@ -391,10 +393,12 @@ namespace OpenAC.Net.NFSe
         ///
         /// Obs.: Nem todos provedores suportam este metodo.
         /// </summary>
+        /// <param name="nomeInter"></param>
         /// <param name="cnpjInter"></param>
         /// <param name="imInter"></param>
+        /// <param name="pagina"></param>
         /// <returns></returns>
-        public RetornoConsultarNFSe ConsultaNFSeIntermediario(string nomeInter, string cnpjInter, string imInter)
+        public RetornoConsultarNFSe ConsultaNFSeIntermediario(string nomeInter, string cnpjInter, string imInter, int pagina = 0)
         {
             Guard.Against<OpenException>(nomeInter.IsEmpty(), "O Nome do intermediário não pode ser vazio.");
             Guard.Against<OpenException>(cnpjInter.IsEmpty(), "O CNPJ/CPF do intermediário não pode ser vazio.");
@@ -405,7 +409,7 @@ namespace OpenAC.Net.NFSe
             try
             {
                 ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.ConsultaNFSe(NotasServico, nomeInter: nomeInter, cnpjInter: cnpjInter, imInter: imInter);
+                return provider.ConsultaNFSe(NotasServico, nomeInter: nomeInter, cnpjInter: cnpjInter, imInter: imInter, pagina: pagina);
             }
             catch (Exception exception)
             {

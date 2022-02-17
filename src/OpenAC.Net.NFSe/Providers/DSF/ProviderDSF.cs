@@ -316,7 +316,7 @@ namespace OpenAC.Net.NFSe.Providers
             if (nota.Servico.Deducoes.Count > 0)
                 rpsTag.AddChild(GerarDeducoes(nota.Servico.Deducoes));
 
-            return xmldoc.Root.AsString(identado, showDeclaration, Encoding.UTF8);
+            return xmldoc.AsString(identado, showDeclaration, Encoding.UTF8);
         }
 
         public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true)
@@ -427,7 +427,7 @@ namespace OpenAC.Net.NFSe.Providers
                 GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
             }
 
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.SafeReplace("%NOTAS%", xmlNotas.ToString());
+            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.Replace("%NOTAS%", xmlNotas.ToString());
         }
 
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
