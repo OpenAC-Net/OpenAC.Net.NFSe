@@ -1387,10 +1387,10 @@
             // 
             this.btnCopiar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopiar.Location = new System.Drawing.Point(1032, 668);
+            this.btnCopiar.Location = new System.Drawing.Point(1041, 666);
             this.btnCopiar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCopiar.Name = "btnCopiar";
-            this.btnCopiar.Size = new System.Drawing.Size(112, 35);
+            this.btnCopiar.Size = new System.Drawing.Size(112, 55);
             this.btnCopiar.TabIndex = 5;
             this.btnCopiar.Text = "Copiar";
             this.btnCopiar.UseVisualStyleBackColor = true;
@@ -1400,10 +1400,10 @@
             // 
             this.btnDeletar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeletar.Location = new System.Drawing.Point(910, 668);
+            this.btnDeletar.Location = new System.Drawing.Point(921, 666);
             this.btnDeletar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDeletar.Name = "btnDeletar";
-            this.btnDeletar.Size = new System.Drawing.Size(112, 35);
+            this.btnDeletar.Size = new System.Drawing.Size(112, 55);
             this.btnDeletar.TabIndex = 4;
             this.btnDeletar.Text = "Deletar";
             this.btnDeletar.UseVisualStyleBackColor = true;
@@ -1413,10 +1413,10 @@
             // 
             this.btnAdicionar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdicionar.Location = new System.Drawing.Point(1154, 668);
+            this.btnAdicionar.Location = new System.Drawing.Point(1161, 666);
             this.btnAdicionar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAdicionar.Name = "btnAdicionar";
-            this.btnAdicionar.Size = new System.Drawing.Size(112, 35);
+            this.btnAdicionar.Size = new System.Drawing.Size(112, 55);
             this.btnAdicionar.TabIndex = 3;
             this.btnAdicionar.Text = "Adicionar";
             this.btnAdicionar.UseVisualStyleBackColor = true;
@@ -1426,10 +1426,10 @@
             // 
             this.btnSalvar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSalvar.Location = new System.Drawing.Point(126, 668);
+            this.btnSalvar.Location = new System.Drawing.Point(129, 666);
             this.btnSalvar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(112, 35);
+            this.btnSalvar.Size = new System.Drawing.Size(112, 55);
             this.btnSalvar.TabIndex = 2;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.UseVisualStyleBackColor = true;
@@ -1439,10 +1439,10 @@
             // 
             this.btnCarregar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCarregar.Location = new System.Drawing.Point(4, 668);
+            this.btnCarregar.Location = new System.Drawing.Point(9, 666);
             this.btnCarregar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCarregar.Name = "btnCarregar";
-            this.btnCarregar.Size = new System.Drawing.Size(112, 35);
+            this.btnCarregar.Size = new System.Drawing.Size(112, 55);
             this.btnCarregar.TabIndex = 1;
             this.btnCarregar.Text = "Carregar";
             this.btnCarregar.UseVisualStyleBackColor = true;
@@ -1465,7 +1465,7 @@
             this.lstMunicipios.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstMunicipios.MultiSelect = false;
             this.lstMunicipios.Name = "lstMunicipios";
-            this.lstMunicipios.Size = new System.Drawing.Size(1274, 652);
+            this.lstMunicipios.Size = new System.Drawing.Size(1274, 651);
             this.lstMunicipios.TabIndex = 0;
             this.lstMunicipios.UseCompatibleStateImageBehavior = false;
             this.lstMunicipios.View = System.Windows.Forms.View.Details;
@@ -1520,7 +1520,6 @@
             this.ClientSize = new System.Drawing.Size(1290, 786);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;

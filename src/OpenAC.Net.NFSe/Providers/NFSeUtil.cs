@@ -41,8 +41,8 @@ namespace OpenAC.Net.NFSe.Providers
     {
         #region Fields
 
-        private static readonly string[] escapedCharacters = { "&amp;", "&lt;", "&gt;" };
-        private static readonly string[] unescapedCharacters = { "&", "<", ">", };
+        private static readonly string[] escapedCharacters = { "&amp;", "&lt;", "&gt;", "&quot;", "&#39;", "&apos;" };
+        private static readonly string[] unescapedCharacters = { "&", "<", ">", "\"", "#39", "'" };
 
         #endregion Fields
 
@@ -90,9 +90,7 @@ namespace OpenAC.Net.NFSe.Providers
         public static string AjustarString(this string dados)
         {
             for (var i = 0; i < escapedCharacters.Length; i++)
-            {
                 dados = dados.Replace(unescapedCharacters[i], escapedCharacters[i]);
-            }
 
             return dados;
         }

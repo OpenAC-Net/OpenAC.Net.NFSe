@@ -45,12 +45,6 @@ namespace OpenAC.Net.NFSe.Providers
 
         public SystemProServiceClient(ProviderSystemPro provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
         {
-            if (Endpoint?.Binding is not BasicHttpBinding binding) return;
-
-            ClientCredentials.ClientCertificate.Certificate = certificado;
-            binding.Security.Mode = BasicHttpSecurityMode.Transport;
-            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.Certificate;
-            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
         }
 
         #endregion Constructors
@@ -171,21 +165,6 @@ namespace OpenAC.Net.NFSe.Providers
             var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);
         }
-
-        //protected override Message WriteSoapEnvelope(string message, string soapAction, string soapHeader,
-        //    string[] soapNamespaces)
-        //{
-        //    var request = base.WriteSoapEnvelope(message, soapAction, soapHeader, soapNamespaces);
-
-        //    if (!request.Properties.TryGetValue(HttpRequestMessageProperty.Name, out var httpRequestMessageObject))
-        //        return request;
-
-        //    var httpRequestMessage = httpRequestMessageObject as HttpRequestMessageProperty;
-        //    httpRequestMessage.Headers["Authorization"] = "Basic realm=\"certificate\"";
-        //    request.Properties[HttpRequestMessageProperty.Name] = httpRequestMessage;
-
-        //    return request;
-        //}
 
         #endregion Methods
     }

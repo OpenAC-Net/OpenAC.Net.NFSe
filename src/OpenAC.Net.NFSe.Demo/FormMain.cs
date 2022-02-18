@@ -774,8 +774,8 @@ namespace OpenAC.Net.NFSe.Demo
             txtComplemento.Text = config.Get("PrestadorComplemento", string.Empty);
             txtBairro.Text = config.Get("PrestadorBairro", string.Empty);
 
-            txtWebserviceUsuario.Text = config.Get("LoginREST", string.Empty);
-            txtWebserviceSenha.Text = config.Get("SenhaREST", string.Empty);
+            txtWebserviceUsuario.Text = config.Get("UsuarioWebservice", string.Empty);
+            txtWebserviceSenha.Text = config.Get("SenhaWebservice", string.Empty);
 
             var codMunicipio = config.Get("Municipio", 0);
             if (codMunicipio > 0)
