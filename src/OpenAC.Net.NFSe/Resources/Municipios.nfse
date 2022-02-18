@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <OpenNFSe xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
   <Municipios>
     <Municipio>
@@ -3951,15 +3951,15 @@
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
@@ -3967,27 +3967,27 @@
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -3997,15 +3997,15 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
@@ -4013,27 +4013,27 @@
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://177.53.116.58:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
