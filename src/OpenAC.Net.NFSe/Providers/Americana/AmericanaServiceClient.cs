@@ -40,7 +40,7 @@ namespace OpenAC.Net.NFSe.Providers
     {
         #region Constructors
 
-        public AmericanaServiceClient(ProviderAmericana provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public AmericanaServiceClient(ProviderAmericana provider, TipoUrl tipoUrl) : base(provider, tipoUrl, provider.Certificado)
         {
         }
 
