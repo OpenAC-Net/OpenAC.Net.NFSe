@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;OpenAC.Net.Core.dll&#13;&#10;OpenAC.Net.DFe.Core.dll&#13;&#10;OpenAC.Net.NFSe.dll" ReportInfo.Created="03/21/2017 02:41:33" ReportInfo.Modified="07/19/2021 09:47:22" ReportInfo.CreatorVersion="2021.2.0.0" PrintSettings.Copies="0" PrintSettings.ShowDialog="false">
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;OpenAC.Net.Core.dll&#13;&#10;OpenAC.Net.DFe.Core.dll&#13;&#10;OpenAC.Net.NFSe.dll" ReportInfo.Created="03/21/2017 02:41:33" ReportInfo.Modified="02/28/2022 22:03:03" ReportInfo.CreatorVersion="2022.1.0.0" PrintSettings.Copies="0" PrintSettings.ShowDialog="false">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -377,7 +377,7 @@ namespace FastReport
       <TextObject Name="Memo38" Left="117.17" Top="26.46" Width="438.43" Height="18.9" Text="Secretaria Municipal de Finanças" Padding="2, 1, 2, 1" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt, style=Bold"/>
       <TextObject Name="Memo46" Left="117.17" Top="45.35" Width="438.43" Height="18.9" Text="NOTA FISCAL DE SERVIÇOS ELETRÔNICA - NFS-e" Padding="2, 1, 2, 1" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt, style=Bold"/>
       <TextObject Name="Memo65" Left="117.17" Top="63.25" Width="438.43" Height="15.12" Text="RPS Nº [NotaServico.IdentificacaoRps.Numero] Série [NotaServico.IdentificacaoRps.Serie], emitido em [FormatDateTime([NotaServico.IdentificacaoRps.DataEmissao], &quot;dd/MM/yyyy&quot;)]" Padding="2, 1, 2, 1" HorzAlign="Center" VertAlign="Center" WordWrap="false" Font="Arial, 8pt"/>
-      <ChildBand Name="TomadorPrestador" Top="81.37" Width="718.2" Height="117.91" Border.Lines="All">
+      <ChildBand Name="TomadorPrestador" Top="81.66" Width="718.2" Height="117.91" Border.Lines="All">
         <TextObject Name="Memo64" Left="200.31" Top="102.05" Width="514.02" Height="15.12" Text="[NotaServico.Prestador.Endereco.Complemento]" Padding="2, 1, 2, 1" Font="Arial, 8pt, style=Bold"/>
         <TextObject Name="Memo16" Left="120.19" Top="83.15" Width="75.59" Height="15.12" Text="MUNICÍPIO" Padding="2, 1, 2, 1" VertAlign="Center" Font="Arial, 6pt"/>
         <TextObject Name="Memo14" Left="120.19" Top="45.35" Width="75.59" Height="15.12" Text="NOME / RAZÃO " Padding="2, 1, 2, 1" VertAlign="Center" Font="Arial, 6pt"/>
@@ -394,7 +394,7 @@ namespace FastReport
         <TextObject Name="Memo39" Left="120.19" Top="102.05" Width="75.59" Height="15.12" Text="COMPLEMENTO" Padding="2, 1, 2, 1" VertAlign="Center" Font="Arial, 6pt"/>
         <TextObject Name="Memo41" Left="496.06" Top="83.15" Width="52.91" Height="15.12" Text="TELEFONE" Padding="2, 1, 2, 1" VertAlign="Center" Font="Arial, 6pt"/>
         <TextObject Name="Memo66" Left="555.59" Top="83.15" Width="158.74" Height="15.12" Text="[NotaServico.Prestador.DadosContato.Telefone]" Padding="2, 1, 2, 1" Font="Arial, 8pt, style=Bold"/>
-        <ChildBand Name="DiscriminacaoServico" Top="201.28" Width="718.2" Height="125.65" Border.Lines="All">
+        <ChildBand Name="DiscriminacaoServico" Top="201.85" Width="718.2" Height="125.65" Border.Lines="All">
           <TextObject Name="Memo29" Left="1.1" Top="110.53" Width="75.59" Height="15.12" Text="COMPLEMENTO" Padding="2, 1, 2, 1" VertAlign="Center" Font="Arial, 5pt"/>
           <TextObject Name="Memo31" Left="81.23" Top="110.53" Width="631.18" Height="15.12" Text="[NotaServico.Tomador.Endereco.Complemento]" Padding="2, 1, 2, 1" Font="Arial, 8pt, style=Bold"/>
           <TextObject Name="Memo61" Left="1.1" Top="91.29" Width="75.59" Height="15.12" Text="MUNICÍPIO" Padding="2, 1, 2, 1" VertAlign="Center" Font="Arial, 6pt"/>
@@ -412,22 +412,22 @@ namespace FastReport
           <TextObject Name="tomadorCPFCNPJ" Left="80.47" Top="34.6" Width="222.99" Height="15.12" BeforePrintEvent="tomadorCPFCNPJ_BeforePrint" Padding="2, 1, 2, 1" Font="Arial, 8pt, style=Bold"/>
           <TextObject Name="Memo40" Left="538.35" Top="34.6" Width="173.86" Height="15.12" Text="[NotaServico.Tomador.InscricaoMunicipal]" Padding="2, 1, 2, 1" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
           <TextObject Name="Memo113" Left="2.99" Top="0.43" Width="714.33" Height="18.9" Fill.Color="White" Text="TOMADOR DE SERVIÇOS" Padding="0, 1, 0, 1" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <ChildBand Name="Child1" Top="328.93" Width="718.2" Height="26.46" Border.Lines="All" Guides="0">
-            <TextObject Name="Memo58" Left="5.78" Top="10.2" Width="347.72" Height="15.12" Text="[MunicipioPrestador]" Padding="2, 1, 2, 1" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
-            <TextObject Name="Memo59" Left="366.61" Top="10.2" Width="343.94" Height="15.12" Text="[MunicipioPrestador]" Padding="2, 1, 2, 1" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+          <ChildBand Name="Child1" Top="329.79" Width="718.2" Height="26.46" Border.Lines="All" Guides="0">
             <TextObject Name="Memo55" Width="359.06" Height="26.46" Border.Lines="Right" Text="LOCAL DA PRESTAÇÃO DO(S) SERVIÇO(S)" Padding="2, 1, 2, 1" Font="Times New Roman, 5pt"/>
             <TextObject Name="Memo56" Left="359.06" Width="359.06" Height="26.46" Text="LOCAL DA INCIDÊNCIA DO(S) SERVIÇO(S)" Padding="2, 1, 2, 1" Font="Times New Roman, 5pt"/>
+            <TextObject Name="Memo58" Left="5.78" Top="10.2" Width="347.72" Height="15.12" Text="[NotaServico.Servico.CodigoMunicipio]" Padding="2, 1, 2, 1" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+            <TextObject Name="Memo59" Left="366.61" Top="10.2" Width="343.94" Height="15.12" Text="[NotaServico.Servico.MunicipioIncidencia]" Padding="2, 1, 2, 1" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
           </ChildBand>
         </ChildBand>
       </ChildBand>
     </PageHeaderBand>
-    <DataBand Name="Data1" Top="378.67" Width="718.2" Height="548.1" Border.Lines="All" CanGrow="true" EvenStylePriority="UseAll" CanBreak="true" DataSource="NotaServico" RowCount="0" PrintIfDetailEmpty="true" PrintIfDatasourceEmpty="true">
+    <DataBand Name="Data1" Top="380.1" Width="718.2" Height="548.1" Border.Lines="All" CanGrow="true" EvenStylePriority="UseAll" CanBreak="true" DataSource="NotaServico" RowCount="0" PrintIfDetailEmpty="true" PrintIfDatasourceEmpty="true">
       <TextObject Name="Text3" Width="718.2" Height="548.1" CanGrow="true" Text="[NotaServico.Servico.Discriminacao]" Padding="0, 0, 0, 0" HorzAlign="Justify" Font="Arial, 9pt"/>
-      <DataHeaderBand Name="DataHeader1" Top="357.39" Width="718.2" Height="19.28" Border.Lines="All">
+      <DataHeaderBand Name="DataHeader1" Top="358.53" Width="718.2" Height="19.28" Border.Lines="All">
         <TextObject Name="Text2" Left="0.38" Top="0.38" Width="717.07" Height="18.9" Fill.Color="White" Text="DISCRIMINAÇÃO DOS SERVIÇOS" Padding="0, 1, 0, 1" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
       </DataHeaderBand>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="928.77" Width="718.2" Height="330.38" Border.Lines="All">
+    <PageFooterBand Name="PageFooter1" Top="930.48" Width="718.2" Height="330.38" Border.Lines="All">
       <TextObject Name="Memo23" Top="269.81" Width="718.11" Height="60.47" Border.Lines="All" Border.Width="0.5" Text="Recebi(emos) de [NotaServico.Prestador.RazaoSocial]&#13;&#10;os serviços constantes da Nota Fiscal Eletrônica de Serviço (NFSe) ao lado." Padding="2, 1, 2, 1" Font="Times New Roman, 8pt"/>
       <TextObject Name="Memo34" Left="3.78" Top="161.76" Width="710.55" Height="86.93" Text="[NotaServico.OutrasInformacoes]" Padding="2, 1, 2, 1" HorzAlign="Justify" Font="Times New Roman, 8pt"/>
       <TextObject Name="Memo18" Top="20.58" Width="718.11" Height="34.02" Border.Lines="All" Border.Width="0.5" Text="CÓDIGO DE CLASSIFICAÇÃO DO SERVIÇO" Padding="2, 1, 2, 1" Font="Times New Roman, 5pt"/>

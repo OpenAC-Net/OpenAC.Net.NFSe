@@ -163,8 +163,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string DadosUsuario()
         {
-            return $"<sis:pParam><sis1:P1>{Provider.Configuracoes.WebServices.Usuario}</sis1:P1>" +
-                   $"<sis1:P2>{Provider.Configuracoes.WebServices.Senha.AjustarString()}</sis1:P2></sis:pParam>";
+            return $"<sis:pParam><sis1:P1>{Provider.Configuracoes.WebServices.Usuario.OnlyNumbers()}</sis1:P1>" +
+                   $"<sis1:P2>{Provider.Configuracoes.WebServices.Senha.HtmlEncode()}</sis1:P2></sis:pParam>";
         }
 
         protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)

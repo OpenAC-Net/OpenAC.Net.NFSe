@@ -122,7 +122,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             rps.AddChild(new XElement("vlTotalRps", nota.Servico.Valores.ValorServicos));
             rps.AddChild(new XElement("vlLiquidoRps", nota.Servico.Valores.ValorLiquidoNfse));
-            
+
             if (issRetido == "1")
                 rps.AddChild(WriteRetencoes(nota));
 
@@ -358,7 +358,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
             // Analisa mensagem de retorno
-            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno.HtmlDecode());
 
             var rootElement = xmlRet.ElementAnyNs("esEnviarLoteRpsResposta");
             MensagemErro(retornoWebservice, rootElement, "mensagemRetorno");
@@ -726,10 +726,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Private Methods
 
-        protected override string GerarCabecalho()
-        {
-            return "";
-        }
+        protected override string GerarCabecalho() => "";
 
         protected override string GetSchema(TipoUrl tipo)
         {
@@ -770,10 +767,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new EquiplanoServiceClient(this, tipo);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new EquiplanoServiceClient(this, tipo);
 
         private static void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string xmlTag, string elementName = "listaErros", string messageElement = "erro")
         {

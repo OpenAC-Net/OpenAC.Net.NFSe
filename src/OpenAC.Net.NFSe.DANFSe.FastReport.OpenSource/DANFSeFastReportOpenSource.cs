@@ -67,9 +67,7 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
         {
         }
 
-        #endregion
-
-        
+        #endregion Constructors
 
         #region Methods
 
@@ -128,7 +126,7 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
         }
 
         /// <inheritdoc />
-        public override void ImprimirHTML(NotaServico[] notas,Stream stream)
+        public override void ImprimirHTML(NotaServico[] notas, Stream stream)
         {
             var oldFiltro = Filtro;
 
@@ -276,7 +274,6 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
             }
 
             this.Log().Debug("Passando configurações para o relatório.");
-
 
             internalReport.SetParameterValue("Logo", Logo);
             internalReport.SetParameterValue("LogoPrefeitura", LogoPrefeitura);
