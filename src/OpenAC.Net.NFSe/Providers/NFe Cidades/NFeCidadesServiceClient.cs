@@ -41,7 +41,7 @@ namespace OpenAC.Net.NFSe.Providers
     {
         #region Constructors
 
-        public NFeCidadesServiceClient(ProviderNFeCidades provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public NFeCidadesServiceClient(ProviderNFeCidades provider, TipoUrl tipoUrl) : base(provider, tipoUrl, provider.Certificado)
         {
         }
 
