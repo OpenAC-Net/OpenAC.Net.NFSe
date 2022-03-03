@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.IO;
 
 namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 {
@@ -49,11 +50,25 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
             danfse.ImprimirPDF(nfse.NotasServico.ToArray());
         }
 
+        public static void ImprimirPDF(this OpenNFSe nfse, Stream aStream, Action<IDANFSeOptions> options = null)
+        {
+            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+            options?.Invoke(danfse);
+            danfse.ImprimirPDF(nfse.NotasServico.ToArray(), aStream);
+        }
+
         public static void ImprimirHTML(this OpenNFSe nfse, Action<IDANFSeOptions> options = null)
         {
             var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
             options?.Invoke(danfse);
             danfse.ImprimirHTML(nfse.NotasServico.ToArray());
+        }
+
+        public static void ImprimirHTML(this OpenNFSe nfse, Stream aStream, Action<IDANFSeOptions> options = null)
+        {
+            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+            options?.Invoke(danfse);
+            danfse.ImprimirHTML(nfse.NotasServico.ToArray(), aStream);
         }
     }
 }
