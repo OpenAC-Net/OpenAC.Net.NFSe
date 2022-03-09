@@ -447,27 +447,63 @@ namespace OpenAC.Net.NFSe.Demo
             var municipio = cmbCidades.GetSelectedValue<OpenMunicipioNFSe>();
             if (municipio == null) return;
 
-            openNFSe.NotasServico.Clear();
-            var nfSe = openNFSe.NotasServico.AddNew();
             var numeroRps = "1";
             if (InputBox.Show("Nº RPS", "Informe o número do RPS.", ref numeroRps).Equals(DialogResult.Cancel)) return;
+
+            openNFSe.NotasServico.Clear();
+            var nfSe = openNFSe.NotasServico.AddNew();
+
             nfSe.IdentificacaoRps.Numero = numeroRps;
-            nfSe.IdentificacaoRps.Serie = municipio.Provedor.IsIn(NFSeProvider.Curitiba) ? "F" : "1";
+
+            // Setar a serie de acordo com o provedor.
+            switch (municipio.Provedor)
+            {
+                case NFSeProvider.Curitiba:
+                    nfSe.IdentificacaoRps.Serie = "F";
+                    break;
+
+                case NFSeProvider.DSF:
+                    nfSe.IdentificacaoRps.Serie = "NF";
+                    nfSe.IdentificacaoRps.SeriePrestacao = "99";
+                    break;
+
+                default:
+                    nfSe.IdentificacaoRps.Serie = "1";
+                    break;
+            }
+
             nfSe.IdentificacaoRps.Tipo = TipoRps.RPS;
             nfSe.IdentificacaoRps.DataEmissao = DateTime.Now;
             nfSe.Situacao = SituacaoNFSeRps.Normal;
-            nfSe.NaturezaOperacao = NaturezaOperacao.ABRASF.TributacaoNoMunicipio;
+
+            // Setar a natureza de operação de acordo com o provedor.
+            switch (municipio.Provedor)
+            {
+                case NFSeProvider.DSF:
+                    nfSe.NaturezaOperacao = NaturezaOperacao.DSF.SemDeducao;
+                    break;
+
+                default:
+                    nfSe.NaturezaOperacao = NaturezaOperacao.ABRASF.TributacaoNoMunicipio;
+                    break;
+            }
+
             nfSe.RegimeEspecialTributacao = RegimeEspecialTributacao.SimplesNacional;
             nfSe.IncentivadorCultural = NFSeSimNao.Nao;
 
             var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.Curitiba) ? "0107" : "01.07";
             if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
-            nfSe.Servico.ItemListaServico = itemListaServico;
 
+            nfSe.Servico.CodigoCnae = municipio.Provedor == NFSeProvider.DSF ? "861010101" : "";
+
+            // ABRSAF
+            nfSe.Servico.ItemListaServico = itemListaServico;
             nfSe.Servico.CodigoTributacaoMunicipio = "01.07.00 / 00010700";
-            nfSe.Servico.CodigoCnae = "";
-            nfSe.Servico.CodigoMunicipio = municipio.Codigo;
             nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
+
+            //DSF
+            nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.DSF ? municipio.CodigoSiafi : municipio.Codigo;
+            nfSe.Servico.Municipio = municipio.Nome;
 
             nfSe.Servico.Valores.ValorServicos = 100;
             nfSe.Servico.Valores.ValorDeducoes = 0;

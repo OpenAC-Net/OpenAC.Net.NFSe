@@ -77,6 +77,8 @@ namespace OpenAC.Net.NFSe.Configuracao
         /// <value>The uf.</value>
         public string Municipio { get; private set; }
 
+        public NFSeProvider Provider { get; private set; } = NFSeProvider.Nenhum;
+
         public string Usuario { get; set; }
 
         public string Senha { get; set; }
@@ -103,6 +105,7 @@ namespace OpenAC.Net.NFSe.Configuracao
 
                 codigoMunicipio = value;
                 Municipio = municipio.Nome;
+                Provider = municipio.Provedor;
             }
         }
 

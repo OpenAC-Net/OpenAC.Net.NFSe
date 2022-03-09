@@ -33,8 +33,12 @@ using System.ComponentModel;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    public enum NFSeProvider : byte
+    public enum NFSeProvider : sbyte
     {
+        Nenhum = -1,
+
+        Americana = 29,
+
         Abaco = 0,
 
         Betha = 1,
@@ -95,19 +99,17 @@ namespace OpenAC.Net.NFSe.Providers
         [Description("Goiania")]
         Goiania = 22,
 
+        SigissWeb = 30,
+
+        [Description("RLZ Informática")]
+        RLZ = 31,
+
         [Description("Vitoria")]
         Vitoria = 13,
 
         WebIss = 10,
 
         [Description("WebIss v2")]
-        WebIss2 = 11,
-
-        Americana = 29,
-
-        SigissWeb = 30,
-
-        [Description("RLZ Informática")]
-        RLZ
+        WebIss2 = 11
     }
 }

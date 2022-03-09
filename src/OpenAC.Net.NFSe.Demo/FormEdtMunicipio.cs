@@ -44,20 +44,17 @@ namespace OpenAC.Net.NFSe.Demo
         {
             Guard.Against<ArgumentNullException>(municipio == null, nameof(municipio));
 
-            using (var form = new FormEdtMunicipio())
-            {
-                form.target = municipio;
-                form.LoadTarget();
+            using var form = new FormEdtMunicipio();
+            form.target = municipio;
+            form.LoadTarget();
 
-                return form.ShowDialog();
-            }
+            return form.ShowDialog();
         }
 
         private void LoadTarget()
         {
             txtMunicipio.Text = target.Nome;
             cmbUf.EnumDataSource(target.UF);
-            nudTamIM.Value = target.TamanhoIm;
             nudCodIBGE.Value = target.Codigo;
             nudCodSiafi.Value = target.CodigoSiafi;
             nudIdEntidade.Value = target.IdEntidade;
@@ -92,7 +89,6 @@ namespace OpenAC.Net.NFSe.Demo
         {
             target.Nome = txtMunicipio.Text;
             target.UF = cmbUf.GetSelectedValue<DFeSiglaUF>();
-            target.TamanhoIm = (int)nudTamIM.Value;
             target.Codigo = (int)nudCodIBGE.Value;
             target.CodigoSiafi = (int)nudCodSiafi.Value;
 

@@ -208,7 +208,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        public X509Certificate2 Certificado => certificado ?? (certificado = Configuracoes.Certificados.ObterCertificado());
+        public X509Certificate2 Certificado => certificado ??= Configuracoes.Certificados.ObterCertificado();
 
         #endregion Propriedades
 
@@ -237,10 +237,8 @@ namespace OpenAC.Net.NFSe.Providers
                 }
                 else
                 {
-                    using (var sr = new StreamReader(xml, encoding))
-                    {
-                        doc = XDocument.Load(sr);
-                    }
+                    using var sr = new StreamReader(xml, encoding);
+                    doc = XDocument.Load(sr);
                 }
             }
             else

@@ -48,25 +48,13 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-        protected override string GetNamespace()
-        {
-            return "";
-        }
+        protected override string GetNamespace() => "";
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new SimplISSServiceClient(this, tipo);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new SimplISSServiceClient(this, tipo);
 
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse_3.xsd";
-        }
+        protected override string GetSchema(TipoUrl tipo) => "nfse_3.xsd";
 
         #endregion Methods
     }

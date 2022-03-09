@@ -31,7 +31,6 @@
 
 using System;
 using System.Security.Cryptography.X509Certificates;
-using System.ServiceModel;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -39,22 +38,20 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class SystemProServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class SystemProServiceClient : NFSeHttpServiceClient, IServiceClient
     {
         #region Constructors
 
         public SystemProServiceClient(ProviderSystemPro provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
         {
+            MessageVersion = SoapVersion.Soap11;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public string Enviar(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string Enviar(string cabec, string msg) => throw new NotImplementedException();
 
         public string EnviarSincrono(string cabec, string msg)
         {
@@ -68,13 +65,10 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ns2:EnviarLoteRpsSincrono>");
 
-            return Execute("*", message.ToString(), "EnviarLoteRpsSincronoResponse");
+            return Execute("", message.ToString(), "EnviarLoteRpsSincronoResponse");
         }
 
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
@@ -88,13 +82,10 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ns2:ConsultarLoteRps>");
 
-            return Execute("*", message.ToString(), "ConsultarLoteRpsResponse");
+            return Execute("", message.ToString(), "ConsultarLoteRpsResponse");
         }
 
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
@@ -108,7 +99,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ns2:ConsultarNfseRps>");
 
-            return Execute("*", message.ToString(), "ConsultarNfseRpsResponse");
+            return Execute("", message.ToString(), "ConsultarNfseRpsResponse");
         }
 
         public string ConsultarNFSe(string cabec, string msg)
@@ -123,7 +114,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ns2:ConsultarNfseFaixa>");
 
-            return Execute("*", message.ToString(), "ConsultarNfseFaixaResponse");
+            return Execute("", message.ToString(), "ConsultarNfseFaixaResponse");
         }
 
         public string CancelarNFSe(string cabec, string msg)
@@ -138,29 +129,23 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ns2:CancelarNfse>");
 
-            return Execute("*", message.ToString(), "CancelarNfseResponse");
+            return Execute("", message.ToString(), "CancelarNfseResponse");
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
         private string Execute(string action, string message, params string[] responseTag)
         {
             return Execute(action, message, responseTag, new string[0]);
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null)
-                return xmlDocument.Root.ElementAnyNs("return")?.Value;
+                return xmlDocument.ElementAnyNs("return")?.Value;
 
             var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);

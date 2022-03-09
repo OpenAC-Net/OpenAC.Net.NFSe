@@ -126,14 +126,6 @@ namespace OpenAC.Net.NFSe.Providers
         public NFSeProvider Provedor { get; set; }
 
         /// <summary>
-        /// Define ou retorna o tamanho da inscrição municipal
-        /// Para validação em alguns provedores
-        /// </summary>
-        /// <value>The tamanho im.</value>
-        [DataMember]
-        public int TamanhoIm { get; set; }
-
-        /// <summary>
         /// Lista de url de homologação dos serviços.
         /// </summary>
         /// <value>The URL homologacao.</value>

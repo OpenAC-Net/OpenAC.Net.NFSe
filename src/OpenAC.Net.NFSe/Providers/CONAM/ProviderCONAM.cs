@@ -37,7 +37,11 @@ namespace OpenAC.Net.NFSe.Providers
         {
             Guard.Against<XmlException>(xml == null, "Xml invalido.");
 
-            var ret = new NotaServico(Configuracoes);
+            var ret = new NotaServico(Configuracoes)
+            {
+                XmlOriginal = xml.AsString()
+            };
+
             var xmlElement = xml.ElementAnyNs("Nota");
 
             ret.Competencia = xmlElement.ElementAnyNs("DtEmiNf")?.GetValue<DateTime>() ?? DateTime.MinValue;
@@ -348,9 +352,9 @@ namespace OpenAC.Net.NFSe.Providers
 
             foreach (var nota in notas)
             {
-                var xmlRps = WriteXmlRps(nota, false, false);
-                xmlLoteRps.Append(xmlRps);
-                GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
+                nota.XmlOriginal = WriteXmlRps(nota, false, false);
+                xmlLoteRps.Append(nota.XmlOriginal);
+                GravarRpsEmDisco(nota.XmlOriginal, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
             }
 
             var xmlLote = new StringBuilder();
@@ -398,8 +402,6 @@ namespace OpenAC.Net.NFSe.Providers
             // Analisa mensagem de retorno// Analisa mensagem de retorno
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
             var sucesso = true;
-
-            
 
             var xmlElement = xmlRet.Root.ElementAnyNs("Sdt_consultaprotocoloout");
 

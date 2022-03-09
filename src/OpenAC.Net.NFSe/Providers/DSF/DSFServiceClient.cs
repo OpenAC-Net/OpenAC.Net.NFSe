@@ -33,6 +33,7 @@ using System;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -53,9 +54,9 @@ namespace OpenAC.Net.NFSe.Providers
             var servico = EhHomologação ? "testeEnviar" : "enviar";
 
             var message = new StringBuilder();
-            message.Append($"<proc:{servico} soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<mensagemXml xsi:type=\"xsd:string\">");
-            message.AppendEnvio(msg);
+            message.Append($"<proc:{servico}>");
+            message.Append("<mensagemXml>");
+            message.AppendCData(msg);
             message.Append("</mensagemXml>");
             message.Append($"</proc:{servico}>");
 
@@ -70,8 +71,8 @@ namespace OpenAC.Net.NFSe.Providers
             if (EhHomologação) throw new NotImplementedException();
 
             var message = new StringBuilder();
-            message.Append("<proc:enviarSincrono soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<mensagemXml xsi:type=\"xsd:string\">");
+            message.Append("<proc:enviarSincrono>");
+            message.Append("<mensagemXml>");
             message.AppendEnvio(msg);
             message.Append("</mensagemXml>");
             message.Append("</proc:enviarSincrono>");
@@ -79,18 +80,15 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(message.ToString(), "enviarSincronoResponse", "enviarSincronoReturn");
         }
 
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
             if (EhHomologação) throw new NotImplementedException();
 
             var message = new StringBuilder();
-            message.Append("<proc:consultarLote soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<mensagemXml xsi:type=\"xsd:string\">");
+            message.Append("<proc:consultarLote>");
+            message.Append("<mensagemXml>");
             message.AppendEnvio(msg);
             message.Append("</mensagemXml>");
             message.Append("</proc:consultarLote>");
@@ -103,8 +101,8 @@ namespace OpenAC.Net.NFSe.Providers
             if (EhHomologação) throw new NotImplementedException();
 
             var message = new StringBuilder();
-            message.Append("<proc:consultarSequencialRps soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<mensagemXml xsi:type=\"xsd:string\">");
+            message.Append("<proc:consultarSequencialRps>");
+            message.Append("<mensagemXml>");
             message.AppendEnvio(msg);
             message.Append("</mensagemXml>");
             message.Append("</proc:consultarSequencialRps>");
@@ -117,8 +115,8 @@ namespace OpenAC.Net.NFSe.Providers
             if (EhHomologação) throw new NotImplementedException();
 
             var message = new StringBuilder();
-            message.Append("<proc:consultarNFSeRps soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<mensagemXml xsi:type=\"xsd:string\">");
+            message.Append("<proc:consultarNFSeRps>");
+            message.Append("<mensagemXml>");
             message.AppendEnvio(msg);
             message.Append("</mensagemXml>");
             message.Append("</proc:consultarNFSeRps>");
@@ -131,8 +129,8 @@ namespace OpenAC.Net.NFSe.Providers
             if (EhHomologação) throw new NotImplementedException();
 
             var message = new StringBuilder();
-            message.Append("<proc:consultarNota soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<mensagemXml xsi:type=\"xsd:string\">");
+            message.Append("<proc:consultarNota>");
+            message.Append("<mensagemXml>");
             message.AppendEnvio(msg);
             message.Append("</mensagemXml>");
             message.Append("</proc:consultarNota>");
@@ -145,8 +143,8 @@ namespace OpenAC.Net.NFSe.Providers
             if (EhHomologação) throw new NotImplementedException();
 
             var message = new StringBuilder();
-            message.Append("<proc:cancelar soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append("<mensagemXml xsi:type=\"xsd:string\">");
+            message.Append("<proc:cancelar>");
+            message.Append("<mensagemXml>");
             message.AppendEnvio(msg);
             message.Append("</mensagemXml>");
             message.Append("</proc:cancelar>");
@@ -154,24 +152,19 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(message.ToString(), "cancelarResponse", "cancelarReturn");
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
-        private string Execute(string message, params string[] reponseTags)
-        {
-            return Execute("", message, reponseTags, "xmlns:proc=\"http://proces.wsnfe2.dsfnet.com.br\"");
-        }
+        private string Execute(string message, params string[] reponseTags) => Execute("", message, reponseTags, "xmlns:proc=\"http://proces.wsnfe2.dsfnet.com.br\"");
 
         protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
         {
-            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs(responseTag[1]).Value;
+            var element = xmlDocument.ElementAnyNs("Fault");
+            if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs(responseTag[1]).Value;
+
+            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            throw new OpenDFeCommunicationException(exMessage);
         }
 
         #endregion Methods
