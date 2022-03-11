@@ -912,15 +912,9 @@ namespace OpenAC.Net.NFSe.Providers
             throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
         }
 
-        protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         #endregion Services
 
@@ -1093,7 +1087,11 @@ namespace OpenAC.Net.NFSe.Providers
 
             var valor = nota.Servico.Valores.ValorServicos - nota.Servico.Valores.ValorDeducoes;
             var rec = nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal ? "N" : "S";
-            var sign = $"{nota.Prestador.InscricaoMunicipal.OnlyNumbers()}{nota.IdentificacaoRps.Serie.FillLeft(5)}" + $"{nota.IdentificacaoRps.Numero.ZeroFill(12)}{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}{tributacao} " + $"{situacao}{rec}{Math.Round(valor * 100).ToString().ZeroFill(15)}" + $"{Math.Round(nota.Servico.Valores.ValorDeducoes * 100).ToString().ZeroFill(15)}" + $"{nota.Servico.CodigoCnae.ZeroFill(10)}{nota.Tomador.CpfCnpj.ZeroFill(14)}";
+            var sign = $"{nota.Prestador.InscricaoMunicipal.OnlyNumbers().ZeroFill(11)}{nota.IdentificacaoRps.Serie.FillLeft(5)}" +
+                       $"{nota.IdentificacaoRps.Numero.OnlyNumbers().ZeroFill(12)}{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}{tributacao} " +
+                       $"{situacao}{rec}{Math.Round(valor * 100).ToString().ZeroFill(15)}" +
+                       $"{Math.Round(nota.Servico.Valores.ValorDeducoes * 100).ToString().ZeroFill(15)}" +
+                       $"{nota.Servico.CodigoCnae.ZeroFill(10)}{nota.Tomador.CpfCnpj.ZeroFill(14)}";
 
             assinatura = sign.ToSha1Hash().ToLowerInvariant();
         }
