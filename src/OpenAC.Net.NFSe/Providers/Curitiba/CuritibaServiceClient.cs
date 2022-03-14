@@ -44,16 +44,16 @@ namespace OpenAC.Net.NFSe.Providers
 
         public CuritibaServiceClient(ProviderCuritiba provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
         {
+        }
+
+        public CuritibaServiceClient(ProviderCuritiba provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        {
             if (!(Endpoint?.Binding is BasicHttpBinding binding))
                 return;
 
             binding.MaxReceivedMessageSize = 1000000;
             binding.MaxBufferPoolSize = 1000000;
             binding.MaxBufferSize = 1000000;
-        }
-
-        public CuritibaServiceClient(ProviderCuritiba provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
-        {
         }
 
         #endregion Constructors
