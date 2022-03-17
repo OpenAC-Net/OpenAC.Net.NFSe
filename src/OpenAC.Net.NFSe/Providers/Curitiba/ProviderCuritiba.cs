@@ -1345,7 +1345,7 @@ namespace OpenAC.Net.NFSe.Providers
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
             var xmlConsultarNfseResult = xmlRet.ElementAnyNs("ConsultarNfseResponse").ElementAnyNs("ConsultarNfseResult");
             MensagemErro(retornoWebservice, xmlConsultarNfseResult);
-            //if (retornoWebservice.Erros.Any()) return;
+            if (retornoWebservice.Erros.Any()) return;
 
             var retornoLote = xmlRet.ElementAnyNs("ConsultarNfseResponse");
             var listaNfse = retornoLote?.ElementAnyNs("ConsultarNfseResult").ElementAnyNs("ListaNfse");
