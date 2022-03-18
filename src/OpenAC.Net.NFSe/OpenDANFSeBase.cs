@@ -54,7 +54,7 @@ namespace OpenAC.Net.NFSe
             Configuracoes = config;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 

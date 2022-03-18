@@ -29,6 +29,7 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -63,10 +64,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(message.ToString(), "RecepcionarLoteRpsV3Response");
         }
 
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarSituacao(string cabecalho, string dados)
         {
@@ -98,10 +96,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(message.ToString(), "ConsultarLoteRpsV3Response");
         }
 
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarNFSeRps(string cabecalho, string dados)
         {
@@ -148,15 +143,9 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(message.ToString(), "CancelarNfseV3Response");
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         private string Execute(string message, string responseTag)
         {
@@ -166,10 +155,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("", message, "", responseTag, ns);
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
-        {
-            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
-        }
+        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag) => xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
 
         #endregion Methods
     }

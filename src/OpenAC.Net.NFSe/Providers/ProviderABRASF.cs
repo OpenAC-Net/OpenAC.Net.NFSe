@@ -1040,10 +1040,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         /// <inheritdoc />
         protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
@@ -1127,7 +1124,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "AC0001", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
                 return;
             }
 
@@ -1150,16 +1147,10 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         /// <inheritdoc />
-        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         /// <inheritdoc />
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
@@ -1342,10 +1333,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         /// <inheritdoc />
         protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
@@ -1453,16 +1441,10 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         /// <inheritdoc />
-        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         #endregion Services
 

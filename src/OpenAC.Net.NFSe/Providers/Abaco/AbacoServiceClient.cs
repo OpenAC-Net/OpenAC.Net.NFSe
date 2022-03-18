@@ -65,10 +65,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("http://www.e-nfs.com.braction/ARECEPCIONARLOTERPS.Execute", message.ToString(), "RecepcionarLoteRPS.ExecuteResponse");
         }
 
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarSituacao(string cabec, string msg)
         {
@@ -100,10 +97,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("http://www.e-nfs.com.braction/ACONSULTARLOTERPS.Execute", message.ToString(), "ConsultarLoteRps.ExecuteResponse");
         }
 
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
@@ -150,15 +144,9 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("http://www.e-nfs.com.braction/ACANCELARNFSE.Execute", message.ToString(), "CancelarNfse.ExecuteResponse");
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         private string Execute(string soapAction, string message, string responseTag)
         {

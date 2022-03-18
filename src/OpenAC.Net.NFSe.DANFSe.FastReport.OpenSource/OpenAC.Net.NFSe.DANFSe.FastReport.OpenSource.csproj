@@ -18,9 +18,9 @@
     <Description>Biblioteca de impressão de DANFSe usando o FastReport OpenSource.</Description>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1.0</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3.0</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
@@ -77,8 +77,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.OpenSource" Version="2022.1.14" />
-    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2022.1.14" />
+    <PackageReference Include="FastReport.OpenSource" Version="2022.2.2" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2022.2.2" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -86,10 +86,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("recepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
         }
 
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
@@ -107,10 +104,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("consultarLoteRps", message.ToString(), "consultarLoteRpsResponse");
         }
 
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
@@ -162,10 +156,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("cancelarNfse", message.ToString(), "cancelarNfseResponse");
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string SubstituirNFSe(string cabec, string msg)
         {

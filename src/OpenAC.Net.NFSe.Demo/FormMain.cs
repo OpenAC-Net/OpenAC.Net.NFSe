@@ -494,14 +494,13 @@ namespace OpenAC.Net.NFSe.Demo
             var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.Curitiba) ? "0107" : "01.07";
             if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
-            nfSe.Servico.CodigoCnae = municipio.Provedor == NFSeProvider.DSF ? "861010101" : "";
+            var cnae = "861010101";
+            if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
+            nfSe.Servico.CodigoCnae = cnae;
 
-            // ABRSAF
             nfSe.Servico.ItemListaServico = itemListaServico;
             nfSe.Servico.CodigoTributacaoMunicipio = "01.07.00 / 00010700";
             nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
-
-            //DSF
             nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.DSF ? municipio.CodigoSiafi : municipio.Codigo;
             nfSe.Servico.Municipio = municipio.Nome;
 
