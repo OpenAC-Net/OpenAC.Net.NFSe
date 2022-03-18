@@ -1148,6 +1148,9 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
+            if (tipo == TipoUrl.ConsultarNFSe)
+                return new CuritibaServiceClient(this, tipo, Certificado);
+
             return new CuritibaServiceClient(this, tipo);
         }
 
