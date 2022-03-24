@@ -30,6 +30,9 @@
 // ***********************************************************************
 
 using System;
+using System.Xml.Linq;
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -45,6 +48,42 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         #endregion Constructors
+
+        protected override void LoadServicosValoresRps(NotaServico nota, XElement rootNFSe)
+        {
+            base.LoadServicosValoresRps(nota, rootNFSe);
+            var rootServico = rootNFSe.ElementAnyNs("Servico");
+            if (rootServico == null) return;
+
+            var items = rootServico.ElementsAnyNs("ItensServico");
+            foreach (var item in items)
+            {
+                var servico = nota.Servico.ItensServico.AddNew();
+                servico.Descricao = item.ElementAnyNs("Descricao")?.GetValue<string>() ?? "";
+                servico.Quantidade = item.ElementAnyNs("Quantidade")?.GetValue<decimal>() ?? 0;
+                servico.ValorUnitario = item.ElementAnyNs("ValorUnitario")?.GetValue<decimal>() ?? 0;
+
+                var trib = item.ElementAnyNs("IssTributavel")?.GetValue<int>() ?? 2;
+                servico.Tributavel = trib == 1 ? NFSeSimNao.Sim : NFSeSimNao.Nao;
+            }
+        }
+
+        protected override XElement WriteServicosValoresRps(NotaServico nota)
+        {
+            var servico = base.WriteServicosValoresRps(nota);
+            foreach (var item in nota.Servico.ItensServico)
+            {
+                var itemServico = new XElement("ItensServico");
+                itemServico.AddChild(AdicionarTag(TipoCampo.Str, "", "Descricao", 1, 100, Ocorrencia.Obrigatoria, item.Descricao));
+                itemServico.AddChild(AdicionarTag(TipoCampo.De2, "", "Quantidade", 4, 15, Ocorrencia.Obrigatoria, item.Quantidade));
+                itemServico.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorUnitario", 4, 15, Ocorrencia.Obrigatoria, item.ValorUnitario));
+                itemServico.AddChild(AdicionarTag(TipoCampo.Int, "", "IssTributavel", 4, 15, Ocorrencia.NaoObrigatoria, item.Tributavel == NFSeSimNao.Sim ? 1 : 2));
+
+                servico.AddChild(itemServico);
+            }
+
+            return servico;
+        }
 
         #region Methods
 
