@@ -49,7 +49,7 @@ namespace OpenAC.Net.NFSe.Configuracao
         {
             EmissaoPathNFSe = false;
 
-            var path = Assembly.GetExecutingAssembly().GetPath();
+            var path = Path.GetDirectoryName((Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).Location);
             if (!path.IsEmpty())
             {
                 PathNFSe = Path.Combine(path, "NFSe");
