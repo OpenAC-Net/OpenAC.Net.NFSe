@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 18-08-2021
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 18-08-2021
+// Last Modified On : 30-03-2022
 // ***********************************************************************
 // <copyright file="SystemProServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -29,12 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
-using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -51,7 +51,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+        public string Enviar(string cabec, string msg) => throw new NotImplementedException("Utilize o metodo EnviarSincrono");
 
         public string EnviarSincrono(string cabec, string msg)
         {
@@ -72,34 +72,40 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
-            var message = new StringBuilder();
-            message.Append("<ns2:ConsultarLoteRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:ConsultarLoteRps>");
+            throw new NotImplementedException("ConsultarLoteRps nao implementada/suportada para o provedor SystemPro");
 
-            return Execute("", message.ToString(), "ConsultarLoteRpsResponse");
+            //Ate o dia 30/03/22 nao estava disponivel essa consulta pelo provedor
+            //var message = new StringBuilder();
+            //message.Append("<ns2:ConsultarLoteRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
+            //message.Append("<nfseCabecMsg>");
+            //message.AppendCData(cabec);
+            //message.Append("</nfseCabecMsg>");
+            //message.Append("<nfseDadosMsg>");
+            //message.AppendCData(msg);
+            //message.Append("</nfseDadosMsg>");
+            //message.Append("</ns2:ConsultarLoteRps>");
+
+            //return Execute("", message.ToString(), "ConsultarLoteRpsResponse");
         }
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
-            var message = new StringBuilder();
-            message.Append("<ns2:ConsultarNfseRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:ConsultarNfseRps>");
+            throw new NotImplementedException("ConsultarNFSeRps nao implementada/suportada para o provedor SystemPro");
 
-            return Execute("", message.ToString(), "ConsultarNfseRpsResponse");
+            //Ate o dia 30/03/22 nao estava disponivel essa consulta pelo provedor
+            //var message = new StringBuilder();
+            //message.Append("<ns2:ConsultarNfseRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
+            //message.Append("<nfseCabecMsg>");
+            //message.AppendCData(cabec);
+            //message.Append("</nfseCabecMsg>");
+            //message.Append("<nfseDadosMsg>");
+            //message.AppendCData(msg);
+            //message.Append("</nfseDadosMsg>");
+            //message.Append("</ns2:ConsultarNfseRps>");
+
+            //return Execute("", message.ToString(), "ConsultarNfseRpsResponse");
         }
 
         public string ConsultarNFSe(string cabec, string msg)
