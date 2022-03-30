@@ -64,10 +64,10 @@
       <Version>2022.2.2</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core">
-      <Version>1.0.0.1</Version>
+      <Version>1.5.0-preview.2</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.DFe.Core">
-      <Version>1.2.1.1</Version>
+      <Version>1.5.0-preview.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

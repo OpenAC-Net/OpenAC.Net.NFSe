@@ -31,6 +31,7 @@
 
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;
@@ -40,7 +41,7 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe
 {
-    public sealed class OpenNFSe : OpenComponent, IOpenLog
+    public sealed class OpenNFSe : OpenDisposable, IOpenLog
     {
         #region Propriedades
 
@@ -55,6 +56,16 @@ namespace OpenAC.Net.NFSe
         public NotaServicoCollection NotasServico { get; private set; }
 
         #endregion Propriedades
+
+        #region Constructors
+
+        public OpenNFSe()
+        {
+            Configuracoes = new ConfigNFSe();
+            NotasServico = new NotaServicoCollection(Configuracoes);
+        }
+
+        #endregion Constructors
 
         #region Methods
 
@@ -552,26 +563,5 @@ namespace OpenAC.Net.NFSe
         }
 
         #endregion Methods
-
-        #region Override Methods
-
-        /// <summary>
-        /// Função executada na inicialização do componente
-        /// </summary>
-        protected override void OnInitialize()
-        {
-            Configuracoes = new ConfigNFSe();
-            NotasServico = new NotaServicoCollection(Configuracoes);
-        }
-
-        /// <summary>
-        /// Função executada na desinicialização do componente
-        /// </summary>
-        protected override void OnDisposing()
-        {
-            //
-        }
-
-        #endregion Override Methods
     }
 }

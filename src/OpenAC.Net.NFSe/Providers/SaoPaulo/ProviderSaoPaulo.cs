@@ -804,15 +804,9 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new SaoPauloServiceClient(this, tipo);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new SaoPauloServiceClient(this, tipo);
 
-        protected override string GerarCabecalho()
-        {
-            return "";
-        }
+        protected override string GerarCabecalho() => "";
 
         private string GetHashRps(NotaServico nota)
         {
@@ -911,9 +905,18 @@ namespace OpenAC.Net.NFSe.Providers
                        issRetidoIntermediario;
             }
 
+#if  NETSTANDARD2_0
+            var rsa = (RSACng)Certificado.PrivateKey;
+#else
             var rsa = (RSACryptoServiceProvider)Certificado.PrivateKey;
+#endif
+
             var hashBytes = Encoding.ASCII.GetBytes(hash);
+#if NETSTANDARD2_0
+            byte[] signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+#else
             byte[] signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+#endif
             return Convert.ToBase64String(signData);
         }
 

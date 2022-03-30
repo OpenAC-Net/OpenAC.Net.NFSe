@@ -51,7 +51,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        public string Enviar(string cabec, string msg) => throw new NotImplementedException("Utilize o metodo EnviarSincrono");
+        public string Enviar(string cabec, string msg) => throw new NotImplementedException("Enviar nao implementada/suportada para este provedor.");
 
         public string EnviarSincrono(string cabec, string msg)
         {
@@ -68,45 +68,13 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("", message.ToString(), "EnviarLoteRpsSincronoResponse");
         }
 
-        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("ConsultarSituacao nao implementada/suportada para este provedor.");
 
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            throw new NotImplementedException("ConsultarLoteRps nao implementada/suportada para o provedor SystemPro");
+        public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException("ConsultarLoteRps nao implementada/suportada para este provedor.");
 
-            //Ate o dia 30/03/22 nao estava disponivel essa consulta pelo provedor
-            //var message = new StringBuilder();
-            //message.Append("<ns2:ConsultarLoteRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
-            //message.Append("<nfseCabecMsg>");
-            //message.AppendCData(cabec);
-            //message.Append("</nfseCabecMsg>");
-            //message.Append("<nfseDadosMsg>");
-            //message.AppendCData(msg);
-            //message.Append("</nfseDadosMsg>");
-            //message.Append("</ns2:ConsultarLoteRps>");
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("ConsultarSequencialRps nao implementada/suportada para este provedor.");
 
-            //return Execute("", message.ToString(), "ConsultarLoteRpsResponse");
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            throw new NotImplementedException("ConsultarNFSeRps nao implementada/suportada para o provedor SystemPro");
-
-            //Ate o dia 30/03/22 nao estava disponivel essa consulta pelo provedor
-            //var message = new StringBuilder();
-            //message.Append("<ns2:ConsultarNfseRps xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
-            //message.Append("<nfseCabecMsg>");
-            //message.AppendCData(cabec);
-            //message.Append("</nfseCabecMsg>");
-            //message.Append("<nfseDadosMsg>");
-            //message.AppendCData(msg);
-            //message.Append("</nfseDadosMsg>");
-            //message.Append("</ns2:ConsultarNfseRps>");
-
-            //return Execute("", message.ToString(), "ConsultarNfseRpsResponse");
-        }
+        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException("ConsultarNFSeRps nao implementada/suportada para este provedor.");
 
         public string ConsultarNFSe(string cabec, string msg)
         {
