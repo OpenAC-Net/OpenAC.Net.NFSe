@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 18-08-2021
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 18-08-2021
+// Last Modified On : 30-03-2022
 // ***********************************************************************
 // <copyright file="ProviderSystemPro.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -29,8 +29,14 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
+using System.Text;
+using System.Xml.Linq;
+
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -98,6 +104,35 @@ namespace OpenAC.Net.NFSe.Providers
             return servico;
         }
 
+        #endregion
+
+        #region Services
+
+        protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
+        {
+            var loteBuilder = new StringBuilder();
+            loteBuilder.Append($"<ConsultarNfseFaixaEnvio {GetNamespace()}>");
+            loteBuilder.Append("<Prestador>");
+            loteBuilder.Append("<CpfCnpj>");
+            loteBuilder.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
+                ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
+                : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+            loteBuilder.Append("</CpfCnpj>");
+            if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+            loteBuilder.Append("</Prestador>");
+
+            loteBuilder.Append("<Faixa>");
+            if (retornoWebservice.NumeroNFse > 0)
+            {
+                loteBuilder.Append($"<NumeroNfseInicial>{retornoWebservice.NumeroNFse}</NumeroNfseInicial>");
+                loteBuilder.Append($"<NumeroNfseFinal>{retornoWebservice.NumeroNFse}</NumeroNfseFinal>");
+            }
+            loteBuilder.Append("</Faixa>");
+            loteBuilder.Append($"<Pagina>{System.Math.Max(retornoWebservice.Pagina, 1)}</Pagina>");
+            loteBuilder.Append("</ConsultarNfseFaixaEnvio>");
+
+            retornoWebservice.XmlEnvio = loteBuilder.ToString();
+        }
         #endregion
 
         #endregion Methods
