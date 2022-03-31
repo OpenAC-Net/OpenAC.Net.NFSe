@@ -135,6 +135,14 @@ namespace OpenAC.Net.NFSe.Providers
         }
         #endregion
 
+        #region Abstract
+
+        protected override bool PrecisaValidarSchema(TipoUrl tipo)
+        {
+            return false;
+        }
+        #endregion
+
         #endregion Methods
     }
 }
