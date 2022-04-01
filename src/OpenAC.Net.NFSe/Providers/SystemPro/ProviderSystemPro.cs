@@ -131,6 +131,16 @@ namespace OpenAC.Net.NFSe.Providers
 
         #endregion Services
 
+        #region Abstract
+
+        protected override bool PrecisaValidarSchema(TipoUrl tipo)
+        {
+            //Coloquei false pois nao estava conseguindo encontrar os schemas na maquina dos usuarios. 
+            //Se alguem souber como resolver, sinta-se a vontade para colocar true
+            return false;
+        }
+        #endregion
+
         #endregion Methods
     }
 }
