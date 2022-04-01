@@ -34,6 +34,7 @@ using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml.Linq;
@@ -126,6 +127,12 @@ namespace OpenAC.Net.NFSe.Providers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(tipoUrl), tipoUrl, null);
             }
+
+            if (Endpoint?.Binding is not BasicHttpBinding binding) return;
+
+            binding.MaxReceivedMessageSize = long.MaxValue;
+            binding.MaxBufferPoolSize = long.MaxValue;
+            binding.MaxBufferSize = int.MaxValue;
         }
 
         #endregion Constructors

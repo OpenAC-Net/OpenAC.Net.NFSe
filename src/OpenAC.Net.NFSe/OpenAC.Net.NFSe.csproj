@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <AssemblyName>OpenAC.Net.NFSe</AssemblyName>
     <RootNamespace>OpenAC.Net.NFSe</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2021</Copyright>
+    <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2022</Copyright>
     <Company>OpenAC .Net - Automação Comercial em .Net</Company>
     <Authors>Projeto OpenAC .Net</Authors>
     <PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>
@@ -15,45 +16,12 @@
     <RepositoryUrl>https://github.com/OpenAC-Net/OpenAC.Net.NFSe</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>OpenAC.Net NFSe OpenNFSe</PackageTags>
-    <Description>
-      Biblioteca para emissão e trasmissão de NFSe.
-
-      **Provedores Implementados**
-      - Belo Horizonte.
-      - Coplan.
-      - DSF.
-      - Equiplano.
-      - Fiorilli.
-      - Ginfes.
-      - Goiânia.
-      - ISSe.
-      - Nota Carioca.
-      - NFe Cidades (GovDigital).
-      - SmarAPD ABRASAF.
-      - São Paulo.
-      - WebISS.
-      - WebIss2.
-
-      **Provedores Em Teste**
-      - Abaco (Em Teste).
-      - Betha v1 (Em Teste).
-      - Betha v2 (Em Teste).
-      - CITTA (Em Testes).
-      - Curitiba (Em Testes).
-      - DBSeller (Em Testes).
-      - FissLex (Em Teste).
-      - IISNet (Em Teste).
-      - Porto Alegre (Em Teste).
-      - Pronim v2 (Em Teste).
-      - SpeedGov (Em Testes).
-      - SystemPro (Em Testes).
-      - Vitoria (Em Testes).
-    </Description>
-    <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NeutralLanguage>pt-BR</NeutralLanguage>
     <AssemblyVersion>1.5.0.0</AssemblyVersion>
     <FileVersion>1.5.0.0</FileVersion>
-    <Version>1.5.0.0-preview.1</Version>
+    <Version>1.5.0.0-preview.2</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
@@ -71,30 +39,6 @@
     <DefineConstants>NET45;NETFULL</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
-    <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DocumentationFile>..\..\bin\Debug\net452\OpenAC.Net.NFSe.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <DocumentationFile>..\..\bin\Release\net452\OpenAC.Net.NFSe.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DocumentationFile>..\..\bin\Debug\netstandard2.0\OpenAC.Net.NFSe.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <DocumentationFile>..\..\bin\Release\netstandard2.0\OpenAC.Net.NFSe.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
@@ -102,9 +46,6 @@
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core" Version="1.5.0-preview.2" />
     <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0-preview.2" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="System.ServiceModel.Http" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
   </ItemGroup>
@@ -113,9 +54,17 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' != 'net452'">
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
   <!-- Itens do pacote nuget -->
   <ItemGroup>
     <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

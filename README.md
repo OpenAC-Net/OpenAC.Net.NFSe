@@ -22,6 +22,7 @@ Biblioteca para emissão e trasmissão de NFSe.
 - Nota Carioca.
 - NFe Cidades (GovDigital).
 - RLZ (RLZ Informática).
+- SimplISS.
 - SmarAPD ABRASAF.
 - São Paulo.
 - WebISS.

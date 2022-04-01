@@ -31,7 +31,6 @@
 
 using System;
 using System.Net;
-using System.Threading.Tasks;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;

@@ -44,12 +44,6 @@ namespace OpenAC.Net.NFSe.Providers
 
         public NotaCariocaServiceClient(ProviderNotaCarioca provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
         {
-            if (!(Endpoint?.Binding is BasicHttpBinding binding))
-                return;
-
-            binding.MaxReceivedMessageSize = long.MaxValue;
-            binding.MaxBufferPoolSize = long.MaxValue;
-            binding.MaxBufferSize = int.MaxValue;
         }
 
         #endregion Constructors
