@@ -656,9 +656,18 @@ namespace OpenAC.Net.NFSe.Providers
             var hash = Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8) + retornoWebservice.NumeroNFSe.ZeroFill(12);
 
             var hashAssinado = "";
+#if NETSTANDARD2_0
+            var rsa = (RSACng)Certificado.PrivateKey;
+#else
             var rsa = (RSACryptoServiceProvider)Certificado.PrivateKey;
+#endif
+
             var hashBytes = Encoding.ASCII.GetBytes(hash);
-            byte[] signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+#if NETSTANDARD2_0
+            var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+#else
+            var signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+#endif
             hashAssinado = Convert.ToBase64String(signData);
 
             var loteBuilder = new StringBuilder();
@@ -916,9 +925,9 @@ namespace OpenAC.Net.NFSe.Providers
 
             var hashBytes = Encoding.ASCII.GetBytes(hash);
 #if NETSTANDARD2_0
-            byte[] signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+            var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
 #else
-            byte[] signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+            var signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
 #endif
             return Convert.ToBase64String(signData);
         }
