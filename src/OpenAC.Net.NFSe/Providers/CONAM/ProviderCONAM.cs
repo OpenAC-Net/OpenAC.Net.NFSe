@@ -547,7 +547,7 @@ namespace OpenAC.Net.NFSe.Providers
             MensagemErro2(retornoWebservice, xmlRet);
             if (retornoWebservice.Erros.Any()) return;
 
-            var xmlElement = xmlRet.ElementAnyNs("Info");
+            var xmlElement = xmlRet.ElementAnyNs("SDT_IMPRESSAO_OUT");
 
             var listaNfse = xmlElement.ElementAnyNs("Lista_Notas");
             if (listaNfse == null)
@@ -606,7 +606,7 @@ namespace OpenAC.Net.NFSe.Providers
             MensagemErro2(retornoWebservice, xmlRet);
             if (retornoWebservice.Erros.Any()) return;
 
-            var xmlElement = xmlRet.ElementAnyNs("Info");
+            var xmlElement = xmlRet.ElementAnyNs("SDT_IMPRESSAO_OUT");
 
             var listaNfse = xmlElement.ElementAnyNs("Lista_Notas");
             if (listaNfse == null)
@@ -791,10 +791,10 @@ namespace OpenAC.Net.NFSe.Providers
 
         private static void MensagemErro2(RetornoWebservice retornoWs, XContainer xmlRet)
         {
-            if (xmlRet.ElementAnyNs("Info").ElementAnyNs("Sucesso").GetValue<bool>())
+            if (xmlRet.ElementAnyNs("SDT_IMPRESSAO_OUT").ElementAnyNs("Sucesso").GetValue<bool>())
                 return;
 
-            var mensagem = xmlRet.ElementAnyNs("Info").ElementAnyNs("Message");
+            var mensagem = xmlRet.ElementAnyNs("SDT_IMPRESSAO_OUT").ElementAnyNs("Message");
 
             var evento = new Evento
             {
