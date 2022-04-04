@@ -56,7 +56,6 @@ namespace OpenAC.Net.NFSe.Providers
             Name = "ABRASFv201";
             Versao = "2.01";
             UsaPrestadorEnvio = false;
-            ConsultarNfseRpsResposta = "ConsultarNfseRpsResposta";
         }
 
         #endregion Constructors

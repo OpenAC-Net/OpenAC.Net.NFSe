@@ -119,6 +119,11 @@ namespace OpenAC.Net.NFSe.Providers
                     PrefixoResposta = "canc-nfse";
                     break;
 
+                case TipoUrl.CancelarNFSeLote:
+                    PrefixoEnvio = "canc-lote-nfse";
+                    PrefixoResposta = "canc-lote-nfse";
+                    break;
+
                 case TipoUrl.SubstituirNFSe:
                     PrefixoEnvio = "sub-nfse";
                     PrefixoResposta = "sub-nfse";

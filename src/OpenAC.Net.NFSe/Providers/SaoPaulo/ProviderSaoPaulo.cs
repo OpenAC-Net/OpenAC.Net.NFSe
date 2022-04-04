@@ -316,9 +316,12 @@ namespace OpenAC.Net.NFSe.Providers
             rps.AddChild(AdicionarTag(TipoCampo.De4, "", "AliquotaServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota / 100));  // Valor Percentual - Exemplos: 1% => 0.01   /   25,5% => 0.255   /   100% => 1
             rps.AddChild(AdicionarTag(TipoCampo.Str, "", "ISSRetido", 1, 4, Ocorrencia.Obrigatoria, issRetido));
 
-            var tomadorCpfCnpj = new XElement("CPFCNPJTomador");
-            rps.Add(tomadorCpfCnpj);
-            tomadorCpfCnpj.AddChild(AdicionarTagCNPJCPF("", "CPF", "CNPJ", nota.Tomador.CpfCnpj));
+            if (!nota.Tomador.CpfCnpj.IsEmpty())
+            {
+                var tomadorCpfCnpj = new XElement("CPFCNPJTomador");
+                rps.Add(tomadorCpfCnpj);
+                tomadorCpfCnpj.AddChild(AdicionarTagCNPJCPF("", "CPF", "CNPJ", nota.Tomador.CpfCnpj));
+            }
 
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoMunicipalTomador", 1, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoEstadualTomador", 1, 19, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoEstadual));

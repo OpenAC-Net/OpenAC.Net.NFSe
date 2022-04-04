@@ -63,7 +63,6 @@ namespace OpenAC.Net.NFSe.Providers
             Name = "ABRASFv201";
             Versao = "2.00";
             UsaPrestadorEnvio = false;
-            ConsultarNfseRpsResposta = "ConsultarNfseRpsResposta";
         }
 
         #endregion Constructors
@@ -73,8 +72,6 @@ namespace OpenAC.Net.NFSe.Providers
         public string Versao { get; protected set; }
 
         public bool UsaPrestadorEnvio { get; protected set; }
-
-        public string ConsultarNfseRpsResposta { get; protected set; }
 
         #endregion Properties
 
@@ -1199,10 +1196,10 @@ namespace OpenAC.Net.NFSe.Providers
         {
             // Analisa mensagem de retorno
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            MensagemErro(retornoWebservice, xmlRet, ConsultarNfseRpsResposta);
+            MensagemErro(retornoWebservice, xmlRet, "ConsultarNfseRpsResposta");
             if (retornoWebservice.Erros.Any()) return;
 
-            var compNfse = xmlRet.ElementAnyNs(ConsultarNfseRpsResposta)?.ElementAnyNs("CompNfse");
+            var compNfse = xmlRet.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
 
             if (compNfse == null)
             {
@@ -1448,34 +1445,22 @@ namespace OpenAC.Net.NFSe.Providers
         #region Protected Methods
 
         /// <inheritdoc />
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse.xsd";
-        }
+        protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetVersao()
-        {
-            return $"versao=\"{Versao}\"";
-        }
+        protected virtual string GetVersao() => "versao=\"{Versao}\"";
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetNamespace()
-        {
-            return "xmlns=\"http://www.abrasf.org.br/nfse.xsd\"";
-        }
+        protected virtual string GetNamespace() => "xmlns=\"http://www.abrasf.org.br/nfse.xsd\"";
 
         /// <inheritdoc />
-        protected override string GerarCabecalho()
-        {
-            return $"<cabecalho {GetVersao()} {GetNamespace()}><versaoDados>{Versao}</versaoDados></cabecalho>";
-        }
+        protected override string GerarCabecalho() => $"<cabecalho {GetVersao()} {GetNamespace()}><versaoDados>{Versao}</versaoDados></cabecalho>";
 
         /// <summary>
         ///

@@ -782,7 +782,7 @@ namespace OpenAC.Net.NFSe.Demo
                 MaxArchiveFiles = 93,
                 ArchiveEvery = FileArchivePeriod.Day,
                 ArchiveNumbering = ArchiveNumberingMode.Date,
-                ArchiveFileName = "${basedir}/Logs/Archive/${date:format=yyyy}/${date:format=MM}/ACBrNFSe_{{#}}.log",
+                ArchiveFileName = "${basedir}/Logs/Archive/${date:format=yyyy}/${date:format=MM}/NFSe_{{#}}.log",
                 ArchiveDateFormat = "dd.MM.yyyy"
             };
 
