@@ -29,19 +29,19 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Runtime.Serialization;
+using OpenAC.Net.DFe.Core.Attributes;
+using OpenAC.Net.DFe.Core.Document;
 
 namespace OpenAC.Net.NFSe.Providers
 {
     /// <summary>
     /// Classe usada apenas para salvar o xml dos Municipios.
     /// </summary>
-    [Serializable]
-    [DataContract(Name = "OpenNFSe", Namespace = "")]
-    internal sealed class MunicipiosNFSe
+    [DFeRoot("OpenNFSe", Namespace = "https://www.openac.net.br/")]
+    internal sealed class MunicipiosNFSe : DFeDocument<MunicipiosNFSe>
     {
-        [DataMember(Name = "Municipios")]
+        [DFeCollection("Municipios")]
+        [DFeItem(typeof(OpenMunicipioNFSe), "Municipio")]
         public OpenMunicipioNFSe[] Municipios { get; set; }
     }
 }

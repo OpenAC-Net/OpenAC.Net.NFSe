@@ -37,11 +37,11 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class SaoPauloServiceClient : NFSeSOAP12ServiceClient, IServiceClient
+    internal sealed class SaoPauloServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public SaoPauloServiceClient(ProviderSaoPaulo provider, TipoUrl tipoUrl) : base(provider, tipoUrl, provider.Certificado)
+        public SaoPauloServiceClient(ProviderSaoPaulo provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
         {
         }
 
@@ -52,7 +52,7 @@ namespace OpenAC.Net.NFSe.Providers
         public string Enviar(string cabec, string msg)
         {
             string tag, response, soapAction;
-            if (EhHomologação)
+            if (EhHomologacao)
             {
                 tag = "TesteEnvioLoteRPSRequest";
                 response = "TesteEnvioLoteRPSResponse";
@@ -166,7 +166,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(soapAction, message, "", responseTag, "xmlns:nfe=\"http://www.prefeitura.sp.gov.br/nfe\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element != null)

@@ -33,7 +33,6 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    // ReSharper disable once InconsistentNaming
     internal sealed class ProviderPronim2 : ProviderABRASF201
     {
         #region Constructors

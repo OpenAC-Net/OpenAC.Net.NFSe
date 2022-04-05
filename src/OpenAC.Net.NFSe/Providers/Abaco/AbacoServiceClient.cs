@@ -38,11 +38,11 @@ using OpenAC.Net.DFe.Core.Common;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class AbacoServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class AbacoServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public AbacoServiceClient(ProviderAbaco provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public AbacoServiceClient(ProviderAbaco provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -158,7 +158,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Provider.Configuracoes.WebServices.Ambiente != DFeTipoAmbiente.Homologacao;
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("Outputxml").Value;

@@ -39,7 +39,7 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class SimplISSServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class SimplISSServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Fields
 
@@ -49,7 +49,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Constructors
 
-        public SimplISSServiceClient(ProviderSimplISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public SimplISSServiceClient(ProviderSimplISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -167,12 +167,12 @@ namespace OpenAC.Net.NFSe.Providers
                    $"<sis1:P2>{Provider.Configuracoes.WebServices.Senha.HtmlEncode()}</sis1:P2></sis:pParam>";
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null)
             {
-                element = responseTag.Aggregate(xmlDocument.Root, (current, tag) => current.ElementAnyNs(tag));
+                element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
                 return element.ToString();
             }
 

@@ -38,11 +38,11 @@ using OpenAC.Net.DFe.Core;
 namespace OpenAC.Net.NFSe.Providers
 {
     // ReSharper disable once InconsistentNaming
-    internal sealed class WebIssServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class WebIssServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public WebIssServiceClient(ProviderWebIss provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public WebIssServiceClient(ProviderWebIss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -165,7 +165,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(soapAction, message, "");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ToString();

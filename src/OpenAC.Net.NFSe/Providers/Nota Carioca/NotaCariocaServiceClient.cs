@@ -38,11 +38,11 @@ using OpenAC.Net.Core.Extensions;
 namespace OpenAC.Net.NFSe.Providers
 {
     // ReSharper disable once InconsistentNaming
-    internal sealed class NotaCariocaServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class NotaCariocaServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public NotaCariocaServiceClient(ProviderNotaCarioca provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public NotaCariocaServiceClient(ProviderNotaCarioca provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -154,7 +154,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(soapAction, message, "", responseTag, "xmlns:not=\"http://notacarioca.rio.gov.br/\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
         }

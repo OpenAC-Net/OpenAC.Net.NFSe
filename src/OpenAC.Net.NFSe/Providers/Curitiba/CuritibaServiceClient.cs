@@ -38,15 +38,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class CuritibaServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class CuritibaServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public CuritibaServiceClient(ProviderCuritiba provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public CuritibaServiceClient(ProviderCuritiba provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
-        public CuritibaServiceClient(ProviderCuritiba provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        public CuritibaServiceClient(ProviderCuritiba provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
         }
 
@@ -109,7 +109,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(action, message, responseTag, new string[0]);
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ToString();

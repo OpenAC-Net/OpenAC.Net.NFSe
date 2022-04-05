@@ -28,8 +28,6 @@
 // ***********************************************************************
 
 using System;
-using System.IO;
-using System.Net;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 
@@ -37,65 +35,24 @@ namespace OpenAC.Net.NFSe.Providers
 {
     public class SigissWebServiceClient : NFSeRestServiceClient, IServiceClient
     {
-        private TipoUrl _tipoUrl;
+        #region Constructors
 
         public SigissWebServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
         {
-            _tipoUrl = tipoUrl;
         }
+
+        #endregion Constructors
 
         #region Methods
 
-        #region nao implementados
-
-        public string Enviar(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion nao implementados
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            return Execute("/nfes", msg, "POST");
-        }
+        public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, "application/xml");
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
             var xml = XDocument.Parse(msg);
             var numerorps = xml.Root?.ElementAnyNs("NumeroRPS")?.GetValue<string>();
             var serierps = xml.Root?.ElementAnyNs("SerieRPS")?.GetValue<string>();
-            return Execute($"/nfes/pegaxml/{numerorps}/serierps/{serierps}");
+            return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}", "application/xml");
         }
 
         public string CancelarNFSe(string cabec, string msg)
@@ -104,45 +61,40 @@ namespace OpenAC.Net.NFSe.Providers
             var numeronf = xml.Root?.ElementAnyNs("NumeroNFSe")?.GetValue<string>();
             var serie = xml.Root?.ElementAnyNs("SerieNFSe")?.GetValue<string>();
             var motivo = xml.Root?.ElementAnyNs("Motivo")?.GetValue<string>();
-            return Execute($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}");
+            return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}", "application/xml");
         }
 
-        protected override WebRequest CreateWebRequest(string action, string method)
+        public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+
+        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+
+        public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException();
+
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
+
+        public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
+
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+        protected override string Authentication()
         {
-            string autenticacao = string.Empty;
-            string json = "{ \"login\": \"" + Provider.Configuracoes.WebServices.Usuario + "\"  , \"senha\":\"" + Provider.Configuracoes.WebServices.Senha + "\"}";
-            var webrequest = WebRequest.Create(Provider.GetUrl(TipoUrl.Autenticacao) + "/login");
-            webrequest.Method = "POST";
-            webrequest.ContentType = "application/json; charset=utf-8";
+            var url = Url;
 
-            using (var streamWriter = new StreamWriter(webrequest.GetRequestStream()))
+            try
             {
-                streamWriter.Write(json);
-                streamWriter.Flush();
+                Url = Provider.GetUrl(TipoUrl.Autenticacao);
+                SetAction("/login");
+
+                EnvelopeEnvio = "{ \"login\": \"" + Provider.Configuracoes.WebServices.Usuario + "\"  , \"senha\":\"" + Provider.Configuracoes.WebServices.Senha + "\"}";
+                Execute("application/json; charset=utf-8", "POST");
+                return EnvelopeRetorno;
             }
-            using (var response = webrequest.GetResponse())
+            finally
             {
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-                    autenticacao = reader.ReadToEnd();
-                }
-                response.Close();
+                Url = url;
             }
-
-            var url = Provider.GetUrl(_tipoUrl);
-            if (!url.EndsWith("/"))
-                url += "/";
-
-            webrequest = WebRequest.Create(url + action);
-            webrequest.Headers.Add("AUTHORIZATION", autenticacao);
-            webrequest.Method = method;
-            webrequest.ContentType = "application/xml";
-
-            return webrequest;
-        }
-
-        public void Dispose()
-        {
         }
 
         #endregion Methods

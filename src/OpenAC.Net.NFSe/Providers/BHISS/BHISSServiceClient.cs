@@ -37,11 +37,11 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class BHISSServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public BHISSServiceClient(ProviderBHISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public BHISSServiceClient(ProviderBHISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -174,7 +174,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;

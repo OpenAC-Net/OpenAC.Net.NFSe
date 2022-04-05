@@ -1,4 +1,4 @@
-// ***********************************************************************
+ï»¿// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 09-03-2022
@@ -30,13 +30,11 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
@@ -46,16 +44,6 @@ namespace OpenAC.Net.NFSe.Providers
 {
     public abstract class NFSeHttpServiceClient : IDisposable
     {
-        #region Inner Types
-
-        public enum SoapVersion
-        {
-            Soap11,
-            Soap12,
-        }
-
-        #endregion Inner Types
-
         #region Constructors
 
         /// <summary>
@@ -148,13 +136,11 @@ namespace OpenAC.Net.NFSe.Providers
 
         public ProviderBase Provider { get; set; }
 
-        public bool EhHomologação => Provider.Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Homologacao;
+        public bool EhHomologacao => Provider.Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Homologacao;
 
         protected string Url { get; set; }
 
         protected X509Certificate2 Certificado { get; set; }
-
-        protected SoapVersion MessageVersion { get; set; } = SoapVersion.Soap11;
 
         protected bool IsDisposed { get; private set; }
 
@@ -162,130 +148,69 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        protected virtual string Execute(string soapAction, string message, string responseTag, params string[] soapNamespaces)
+        protected void Execute(string contentType, string method, NameValueCollection headers = null)
         {
-            return Execute(soapAction, message, string.Empty, new[] { responseTag }, soapNamespaces);
-        }
-
-        protected virtual string Execute(string soapAction, string message, string[] responseTag, params string[] soapNamespaces)
-        {
-            return Execute(soapAction, message, string.Empty, responseTag, soapNamespaces);
-        }
-
-        protected virtual string Execute(string soapAction, string message, string soapHeader, string responseTag, params string[] soapNamespaces)
-        {
-            return Execute(soapAction, message, soapHeader, new[] { responseTag }, soapNamespaces);
-        }
-
-        protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
-        {
-            EnvelopeEnvio = WriteSoapEnvelope(message, soapAction, soapHeader, soapNamespaces);
-
-            RemoteCertificateValidationCallback validation = null;
-            var naoValidarCertificado = !ValidarCertificadoServidor();
-
-            if (naoValidarCertificado)
-            {
-                validation = ServicePointManager.ServerCertificateValidationCallback;
-                ServicePointManager.ServerCertificateValidationCallback += (_, _, _, _) => true;
-            }
-
             var protocolos = ServicePointManager.SecurityProtocol;
             ServicePointManager.SecurityProtocol = Provider.Configuracoes.WebServices.Protocolos;
 
             try
             {
-                GravarSoap(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_soap_env.xml");
+                if (!EnvelopeEnvio.IsEmpty())
+                    GravarSoap(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
 
                 var request = WebRequest.CreateHttp(Url);
-                request.Method = "POST";
+                request.Method = method.IsEmpty() ? "POST" : method;
+                request.ContentType = contentType;
+
+                if (!ValidarCertificadoServidor())
+                    request.ServerCertificateValidationCallback += (_, _, _, _) => true;
 
                 if (Provider.TimeOut.HasValue)
                     request.Timeout = Provider.TimeOut.Value.Milliseconds;
 
+                if (headers?.Count > 0)
+                    request.Headers.Add(headers);
+
                 if (Certificado != null)
                     request.ClientCertificates.Add(Certificado);
 
-                switch (MessageVersion)
+                if (!EnvelopeEnvio.IsEmpty())
                 {
-                    case SoapVersion.Soap11:
-                        request.ContentType = "text/xml; charset=utf-8";
-                        request.Headers.Add("SOAPAction", soapAction);
-                        break;
-
-                    case SoapVersion.Soap12:
-                        request.ContentType = $"application/soap+xml; charset=utf-8;action={soapAction}";
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                {
+                    using var streamWriter = new StreamWriter(request.GetRequestStream());
                     streamWriter.Write(EnvelopeEnvio);
                     streamWriter.Flush();
                 }
 
-                var response = request.GetResponse().GetResponseStream();
-                Guard.Against<OpenDFeCommunicationException>(response == null, "Erro ao obter resposta do servidor.");
+                var response = request.GetResponse();
+                EnvelopeRetorno = GetResponse(response);
 
-                using (var reader = new StreamReader(response))
-                    EnvelopeRetorno = reader.ReadToEnd();
-
-                GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_soap_ret.xml");
+                GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
+            }
+            catch (Exception ex) when (ex is not OpenDFeCommunicationException)
+            {
+                throw new OpenDFeCommunicationException(ex.Message, ex);
             }
             finally
             {
-                if (naoValidarCertificado)
-                    ServicePointManager.ServerCertificateValidationCallback = validation;
-
                 ServicePointManager.SecurityProtocol = protocolos;
             }
+        }
 
-            var xmlDocument = XDocument.Parse(EnvelopeRetorno);
-            var body = xmlDocument.ElementAnyNs("Envelope")?.ElementAnyNs("Body");
-            var retorno = TratarRetorno(body?.Descendants().First(), responseTag);
-            if (retorno.IsValidXml()) return retorno;
+        protected static string GetResponse(WebResponse response)
+        {
+            var stream = response.GetResponseStream();
+            Guard.Against<OpenDFeCommunicationException>(stream == null, "Erro ao ler retorno do servidor.");
 
-            throw new ApplicationException(retorno);
+            using (stream)
+            {
+                using var reader = new StreamReader(stream!);
+                var retorno = reader.ReadToEnd();
+                response.Close();
+                return retorno;
+            }
         }
 
         protected virtual bool ValidarCertificadoServidor() => true;
-
-        protected virtual string WriteSoapEnvelope(string message, string soapAction, string soapHeader, string[] soapNamespaces)
-        {
-            var envelope = new StringBuilder();
-            switch (MessageVersion)
-            {
-                case SoapVersion.Soap11:
-                    envelope.Append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"");
-                    break;
-
-                case SoapVersion.Soap12:
-                    envelope.Append("<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"");
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            foreach (var ns in soapNamespaces)
-            {
-                envelope.Append($" {ns}");
-            }
-
-            envelope.Append(">");
-            envelope.Append(soapHeader.IsEmpty() ? "<soapenv:Header/>" : $"<soapenv:Header>{soapHeader}</soapenv:Header>");
-            envelope.Append("<soapenv:Body>");
-            envelope.Append(message);
-            envelope.Append("</soapenv:Body>");
-            envelope.Append("</soapenv:Envelope>");
-
-            return envelope.ToString();
-        }
-
-        protected abstract string TratarRetorno(XElement xmlDocument, string[] responseTag);
 
         /// <summary>
         /// Salvar o arquivo xml no disco de acordo com as propriedades.

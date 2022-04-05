@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System.ComponentModel;
+using OpenAC.Net.DFe.Core.Attributes;
 
 namespace OpenAC.Net.NFSe.Providers
 {

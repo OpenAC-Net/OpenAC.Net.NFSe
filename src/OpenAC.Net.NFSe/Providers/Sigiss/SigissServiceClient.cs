@@ -30,7 +30,6 @@
 // ***********************************************************************
 
 using System;
-using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -38,14 +37,13 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class SigissServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class SigissServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public SigissServiceClient(ProviderSigiss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null)
+        public SigissServiceClient(ProviderSigiss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
         {
-            var binding = new CustomBinding(new WsTextMessageBindingElement("iso-8859-1", "text/xml", MessageVersion.Soap11), new HttpsTransportBindingElement());
-            Endpoint.Binding = binding;
+            CharSet = "iso-8859-1";
         }
 
         #endregion Constructors
@@ -62,7 +60,6 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("urn:sigiss_ws#GerarNota", request.ToString(), new string[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
         }
 
-        //Ainda não está em utilizacao porem provider tem suporte
         public string ConsultarSituacao(string cabec, string msg)
         {
             var request = new StringBuilder();
@@ -82,45 +79,24 @@ namespace OpenAC.Net.NFSe.Providers
             request.Append(msg);
             request.Append("</urn:CancelarNota>");
 
-            return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), new string[] { "CancelarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+            return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), new[] { "CancelarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException();
 
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             //verifica se o retorno tem os elementos corretos senão da erro.
             var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
@@ -130,10 +106,7 @@ namespace OpenAC.Net.NFSe.Providers
             return element.ToString();
         }
 
-        protected override bool ValidarCertificadoServidor()
-        {
-            return false;
-        }
+        protected override bool ValidarCertificadoServidor() => false;
 
         #endregion Methods
     }

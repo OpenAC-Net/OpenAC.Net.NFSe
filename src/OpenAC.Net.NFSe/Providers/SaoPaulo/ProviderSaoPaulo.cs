@@ -296,7 +296,7 @@ namespace OpenAC.Net.NFSe.Providers
             var chaveRPS = new XElement("ChaveRPS");
             rps.Add(chaveRPS);
             chaveRPS.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoPrestador", 1, 15, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal));
-            chaveRPS.AddChild(AdicionarTag(TipoCampo.Str, "", "SerieRPS", 1, 5, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
+            chaveRPS.AddChild(AdicionarTag(TipoCampo.Str, "", "SerieRPS", 1, 5, Ocorrencia.NaoObrigatoria, nota.IdentificacaoRps.Serie));
             chaveRPS.AddChild(AdicionarTag(TipoCampo.Int, "", "NumeroRPS", 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
 
             rps.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoRPS", 1, 1, Ocorrencia.Obrigatoria, tipoRps));

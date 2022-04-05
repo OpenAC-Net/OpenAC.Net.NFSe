@@ -34,7 +34,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
@@ -122,10 +121,8 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (File.Exists(path)) File.Delete(path);
 
-            using (var fileStream = new FileStream(path, FileMode.CreateNew))
-            {
-                Save(fileStream);
-            }
+            using var fileStream = new FileStream(path, FileMode.CreateNew);
+            Save(fileStream);
         }
 
         /// <summary>
@@ -141,9 +138,9 @@ namespace OpenAC.Net.NFSe.Providers
                 if (!m.UrlProducao.ContainsKey(TipoUrl.Autenticacao))
                     m.UrlProducao.Add(TipoUrl.Autenticacao, string.Empty);
             }
-            var formatter = new DataContractSerializer(typeof(MunicipiosNFSe));
-            using (var writer = System.Xml.XmlWriter.Create(stream, new System.Xml.XmlWriterSettings { Indent = true }))
-                formatter.WriteObject(writer, new MunicipiosNFSe { Municipios = Municipios.OrderBy(x => x.Nome).ToArray() });
+
+            var serializer = new MunicipiosNFSe { Municipios = Municipios.OrderBy(x => x.Nome).ToArray() };
+            serializer.Save(stream);
         }
 
         /// <summary>
@@ -157,13 +154,11 @@ namespace OpenAC.Net.NFSe.Providers
             if (path.IsEmpty())
             {
                 var assembly = Assembly.GetExecutingAssembly();
-                using (var stream = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Resources.Municipios.nfse"))
+                using var resourceStream = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Resources.Municipios.nfse");
+                if (resourceStream != null)
                 {
-                    if (stream != null)
-                    {
-                        buffer = new byte[stream.Length];
-                        stream.Read(buffer, 0, buffer.Length);
-                    }
+                    buffer = new byte[resourceStream.Length];
+                    resourceStream.Read(buffer, 0, buffer.Length);
                 }
             }
             else if (File.Exists(path))
@@ -173,10 +168,8 @@ namespace OpenAC.Net.NFSe.Providers
 
             Guard.Against<ArgumentException>(buffer == null, "Arquivo de cidades não encontrado");
 
-            using (var stream = new MemoryStream(buffer))
-            {
-                Load(stream, clean);
-            }
+            using var stream = new MemoryStream(buffer);
+            Load(stream, clean);
         }
 
         /// <summary>
@@ -188,9 +181,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             Guard.Against<ArgumentException>(stream == null, "Arquivo de cidades não encontrado");
 
-            var formatter = new DataContractSerializer(typeof(MunicipiosNFSe));
-            var municipiosNFSe = (MunicipiosNFSe)formatter.ReadObject(stream);
-
+            var municipiosNFSe = MunicipiosNFSe.Load(stream);
             if (clean) Municipios.Clear();
             Municipios.AddRange(municipiosNFSe.Municipios);
         }

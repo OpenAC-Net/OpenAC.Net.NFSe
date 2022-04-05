@@ -3,6 +3,8 @@
 // Author           : Diego Martins
 // Created          : 08-30-2021
 //
+// Last Modified By : Rafael Dias
+// Last Modified On : 09-03-2022
 // ***********************************************************************
 // <copyright file="ProviderBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -28,12 +30,13 @@
 // ***********************************************************************
 
 using System;
-using System.IO;
-using System.Net;
+using System.Collections.Specialized;
+using System.Security.Cryptography.X509Certificates;
+using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    public abstract class NFSeRestServiceClient
+    public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
     {
         #region Constructors
 
@@ -42,145 +45,77 @@ namespace OpenAC.Net.NFSe.Providers
         /// </summary>
         /// <param name="provider"></param>
         /// <param name="tipoUrl"></param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        protected NFSeRestServiceClient(ProviderBase provider, TipoUrl tipoUrl)
+        protected NFSeRestServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl, provider.Certificado)
         {
-            Provider = provider;
+        }
 
-            switch (tipoUrl)
-            {
-                case TipoUrl.Enviar:
-                    PrefixoEnvio = "lot";
-                    PrefixoResposta = "lot";
-                    break;
-
-                case TipoUrl.EnviarSincrono:
-                    PrefixoEnvio = "lot-sinc";
-                    PrefixoResposta = "lot-sinc";
-                    break;
-
-                case TipoUrl.ConsultarSituacao:
-                    PrefixoEnvio = "env-sit-lot";
-                    PrefixoResposta = "rec-sit-lot";
-                    break;
-
-                case TipoUrl.ConsultarLoteRps:
-                    PrefixoEnvio = "con-lot";
-                    PrefixoResposta = "con-lot";
-                    break;
-
-                case TipoUrl.ConsultarSequencialRps:
-                    PrefixoEnvio = "seq-rps";
-                    PrefixoResposta = "seq-rps";
-                    break;
-
-                case TipoUrl.ConsultarNFSeRps:
-                    PrefixoEnvio = "con-rps-nfse";
-                    PrefixoResposta = "con-rps-nfse";
-                    break;
-
-                case TipoUrl.ConsultarNFSe:
-                    PrefixoEnvio = "con-nfse";
-                    PrefixoResposta = "con-nfse";
-                    break;
-
-                case TipoUrl.CancelarNFSe:
-                    PrefixoEnvio = "canc-nfse";
-                    PrefixoResposta = "canc-nfse";
-                    break;
-
-                case TipoUrl.SubstituirNFSe:
-                    PrefixoEnvio = "sub-nfse";
-                    PrefixoResposta = "sub-nfse";
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(tipoUrl), tipoUrl, null);
-            }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="tipoUrl"></param>
+        /// <param name="certificado"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        protected NFSeRestServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        {
         }
 
         #endregion Constructors
 
         #region Properties
 
-        /// <summary>
-        ///
-        /// </summary>
-        public ProviderBase Provider { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool EhHomologação => Provider.Configuracoes.WebServices.Ambiente == DFe.Core.Common.DFeTipoAmbiente.Homologacao;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string PrefixoEnvio { get; protected set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string PrefixoResposta { get; protected set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string EnvelopeEnvio { get; protected set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string EnvelopeRetorno { get; protected set; }
+        public string AuthenticationHeader { get; protected set; } = "AUTHORIZATION";
 
         #endregion Properties
 
         #region Methods
 
-        protected virtual string Execute(string action)
+        protected string Get(string action, string contentyType)
         {
-            return Execute(action, null, "GET");
-        }
+            var url = Url;
 
-        protected virtual string Execute(string action, string message, string method)
-        {
             try
             {
-                var webRequest = CreateWebRequest(action, method);
-                if (!string.IsNullOrEmpty(message))
-                    using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
-                    {
-                        streamWriter.Write(message);
-                        streamWriter.Flush();
-                    }
-                var retornoStr = GetResponse(webRequest.GetResponse());
-                return retornoStr;
+                SetAction(action);
+                EnvelopeEnvio = string.Empty;
+
+                var auth = Authentication();
+                var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
+
+                Execute(contentyType, "GET", headers);
+                return EnvelopeRetorno;
             }
-            catch (WebException ex)
+            finally
             {
-                var res = GetResponse(ex.Response);
-                throw new Exception(res);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                Url = url;
             }
         }
 
-        private string GetResponse(WebResponse response)
+        protected string Post(string action, string message, string contentyType)
         {
-            using (var stream = response.GetResponseStream())
+            var url = Url;
+
+            try
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    var retorno = reader.ReadToEnd();
-                    response.Close();
-                    return retorno;
-                }
+                SetAction(action);
+
+                var auth = Authentication();
+                var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
+
+                EnvelopeEnvio = message;
+
+                Execute(contentyType, "POST", headers);
+                return EnvelopeRetorno;
+            }
+            finally
+            {
+                Url = url;
             }
         }
 
-        protected abstract WebRequest CreateWebRequest(string action, string method);
+        protected virtual string Authentication() => "";
+
+        protected void SetAction(string action) => Url = !Url.EndsWith("/") ? $"{Url}/{action}" : $"{Url}{action}";
 
         #endregion Methods
     }
