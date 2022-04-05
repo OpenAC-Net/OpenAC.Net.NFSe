@@ -365,7 +365,6 @@ namespace OpenAC.Net.NFSe.Providers
 
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "CodigoCEI", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoCEI));
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "MatriculaObra", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.Matricula));
-            //rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "MunicipioPrestacao", 1, 7, Ocorrencia.MaiorQueZero, nota.Servico.CodigoMunicipio));
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "NumeroEncapsulamento", 1, 7, Ocorrencia.NaoObrigatoria, nota.Material.NumeroEncapsulamento));
 
             return xmlDoc.AsString(identado, showDeclaration, Encoding.UTF8);
@@ -882,20 +881,20 @@ namespace OpenAC.Net.NFSe.Providers
             }
 
             // Assinatura do RPS
-            string hash = nota.Prestador.InscricaoMunicipal.PadLeft(8, '0') +
-                          nota.IdentificacaoRps.Serie.PadRight(5, ' ') +
-                          nota.IdentificacaoRps.Numero.PadLeft(12, '0') +
-                          nota.IdentificacaoRps.DataEmissao.Year.ToString().PadLeft(4, '0') +
-                          nota.IdentificacaoRps.DataEmissao.Month.ToString().PadLeft(2, '0') +
-                          nota.IdentificacaoRps.DataEmissao.Day.ToString().PadLeft(2, '0') +
+            string hash = nota.Prestador.InscricaoMunicipal.ZeroFill(8) +
+                          nota.IdentificacaoRps.Serie.FillRight(5) +
+                          nota.IdentificacaoRps.Numero.ZeroFill(12) +
+                          nota.IdentificacaoRps.DataEmissao.Year.ToString().ZeroFill(4) +
+                          nota.IdentificacaoRps.DataEmissao.Month.ToString().ZeroFill(2) +
+                          nota.IdentificacaoRps.DataEmissao.Day.ToString().ZeroFill(2) +
                           tipoTributacao +
                           situacao +
                           issRetido +
-                          Convert.ToInt32(nota.Servico.Valores.ValorServicos * 100).ToString().PadLeft(15, '0') +
-                          Convert.ToInt32(nota.Servico.Valores.ValorDeducoes * 100).ToString().PadLeft(15, '0') +
-                          nota.Servico.ItemListaServico.PadLeft(5, '0') +
+                          Convert.ToInt32(nota.Servico.Valores.ValorServicos * 100).ToString().ZeroFill(15) +
+                          Convert.ToInt32(nota.Servico.Valores.ValorDeducoes * 100).ToString().ZeroFill(15) +
+                          nota.Servico.ItemListaServico.ZeroFill(5) +
                           indCpfCnpjTomador +
-                          nota.Tomador.CpfCnpj?.PadLeft(14, '0');
+                          nota.Tomador.CpfCnpj?.ZeroFill(14);
             if (!nota.Intermediario.CpfCnpj.IsEmpty())
             {
                 var indCpfCnpjIntermediario = "3";
@@ -913,7 +912,7 @@ namespace OpenAC.Net.NFSe.Providers
                 var issRetidoIntermediario = nota.Intermediario.IssRetido == SituacaoTributaria.Retencao ? "S" : "N";
                 hash = hash +
                        indCpfCnpjIntermediario +
-                       nota.Intermediario.CpfCnpj.PadLeft(14, '0') +
+                       nota.Intermediario.CpfCnpj.ZeroFill(14) +
                        issRetidoIntermediario;
             }
 

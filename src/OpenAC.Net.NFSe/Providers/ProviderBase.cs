@@ -1168,10 +1168,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// </summary>
         /// <param name="tipo"></param>
         /// <returns></returns>
-        protected virtual bool PrecisaValidarSchema(TipoUrl tipo)
-        {
-            return true;
-        }
+        protected virtual bool PrecisaValidarSchema(TipoUrl tipo) => true;
 
         /// <summary>
         /// Retornar o XML da assinatura ou nulo caso não tenha nada.
@@ -1445,9 +1442,7 @@ namespace OpenAC.Net.NFSe.Providers
 
                 XElement xmlTag = null;
                 if (ocorrencia == Ocorrencia.Obrigatoria && estaVazio)
-                {
                     xmlTag = GetElement(tag, string.Empty, ns);
-                }
 
                 return estaVazio ? xmlTag : GetElement(tag, conteudoProcessado, ns);
             }
