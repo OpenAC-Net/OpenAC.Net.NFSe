@@ -154,25 +154,13 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("http://ws.bhiss.pbh.gov.br/ConsultarSituacaoLoteRps", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
         }
 
-        public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
-        public string CancelarNFSeLote(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
-        public string SubstituirNFSe(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            throw new NotImplementedException();
-        }
+        public string SubstituirNFSe(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
-        private string Execute(string action, string message, string responseTag)
-        {
-            return Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
-        }
+        private string Execute(string action, string message, string responseTag) => Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
