@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers.Pvh
 {
-    internal sealed class ProviderPvh : ProviderABRASF203
+    internal sealed class ProviderPvh : ProviderABRASF204
     {
 
         #region Constructors

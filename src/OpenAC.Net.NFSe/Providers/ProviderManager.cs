@@ -85,7 +85,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.Americana, typeof(ProviderAmericana)},
                 {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
                 {NFSeProvider.RLZ, typeof(ProviderRLZ)},
-                {NFSeProvider.PVH, typeof(ProviderPvh)}
+                //{NFSeProvider.PVH, typeof(ProviderPvh)}
             };
 
             Load();
