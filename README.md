@@ -24,6 +24,7 @@ Biblioteca para emissão e trasmissão de NFSe.
 - RLZ (RLZ Informática).
 - SimplISS.
 - SmarAPD ABRASAF.
+- SystemPro.
 - São Paulo.
 - WebISS.
 - WebIss2.
@@ -40,5 +41,4 @@ Biblioteca para emissão e trasmissão de NFSe.
 - Porto Alegre (Em Teste).
 - Pronim v2 (Em Teste).
 - SpeedGov (Em Testes).
-- SystemPro (Em Testes).
 - Vitoria (Em Testes).
