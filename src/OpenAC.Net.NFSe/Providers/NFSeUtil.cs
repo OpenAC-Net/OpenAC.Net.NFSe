@@ -132,6 +132,9 @@ namespace OpenAC.Net.NFSe.Providers
         {
             try
             {
+                if (string.IsNullOrEmpty(xmlstring))
+                    return false;
+
                 var xDocument = XDocument.Parse(xmlstring);
                 return true;
             }

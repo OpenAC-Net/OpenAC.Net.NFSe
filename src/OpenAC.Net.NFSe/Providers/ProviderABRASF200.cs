@@ -1451,7 +1451,7 @@ namespace OpenAC.Net.NFSe.Providers
         ///
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetVersao() => "versao=\"{Versao}\"";
+        protected virtual string GetVersao() => $"versao=\"{Versao}\"";
 
         /// <summary>
         ///
