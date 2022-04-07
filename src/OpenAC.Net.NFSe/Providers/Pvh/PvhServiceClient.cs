@@ -11,7 +11,7 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
 {
     internal sealed class PvhServiceClient : NFSeSoapServiceClient, IServiceClient
     {
-        public PvhServiceClient(ProviderPvh provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
+        public PvhServiceClient(ProviderPvh provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
