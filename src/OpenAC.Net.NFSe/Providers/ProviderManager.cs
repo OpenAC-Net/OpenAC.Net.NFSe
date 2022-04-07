@@ -37,6 +37,7 @@ using System.Reflection;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Providers.Pvh;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -83,7 +84,8 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
                 {NFSeProvider.Americana, typeof(ProviderAmericana)},
                 {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
-                {NFSeProvider.RLZ, typeof(ProviderRLZ)}
+                {NFSeProvider.RLZ, typeof(ProviderRLZ)},
+                {NFSeProvider.PVH, typeof(ProviderPvh)}
             };
 
             Load();

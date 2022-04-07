@@ -111,6 +111,9 @@ namespace OpenAC.Net.NFSe.Providers
         WebIss = 10,
 
         [Description("WebIss v2")]
-        WebIss2 = 11
+        WebIss2 = 11,
+
+        [Description("Porto Velho")]
+        PVH = 32
     }
 }

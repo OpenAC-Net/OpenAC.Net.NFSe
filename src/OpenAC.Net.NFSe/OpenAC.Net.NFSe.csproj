@@ -184,6 +184,10 @@
       <Pack>True</Pack>
       <PackagePath>content\Schemas\WebISS2</PackagePath>
     </None>
+    <None Include="Schemas\PVH\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\PVH</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -277,6 +281,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Schemas\WebISS\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Schemas\PVH\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
