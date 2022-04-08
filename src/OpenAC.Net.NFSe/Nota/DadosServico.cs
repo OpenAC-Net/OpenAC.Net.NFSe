@@ -85,6 +85,8 @@ namespace OpenAC.Net.NFSe.Nota
 
         public int MunicipioIncidencia { get; set; }
 
+        public string UfIncidencia { get; set; }
+
         public string NumeroProcesso { get; set; }
 
         public ServicosCollection ItensServico { get; }

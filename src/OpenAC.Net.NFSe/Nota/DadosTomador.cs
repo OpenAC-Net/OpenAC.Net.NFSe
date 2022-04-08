@@ -65,6 +65,8 @@ namespace OpenAC.Net.NFSe.Nota
 
         public string RazaoSocial { get; set; }
 
+        public string NomeFantasia { get; set; }
+
         public Endereco Endereco { get; }
 
         public EnderecoExterior EnderecoExterior { get; }

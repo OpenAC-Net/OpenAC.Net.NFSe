@@ -42,6 +42,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         Abaco = 0,
 
+        AssessorPublico = 33,
+
         Betha = 1,
 
         [Description("Betha v2")]
