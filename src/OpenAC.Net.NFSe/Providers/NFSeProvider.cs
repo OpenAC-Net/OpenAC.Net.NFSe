@@ -41,7 +41,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         Abaco = 0,
 
-        AssessorPublico = 32,
+        AssessorPublico = 33,
 
         Betha = 1,
 
