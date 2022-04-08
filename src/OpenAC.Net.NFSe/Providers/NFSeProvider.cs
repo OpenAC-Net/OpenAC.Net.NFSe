@@ -73,6 +73,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         ISSNet = 18,
 
+        Mitra = 34,
+
         [Description("NFe Cidades")]
         NFeCidades = 6,
 
