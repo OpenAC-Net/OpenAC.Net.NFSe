@@ -26,6 +26,37 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
 
         #region Methods
 
+        protected override void LoadPrestador(NotaServico nota, XElement rootNFSe)
+        {
+            // Endereco Prestador
+            var prestadorServico = rootNFSe.ElementAnyNs("PrestadorServico");
+            if (prestadorServico == null) return;
+
+            nota.Prestador.RazaoSocial = prestadorServico.ElementAnyNs("RazaoSocial")?.GetValue<string>() ?? string.Empty;
+            nota.Prestador.NomeFantasia = prestadorServico.ElementAnyNs("NomeFantasia")?.GetValue<string>() ?? string.Empty;
+            nota.Prestador.NomeFantasia = prestadorServico.ElementAnyNs("NomeFantasia")?.GetValue<string>() ?? string.Empty;
+
+            // Endereco Prestador
+            var enderecoPrestador = prestadorServico.ElementAnyNs("Endereco");
+            if (enderecoPrestador != null)
+            {
+                nota.Prestador.Endereco.Logradouro = enderecoPrestador.ElementAnyNs("Endereco")?.GetValue<string>() ?? string.Empty;
+                nota.Prestador.Endereco.Numero = enderecoPrestador.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+                nota.Prestador.Endereco.Complemento = enderecoPrestador.ElementAnyNs("Complemento")?.GetValue<string>() ?? string.Empty;
+                nota.Prestador.Endereco.Bairro = enderecoPrestador.ElementAnyNs("Bairro")?.GetValue<string>() ?? string.Empty;
+                nota.Prestador.Endereco.CodigoMunicipio = enderecoPrestador.ElementAnyNs("CodigoMunicipio")?.GetValue<int>() ?? 0;
+                nota.Prestador.Endereco.Uf = enderecoPrestador.ElementAnyNs("Uf")?.GetValue<string>() ?? string.Empty;
+                nota.Prestador.Endereco.Cep = enderecoPrestador.ElementAnyNs("Cep")?.GetValue<string>() ?? string.Empty;
+            }
+
+            // Contato Prestador
+            var contatoPrestador = rootNFSe.ElementAnyNs("Contato");
+            if (contatoPrestador != null)
+            {
+                nota.Prestador.DadosContato.Telefone = contatoPrestador.ElementAnyNs("Telefone")?.GetValue<string>() ?? string.Empty;
+                nota.Prestador.DadosContato.Email = contatoPrestador.ElementAnyNs("Email")?.GetValue<string>() ?? string.Empty;
+            }
+        }
         protected override void LoadTomador(NotaServico nota, XElement rpsRoot)
         {
             // Tomador
@@ -69,11 +100,6 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
             nota.Tomador.DadosContato.Telefone = rootTomadorContato.ElementAnyNs("Telefone")?.GetValue<string>() ?? string.Empty;
             nota.Tomador.DadosContato.Email = rootTomadorContato.ElementAnyNs("Email")?.GetValue<string>() ?? string.Empty;
         }
-        protected override void LoadRps(NotaServico nota, XElement rpsRoot)
-        {
-            base.LoadRps(nota, rpsRoot);
-        }
-
 
         protected override void LoadNFSe(NotaServico nota, XElement rootNFSe)
         {
@@ -212,9 +238,7 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
 
                 switch (regime)
                 {
-                    //case RegimeEspecialTributacao.Nenhum: 
-                    //    regimeEspecialTributacao = "";
-                    //    break;
+
                     case RegimeEspecialTributacao.MicroEmpresaMunicipal:
                         regimeEspecialTributacao = "5";
                         break;
@@ -233,15 +257,7 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
                     case RegimeEspecialTributacao.MicroEmpresarioEmpresaPP:
                         regimeEspecialTributacao = "6";
                         break;
-                    //case RegimeEspecialTributacao.LucroReal:
-                    //    regimeEspecialTributacao = "";
-                    //    break;
-                    //case RegimeEspecialTributacao.LucroPresumido:
-                    //    regimeEspecialTributacao = "";
-                    //    break;
-                    //case RegimeEspecialTributacao.SimplesNacional:
-                    //    regimeEspecialTributacao = "";
-                    //    break;
+
                     default:
                         regimeEspecialTributacao = "1";
                         break;
@@ -249,9 +265,6 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
                 //regimeEspecialTributacao = ((int)nota.RegimeEspecialTributacao).ToString();
                 optanteSimplesNacional = "2";
             }
-
-            //if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
-            //    infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
 
             infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
             infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
