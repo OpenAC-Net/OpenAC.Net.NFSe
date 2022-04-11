@@ -31,6 +31,7 @@ Biblioteca para emissão e trasmissão de NFSe.
 
 **Provedores Em Teste**
 - Abaco (Em Teste).
+- AssessorPublico (Em Teste).
 - Betha v1 (Em Teste).
 - Betha v2 (Em Teste).
 - CITTA (Em Testes).
