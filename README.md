@@ -39,6 +39,8 @@ Biblioteca para emissão e trasmissão de NFSe.
 - DBSeller (Em Testes).
 - FissLex (Em Teste).
 - IISNet (Em Teste).
+- Pvh (Em Teste).
+- Mitra (Em Teste).
 - Porto Alegre (Em Teste).
 - Pronim v2 (Em Teste).
 - SpeedGov (Em Testes).
