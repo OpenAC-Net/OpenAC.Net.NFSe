@@ -4,7 +4,7 @@
 // Created          : 18-08-2021
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 30-03-2022
+// Last Modified On : 12-04-2022
 // ***********************************************************************
 // <copyright file="SystemProServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -30,7 +30,6 @@
 // ***********************************************************************
 
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -116,12 +115,13 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null)
-                return xmlDocument.ElementAnyNs("return")?.Value;
+            return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
+            //var element = xmlDocument.ElementAnyNs("Fault");
+            //if (element == null)
+            //    return xmlDocument.ElementAnyNs("return")?.Value;
 
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
+            //var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            //throw new OpenDFeCommunicationException(exMessage);
         }
 
         #endregion Methods
