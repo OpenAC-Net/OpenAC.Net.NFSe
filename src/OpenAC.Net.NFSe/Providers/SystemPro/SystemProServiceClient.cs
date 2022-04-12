@@ -116,12 +116,11 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null)
-                return xmlDocument.ElementAnyNs("return")?.Value;
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
+            var element = xmlDocument.ElementAnyNs("ConsultarNfseFaixaResponse");
+            if (element != null)
+                return element.ElementAnyNs("return")?.Value;
+            
+            return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
         }
 
         #endregion Methods
