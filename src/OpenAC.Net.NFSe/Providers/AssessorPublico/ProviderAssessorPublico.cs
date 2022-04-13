@@ -82,15 +82,15 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (nota.Servico.MunicipioIncidencia == 0 || nota.Servico.MunicipioIncidencia == nota.Servico.CodigoMunicipio)
             {
-                return "D";// D para dentro do município
+                return "D";// D para dentro do municÃ­pio
             }
             else if (nota.Servico.CodigoPais > 0 && nota.Servico.CodigoPais != 1058)
             {
-                return "P"; //P para fora do país
+                return "P"; //P para fora do paÃ­s
             }
             else
             {
-                return "F"; //F para fora do município
+                return "F"; //F para fora do municÃ­pio
             }
         }
 
@@ -123,6 +123,9 @@ namespace OpenAC.Net.NFSe.Providers
             int Sequencia = 1;
             foreach (NotaServico nota in notas)
             {
+                if (string.IsNullOrEmpty(nota.Tomador.Endereco.TipoLogradouro))
+                    nota.Tomador.Endereco.TipoLogradouro = "RUA";
+                
                 xmlLote.Append("<NOTA>");
                 xmlLote.Append($"<LOTE>{nota.IdentificacaoRps.Numero}</LOTE>");
                 xmlLote.Append($"<SEQUENCIA>{Sequencia}</SEQUENCIA>");
@@ -164,13 +167,13 @@ namespace OpenAC.Net.NFSe.Providers
                 xmlLote.Append($"<CSLL>{FormataValor(nota.Servico.Valores.AliquotaCsll)}</CSLL>");
                 xmlLote.Append("<RETCSLL>N</RETCSLL>");
                 xmlLote.Append("<SERVICOS>");
-                xmlLote.Append("</SERVICOS>");
                 xmlLote.Append("<SERVICO>");
                 xmlLote.Append($"<DESCRICAO>{nota.Servico.Discriminacao}</DESCRICAO>");
                 xmlLote.Append($"<VALORUNIT>{nota.Servico.Valores.ValorServicos}</VALORUNIT>");
                 xmlLote.Append("<QUANTIDADE>1.00</QUANTIDADE>");
                 xmlLote.Append("<DESCONTO>0.00</DESCONTO>");
                 xmlLote.Append("</SERVICO>");
+                xmlLote.Append("</SERVICOS>");
                 xmlLote.Append("</NOTA>");
                 Sequencia++;
             }
