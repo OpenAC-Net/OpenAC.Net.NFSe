@@ -4,7 +4,7 @@
 // Created          : 04-04-2022
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 04-04-2022
+// Last Modified On : 04-14-2022
 // ***********************************************************************
 // <copyright file="SystemProServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -82,7 +82,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append($"<nfse:Usuario>{Provider.Configuracoes.WebServices.Usuario}</nfse:Usuario>");
             message.Append($"<nfse:Senha>{GeraHashMD5(Provider.Configuracoes.WebServices.Senha)}</nfse:Senha>");
             message.Append("<nfse:Webxml>");
-            message.Append(msg);
+            message.Append(msg.Replace("<", "&lt;").Replace(">", "&gt;"));
             message.Append("</nfse:Webxml>");
             message.Append("</nfse:Nfse.Execute>");
 
@@ -95,37 +95,24 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("ConsultarSequencialRps nao implementada/suportada para este provedor.");
 
-        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException("ConsultarNFSeRps nao implementada/suportada para este provedor.");
-
-        public string ConsultarNFSe(string cabec, string msg)
+        public string ConsultarNFSeRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ns2:ConsultarNfseFaixa xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:ConsultarNfseFaixa>");
+            message.Append("<nfse:Nfse.Execute>");
+            message.Append("<nfse:Operacao>3</nfse:Operacao>");
+            message.Append($"<nfse:Usuario>{Provider.Configuracoes.WebServices.Usuario}</nfse:Usuario>");
+            message.Append($"<nfse:Senha>{GeraHashMD5(Provider.Configuracoes.WebServices.Senha)}</nfse:Senha>");
+            message.Append("<nfse:Webxml>");
+            message.Append(msg.Replace("<", "&lt;").Replace(">", "&gt;"));
+            message.Append("</nfse:Webxml>");
+            message.Append("</nfse:Nfse.Execute>");
 
-            return Execute("", message.ToString(), "ConsultarNfseFaixaResponse");
+            return Execute("", message.ToString(), "EnviarLoteRpsSincronoResponse");
         }
 
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ns2:CancelarNfse xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\">");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:CancelarNfse>");
+        public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException("ConsultarNFSe nao implementada/suportada para este provedor.");
 
-            return Execute("", message.ToString(), "CancelarNfseResponse");
-        }
+        public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
 
         public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
@@ -182,20 +169,16 @@ namespace OpenAC.Net.NFSe.Providers
             if (EnvelopeBody != null)
                 body = EnvelopeBody;
 
-            var retorno = TratarRetorno(body, responseTag);
-            if (retorno.IsValidXml()) return retorno;
-
-            throw new OpenDFeCommunicationException(retorno);
+            return TratarRetorno(body, responseTag);
         }
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
-            var element = xmlDocument?.ElementAnyNs("Fault");
+            var element = xmlDocument?.ElementAnyNs("Mensagem");
             if (element == null)
-                return xmlDocument?.ElementAnyNs("return")?.Value;
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
+                return xmlDocument.ToString();
+            else
+                return xmlDocument.ElementAnyNs("Mensagem").GetValue<string>();
         }
 
         #endregion Methods
