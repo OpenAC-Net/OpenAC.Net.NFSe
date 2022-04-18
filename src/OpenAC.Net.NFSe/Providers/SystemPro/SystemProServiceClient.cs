@@ -30,7 +30,9 @@
 // ***********************************************************************
 
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -115,11 +117,15 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
-            var element = xmlDocument.ElementAnyNs("ConsultarNfseFaixaResponse");
-            if (element != null)
-                return element.ElementAnyNs("return")?.Value;
-            
-            return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
+            var element = xmlDocument.ElementAnyNs("Fault");
+            if (element == null)
+            {
+                element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
+                return element.ToString();
+            }
+
+            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            throw new OpenDFeCommunicationException(exMessage);
         }
 
         #endregion Methods

@@ -4,9 +4,9 @@
 // Created          : 04-04-2022
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 04-14-2022
+// Last Modified On : 04-18-2022
 // ***********************************************************************
-// <copyright file="SystemProServiceClient.cs" company="OpenAC .Net">
+// <copyright file="AssessorPublicoServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
