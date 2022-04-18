@@ -29,12 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
-using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -59,14 +59,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string EnviarSincrono(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<e:RecepcionarLoteRpsSincronoRequest>");
+            message.Append("<nfse:RecepcionarLoteRpsSincronoRequest>");
             message.Append("<nfseCabecMsg>");
             message.AppendCData(cabec);
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
             message.AppendCData(msg);
             message.Append("</nfseDadosMsg>");
-            message.Append("</e:RecepcionarLoteRpsSincronoRequest>");
+            message.Append("</nfse:RecepcionarLoteRpsSincronoRequest>");
 
             return Execute("recepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
         }
@@ -80,14 +80,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSeRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<e:ConsultarNfsePorRpsRequest>");
+            message.Append("<nfse:ConsultarNfsePorRpsRequest>");
             message.Append("<nfseCabecMsg>");
             message.AppendCData(cabec);
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
             message.AppendCData(msg);
             message.Append("</nfseDadosMsg>");
-            message.Append("</e:ConsultarNfsePorRpsRequest>");
+            message.Append("</nfse:ConsultarNfsePorRpsRequest>");
 
             return Execute("consultarNfsePorRps", message.ToString(), "consultarNfsePorRpsResponse");
         }
@@ -102,7 +102,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://ws.issweb.fiorilli.com.br/\"");
+            return Execute(soapAction, message, "", responseTag, "xmlns:\"http://www.abrasf.org.br\"");
         }
 
         public bool ValidarUsernamePassword()
@@ -121,7 +121,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var reader = xmlDocument.ElementAnyNs(responseTag[0]).CreateReader();
             reader.MoveToContent();
-            return reader.ReadInnerXml().Replace("ns2:", string.Empty);
+            return reader.ReadInnerXml().Replace("nfse:", string.Empty);
         }
 
         #endregion Methods
