@@ -4,7 +4,7 @@
 // Created          : 04-04-2022
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 04-04-2022
+// Last Modified On : 14-04-2022
 // ***********************************************************************
 // <copyright file="ProviderSystemPro.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -34,6 +34,8 @@ using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
@@ -181,6 +183,47 @@ namespace OpenAC.Net.NFSe.Providers
             xmlLote.Append("</NFSE>");
             string xml = xmlLote.ToString();
             retornoWebservice.XmlEnvio = xml;
+        }
+
+        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
+        {
+            if (retornoWebservice.NumeroRps < 1)
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
+                return;
+            }
+
+            var loteBuilder = new StringBuilder();
+            loteBuilder.Append("<NFSE>");
+            loteBuilder.Append("<IDENTIFICACAO>");
+            loteBuilder.Append($"<INSCRICAO>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</INSCRICAO>");
+            loteBuilder.Append($"<LOTE>{retornoWebservice.NumeroRps}</LOTE>");
+            loteBuilder.Append("</IDENTIFICACAO>");
+            loteBuilder.Append("</NFSE>");
+
+            retornoWebservice.XmlEnvio = loteBuilder.ToString();
+        }
+
+        protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
+        {
+            // Analisa mensagem de etorno
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+
+            var compNfse = xmlRet.ElementAnyNs("NFSE")?.ElementAnyNs("NOTA");
+            var numeroNFSe = compNfse.ElementAnyNs("LINK")?.GetValue<string>() ?? string.Empty;
+            if (string.IsNullOrEmpty(numeroNFSe))
+            {
+                retornoWebservice.Sucesso = false;
+                return;
+            }
+
+            retornoWebservice.Sucesso = true;
+        }
+
+        protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+        {
+            // Analisa mensagem de retorno
+            retornoWebservice.Sucesso = retornoWebservice.XmlRetorno.Trim().IsNumeric();
         }
 
         protected override IServiceClient GetClient(TipoUrl tipo) => new AssessorPublicoServiceClient(this, tipo, Certificado);
