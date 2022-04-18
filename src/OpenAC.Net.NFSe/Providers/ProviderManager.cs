@@ -78,6 +78,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.Pronim2, typeof(ProviderPronim2)},
                 {NFSeProvider.PVH, typeof(ProviderPvh)},
                 {NFSeProvider.RLZ, typeof(ProviderRLZ)},
+                {NFSeProvider.SIAPNet, typeof(ProviderSIAPNet)},
                 {NFSeProvider.Sigiss, typeof(ProviderSigiss)},
                 {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
                 {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},

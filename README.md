@@ -43,5 +43,6 @@ Biblioteca para emissão e trasmissão de NFSe.
 - Mitra (Em Teste).
 - Porto Alegre (Em Teste).
 - Pronim v2 (Em Teste).
+- SIAPNet (Em Testes).
 - SpeedGov (Em Testes).
 - Vitoria (Em Testes).
