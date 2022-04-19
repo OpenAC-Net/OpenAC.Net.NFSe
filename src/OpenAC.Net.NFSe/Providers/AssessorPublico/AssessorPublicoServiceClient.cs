@@ -82,9 +82,10 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append($"<nfse:Usuario>{Provider.Configuracoes.WebServices.Usuario}</nfse:Usuario>");
             message.Append($"<nfse:Senha>{GeraHashMD5(Provider.Configuracoes.WebServices.Senha)}</nfse:Senha>");
             message.Append("<nfse:Webxml>");
-            message.Append(msg.Replace("<", "&lt;").Replace(">", "&gt;"));
+            message.AppendEnvio(msg);
             message.Append("</nfse:Webxml>");
             message.Append("</nfse:Nfse.Execute>");
+
 
             return Execute("", message.ToString(), "EnviarLoteRpsSincronoResponse");
         }
@@ -103,7 +104,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append($"<nfse:Usuario>{Provider.Configuracoes.WebServices.Usuario}</nfse:Usuario>");
             message.Append($"<nfse:Senha>{GeraHashMD5(Provider.Configuracoes.WebServices.Senha)}</nfse:Senha>");
             message.Append("<nfse:Webxml>");
-            message.Append(msg.Replace("<", "&lt;").Replace(">", "&gt;"));
+            message.AppendEnvio(msg);
             message.Append("</nfse:Webxml>");
             message.Append("</nfse:Nfse.Execute>");
 

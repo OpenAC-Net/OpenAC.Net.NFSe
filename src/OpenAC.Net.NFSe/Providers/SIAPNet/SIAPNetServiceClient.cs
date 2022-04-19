@@ -102,7 +102,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            return Execute(soapAction, message, "", responseTag, "xmlns:\"http://www.abrasf.org.br\"");
+            return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://www.abrasf.org.br\"");
         }
 
         public bool ValidarUsernamePassword()
