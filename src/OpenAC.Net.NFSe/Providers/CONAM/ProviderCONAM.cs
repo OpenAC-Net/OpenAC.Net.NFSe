@@ -192,10 +192,7 @@ namespace OpenAC.Net.NFSe.Providers
                 reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 20, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal));
 
                 if (
-                    !string.IsNullOrEmpty(nota.EnderecoPrestacao.Logradouro) && (
-                        nota.EnderecoPrestacao.Numero != nota.Tomador.Endereco.Numero ||
-                        nota.EnderecoPrestacao.Cep.ZeroFill(8) != nota.Tomador.Endereco.Cep.ZeroFill(8)
-                    )
+                    !string.IsNullOrEmpty(nota.EnderecoPrestacao.Logradouro)
                 )
                 {
                     if (
