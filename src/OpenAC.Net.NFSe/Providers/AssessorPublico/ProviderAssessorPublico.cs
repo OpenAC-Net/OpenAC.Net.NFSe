@@ -4,9 +4,9 @@
 // Created          : 04-04-2022
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 04-04-2022
+// Last Modified On : 04-18-2022
 // ***********************************************************************
-// <copyright file="ProviderSystemPro.cs" company="OpenAC .Net">
+// <copyright file="ProviderAssessorPublico.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
@@ -30,8 +30,6 @@
 // ***********************************************************************
 
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
-using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System.Text;
@@ -82,15 +80,15 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (nota.Servico.MunicipioIncidencia == 0 || nota.Servico.MunicipioIncidencia == nota.Servico.CodigoMunicipio)
             {
-                return "D";// D para dentro do municÃ­pio
+                return "D";// D para dentro do município
             }
             else if (nota.Servico.CodigoPais > 0 && nota.Servico.CodigoPais != 1058)
             {
-                return "P"; //P para fora do paÃ­s
+                return "P"; //P para fora do país
             }
             else
             {
-                return "F"; //F para fora do municÃ­pio
+                return "F"; //F para fora do município
             }
         }
 
@@ -125,7 +123,7 @@ namespace OpenAC.Net.NFSe.Providers
             {
                 if (string.IsNullOrEmpty(nota.Tomador.Endereco.TipoLogradouro))
                     nota.Tomador.Endereco.TipoLogradouro = "RUA";
-                
+
                 xmlLote.Append("<NOTA>");
                 xmlLote.Append($"<LOTE>{nota.IdentificacaoRps.Numero}</LOTE>");
                 xmlLote.Append($"<SEQUENCIA>{Sequencia}</SEQUENCIA>");
@@ -181,6 +179,41 @@ namespace OpenAC.Net.NFSe.Providers
             xmlLote.Append("</NFSE>");
             string xml = xmlLote.ToString();
             retornoWebservice.XmlEnvio = xml;
+        }
+
+        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
+        {
+            if (retornoWebservice.NumeroRps < 1)
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
+                return;
+            }
+
+            var loteBuilder = new StringBuilder();
+            loteBuilder.Append("<NFSE>");
+            loteBuilder.Append("<IDENTIFICACAO>");
+            loteBuilder.Append($"<INSCRICAO>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</INSCRICAO>");
+            loteBuilder.Append($"<LOTE>{retornoWebservice.NumeroRps}</LOTE>");
+            loteBuilder.Append("</IDENTIFICACAO>");
+            loteBuilder.Append("</NFSE>");
+
+            retornoWebservice.XmlEnvio = loteBuilder.ToString();
+        }
+
+        protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
+        {
+            // Analisa mensagem de etorno
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+
+            var compNfse = xmlRet.ElementAnyNs("NFSE")?.ElementAnyNs("NOTA");
+            var numeroNFSe = compNfse.ElementAnyNs("LINK")?.GetValue<string>() ?? string.Empty;
+            retornoWebservice.Sucesso = !string.IsNullOrEmpty(numeroNFSe);
+        }
+
+        protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+        {
+            // Analisa mensagem de retorno
+            retornoWebservice.Sucesso = retornoWebservice.XmlRetorno.Trim().IsNumeric();
         }
 
         protected override IServiceClient GetClient(TipoUrl tipo) => new AssessorPublicoServiceClient(this, tipo, Certificado);

@@ -292,4 +292,13 @@
     <Folder Include="Providers\Mitra\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Schemas\SIAPNet\nfse.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Schemas\SIAPNet\xmldsig-core-schema20020212.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

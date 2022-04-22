@@ -90,6 +90,8 @@ namespace OpenAC.Net.NFSe.Providers
         [Description("SmarAPD ABRASF")]
         SmarAPDABRASF = 14,
 
+        SIAPNet = 35,
+
         Sigiss = 20,
 
         SimplISS = 24,

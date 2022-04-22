@@ -4,7 +4,7 @@
 // Created          : 18-08-2021
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 30-03-2022
+// Last Modified On : 12-04-2022
 // ***********************************************************************
 // <copyright file="SystemProServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -32,6 +32,7 @@
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -118,7 +119,10 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null)
-                return xmlDocument.ElementAnyNs("return")?.Value;
+            {
+                element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
+                return element.ToString();
+            }
 
             var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);
