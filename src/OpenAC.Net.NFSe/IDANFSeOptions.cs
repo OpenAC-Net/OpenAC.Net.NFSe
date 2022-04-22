@@ -36,19 +36,11 @@ namespace OpenAC.Net.NFSe
 {
     public interface IDANFSeOptions
     {
-#if NETFULL
-        Image LogoPrefeitura { get; set; }
-#else
-        byte[] LogoPrefeitura { get; set; }
-#endif
-
         LayoutImpressao Layout { get; set; }
 
-#if NETFULL
         Image Logo { get; set; }
-#else
-        byte[] Logo { get; set; }
-#endif
+
+        Image LogoPrefeitura { get; set; }
 
         FiltroDFeReport Filtro { get; set; }
 

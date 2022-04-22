@@ -45,7 +45,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core" Version="1.5.0-preview.2" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0-preview.2" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0-preview.3" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
   </ItemGroup>
@@ -75,14 +75,6 @@
     <None Include="Schemas\Americana\*.*">
       <Pack>True</Pack>
       <PackagePath>content\Schemas\Americana</PackagePath>
-    </None>
-    <None Include="Schemas\ABRASFv1\*.*">
-      <Pack>True</Pack>
-      <PackagePath>content\Schemas\ABRASFv1</PackagePath>
-    </None>
-    <None Include="Schemas\ABRASFv2\*.*">
-      <Pack>True</Pack>
-      <PackagePath>content\Schemas\ABRASFv2</PackagePath>
     </None>
     <None Include="Schemas\Betha\*.*">
       <Pack>True</Pack>
@@ -188,6 +180,18 @@
       <Pack>True</Pack>
       <PackagePath>content\Schemas\PVH</PackagePath>
     </None>
+    <None Include="Schemas\PVH\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\PVH</PackagePath>
+    </None>
+    <None Include="Schemas\Mitra\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\Mitra</PackagePath>
+    </None>
+    <None Include="Schemas\SIAPNet\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\SIAPNet</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -286,17 +290,10 @@
     <None Update="Schemas\PVH\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Providers\Mitra\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Schemas\SIAPNet\nfse.xsd">
+    <None Update="Schemas\Mitra\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Schemas\SIAPNet\xmldsig-core-schema20020212.xsd">
+    <None Update="Schemas\SIAPNet\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

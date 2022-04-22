@@ -29,16 +29,11 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
-
-#if !NETSTANDARD2_0
-
-#endif
 
 namespace OpenAC.Net.NFSe
 {
@@ -60,11 +55,7 @@ namespace OpenAC.Net.NFSe
 
         public ConfigNFSe Configuracoes { get; }
 
-#if NETFULL
         public Image LogoPrefeitura { get; set; }
-#else
-        public byte[] LogoPrefeitura { get; set; }
-#endif
 
         public LayoutImpressao Layout { get; set; }
 
