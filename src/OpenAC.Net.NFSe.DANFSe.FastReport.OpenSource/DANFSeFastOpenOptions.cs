@@ -1,14 +1,14 @@
-// ***********************************************************************
-// Assembly         : OpenAC.Net.NFSe
+﻿// ***********************************************************************
+// Assembly         : OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 // Author           : Rafael Dias
 // Created          : 01-31-2016
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 08-06-2017
+// Last Modified On : 07-05-2018
 // ***********************************************************************
-// <copyright file="IDANFSeOptions.cs" company="OpenAC .Net">
+// <copyright file="DANFSeFastOpenOptions.cs" company="OpenAC.Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,35 +29,19 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.Drawing;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe
+namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 {
-    public interface IDANFSeOptions
+    public sealed class DANFSeFastOpenOptions : DANFSeOptions<FiltroDFeReport>
     {
-        LayoutImpressao Layout { get; set; }
+        #region Constructors
 
-        Image Logo { get; set; }
+        public DANFSeFastOpenOptions(ConfigNFSe configuracoes) : base(configuracoes)
+        {
+        }
 
-        Image LogoPrefeitura { get; set; }
-
-        FiltroDFeReport Filtro { get; set; }
-
-        bool MostrarPreview { get; set; }
-
-        bool MostrarSetup { get; set; }
-
-        bool UsarPathPDF { get; set; }
-
-        string Impressora { get; set; }
-
-        int NumeroCopias { get; set; }
-
-        string NomeArquivo { get; set; }
-
-        string SoftwareHouse { get; set; }
-
-        string Site { get; set; }
+        #endregion Constructors
     }
 }

@@ -1,12 +1,12 @@
-// ***********************************************************************
-// Assembly         : OpenAC.Net.NFSe
+﻿// ***********************************************************************
+// Assembly         : OpenAC.Net.NFSe.DANFSe.FastReport
 // Author           : Rafael Dias
-// Created          : 05-26-2016
+// Created          : 01-31-2016
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 05-26-2016
+// Last Modified On : 07-05-2018
 // ***********************************************************************
-// <copyright file="SituacaoTributaria.cs" company="OpenAC .Net">
+// <copyright file="DANFSeFastOptions.cs" company="OpenAC.Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
@@ -29,12 +29,17 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+using OpenAC.Net.NFSe.Configuracao;
+
+namespace OpenAC.Net.NFSe.DANFSe.FastReport;
+
+public sealed class DANFSeFastOptions : DANFSeOptions<FiltroDANFSe>
 {
-    public enum SituacaoTributaria
+    #region Constructors
+
+    public DANFSeFastOptions(ConfigNFSe configuracoes) : base(configuracoes)
     {
-        Retencao,
-        Normal,
-        Substituicao
     }
+
+    #endregion Constructors
 }

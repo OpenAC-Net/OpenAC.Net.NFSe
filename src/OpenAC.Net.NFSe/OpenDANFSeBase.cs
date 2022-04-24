@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="OpenDANFSeBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.Drawing;
+using System;
 using System.IO;
-using OpenAC.Net.DFe.Core.Common;
-using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.Core.Logging;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe
@@ -40,24 +40,13 @@ namespace OpenAC.Net.NFSe
     /// <summary>
     /// Classe base para impressão de DANFSe
     /// </summary>
-    public abstract class OpenDANFSeBase : DFeReportClass<FiltroDFeReport>, IDANFSeOptions
+    public abstract class OpenDANFSeBase<TOptions, TFiltro> : IOpenLog
+        where TFiltro : Enum
+        where TOptions : DANFSeOptions<TFiltro>
     {
-        #region Constructors
-
-        protected OpenDANFSeBase(ConfigNFSe config)
-        {
-            Configuracoes = config;
-        }
-
-        #endregion Constructors
-
         #region Properties
 
-        public ConfigNFSe Configuracoes { get; }
-
-        public Image LogoPrefeitura { get; set; }
-
-        public LayoutImpressao Layout { get; set; }
+        public TOptions Configuracoes { get; protected set; }
 
         #endregion Properties
 
