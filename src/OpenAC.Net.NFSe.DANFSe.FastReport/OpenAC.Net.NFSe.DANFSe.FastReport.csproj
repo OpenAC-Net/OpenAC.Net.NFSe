@@ -69,7 +69,7 @@
       <Version>1.5.0.1</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.DFe.Core">
-      <Version>1.5.0</Version>
+      <Version>1.5.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
