@@ -172,7 +172,7 @@ namespace OpenAC.Net.NFSe.Providers
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null)
             {
-                element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
+                element = responseTag.Aggregate(xmlDocument.Elements().First(), (current, tag) => current.ElementAnyNs(tag));
                 return element.ToString();
             }
 
