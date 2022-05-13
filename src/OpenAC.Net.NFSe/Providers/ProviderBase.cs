@@ -1160,7 +1160,7 @@ namespace OpenAC.Net.NFSe.Providers
                     throw new ArgumentOutOfRangeException();
             }
 
-            return ret.Replace("?wsdl", "");
+            return ret?.Replace("?wsdl", "");
         }
 
         /// <summary>

@@ -32,6 +32,7 @@
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -44,31 +45,32 @@ namespace OpenAC.Net.NFSe.Providers
 
         public SIAPNetServiceClient(ProviderSIAPNet provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
-        }
-
-        public SIAPNetServiceClient(ProviderSIAPNet provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
+            
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public string Enviar(string cabec, string msg) => throw new NotImplementedException("Enviar nao implementada/suportada para este provedor.");
+        private string EmpacotaXml(string conteudo)
+        {
+            return string.Concat("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", conteudo);
+        }
+        public string Enviar(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string EnviarSincrono(string cabec, string msg)
         {
             var message = new StringBuilder();
             message.Append("<nfse:RecepcionarLoteRpsSincronoRequest>");
             message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
+            message.AppendCData(EmpacotaXml(cabec));
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
+            message.AppendCData(EmpacotaXml(msg));
             message.Append("</nfseDadosMsg>");
             message.Append("</nfse:RecepcionarLoteRpsSincronoRequest>");
 
-            return Execute("recepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
+            return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse ");
         }
 
         public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
@@ -82,10 +84,10 @@ namespace OpenAC.Net.NFSe.Providers
             var message = new StringBuilder();
             message.Append("<nfse:ConsultarNfsePorRpsRequest>");
             message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
+            message.AppendCData(EmpacotaXml(cabec));
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
+            message.AppendCData(EmpacotaXml(msg));
             message.Append("</nfseDadosMsg>");
             message.Append("</nfse:ConsultarNfsePorRpsRequest>");
 
@@ -102,26 +104,23 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://www.abrasf.org.br\"");
-        }
-
-        public bool ValidarUsernamePassword()
-        {
-            return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
+            return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
         }
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
-            if (element != null)
+            if (element == null)
             {
-                var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-                throw new OpenDFeCommunicationException(exMessage);
+                element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
+                if (element == null)
+                    return xmlDocument.ToString();
+
+                return element.ToString();
             }
 
-            var reader = xmlDocument.ElementAnyNs(responseTag[0]).CreateReader();
-            reader.MoveToContent();
-            return reader.ReadInnerXml().Replace("nfse:", string.Empty);
+            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            throw new OpenDFeCommunicationException(exMessage);
         }
 
         #endregion Methods
