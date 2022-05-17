@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DANFSeFastReportOpenSource.cs" company="OpenAC.Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.IO;
 using System.Reflection;
@@ -44,7 +45,7 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 {
-    public sealed class DANFSeFastReportOpenSource : OpenDANFSeBase
+    public sealed class DANFSeFastReportOpenSource : OpenDANFSeBase<DANFSeFastOpenOptions, FiltroDFeReport>
     {
         #region Fields
 
@@ -63,8 +64,9 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 
         #region Constructors
 
-        public DANFSeFastReportOpenSource(ConfigNFSe config) : base(config)
+        public DANFSeFastReportOpenSource(ConfigNFSe config)
         {
+            Configuracoes = new DANFSeFastOpenOptions(config);
         }
 
         #endregion Constructors
@@ -80,68 +82,68 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
         /// <inheritdoc />
         public override void ImprimirPDF(NotaServico[] notas)
         {
-            var oldFiltro = Filtro;
+            var oldFiltro = Configuracoes.Filtro;
 
             try
             {
-                Filtro = FiltroDFeReport.PDF;
+                Configuracoes.Filtro = FiltroDFeReport.PDF;
                 Imprimir(notas, null);
             }
             finally
             {
-                Filtro = oldFiltro;
+                Configuracoes.Filtro = oldFiltro;
             }
         }
 
         /// <inheritdoc />
         public override void ImprimirPDF(NotaServico[] notas, Stream stream)
         {
-            var oldFiltro = Filtro;
+            var oldFiltro = Configuracoes.Filtro;
 
             try
             {
-                Filtro = FiltroDFeReport.PDF;
+                Configuracoes.Filtro = FiltroDFeReport.PDF;
                 Imprimir(notas, stream);
             }
             finally
             {
-                Filtro = oldFiltro;
+                Configuracoes.Filtro = oldFiltro;
             }
         }
 
         /// <inheritdoc />
         public override void ImprimirHTML(NotaServico[] notas)
         {
-            var oldFiltro = Filtro;
+            var oldFiltro = Configuracoes.Filtro;
 
             try
             {
-                Filtro = FiltroDFeReport.HTML;
+                Configuracoes.Filtro = FiltroDFeReport.HTML;
                 Imprimir(notas, null);
             }
             finally
             {
-                Filtro = oldFiltro;
+                Configuracoes.Filtro = oldFiltro;
             }
         }
 
         /// <inheritdoc />
         public override void ImprimirHTML(NotaServico[] notas, Stream stream)
         {
-            var oldFiltro = Filtro;
+            var oldFiltro = Configuracoes.Filtro;
 
             try
             {
-                Filtro = FiltroDFeReport.HTML;
+                Configuracoes.Filtro = FiltroDFeReport.HTML;
                 Imprimir(notas, stream);
             }
             finally
             {
-                Filtro = oldFiltro;
+                Configuracoes.Filtro = oldFiltro;
             }
         }
 
-        private void Imprimir(NotaServico[] notas, Stream stream)
+        private void Imprimir(IEnumerable<NotaServico> notas, Stream stream)
         {
             try
             {
@@ -156,12 +158,12 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
                     internalReport.RegisterData(notas, "NotaServico");
                     internalReport.Prepare();
 
-                    switch (Filtro)
+                    switch (Configuracoes.Filtro)
                     {
                         case FiltroDFeReport.Nenhum:
-                            if (MostrarPreview)
+                            if (Configuracoes.MostrarPreview)
                                 internalReport.Show();
-                            else if (MostrarSetup)
+                            else if (Configuracoes.MostrarSetup)
                                 internalReport.PrintWithDialog();
                             else
                                 internalReport.Print(settings);
@@ -172,18 +174,18 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 
                             var evtPdf = new DANFSeExportEventArgs
                             {
-                                Filtro = Filtro,
+                                Filtro = Configuracoes.Filtro,
                                 Export = new PDFSimpleExport()
                                 {
                                     ImageDpi = 600,
-                                    ShowProgress = MostrarSetup,
-                                    OpenAfterExport = MostrarPreview
+                                    ShowProgress = Configuracoes.MostrarSetup,
+                                    OpenAfterExport = Configuracoes.MostrarPreview
                                 }
                             };
 
                             OnExport.Raise(this, evtPdf);
                             if (stream.IsNull())
-                                internalReport.Export(evtPdf.Export, NomeArquivo);
+                                internalReport.Export(evtPdf.Export, Configuracoes.NomeArquivo);
                             else
                                 internalReport.Export(evtPdf.Export, stream);
 
@@ -195,19 +197,19 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 
                             var evtHtml = new DANFSeExportEventArgs
                             {
-                                Filtro = Filtro,
+                                Filtro = Configuracoes.Filtro,
                                 Export = new HTMLExport()
                                 {
                                     Format = HTMLExportFormat.HTML,
                                     EmbedPictures = true,
-                                    Preview = MostrarPreview,
-                                    ShowProgress = MostrarSetup
+                                    Preview = Configuracoes.MostrarPreview,
+                                    ShowProgress = Configuracoes.MostrarSetup
                                 }
                             };
 
                             OnExport.Raise(this, evtHtml);
                             if (stream.IsNull())
-                                internalReport.Export(evtHtml.Export, NomeArquivo);
+                                internalReport.Export(evtHtml.Export, Configuracoes.NomeArquivo);
                             else
                                 internalReport.Export(evtHtml.Export, stream);
 
@@ -232,7 +234,7 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
         {
             this.Log().Debug("Preparando a impressão.");
 
-            var e = new DANFSeEventArgs(Layout);
+            var e = new DANFSeEventArgs(Configuracoes.Layout);
             OnGetReport.Raise(this, e);
             if (e.FilePath.IsEmpty() || !File.Exists(e.FilePath))
             {
@@ -240,7 +242,7 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
                 var assembly = Assembly.GetExecutingAssembly();
 
                 Stream ms;
-                switch (Layout)
+                switch (Configuracoes.Layout)
                 {
                     case LayoutImpressao.ABRASF2:
                         ms = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource.Report.DANFSe.frx");
@@ -275,17 +277,17 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 
             this.Log().Debug("Passando configurações para o relatório.");
 
-            internalReport.SetParameterValue("Logo", Logo);
-            internalReport.SetParameterValue("LogoPrefeitura", LogoPrefeitura);
-            internalReport.SetParameterValue("MunicipioPrestador", Configuracoes.WebServices.Municipio);
-            internalReport.SetParameterValue("Ambiente", (int)Configuracoes.WebServices.Ambiente);
-            internalReport.SetParameterValue("SoftwareHouse", SoftwareHouse);
-            internalReport.SetParameterValue("Site", Site);
+            internalReport.SetParameterValue("Logo", Configuracoes.Logo.ToByteArray());
+            internalReport.SetParameterValue("LogoPrefeitura", Configuracoes.LogoPrefeitura.ToByteArray());
+            internalReport.SetParameterValue("MunicipioPrestador", Configuracoes.NFSe.WebServices.Municipio);
+            internalReport.SetParameterValue("Ambiente", (int)Configuracoes.NFSe.WebServices.Ambiente);
+            internalReport.SetParameterValue("SoftwareHouse", Configuracoes.SoftwareHouse);
+            internalReport.SetParameterValue("Site", Configuracoes.Site);
 
-            settings = new PrinterSettings { Copies = (short)Math.Max(NumeroCopias, 1) };
+            settings = new PrinterSettings { Copies = (short)Math.Max(Configuracoes.NumeroCopias, 1) };
 
-            if (!Impressora.IsEmpty())
-                settings.PrinterName = Impressora;
+            if (!Configuracoes.Impressora.IsEmpty())
+                settings.PrinterName = Configuracoes.Impressora;
 
             this.Log().Debug("Impressão preparada.");
         }

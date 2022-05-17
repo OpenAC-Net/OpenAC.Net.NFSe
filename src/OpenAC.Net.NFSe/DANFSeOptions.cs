@@ -1,14 +1,14 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
-// Created          : 05-26-2016
+// Created          : 01-31-2016
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 05-26-2016
+// Last Modified On : 08-06-2017
 // ***********************************************************************
-// <copyright file="SituacaoTributaria.cs" company="OpenAC .Net">
+// <copyright file="DANFSeOptions.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	      Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,12 +29,31 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+using System;
+using System.Drawing;
+using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Configuracao;
+
+namespace OpenAC.Net.NFSe;
+
+public class DANFSeOptions<TFiltro> : DFeOptionsBase<TFiltro> where TFiltro : Enum
 {
-    public enum SituacaoTributaria
+    #region Constructors
+
+    protected DANFSeOptions(ConfigNFSe configuracoes)
     {
-        Retencao,
-        Normal,
-        Substituicao
+        NFSe = configuracoes;
     }
+
+    #endregion Constructors
+
+    #region Properties
+
+    public ConfigNFSe NFSe { get; }
+
+    public Image LogoPrefeitura { get; set; }
+
+    public LayoutImpressao Layout { get; set; }
+
+    #endregion Properties
 }
