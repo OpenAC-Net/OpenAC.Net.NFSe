@@ -494,15 +494,23 @@ namespace OpenAC.Net.NFSe.Demo
             var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.Curitiba) ? "0107" : "01.07";
             if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
-            var cnae = "861010101";
+            // Setar o cnae de acordo com o schema aceito pelo provedor.
+            var cnae = municipio.Provedor.IsIn(NFSeProvider.SIAPNet) ? "5211701" : "861010101";
             if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
             nfSe.Servico.CodigoCnae = cnae;
 
+            var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SIAPNet) ? "5211701" : "01.07.00 / 00010700";
+
             nfSe.Servico.ItemListaServico = itemListaServico;
-            nfSe.Servico.CodigoTributacaoMunicipio = "01.07.00 / 00010700";
+            nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
             nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
             nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.DSF ? municipio.CodigoSiafi : municipio.Codigo;
             nfSe.Servico.Municipio = municipio.Nome;
+            if (municipio.Provedor.IsIn(NFSeProvider.SIAPNet))
+            {
+                nfSe.Servico.ResponsavelRetencao = ResponsavelRetencao.Prestador;
+                nfSe.Servico.MunicipioIncidencia = nfSe.Servico.CodigoMunicipio;
+            }
 
             nfSe.Servico.Valores.ValorServicos = 100;
             nfSe.Servico.Valores.ValorDeducoes = 0;
@@ -512,7 +520,7 @@ namespace OpenAC.Net.NFSe.Demo
             nfSe.Servico.Valores.ValorIr = 0;
             nfSe.Servico.Valores.ValorCsll = 0;
             nfSe.Servico.Valores.IssRetido = SituacaoTributaria.Normal;
-            nfSe.Servico.Valores.ValorIss = 0;
+            nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SIAPNet ? 2 : 0;
             nfSe.Servico.Valores.ValorOutrasRetencoes = 0;
             nfSe.Servico.Valores.BaseCalculo = 100;
             nfSe.Servico.Valores.Aliquota = 2;
