@@ -34,7 +34,7 @@ using System.Drawing;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.OpenAC.Net.NFSe
+namespace OpenAC.Net.NFSe
 {
     public class DANFSeOptions<TFiltro> : DFeOptionsBase<TFiltro> where TFiltro : Enum
     {
