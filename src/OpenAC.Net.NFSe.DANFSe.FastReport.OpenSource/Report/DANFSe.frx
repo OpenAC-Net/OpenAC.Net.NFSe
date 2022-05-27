@@ -45,87 +45,87 @@ namespace FastReport
   }
 }
 </ScriptText>
-  <Dictionary>
-    <BusinessObjectDataSource Name="NotaServico" ReferenceName="NotaServico" DataType="null" Enabled="true">
+  <Dictionary>    
+    <BusinessObjectDataSource Name="NotaServico" ReferenceName="NotaServico" DataType="OpenAC.Net.NFSe.Nota.NotaServico[], OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" Enabled="true">
       <Column Name="Id" DataType="System.Int32"/>
-      <Column Name="IdentificacaoRps" DataType="null">
+      <Column Name="IdentificacaoRps" DataType="OpenAC.Net.NFSe.Nota.IdeRps, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="Numero" DataType="System.String"/>
         <Column Name="Serie" DataType="System.String"/>
         <Column Name="SeriePrestacao" DataType="System.String"/>
-        <Column Name="Tipo" DataType="null"/>
+        <Column Name="Tipo" DataType="OpenAC.Net.NFSe.Nota.TipoRps, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
         <Column Name="DataEmissao" DataType="System.DateTime"/>
       </Column>
-      <Column Name="IdentificacaoNFSe" DataType="null">
+      <Column Name="IdentificacaoNFSe" DataType="OpenAC.Net.NFSe.Nota.IdeNFSe, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="Numero" DataType="System.String"/>
         <Column Name="Chave" DataType="System.String"/>
         <Column Name="DataEmissao" DataType="System.DateTime"/>
         <Column Name="ModeloNfse" DataType="System.String"/>
       </Column>
-      <Column Name="RpsSubstituido" DataType="null">
+      <Column Name="RpsSubstituido" DataType="OpenAC.Net.NFSe.Nota.IdeRpsSubtituida, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="NumeroRps" DataType="System.String"/>
         <Column Name="NumeroNfse" DataType="System.String"/>
         <Column Name="Serie" DataType="System.String"/>
-        <Column Name="Tipo" DataType="null"/>
+        <Column Name="Tipo" DataType="OpenAC.Net.NFSe.Nota.TipoRps, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
         <Column Name="DataEmissaoNfseSubstituida" DataType="System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"/>
         <Column Name="NFSeSubstituidora" DataType="System.String"/>
-        <Column Name="Signature" DataType="null">
-          <Column Name="SignedInfo" DataType="null">
-            <Column Name="CanonicalizationMethod" DataType="null">
+        <Column Name="Signature" DataType="OpenAC.Net.DFe.Core.Document.DFeSignature, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+          <Column Name="SignedInfo" DataType="OpenAC.Net.DFe.Core.Document.SignedInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+            <Column Name="CanonicalizationMethod" DataType="OpenAC.Net.DFe.Core.Document.CanonicalizationMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="Algorithm" DataType="System.String"/>
             </Column>
-            <Column Name="SignatureMethod" DataType="null">
+            <Column Name="SignatureMethod" DataType="OpenAC.Net.DFe.Core.Document.SignatureMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="Algorithm" DataType="System.String"/>
             </Column>
-            <Column Name="Reference" DataType="null">
+            <Column Name="Reference" DataType="OpenAC.Net.DFe.Core.Document.Reference, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="URI" DataType="System.String"/>
-              <Column Name="DigestMethod" DataType="null">
+              <Column Name="DigestMethod" DataType="OpenAC.Net.DFe.Core.Document.DigestMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
                 <Column Name="Algorithm" DataType="System.String"/>
               </Column>
               <Column Name="DigestValue" DataType="System.String"/>
-              <BusinessObjectDataSource Name="BusinessObjectDataSource1" Alias="Transforms" Enabled="false" DataType="null" PropName="Transforms"/>
+              <BusinessObjectDataSource Name="BusinessObjectDataSource1" Alias="Transforms" Enabled="false" DataType="OpenAC.Net.DFe.Core.Collection.DFeCollection`1[[OpenAC.Net.DFe.Core.Document.Transform, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6]], OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="Transforms"/>
             </Column>
           </Column>
           <Column Name="SignatureValue" DataType="System.String"/>
-          <Column Name="KeyInfo" DataType="null">
-            <Column Name="X509Data" DataType="null">
+          <Column Name="KeyInfo" DataType="OpenAC.Net.DFe.Core.Document.KeyInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+            <Column Name="X509Data" DataType="OpenAC.Net.DFe.Core.Document.X509Data, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="X509Certificate" DataType="System.String"/>
             </Column>
           </Column>
           <Column Name="Xml" DataType="System.String"/>
         </Column>
       </Column>
-      <Column Name="Cancelamento" DataType="null">
+      <Column Name="Cancelamento" DataType="OpenAC.Net.NFSe.Nota.IdeCancelamento, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="Id" DataType="System.Int32"/>
-        <Column Name="Pedido" DataType="null">
+        <Column Name="Pedido" DataType="OpenAC.Net.NFSe.Nota.PedidoCancelamento, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
           <Column Name="Id" DataType="System.Int32"/>
-          <Column Name="IdentificacaoNFSe" DataType="null">
+          <Column Name="IdentificacaoNFSe" DataType="OpenAC.Net.NFSe.Nota.IdeNFSe, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
             <Column Name="Numero" DataType="System.String"/>
             <Column Name="Chave" DataType="System.String"/>
             <Column Name="DataEmissao" DataType="System.DateTime"/>
             <Column Name="ModeloNfse" DataType="System.String"/>
           </Column>
           <Column Name="CodigoCancelamento" DataType="System.String"/>
-          <Column Name="Signature" DataType="null">
-            <Column Name="SignedInfo" DataType="null">
-              <Column Name="CanonicalizationMethod" DataType="null">
+          <Column Name="Signature" DataType="OpenAC.Net.DFe.Core.Document.DFeSignature, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+            <Column Name="SignedInfo" DataType="OpenAC.Net.DFe.Core.Document.SignedInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+              <Column Name="CanonicalizationMethod" DataType="OpenAC.Net.DFe.Core.Document.CanonicalizationMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
                 <Column Name="Algorithm" DataType="System.String"/>
               </Column>
-              <Column Name="SignatureMethod" DataType="null">
+              <Column Name="SignatureMethod" DataType="OpenAC.Net.DFe.Core.Document.SignatureMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
                 <Column Name="Algorithm" DataType="System.String"/>
               </Column>
-              <Column Name="Reference" DataType="null">
+              <Column Name="Reference" DataType="OpenAC.Net.DFe.Core.Document.Reference, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
                 <Column Name="URI" DataType="System.String"/>
-                <Column Name="DigestMethod" DataType="null">
+                <Column Name="DigestMethod" DataType="OpenAC.Net.DFe.Core.Document.DigestMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
                   <Column Name="Algorithm" DataType="System.String"/>
                 </Column>
                 <Column Name="DigestValue" DataType="System.String"/>
-                <BusinessObjectDataSource Name="BusinessObjectDataSource2" Alias="Transforms" Enabled="false" DataType="null" PropName="Transforms"/>
+                <BusinessObjectDataSource Name="BusinessObjectDataSource2" Alias="Transforms" Enabled="false" DataType="OpenAC.Net.DFe.Core.Collection.DFeCollection`1[[OpenAC.Net.DFe.Core.Document.Transform, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6]], OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="Transforms"/>
               </Column>
             </Column>
             <Column Name="SignatureValue" DataType="System.String"/>
-            <Column Name="KeyInfo" DataType="null">
-              <Column Name="X509Data" DataType="null">
+            <Column Name="KeyInfo" DataType="OpenAC.Net.DFe.Core.Document.KeyInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+              <Column Name="X509Data" DataType="OpenAC.Net.DFe.Core.Document.X509Data, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
                 <Column Name="X509Certificate" DataType="System.String"/>
               </Column>
             </Column>
@@ -134,43 +134,43 @@ namespace FastReport
         </Column>
         <Column Name="MotivoCancelamento" DataType="System.String"/>
         <Column Name="DataHora" DataType="System.DateTime"/>
-        <Column Name="Signature" DataType="null">
-          <Column Name="SignedInfo" DataType="null">
-            <Column Name="CanonicalizationMethod" DataType="null">
+        <Column Name="Signature" DataType="OpenAC.Net.DFe.Core.Document.DFeSignature, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+          <Column Name="SignedInfo" DataType="OpenAC.Net.DFe.Core.Document.SignedInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+            <Column Name="CanonicalizationMethod" DataType="OpenAC.Net.DFe.Core.Document.CanonicalizationMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="Algorithm" DataType="System.String"/>
             </Column>
-            <Column Name="SignatureMethod" DataType="null">
+            <Column Name="SignatureMethod" DataType="OpenAC.Net.DFe.Core.Document.SignatureMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="Algorithm" DataType="System.String"/>
             </Column>
-            <Column Name="Reference" DataType="null">
+            <Column Name="Reference" DataType="OpenAC.Net.DFe.Core.Document.Reference, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="URI" DataType="System.String"/>
-              <Column Name="DigestMethod" DataType="null">
+              <Column Name="DigestMethod" DataType="OpenAC.Net.DFe.Core.Document.DigestMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
                 <Column Name="Algorithm" DataType="System.String"/>
               </Column>
               <Column Name="DigestValue" DataType="System.String"/>
-              <BusinessObjectDataSource Name="BusinessObjectDataSource3" Alias="Transforms" Enabled="false" DataType="null" PropName="Transforms"/>
+              <BusinessObjectDataSource Name="BusinessObjectDataSource3" Alias="Transforms" Enabled="false" DataType="OpenAC.Net.DFe.Core.Collection.DFeCollection`1[[OpenAC.Net.DFe.Core.Document.Transform, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6]], OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="Transforms"/>
             </Column>
           </Column>
           <Column Name="SignatureValue" DataType="System.String"/>
-          <Column Name="KeyInfo" DataType="null">
-            <Column Name="X509Data" DataType="null">
+          <Column Name="KeyInfo" DataType="OpenAC.Net.DFe.Core.Document.KeyInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+            <Column Name="X509Data" DataType="OpenAC.Net.DFe.Core.Document.X509Data, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="X509Certificate" DataType="System.String"/>
             </Column>
           </Column>
           <Column Name="Xml" DataType="System.String"/>
         </Column>
       </Column>
-      <Column Name="OrgaoGerador" DataType="null">
+      <Column Name="OrgaoGerador" DataType="OpenAC.Net.NFSe.Nota.IdeOrgaoGerador, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="CodigoMunicipio" DataType="System.Int32"/>
         <Column Name="Uf" DataType="System.String"/>
       </Column>
-      <Column Name="Prestador" DataType="null">
+      <Column Name="Prestador" DataType="OpenAC.Net.NFSe.Nota.DadosPrestador, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="CpfCnpj" DataType="System.String"/>
         <Column Name="InscricaoMunicipal" DataType="System.String"/>
         <Column Name="NumeroEmissorRps" DataType="System.String"/>
         <Column Name="RazaoSocial" DataType="System.String"/>
         <Column Name="NomeFantasia" DataType="System.String"/>
-        <Column Name="Endereco" DataType="null">
+        <Column Name="Endereco" DataType="OpenAC.Net.NFSe.Nota.Endereco, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
           <Column Name="TipoLogradouro" DataType="System.String"/>
           <Column Name="Logradouro" DataType="System.String"/>
           <Column Name="Numero" DataType="System.String"/>
@@ -184,19 +184,19 @@ namespace FastReport
           <Column Name="CodigoPais" DataType="System.Int32"/>
           <Column Name="Pais" DataType="System.String"/>
         </Column>
-        <Column Name="DadosContato" DataType="null">
+        <Column Name="DadosContato" DataType="OpenAC.Net.NFSe.Nota.DadosContato, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
           <Column Name="DDD" DataType="System.String"/>
           <Column Name="Telefone" DataType="System.String"/>
           <Column Name="Email" DataType="System.String"/>
         </Column>
       </Column>
-      <Column Name="Tomador" DataType="null">
+      <Column Name="Tomador" DataType="OpenAC.Net.NFSe.Nota.DadosTomador, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="CpfCnpj" DataType="System.String"/>
         <Column Name="InscricaoMunicipal" DataType="System.String"/>
         <Column Name="InscricaoEstadual" DataType="System.String"/>
         <Column Name="DocTomadorEstrangeiro" DataType="System.String"/>
         <Column Name="RazaoSocial" DataType="System.String"/>
-        <Column Name="Endereco" DataType="null">
+        <Column Name="Endereco" DataType="OpenAC.Net.NFSe.Nota.Endereco, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
           <Column Name="TipoLogradouro" DataType="System.String"/>
           <Column Name="Logradouro" DataType="System.String"/>
           <Column Name="Numero" DataType="System.String"/>
@@ -210,25 +210,28 @@ namespace FastReport
           <Column Name="CodigoPais" DataType="System.Int32"/>
           <Column Name="Pais" DataType="System.String"/>
         </Column>
-        <Column Name="EnderecoExterior" DataType="null">
+        <Column Name="EnderecoExterior" DataType="OpenAC.Net.NFSe.Nota.EnderecoExterior, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
           <Column Name="CodigoPais" DataType="System.Int32"/>
           <Column Name="EnderecoCompleto" DataType="System.String"/>
         </Column>
-        <Column Name="DadosContato" DataType="null">
+        <Column Name="DadosContato" DataType="OpenAC.Net.NFSe.Nota.DadosContato, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
           <Column Name="DDD" DataType="System.String"/>
           <Column Name="Telefone" DataType="System.String"/>
           <Column Name="Email" DataType="System.String"/>
         </Column>
+        <Column Name="NomeFantasia" DataType="System.String"/>
+        <Column Name="Tipo" DataType="System.Int32"/>
       </Column>
-      <Column Name="Intermediario" DataType="null">
+      <Column Name="Intermediario" DataType="OpenAC.Net.NFSe.Nota.DadosIntermediario, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="RazaoSocial" DataType="System.String"/>
         <Column Name="CpfCnpj" DataType="System.String"/>
         <Column Name="InscricaoMunicipal" DataType="System.String"/>
-        <Column Name="IssRetido" DataType="null"/>
+        <Column Name="IssRetido" DataType="OpenAC.Net.NFSe.Nota.SituacaoTributaria, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
         <Column Name="EMail" DataType="System.String"/>
+        <Column Name="CodigoMunicipio" DataType="System.String"/>
       </Column>
-      <Column Name="Servico" DataType="null">
-        <Column Name="Valores" DataType="null">
+      <Column Name="Servico" DataType="OpenAC.Net.NFSe.Nota.DadosServico, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+        <Column Name="Valores" DataType="OpenAC.Net.NFSe.Nota.ValoresServico, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
           <Column Name="ValorServicos" DataType="System.Decimal"/>
           <Column Name="ValorDeducoes" DataType="System.Decimal"/>
           <Column Name="ValorPis" DataType="System.Decimal"/>
@@ -236,7 +239,7 @@ namespace FastReport
           <Column Name="ValorInss" DataType="System.Decimal"/>
           <Column Name="ValorIr" DataType="System.Decimal"/>
           <Column Name="ValorCsll" DataType="System.Decimal"/>
-          <Column Name="IssRetido" DataType="null"/>
+          <Column Name="IssRetido" DataType="OpenAC.Net.NFSe.Nota.SituacaoTributaria, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
           <Column Name="ValorIss" DataType="System.Decimal"/>
           <Column Name="OutrasRetencoes" DataType="System.Decimal"/>
           <Column Name="BaseCalculo" DataType="System.Decimal"/>
@@ -256,6 +259,7 @@ namespace FastReport
           <Column Name="ValorCargaTributaria" DataType="System.Decimal"/>
           <Column Name="AliquotaCargaTributaria" DataType="System.Decimal"/>
           <Column Name="FonteCargaTributaria" DataType="System.String"/>
+          <Column Name="ValTotTributos" DataType="System.Decimal"/>
         </Column>
         <Column Name="ItemListaServico" DataType="System.String"/>
         <Column Name="CodigoCnae" DataType="System.String"/>
@@ -265,16 +269,17 @@ namespace FastReport
         <Column Name="CodigoMunicipio" DataType="System.Int32"/>
         <Column Name="Municipio" DataType="System.String"/>
         <Column Name="CodigoPais" DataType="System.Int32"/>
-        <Column Name="ExigibilidadeIss" DataType="null"/>
+        <Column Name="ExigibilidadeIss" DataType="OpenAC.Net.NFSe.Nota.ExigibilidadeIss, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
         <Column Name="IdentifNaoExigibilidade" DataType="System.String"/>
         <Column Name="MunicipioIncidencia" DataType="System.Int32"/>
         <Column Name="NumeroProcesso" DataType="System.String"/>
-        <Column Name="ResponsavelRetencao" DataType="null"/>
+        <Column Name="ResponsavelRetencao" DataType="System.Nullable`1[[OpenAC.Net.NFSe.Nota.ResponsavelRetencao, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6]]"/>
         <Column Name="Descricao" DataType="System.String"/>
-        <BusinessObjectDataSource Name="BusinessObjectDataSource4" Alias="ItensServico" Enabled="false" DataType="null" PropName="ItensServico"/>
-        <BusinessObjectDataSource Name="BusinessObjectDataSource5" Alias="Deducoes" Enabled="false" DataType="null" PropName="Deducoes"/>
+        <BusinessObjectDataSource Name="BusinessObjectDataSource4" Alias="ItensServico" Enabled="false" DataType="OpenAC.Net.NFSe.Nota.ServicosCollection, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="ItensServico"/>
+        <BusinessObjectDataSource Name="BusinessObjectDataSource5" Alias="Deducoes" Enabled="false" DataType="OpenAC.Net.NFSe.Nota.DeducoesCollection, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="Deducoes"/>
+        <Column Name="UfIncidencia" DataType="System.String"/>
       </Column>
-      <Column Name="ConstrucaoCivil" DataType="null">
+      <Column Name="ConstrucaoCivil" DataType="OpenAC.Net.NFSe.Nota.DadosConstrucaoCivil, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="CodigoObra" DataType="System.String"/>
         <Column Name="ArtObra" DataType="System.String"/>
         <Column Name="LogradouroObra" DataType="System.String"/>
@@ -290,11 +295,11 @@ namespace FastReport
         <Column Name="Projeto" DataType="System.String"/>
         <Column Name="Matricula" DataType="System.String"/>
       </Column>
-      <Column Name="Material" DataType="null">
-        <Column Name="Deducao" DataType="null"/>
+      <Column Name="Material" DataType="OpenAC.Net.NFSe.Nota.DadosMateriais, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+        <Column Name="Deducao" DataType="OpenAC.Net.NFSe.Nota.NFSeSimNao, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
         <Column Name="NumeroEncapsulamento" DataType="System.Int32"/>
       </Column>
-      <Column Name="Transportadora" DataType="null">
+      <Column Name="Transportadora" DataType="OpenAC.Net.NFSe.Nota.DadosTransportadora, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
         <Column Name="xNomeTrans" DataType="System.String"/>
         <Column Name="xCpfCnpjTrans" DataType="System.String"/>
         <Column Name="xInscEstTrans" DataType="System.String"/>
@@ -305,57 +310,59 @@ namespace FastReport
         <Column Name="xUFTrans" DataType="System.String"/>
         <Column Name="cPaisTrans" DataType="System.Int32"/>
         <Column Name="xPaisTrans" DataType="System.String"/>
-        <Column Name="vTipoFreteTrans" DataType="null"/>
+        <Column Name="vTipoFreteTrans" DataType="OpenAC.Net.NFSe.Nota.NfseFrete, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
       </Column>
-      <Column Name="Pagamento" DataType="null">
-        <Column Name="Forma" DataType="null"/>
+      <Column Name="Pagamento" DataType="OpenAC.Net.NFSe.Nota.DadosPagamento, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+        <Column Name="Forma" DataType="OpenAC.Net.NFSe.Nota.FormaPagamento, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
         <Column Name="QtdParcela" DataType="System.Int32"/>
-        <BusinessObjectDataSource Name="BusinessObjectDataSource6" Alias="Parcelas" Enabled="false" DataType="null" PropName="Parcelas"/>
+        <BusinessObjectDataSource Name="BusinessObjectDataSource6" Alias="Parcelas" Enabled="false" DataType="OpenAC.Net.NFSe.Nota.ParcelasCollection, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="Parcelas"/>
       </Column>
-      <Column Name="NaturezaOperacao" DataType="null"/>
-      <Column Name="RegimeEspecialTributacao" DataType="null"/>
+      <Column Name="NaturezaOperacao" DataType="System.Int32"/>
+      <Column Name="RegimeEspecialTributacao" DataType="OpenAC.Net.NFSe.Nota.RegimeEspecialTributacao, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
       <Column Name="DataOptanteSimplesNacional" DataType="System.DateTime"/>
-      <Column Name="IncentivadorCultural" DataType="null"/>
-      <Column Name="Producao" DataType="null"/>
-      <Column Name="Situacao" DataType="null"/>
-      <Column Name="LocalServico" DataType="null"/>
-      <Column Name="NumeroLote" DataType="System.String"/>
+      <Column Name="IncentivadorCultural" DataType="OpenAC.Net.NFSe.Nota.NFSeSimNao, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
+      <Column Name="Producao" DataType="OpenAC.Net.NFSe.Nota.NFSeSimNao, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
+      <Column Name="Situacao" DataType="OpenAC.Net.NFSe.Nota.SituacaoNFSeRps, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
+      <Column Name="LocalServico" DataType="OpenAC.Net.NFSe.Nota.TipoLocalServico, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
+      <Column Name="NumeroLote" DataType="System.Int32"/>
       <Column Name="Protocolo" DataType="System.String"/>
       <Column Name="Competencia" DataType="System.DateTime"/>
       <Column Name="OutrasInformacoes" DataType="System.String"/>
       <Column Name="DiscriminacaoImpostos" DataType="System.String"/>
-      <Column Name="DescricaoCodigoTributacaoMunicípio" DataType="System.String"/>
       <Column Name="ValorCredito" DataType="System.Decimal"/>
-      <Column Name="TipoEmissao" DataType="null"/>
-      <Column Name="EmpreitadaGlobal" DataType="null"/>
-      <Column Name="TipoTributacao" DataType="null"/>
+      <Column Name="TipoEmissao" DataType="OpenAC.Net.NFSe.Nota.TipoEmissao, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
+      <Column Name="EmpreitadaGlobal" DataType="OpenAC.Net.NFSe.Nota.TipoEmpreitadaGlobal, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
+      <Column Name="TipoTributacao" DataType="OpenAC.Net.NFSe.Nota.TipoTributacao, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
       <Column Name="Assinatura" DataType="System.String"/>
-      <Column Name="Signature" DataType="null">
-        <Column Name="SignedInfo" DataType="null">
-          <Column Name="CanonicalizationMethod" DataType="null">
+      <Column Name="Signature" DataType="OpenAC.Net.DFe.Core.Document.DFeSignature, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+        <Column Name="SignedInfo" DataType="OpenAC.Net.DFe.Core.Document.SignedInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+          <Column Name="CanonicalizationMethod" DataType="OpenAC.Net.DFe.Core.Document.CanonicalizationMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
             <Column Name="Algorithm" DataType="System.String"/>
           </Column>
-          <Column Name="SignatureMethod" DataType="null">
+          <Column Name="SignatureMethod" DataType="OpenAC.Net.DFe.Core.Document.SignatureMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
             <Column Name="Algorithm" DataType="System.String"/>
           </Column>
-          <Column Name="Reference" DataType="null">
+          <Column Name="Reference" DataType="OpenAC.Net.DFe.Core.Document.Reference, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
             <Column Name="URI" DataType="System.String"/>
-            <Column Name="DigestMethod" DataType="null">
+            <Column Name="DigestMethod" DataType="OpenAC.Net.DFe.Core.Document.DigestMethod, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
               <Column Name="Algorithm" DataType="System.String"/>
             </Column>
             <Column Name="DigestValue" DataType="System.String"/>
-            <BusinessObjectDataSource Name="BusinessObjectDataSource8" Alias="Transforms" Enabled="false" DataType="null" PropName="Transforms"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource8" Alias="Transforms" Enabled="false" DataType="OpenAC.Net.DFe.Core.Collection.DFeCollection`1[[OpenAC.Net.DFe.Core.Document.Transform, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6]], OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="Transforms"/>
           </Column>
         </Column>
         <Column Name="SignatureValue" DataType="System.String"/>
-        <Column Name="KeyInfo" DataType="null">
-          <Column Name="X509Data" DataType="null">
+        <Column Name="KeyInfo" DataType="OpenAC.Net.DFe.Core.Document.KeyInfo, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
+          <Column Name="X509Data" DataType="OpenAC.Net.DFe.Core.Document.X509Data, OpenAC.Net.DFe.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6">
             <Column Name="X509Certificate" DataType="System.String"/>
           </Column>
         </Column>
         <Column Name="Xml" DataType="System.String"/>
       </Column>
-      <BusinessObjectDataSource Name="BusinessObjectDataSource7" Alias="Emails" Enabled="false" DataType="null" PropName="Emails"/>
+      <BusinessObjectDataSource Name="BusinessObjectDataSource7" Alias="Emails" Enabled="false" DataType="OpenAC.Net.NFSe.Nota.EmailCollection, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6" PropName="Emails"/>
+      <Column Name="EnderecoPrestacao" Enabled="false" DataType="OpenAC.Net.NFSe.Nota.Endereco, OpenAC.Net.NFSe, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d3bb9130f8b775a6"/>
+      <Column Name="DescricaoCodigoTributacaoMunicipio" DataType="System.String"/>
+      <Column Name="XmlOriginal" DataType="System.String"/>
     </BusinessObjectDataSource>
     <Parameter Name="Logo" DataType="System.Byte[]"/>
     <Parameter Name="LogoPrefeitura" DataType="System.Byte[]"/>

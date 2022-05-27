@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderSystemPro.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -105,6 +105,10 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
         {
+            if (retornoWebservice.NumeroNFse == 0)
+            {
+                throw new System.Exception("Faltou informar o numero da NFSe para consulta por faixa");
+            }
             var loteBuilder = new StringBuilder();
             loteBuilder.Append($"<ConsultarNfseFaixaEnvio {GetNamespace()}>");
             loteBuilder.Append("<Prestador>");
@@ -117,11 +121,8 @@ namespace OpenAC.Net.NFSe.Providers
             loteBuilder.Append("</Prestador>");
 
             loteBuilder.Append("<Faixa>");
-            if (retornoWebservice.NumeroNFse > 0)
-            {
-                loteBuilder.Append($"<NumeroNfseInicial>{retornoWebservice.NumeroNFse}</NumeroNfseInicial>");
-                loteBuilder.Append($"<NumeroNfseFinal>{retornoWebservice.NumeroNFse}</NumeroNfseFinal>");
-            }
+            loteBuilder.Append($"<NumeroNfseInicial>{retornoWebservice.NumeroNFse}</NumeroNfseInicial>");
+            loteBuilder.Append($"<NumeroNfseFinal>{retornoWebservice.NumeroNFse}</NumeroNfseFinal>");
             loteBuilder.Append("</Faixa>");
             loteBuilder.Append($"<Pagina>{System.Math.Max(retornoWebservice.Pagina, 1)}</Pagina>");
             loteBuilder.Append("</ConsultarNfseFaixaEnvio>");

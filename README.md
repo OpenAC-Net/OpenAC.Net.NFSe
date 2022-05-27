@@ -11,34 +11,38 @@ Se *OpenNFSe* for um componente vital em sua aplicação comercial ou de código
 Biblioteca para emissão e trasmissão de NFSe.
 
 **Provedores Implementados**
-- Belo Horizonte.
-- Coplan.
-- DSF.
-- Equiplano.
-- Fiorilli.
-- Ginfes.
-- Goiânia.
-- ISSe.
-- Nota Carioca.
-- NFe Cidades (GovDigital).
-- RLZ (RLZ Informática).
-- SimplISS.
-- SmarAPD ABRASAF.
-- São Paulo.
-- WebISS.
-- WebIss2.
+- AssessorPublico
+- Belo Horizonte
+- Coplan
+- DSF
+- Equiplano
+- Fiorilli
+- Ginfes
+- Goiânia
+- ISSe
+- Nota Carioca
+- NFe Cidades (GovDigital)
+- RLZ (RLZ Informática)
+- SimplISS
+- SmarAPD ABRASAF
+- SystemPro
+- São Paulo
+- WebISS
+- WebIss2
 
 **Provedores Em Teste**
-- Abaco (Em Teste).
-- Betha v1 (Em Teste).
-- Betha v2 (Em Teste).
-- CITTA (Em Testes).
-- Curitiba (Em Testes).
-- DBSeller (Em Testes).
-- FissLex (Em Teste).
-- IISNet (Em Teste).
-- Porto Alegre (Em Teste).
-- Pronim v2 (Em Teste).
-- SpeedGov (Em Testes).
-- SystemPro (Em Testes).
-- Vitoria (Em Testes).
+- Abaco (Em Teste)
+- Betha v1 (Em Teste)
+- Betha v2 (Em Teste)
+- CITTA (Em Testes)
+- Curitiba (Em Testes)
+- DBSeller (Em Testes)
+- FissLex (Em Teste)
+- ISSNet (Em Teste)
+- Pvh (Em Teste)
+- Mitra (Em Teste)
+- Porto Alegre (Em Teste)
+- Pronim v2 (Em Teste)
+- SIAPNet (Em Testes)
+- SpeedGov (Em Testes)
+- Vitoria (Em Testes)

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderRLZ.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -41,21 +41,22 @@ namespace OpenAC.Net.NFSe.Providers
 {
     internal sealed class ProviderRLZ : ProviderABRASF203
     {
-
         #region Constructors
+
         public ProviderRLZ(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
         {
             Name = "RLZ";
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
+
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
             return new RLZServiceClient(this, tipo);
         }
 
-        #endregion
+        #endregion Methods
     }
 }

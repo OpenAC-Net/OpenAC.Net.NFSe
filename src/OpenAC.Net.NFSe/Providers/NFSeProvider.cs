@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="NFSeProvider.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -42,6 +42,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         Abaco = 0,
 
+        AssessorPublico = 33,
+
         Betha = 1,
 
         [Description("Betha v2")]
@@ -71,6 +73,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         ISSNet = 18,
 
+        Mitra = 34,
+
         [Description("NFe Cidades")]
         NFeCidades = 6,
 
@@ -85,6 +89,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         [Description("SmarAPD ABRASF")]
         SmarAPDABRASF = 14,
+
+        SIAPNet = 35,
 
         Sigiss = 20,
 

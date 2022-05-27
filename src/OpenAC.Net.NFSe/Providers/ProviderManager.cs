@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderManager.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -54,10 +54,13 @@ namespace OpenAC.Net.NFSe.Providers
             Providers = new Dictionary<NFSeProvider, Type>
             {
                 {NFSeProvider.Abaco, typeof(ProviderAbaco)},
+                {NFSeProvider.Americana, typeof(ProviderAmericana)},
+                {NFSeProvider.AssessorPublico, typeof(ProviderAssessorPublico)},
                 {NFSeProvider.BHISS, typeof(ProviderBHISS)},
                 {NFSeProvider.Betha, typeof(ProviderBetha)},
                 {NFSeProvider.Betha2, typeof(ProviderBetha2)},
                 {NFSeProvider.CITTA, typeof(ProviderCITTA)},
+                {NFSeProvider.Conam, typeof(ProviderCONAM)},
                 {NFSeProvider.Coplan, typeof(ProviderCoplan)},
                 {NFSeProvider.Curitiba, typeof(ProviderCuritiba)},
                 {NFSeProvider.DBSeller, typeof(ProviderDBSeller)},
@@ -66,26 +69,26 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.Fiorilli, typeof(ProviderFiorilli)},
                 {NFSeProvider.FissLex, typeof(ProviderFissLex)},
                 {NFSeProvider.Ginfes, typeof(ProviderGinfes)},
+                {NFSeProvider.Goiania, typeof(ProviderGoiania)},
+                {NFSeProvider.ISSe, typeof(ProviderISSe)},
                 {NFSeProvider.ISSNet, typeof(ProviderISSNet)},
+                {NFSeProvider.Mitra, typeof(ProviderMitra)},
                 {NFSeProvider.NFeCidades, typeof(ProviderNFeCidades)},
                 {NFSeProvider.NotaCarioca, typeof(ProviderNotaCarioca)},
                 {NFSeProvider.Pronim2, typeof(ProviderPronim2)},
+                {NFSeProvider.PVH, typeof(ProviderPvh)},
+                {NFSeProvider.RLZ, typeof(ProviderRLZ)},
+                {NFSeProvider.SIAPNet, typeof(ProviderSIAPNet)},
+                {NFSeProvider.Sigiss, typeof(ProviderSigiss)},
+                {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
+                {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},
+                {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
+                {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
                 {NFSeProvider.SaoPaulo, typeof(ProviderSaoPaulo)},
                 {NFSeProvider.SmarAPDABRASF, typeof(ProviderSmarAPDABRASF)},
                 {NFSeProvider.Vitoria, typeof(ProviderVitoria)},
                 {NFSeProvider.WebIss, typeof(ProviderWebIss)},
-                {NFSeProvider.WebIss2, typeof(ProviderWebIss2)},
-                {NFSeProvider.Sigiss, typeof(ProviderSigiss)},
-                {NFSeProvider.Conam, typeof(ProviderCONAM)},
-                {NFSeProvider.Goiania, typeof(ProviderGoiania)},
-                {NFSeProvider.ISSe, typeof(ProviderISSe)},
-                {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},
-                {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
-                {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
-                {NFSeProvider.Americana, typeof(ProviderAmericana)},
-                {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
-                {NFSeProvider.RLZ, typeof(ProviderRLZ)},
-                {NFSeProvider.PVH, typeof(ProviderPvh)}
+                {NFSeProvider.WebIss2, typeof(ProviderWebIss2)}
             };
 
             Load();
