@@ -34,6 +34,7 @@ using System.IO;
 using OpenAC.Net.Core.Logging;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Nota;
+using OpenAC.Net.NFSe.OpenAC.Net.NFSe;
 
 namespace OpenAC.Net.NFSe
 {

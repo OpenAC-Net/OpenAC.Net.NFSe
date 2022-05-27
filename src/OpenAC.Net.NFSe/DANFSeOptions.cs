@@ -34,26 +34,28 @@ using System.Drawing;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe;
-
-public class DANFSeOptions<TFiltro> : DFeOptionsBase<TFiltro> where TFiltro : Enum
+namespace OpenAC.Net.NFSe.OpenAC.Net.NFSe
 {
-    #region Constructors
-
-    protected DANFSeOptions(ConfigNFSe configuracoes)
+    public class DANFSeOptions<TFiltro> : DFeOptionsBase<TFiltro> where TFiltro : Enum
     {
-        NFSe = configuracoes;
+        #region Constructors
+
+        protected DANFSeOptions(ConfigNFSe configuracoes)
+        {
+            NFSe = configuracoes;
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ConfigNFSe NFSe { get; }
+
+        public Image LogoPrefeitura { get; set; }
+
+        public LayoutImpressao Layout { get; set; }
+
+        #endregion Properties
     }
-
-    #endregion Constructors
-
-    #region Properties
-
-    public ConfigNFSe NFSe { get; }
-
-    public Image LogoPrefeitura { get; set; }
-
-    public LayoutImpressao Layout { get; set; }
-
-    #endregion Properties
 }
+
