@@ -25,7 +25,6 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
         #endregion
 
         #region Methods
-
         protected override void LoadPrestador(NotaServico nota, XElement rootNFSe)
         {
             // Endereco Prestador
@@ -150,6 +149,9 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
             var rootGrupo = xml.ElementAnyNs("ConsultarLoteRpsResposta");
             var rootGrupoListaNfse = rootGrupo?.ElementAnyNs("ListaNfse");
             var rootCompNfse = rootGrupoListaNfse?.ElementAnyNs("CompNfse");
+
+            if(rootCompNfse == null)
+                rootCompNfse = xml.ElementAnyNs("CompNfse");
 
             if (rootCompNfse != null)
             {
