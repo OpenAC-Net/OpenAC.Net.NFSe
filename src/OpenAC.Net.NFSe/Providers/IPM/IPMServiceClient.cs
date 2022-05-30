@@ -48,7 +48,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, "application/xml");
+        public string EnviarSincrono(string cabec, string msg) => Post("", msg, "multipart/form-data");
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
