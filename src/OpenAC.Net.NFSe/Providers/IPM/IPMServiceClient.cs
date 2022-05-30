@@ -31,6 +31,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Specialized;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 
@@ -48,23 +49,25 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        public string EnviarSincrono(string cabec, string msg) => Post("", msg, "multipart/form-data");
+        public string EnviarSincrono(string cabec, string msg) => Post(msg, "multipart/form-data");
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
-            var xml = XDocument.Parse(msg);
-            var numerorps = xml.Root?.ElementAnyNs("NumeroRPS")?.GetValue<string>();
-            var serierps = xml.Root?.ElementAnyNs("SerieRPS")?.GetValue<string>();
-            return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}", "application/xml");
+            throw new NotImplementedException();
+            //var xml = XDocument.Parse(msg);
+            //var numerorps = xml.Root?.ElementAnyNs("NumeroRPS")?.GetValue<string>();
+            //var serierps = xml.Root?.ElementAnyNs("SerieRPS")?.GetValue<string>();
+            //return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}", "application/xml");
         }
 
         public string CancelarNFSe(string cabec, string msg)
         {
-            var xml = XDocument.Parse(msg);
-            var numeronf = xml.Root?.ElementAnyNs("NumeroNFSe")?.GetValue<string>();
-            var serie = xml.Root?.ElementAnyNs("SerieNFSe")?.GetValue<string>();
-            var motivo = xml.Root?.ElementAnyNs("Motivo")?.GetValue<string>();
-            return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}", "application/xml");
+            throw new NotImplementedException();
+            //var xml = XDocument.Parse(msg);
+            //var numeronf = xml.Root?.ElementAnyNs("NumeroNFSe")?.GetValue<string>();
+            //var serie = xml.Root?.ElementAnyNs("SerieNFSe")?.GetValue<string>();
+            //var motivo = xml.Root?.ElementAnyNs("Motivo")?.GetValue<string>();
+            //return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}", "application/xml");
         }
 
         public string Enviar(string cabec, string msg) => throw new NotImplementedException();
@@ -83,15 +86,23 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string Authentication()
         {
+            string authenticationString = string.Concat(Provider.Configuracoes.WebServices.Usuario, ":", Provider.Configuracoes.WebServices.Senha);
+            string base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
+            return "Basic " + base64EncodedAuthenticationString;
+        }
+
+        protected string Post(string message, string contentyType)
+        {
             var url = Url;
 
             try
             {
-                Url = Provider.GetUrl(TipoUrl.Autenticacao);
-                SetAction("/login");
+                var auth = Authentication();
+                var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
 
-                EnvelopeEnvio = "{ \"login\": \"" + Provider.Configuracoes.WebServices.Usuario + "\"  , \"senha\":\"" + Provider.Configuracoes.WebServices.Senha + "\"}";
-                Execute("application/json; charset=utf-8", "POST");
+                EnvelopeEnvio = message;
+
+                Execute(contentyType, "POST", headers);
                 return EnvelopeRetorno;
             }
             finally
@@ -99,6 +110,7 @@ namespace OpenAC.Net.NFSe.Providers
                 Url = url;
             }
         }
+
 
         #endregion Methods
     }
