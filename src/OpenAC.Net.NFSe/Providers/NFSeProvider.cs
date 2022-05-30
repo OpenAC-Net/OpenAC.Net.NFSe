@@ -69,6 +69,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         Ginfes = 5,
 
+        IPM = 36,
+
         ISSe = 23,
 
         ISSNet = 18,

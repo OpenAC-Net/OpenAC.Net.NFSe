@@ -38,6 +38,7 @@ Biblioteca para emissão e trasmissão de NFSe.
 - Curitiba (Em Testes)
 - DBSeller (Em Testes)
 - FissLex (Em Teste)
+- IPM (Em Teste)
 - ISSNet (Em Teste)
 - Pvh (Em Teste)
 - Mitra (Em Teste)
