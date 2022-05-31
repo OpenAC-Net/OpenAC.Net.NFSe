@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 30-05-2022
@@ -32,8 +32,11 @@
 
 using System;
 using System.Collections.Specialized;
+using System.IO;
+using System.Net;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -49,7 +52,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        public string EnviarSincrono(string cabec, string msg) => Post(msg, "multipart/form-data");
+        public string EnviarSincrono(string cabec, string msg) => Post(msg);
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
@@ -91,7 +94,7 @@ namespace OpenAC.Net.NFSe.Providers
             return "Basic " + base64EncodedAuthenticationString;
         }
 
-        protected string Post(string message, string contentyType)
+        protected string Post(string message)
         {
             var url = Url;
 
@@ -102,7 +105,7 @@ namespace OpenAC.Net.NFSe.Providers
 
                 EnvelopeEnvio = message;
 
-                Execute(contentyType, "POST", headers);
+                ExecuteUpload("POST", headers);
                 return EnvelopeRetorno;
             }
             finally
@@ -111,6 +114,71 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
+        protected void ExecuteUpload(string method, NameValueCollection headers = null)
+        {
+            var protocolos = ServicePointManager.SecurityProtocol;
+            ServicePointManager.SecurityProtocol = Provider.Configuracoes.WebServices.Protocolos;
+
+            try
+            {
+                string NomeArquivo = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
+                if (!EnvelopeEnvio.IsEmpty())
+                    GravarSoap(EnvelopeEnvio, NomeArquivo);
+
+                string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+
+                var request = WebRequest.CreateHttp(Url);
+                request.Method = method.IsEmpty() ? "POST" : method;
+                request.ContentType = "multipart/form-data; boundary=" + boundary;
+
+                if (!ValidarCertificadoServidor())
+                    request.ServerCertificateValidationCallback += (_, _, _, _) => true;
+
+                if (Provider.TimeOut.HasValue)
+                    request.Timeout = Provider.TimeOut.Value.Milliseconds;
+
+                if (headers?.Count > 0)
+                    request.Headers.Add(headers);
+
+
+                if (Certificado != null)
+                    request.ClientCertificates.Add(Certificado);
+
+                Stream rs = request.GetRequestStream();
+
+                FileStream fileStream = new FileStream(NomeArquivo, FileMode.Open, FileAccess.Read);
+                byte[] buffer = new byte[4096];
+                int bytesRead = 0;
+                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                {
+                    rs.Write(buffer, 0, bytesRead);
+                }
+                fileStream.Close();
+
+                byte[] trailer = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+                rs.Write(trailer, 0, trailer.Length);
+                rs.Close();
+                //if (!EnvelopeEnvio.IsEmpty())
+                //{
+                //    using var streamWriter = new StreamWriter(request.GetRequestStream());
+                //    streamWriter.Write(EnvelopeEnvio);
+                //    streamWriter.Flush();
+                //}
+
+                var response = request.GetResponse();
+                EnvelopeRetorno = GetResponse(response);
+
+                GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
+            }
+            catch (Exception ex) when (ex is not OpenDFeCommunicationException)
+            {
+                throw new OpenDFeCommunicationException(ex.Message, ex);
+            }
+            finally
+            {
+                ServicePointManager.SecurityProtocol = protocolos;
+            }
+        }
 
         #endregion Methods
     }
