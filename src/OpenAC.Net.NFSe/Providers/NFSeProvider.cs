@@ -98,6 +98,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         SimplISS = 24,
 
+        Sintese = 37,
+
         SpeedGov = 25,
 
         SystemPro = 27,

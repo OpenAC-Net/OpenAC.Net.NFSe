@@ -83,6 +83,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.Sigiss, typeof(ProviderSigiss)},
                 {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
                 {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},
+                {NFSeProvider.Sintese, typeof(ProviderSintese)},
                 {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
                 {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
                 {NFSeProvider.SaoPaulo, typeof(ProviderSaoPaulo)},

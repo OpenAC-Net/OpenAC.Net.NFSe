@@ -298,4 +298,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Providers\Sintese\" />
+  </ItemGroup>
+
 </Project>
