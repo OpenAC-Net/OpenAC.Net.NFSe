@@ -30,13 +30,12 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
-using System.Xml.Linq;
-using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -54,30 +53,15 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string EnviarSincrono(string cabec, string msg) => Post(msg);
 
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-            //var xml = XDocument.Parse(msg);
-            //var numerorps = xml.Root?.ElementAnyNs("NumeroRPS")?.GetValue<string>();
-            //var serierps = xml.Root?.ElementAnyNs("SerieRPS")?.GetValue<string>();
-            //return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}", "application/xml");
-        }
+        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-            //var xml = XDocument.Parse(msg);
-            //var numeronf = xml.Root?.ElementAnyNs("NumeroNFSe")?.GetValue<string>();
-            //var serie = xml.Root?.ElementAnyNs("SerieNFSe")?.GetValue<string>();
-            //var motivo = xml.Root?.ElementAnyNs("Motivo")?.GetValue<string>();
-            //return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}", "application/xml");
-        }
+        public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
 
         public string Enviar(string cabec, string msg) => throw new NotImplementedException();
 
         public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException();
+        public string ConsultarLoteRps(string cabec, string msg) => Post(msg);
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
@@ -87,8 +71,16 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
+        public bool ValidarUsernamePassword()
+        {
+            return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
+        }
+
         protected override string Authentication()
         {
+            var result = ValidarUsernamePassword();
+            if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
+
             string authenticationString = string.Concat(Provider.Configuracoes.WebServices.Usuario, ":", Provider.Configuracoes.WebServices.Senha);
             string base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
             return "Basic " + base64EncodedAuthenticationString;
@@ -105,8 +97,18 @@ namespace OpenAC.Net.NFSe.Providers
 
                 EnvelopeEnvio = message;
 
-                ExecuteUpload("POST", headers);
+                GravarSoap(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
+
+                string NomeArquivo = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), ".xml");
+                System.IO.File.WriteAllText(NomeArquivo, EnvelopeEnvio);
+
+                HttpUploadFile(Url, NomeArquivo, "file", "image/jpeg", headers, auth);
+
                 return EnvelopeRetorno;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
             finally
             {
@@ -114,69 +116,65 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected void ExecuteUpload(string method, NameValueCollection headers = null)
+        private void HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc, string auth)
         {
-            var protocolos = ServicePointManager.SecurityProtocol;
-            ServicePointManager.SecurityProtocol = Provider.Configuracoes.WebServices.Protocolos;
+            string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+            byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
 
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
+            wr.ContentType = "multipart/form-data; boundary=" + boundary;
+            wr.Method = "POST";
+            wr.KeepAlive = true;
+            wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
+            wr.Headers.Add("Authorization", auth);
+
+            Stream rs = wr.GetRequestStream();
+
+            string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+            foreach (string key in nvc.Keys)
+            {
+                rs.Write(boundarybytes, 0, boundarybytes.Length);
+                string formitem = string.Format(formdataTemplate, key, nvc[key]);
+                byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(formitem);
+                rs.Write(formitembytes, 0, formitembytes.Length);
+            }
+            rs.Write(boundarybytes, 0, boundarybytes.Length);
+
+            string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
+            string header = string.Format(headerTemplate, paramName, file, contentType);
+            byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
+            rs.Write(headerbytes, 0, headerbytes.Length);
+
+            FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+            byte[] buffer = new byte[4096];
+            int bytesRead = 0;
+            while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                rs.Write(buffer, 0, bytesRead);
+            }
+            fileStream.Close();
+
+            byte[] trailer = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+            rs.Write(trailer, 0, trailer.Length);
+            rs.Close();
+
+            WebResponse wresp = null;
             try
             {
-                string NomeArquivo = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
-                if (!EnvelopeEnvio.IsEmpty())
-                    GravarSoap(EnvelopeEnvio, NomeArquivo);
-
-                string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
-
-                var request = WebRequest.CreateHttp(Url);
-                request.Method = method.IsEmpty() ? "POST" : method;
-                request.ContentType = "multipart/form-data; boundary=" + boundary;
-
-                if (!ValidarCertificadoServidor())
-                    request.ServerCertificateValidationCallback += (_, _, _, _) => true;
-
-                if (Provider.TimeOut.HasValue)
-                    request.Timeout = Provider.TimeOut.Value.Milliseconds;
-
-                if (headers?.Count > 0)
-                    request.Headers.Add(headers);
-
-
-                if (Certificado != null)
-                    request.ClientCertificates.Add(Certificado);
-
-                Stream rs = request.GetRequestStream();
-
-                FileStream fileStream = new FileStream(NomeArquivo, FileMode.Open, FileAccess.Read);
-                byte[] buffer = new byte[4096];
-                int bytesRead = 0;
-                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-                {
-                    rs.Write(buffer, 0, bytesRead);
-                }
-                fileStream.Close();
-
-                byte[] trailer = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
-                rs.Write(trailer, 0, trailer.Length);
-                rs.Close();
-                //if (!EnvelopeEnvio.IsEmpty())
-                //{
-                //    using var streamWriter = new StreamWriter(request.GetRequestStream());
-                //    streamWriter.Write(EnvelopeEnvio);
-                //    streamWriter.Flush();
-                //}
-
-                var response = request.GetResponse();
-                EnvelopeRetorno = GetResponse(response);
-
-                GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
+                wresp = wr.GetResponse();
+                EnvelopeRetorno = GetResponse(wresp);
             }
-            catch (Exception ex) when (ex is not OpenDFeCommunicationException)
+            catch
             {
-                throw new OpenDFeCommunicationException(ex.Message, ex);
+                if (wresp != null)
+                {
+                    wresp.Close();
+                    wresp = null;
+                }
             }
             finally
             {
-                ServicePointManager.SecurityProtocol = protocolos;
+                wr = null;
             }
         }
 
