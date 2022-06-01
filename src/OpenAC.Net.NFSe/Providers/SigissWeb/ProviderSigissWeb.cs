@@ -156,32 +156,39 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
-            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-
-            retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
-            retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-            retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
-
-            if (!retornoWebservice.Sucesso) return;
-
-            var numeroNFSe = xmlRet.Root.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
-            var chaveNFSe = xmlRet.Root.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-            var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.Now;
-            var numeroRps = xmlRet.Root.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
-
-            GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
-
-            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
-            if (nota == null)
+            try
             {
-                notas.Load(retornoWebservice.XmlRetorno);
+                var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+
+                retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
+                retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
+                retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
+
+                if (!retornoWebservice.Sucesso) return;
+
+                var numeroNFSe = xmlRet.Root.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
+                var chaveNFSe = xmlRet.Root.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
+                var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.Now;
+                var numeroRps = xmlRet.Root.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
+
+                GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+
+                var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+                if (nota == null)
+                {
+                    notas.Load(retornoWebservice.XmlRetorno);
+                }
+                else
+                {
+                    nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                    nota.IdentificacaoNFSe.Numero = numeroNFSe;
+                    nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                    nota.XmlOriginal = retornoWebservice.XmlRetorno;
+                }
             }
-            else
+            catch
             {
-                nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
-                nota.IdentificacaoNFSe.Numero = numeroNFSe;
-                nota.IdentificacaoNFSe.Chave = chaveNFSe;
-                nota.XmlOriginal = retornoWebservice.XmlRetorno;
+
             }
         }
 

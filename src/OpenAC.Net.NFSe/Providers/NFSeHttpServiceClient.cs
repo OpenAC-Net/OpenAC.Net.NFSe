@@ -160,7 +160,7 @@ namespace OpenAC.Net.NFSe.Providers
 
                 var request = WebRequest.CreateHttp(Url);
                 request.Method = method.IsEmpty() ? "POST" : method;
-                request.ContentType = contentType;
+                request.ContentType = contentType;                
 
                 if (!ValidarCertificadoServidor())
                     request.ServerCertificateValidationCallback += (_, _, _, _) => true;
@@ -218,13 +218,14 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="conteudoArquivo"></param>
         /// <param name="nomeArquivo"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        protected virtual void GravarSoap(string conteudoArquivo, string nomeArquivo)
+        protected virtual string GravarSoap(string conteudoArquivo, string nomeArquivo)
         {
-            if (Provider.Configuracoes.WebServices.Salvar == false) return;
+            if (Provider.Configuracoes.WebServices.Salvar == false) return "";
 
             var path = Provider.Configuracoes.Arquivos.GetPathSoap(DateTime.Now, Provider.Configuracoes.PrestadorPadrao.CpfCnpj);
             nomeArquivo = Path.Combine(path, nomeArquivo);
             File.WriteAllText(nomeArquivo, conteudoArquivo, Encoding.UTF8);
+            return nomeArquivo;
         }
 
         /// <inheritdoc />
