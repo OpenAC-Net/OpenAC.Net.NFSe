@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 18-04-2022
@@ -61,16 +61,16 @@ namespace OpenAC.Net.NFSe.Providers
         public string EnviarSincrono(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<nfse:RecepcionarLoteRpsSincronoRequest>");
+            message.Append("<nfse:EnviarLoteRpsSincronoEnvio>");
             message.Append("<nfseCabecMsg>");
             message.AppendCData(EmpacotaXml(cabec));
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
             message.AppendCData(EmpacotaXml(msg));
             message.Append("</nfseDadosMsg>");
-            message.Append("</nfse:RecepcionarLoteRpsSincronoRequest>");
+            message.Append("</nfse:EnviarLoteRpsSincronoEnvio>");
 
-            return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse ");
+            return Execute("http://nfsews.sintesetecnologia.com.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse ");
         }
 
         public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
