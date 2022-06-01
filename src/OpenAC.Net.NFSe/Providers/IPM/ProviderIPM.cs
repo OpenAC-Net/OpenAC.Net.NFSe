@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 30-05-2022
@@ -38,6 +38,7 @@ using System.Xml;
 using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -61,6 +62,24 @@ namespace OpenAC.Net.NFSe.Providers
             return new IPMServiceClient(this, tipo);
         }
 
+        private string GetTipoTomadorIPM(int tipoTomador)
+        {
+            if (tipoTomador == TipoTomador.Sigiss.PessoaFisica)
+            {
+                //F para Pessoa Física
+                return "F";
+            }
+            else if(tipoTomador == TipoTomador.Sigiss.JuridicaForaPais)
+            {
+                //E para Estrangeiro
+                return "E";
+            }
+            else
+            {
+                //J para Pessoa Jurídica
+                return "J";
+            }
+        }
         public override string WriteXmlRps(NotaServico nota, bool identado = true, bool showDeclaration = true)
         {
             var xmldoc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
@@ -78,62 +97,58 @@ namespace OpenAC.Net.NFSe.Providers
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_pis", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorPis)));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_cofins", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorCofins)));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "observacao", 1, 2000, Ocorrencia.Obrigatoria, ""));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "observacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
 
             nfseTag.Add(notaTag);
 
+            //PRESTADOR
             var prestadorTag = new XElement("prestador");
             prestadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria, nota.Prestador.CpfCnpj.OnlyNumbers()));
-            prestadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cidade", 1, 14, Ocorrencia.Obrigatoria, nota.Prestador.NumeroEmissorRps));
+            prestadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cidade", 1, 14, Ocorrencia.Obrigatoria, Municipio.CodigoSiafi));
 
             nfseTag.Add(prestadorTag);
 
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cnpj_cpf_prestador", 1, 14, Ocorrencia.Obrigatoria, nota.Prestador.CpfCnpj.OnlyNumbers()));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cnpj_cpf_destinatario", 1, 14, Ocorrencia.Obrigatoria, nota.Tomador.CpfCnpj.OnlyNumbers()));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "pessoa_destinatario", 1, 1, Ocorrencia.Obrigatoria, nota.Tomador.CpfCnpj.OnlyNumbers().Length == 11 ? "F" : "J"));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "exterior_dest", 1, 1, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto == null ? 0 : 1));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "ie_destinatario", 1, 15, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoEstadual));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "im_destinatario", 1, 15, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "razao_social_destinatario", 1, 100, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "endereco_destinatario", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Logradouro));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "numero_ende_destinatario", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "complemento_ende_destinatario", 1, 40, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Complemento));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "bairro_destinatario", 1, 100, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Bairro));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cep_destinatario", 1, 8, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Cep));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cidade_destinatario", 1, 100, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Municipio));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "uf_destinatario", 1, 2, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Uf));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "pais_destinatario", 1, 50, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Pais));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "fone_destinatario", 1, 30, Ocorrencia.Obrigatoria, nota.Tomador.DadosContato.Telefone));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "email_destinatario", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.DadosContato.Email));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_nf", 1, 14, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorLiquidoNfse));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "deducao", 1, 14, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_servico", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorServicos)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "forma_de_pagamento", 1, 40, Ocorrencia.Obrigatoria, string.Empty));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "descricao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "id_codigo_servico", 1, 6, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cancelada", 1, 1, Ocorrencia.Obrigatoria, "N"));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "iss_retido", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? "S" : "N"));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliq_iss", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.Aliquota)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_iss", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorIss)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "bc_pis", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.BaseCalculo)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliq_pis", 1, 5, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.AliquotaPis)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_pis", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorPis)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "bc_cofins", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.BaseCalculo)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliq_cofins", 1, 5, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.AliquotaCofins)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_cofins", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorCofins)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "bc_csll", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.BaseCalculo)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliq_csll", 1, 5, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.AliquotaCsll)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_csll", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorCsll)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "bc_irrf", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.BaseCalculo)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliq_irrf", 1, 5, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.AliquotaIR)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_irrf", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorIr)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "bc_inss", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.BaseCalculo)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliq_inss", 1, 5, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.AliquotaInss)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_inss", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorInss)));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "rps", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "serie_rps", 1, 3, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "data_emissao", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.ToString("dd/MM/yyyy")));
-            //notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "sistema_gerador", 1, 15, Ocorrencia.Obrigatoria, "OpenAC.Net.NFSe"));
+            //TOMADOR
+            var tomadorTag = new XElement("tomador");
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "tipo", 1, 14, Ocorrencia.Obrigatoria, GetTipoTomadorIPM(nota.Tomador.Tipo)));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria, nota.Tomador.CpfCnpj.OnlyNumbers()));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "ie", 1, 20, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoEstadual.OnlyNumbers()));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "nome_razao_social", 1, 115, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "sobrenome_nome_fantasia", 1, 115, Ocorrencia.Obrigatoria, nota.Tomador.NomeFantasia));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "logradouro", 1, 125, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Logradouro));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "email", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.DadosContato.Email));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "numero_residencia", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "complemento", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Complemento));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "ponto_referencia", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "bairro", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Bairro));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cidade", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Municipio));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "cep", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Cep));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "ddd_fone_comercial", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.DadosContato.DDD));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "fone_comercial", 1, 120, Ocorrencia.Obrigatoria, nota.Tomador.DadosContato.Telefone));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "ddd_fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "ddd_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomadorTag.AddChild(AdicionarTag(TipoCampo.Str, "", "fone_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
+
+            nfseTag.Add(tomadorTag);
+
+            //SERVICO
+            var itensTag = new XElement("itens");
+            var listaTag = new XElement("lista");
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "codigo_local_prestacao_servico", 1, 7, Ocorrencia.Obrigatoria, Municipio.CodigoSiafi));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "codigo_item_lista_servico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico.OnlyNumbers()));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "descritivo", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliquota_item_lista_servico", 1, 6, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "00"));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_tributavel", 1, 15, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorServicos)));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_deducao", 1, 15, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorDeducoes)));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorIss)));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "tributa_municipio_prestador", 1, 15, Ocorrencia.Obrigatoria, "S"));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "unidade_codigo", 1, 15, Ocorrencia.Obrigatoria, ""));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "unidade_quantidade", 1, 15, Ocorrencia.Obrigatoria, ""));
+            listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "unidade_valor_unitario", 1, 15, Ocorrencia.Obrigatoria, ""));
+
+            itensTag.Add(listaTag);
+            nfseTag.Add(itensTag);
 
             return xmldoc.Root.AsString(identado, showDeclaration, Encoding.UTF8);
         }
@@ -334,7 +349,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
         {
-            return;
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "nfse", "", Certificado);
         }
 
         #region Não implementados
