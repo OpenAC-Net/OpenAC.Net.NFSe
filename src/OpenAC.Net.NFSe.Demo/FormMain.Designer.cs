@@ -720,7 +720,7 @@ namespace OpenAC.Net.NFSe.Demo
             // 
             // txtCodSiafi
             // 
-            this.txtCodSiafi.BackColor = System.Drawing.Color.White;
+            this.txtCodSiafi.BackColor = System.Drawing.SystemColors.Control;
             this.txtCodSiafi.Location = new System.Drawing.Point(206, 465);
             this.txtCodSiafi.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtCodSiafi.Name = "txtCodSiafi";
@@ -730,7 +730,7 @@ namespace OpenAC.Net.NFSe.Demo
             // 
             // txtCodCidade
             // 
-            this.txtCodCidade.BackColor = System.Drawing.Color.White;
+            this.txtCodCidade.BackColor = System.Drawing.SystemColors.Control;
             this.txtCodCidade.Location = new System.Drawing.Point(9, 465);
             this.txtCodCidade.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtCodCidade.Name = "txtCodCidade";
