@@ -31,13 +31,22 @@
 
 using System;
 using System.Collections.Specialized;
+using System.IO;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers
 {
     public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
     {
+        #region Fields
+
+        private const string formDatatemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+
+        #endregion Fields
+
         #region Constructors
 
         /// <summary>
@@ -105,6 +114,70 @@ namespace OpenAC.Net.NFSe.Providers
                 EnvelopeEnvio = message;
 
                 Execute(contentyType, "POST", headers);
+                return EnvelopeRetorno;
+            }
+            finally
+            {
+                Url = url;
+            }
+        }
+
+        protected string Upload(string action, string message)
+        {
+            var url = Url;
+
+            try
+            {
+                SetAction(action);
+
+                var auth = Authentication();
+                var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
+
+                EnvelopeEnvio = message;
+
+                var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
+                GravarSoap(EnvelopeEnvio, fileName);
+
+                string arquivoEnvio = Path.Combine(Path.GetTempPath(), fileName);
+                File.WriteAllText(arquivoEnvio, EnvelopeEnvio);
+
+                string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+                byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+
+                var request = WebRequest.CreateHttp(Url);
+                request.Method = "POST";
+                request.ContentType = "multipart/form-data; boundary=" + boundary;
+
+                if (!ValidarCertificadoServidor())
+                    request.ServerCertificateValidationCallback += (_, _, _, _) => true;
+
+                if (Provider.TimeOut.HasValue)
+                    request.Timeout = Provider.TimeOut.Value.Milliseconds;
+
+                if (headers?.Count > 0)
+                    request.Headers.Add(headers);
+
+                if (Certificado != null)
+                    request.ClientCertificates.Add(Certificado);
+
+                using var streamWriter = request.GetRequestStream();
+                streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
+
+                int bytesRead = 0;
+                byte[] buffer = new byte[4096];
+                var fileStream = new FileStream(arquivoEnvio, FileMode.Open, FileAccess.Read);
+                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                    streamWriter.Write(buffer, 0, bytesRead);
+
+                byte[] trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+                streamWriter.Write(trailer, 0, trailer.Length);
+                streamWriter.Close();
+
+                var response = request.GetResponse();
+                EnvelopeRetorno = GetResponse(response);
+
+                GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
+
                 return EnvelopeRetorno;
             }
             finally

@@ -10,6 +10,9 @@ Se *OpenNFSe* for um componente vital em sua aplicação comercial ou de código
 
 Biblioteca para emissão e trasmissão de NFSe.
 
+# Status
+![Alt](https://repobeats.axiom.co/api/embed/86dd7e67ae35b516fb5d1e569a5e040cee3704e3.svg "Repobeats analytics image")
+
 **Provedores Implementados**
 - AssessorPublico
 - Belo Horizonte

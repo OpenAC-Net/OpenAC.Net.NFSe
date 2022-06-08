@@ -87,8 +87,6 @@ namespace OpenAC.Net.NFSe.Configuracao
 
         public string ChaveAcesso { get; set; }
 
-        public SecurityProtocolType Protocolos { get; set; }
-
         /// <summary>
         /// Codigo do municipio do Webservices em uso
         /// </summary>
