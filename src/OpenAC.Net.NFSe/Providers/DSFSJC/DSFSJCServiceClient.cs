@@ -29,11 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
 using System;
 using System.Text;
 using System.Xml.Linq;
-using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core.Common;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -52,14 +51,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string Enviar(string cabecalho, string dados)
         {
             var message = new StringBuilder();
-            message.Append("<gin:RecepcionarLoteRpsV3>");
+            message.Append("<nfse:RecepcionarLoteRpsV3>");
             message.Append("<arg0>");
             message.AppendEnvio(cabecalho);
             message.Append("</arg0>");
             message.Append("<arg1>");
             message.AppendEnvio(dados);
             message.Append("</arg1>");
-            message.Append("</gin:RecepcionarLoteRpsV3>");
+            message.Append("</nfse:RecepcionarLoteRpsV3>");
 
             return Execute(message.ToString(), "RecepcionarLoteRpsV3Response");
         }
@@ -69,14 +68,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarSituacao(string cabecalho, string dados)
         {
             var message = new StringBuilder();
-            message.Append("<gin:ConsultarSituacaoLoteRpsV3>");
+            message.Append("<nfse:ConsultarSituacaoLoteRpsV3>");
             message.Append("<arg0>");
             message.AppendEnvio(cabecalho);
             message.Append("</arg0>");
             message.Append("<arg1>");
             message.AppendEnvio(dados);
             message.Append("</arg1>");
-            message.Append("</gin:ConsultarSituacaoLoteRpsV3>");
+            message.Append("</nfse:ConsultarSituacaoLoteRpsV3>");
 
             return Execute(message.ToString(), "ConsultarSituacaoLoteRpsV3Response");
         }
@@ -84,14 +83,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarLoteRps(string cabecalho, string dados)
         {
             var message = new StringBuilder();
-            message.Append("<gin:ConsultarLoteRpsV3>");
+            message.Append("<nfse:ConsultarLoteRpsV3>");
             message.Append("<arg0>");
             message.AppendEnvio(cabecalho);
             message.Append("</arg0>");
             message.Append("<arg1>");
             message.AppendEnvio(dados);
             message.Append("</arg1>");
-            message.Append("</gin:ConsultarLoteRpsV3>");
+            message.Append("</nfse:ConsultarLoteRpsV3>");
 
             return Execute(message.ToString(), "ConsultarLoteRpsV3Response");
         }
@@ -101,14 +100,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSeRps(string cabecalho, string dados)
         {
             var message = new StringBuilder();
-            message.Append("<gin:ConsultarNfsePorRpsV3>");
+            message.Append("<nfse:ConsultarNfsePorRpsV3>");
             message.Append("<arg0>");
             message.AppendEnvio(cabecalho);
             message.Append("</arg0>");
             message.Append("<arg1>");
             message.AppendEnvio(dados);
             message.Append("</arg1>");
-            message.Append("</gin:ConsultarNfsePorRpsV3>");
+            message.Append("</nfse:ConsultarNfsePorRpsV3>");
 
             return Execute(message.ToString(), "ConsultarNfsePorRpsV3Response");
         }
@@ -116,14 +115,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSe(string cabecalho, string dados)
         {
             var message = new StringBuilder();
-            message.Append("<gin:ConsultarNfseV3>");
+            message.Append("<nfse:ConsultarNfseV3>");
             message.Append("<arg0>");
             message.AppendEnvio(cabecalho);
             message.Append("</arg0>");
             message.Append("<arg1>");
             message.AppendEnvio(dados);
             message.Append("</arg1>");
-            message.Append("</gin:ConsultarNfseV3>");
+            message.Append("</nfse:ConsultarNfseV3>");
 
             return Execute(message.ToString(), "ConsultarNfseV3Response");
         }
@@ -131,14 +130,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string CancelarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<gin:CancelarNfseV3>");
+            message.Append("<nfse:CancelarNfseV3>");
             message.Append("<arg0>");
             message.AppendEnvio(cabec);
             message.Append("</arg0>");
             message.Append("<arg1>");
             message.AppendEnvio(msg);
             message.Append("</arg1>");
-            message.Append("</gin:CancelarNfseV3>");
+            message.Append("</nfse:CancelarNfseV3>");
 
             return Execute(message.ToString(), "CancelarNfseV3Response");
         }
@@ -149,8 +148,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string message, string responseTag)
         {
-            var ns = Provider.Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Homologacao ?
-                            "xmlns:gin=\"http://homologacao.ginfes.com.br\"" : "xmlns:gin=\"http://producao.ginfes.com.br\"";
+            var ns = "xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\"";
 
             return Execute("", message, "", responseTag, ns);
         }
