@@ -65,6 +65,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.Curitiba, typeof(ProviderCuritiba)},
                 {NFSeProvider.DBSeller, typeof(ProviderDBSeller)},
                 {NFSeProvider.DSF, typeof(ProviderDSF)},
+                {NFSeProvider.DSFSJC, typeof(ProviderDSFSJC)},
                 {NFSeProvider.Equiplano, typeof(ProviderEquiplano)},
                 {NFSeProvider.Fiorilli, typeof(ProviderFiorilli)},
                 {NFSeProvider.FissLex, typeof(ProviderFissLex)},
