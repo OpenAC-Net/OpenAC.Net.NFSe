@@ -38,6 +38,7 @@ Biblioteca para emissão e trasmissão de NFSe.
 - CITTA (Em Testes)
 - Curitiba (Em Testes)
 - DBSeller (Em Testes)
+- DSFSJC (Em Testes)
 - FissLex (Em Teste)
 - ISSNet (Em Teste)
 - Pvh (Em Teste)

@@ -61,6 +61,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         DSF = 4,
 
+        DSFSJC = 38,
+
         Equiplano = 15,
 
         Fiorilli = 16,

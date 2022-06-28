@@ -108,6 +108,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
             catch (Exception ex)
             {
+                //retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
                 return ex.Message;
             }
             finally

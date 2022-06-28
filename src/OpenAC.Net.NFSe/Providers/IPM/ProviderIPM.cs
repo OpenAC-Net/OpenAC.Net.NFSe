@@ -411,7 +411,23 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
 
-        protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+        protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas) 
+        {
+            try
+            {
+                var xmlDoc = new XmlDocument();
+                //verifica se a mensagem eh xml para exibicao correta do erro
+                xmlDoc.LoadXml(retornoWebservice.XmlRetorno);
+            }
+            catch
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
+                //LIMPA O XML RETORNO PARA NAO DAR ERRO DE PARSE MAIS ADIANTE
+                retornoWebservice.XmlRetorno = null;
+            }
+
+            return;
+        }
 
         protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
 

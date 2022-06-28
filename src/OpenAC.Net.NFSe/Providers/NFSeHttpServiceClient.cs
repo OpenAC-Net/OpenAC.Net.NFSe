@@ -65,7 +65,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected NFSeHttpServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado)
         {
             Certificado = certificado;
-            Url = provider.GetUrl(tipoUrl).Replace("?wsdl", "");
+            Url = provider.GetUrl(tipoUrl)?.Replace("?wsdl", "");
             Provider = provider;
 
             switch (tipoUrl)
