@@ -1255,20 +1255,10 @@ namespace OpenAC.Net.NFSe.Providers
             switch (tipo)
             {
                 case TipoUrl.Enviar:
-                    return "nfse.xsd";
-
                 case TipoUrl.ConsultarSituacao:
-                    return "nfse.xsd";
-
                 case TipoUrl.ConsultarLoteRps:
-                    return "nfse.xsd";
-
                 case TipoUrl.CancelarNFSe:
-                    return "nfse.xsd";
-
                 case TipoUrl.ConsultarNFSe:
-                    return "nfse.xsd";
-
                 case TipoUrl.ConsultarNFSeRps:
                     return "nfse.xsd";
 
