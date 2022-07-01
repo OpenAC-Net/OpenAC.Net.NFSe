@@ -641,7 +641,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var xmlLote = new StringBuilder();
             xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            xmlLote.Append("<EnviarLoteRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd\">");
+            xmlLote.Append("<EnviarLoteRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
             xmlLote.Append($"<LoteRps Id=\"L{retornoWebservice.Lote}\">");
             xmlLote.Append($"<tipos:NumeroLote>{retornoWebservice.Lote}</tipos:NumeroLote>");
             xmlLote.Append($"<tipos:Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</tipos:Cnpj>");
@@ -702,7 +702,7 @@ namespace OpenAC.Net.NFSe.Providers
             // Monta mensagem de envio
             var loteBuilder = new StringBuilder();
             loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            loteBuilder.Append("<ConsultarSituacaoLoteRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.ginfes.com.br/servico_consultar_situacao_lote_rps_envio_v03.xsd\">");
+            loteBuilder.Append("<ConsultarSituacaoLoteRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
             loteBuilder.Append("<Prestador>");
             loteBuilder.Append($"<tipos:Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</tipos:Cnpj>");
             loteBuilder.Append($"<tipos:InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</tipos:InscricaoMunicipal>");
@@ -733,7 +733,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var loteBuilder = new StringBuilder();
             loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            loteBuilder.Append("<ConsultarLoteRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd\">");
+            loteBuilder.Append("<ConsultarLoteRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
             loteBuilder.Append("<Prestador>");
             loteBuilder.Append($"<tipos:Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</tipos:Cnpj>");
             loteBuilder.Append($"<tipos:InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</tipos:InscricaoMunicipal>");
@@ -821,7 +821,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var loteBuilder = new StringBuilder();
             loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            loteBuilder.Append("<ConsultarNfseRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.ginfes.com.br/servico_consultar_nfse_rps_envio_v03.xsd\">");
+            loteBuilder.Append("<ConsultarNfseRpsEnvio xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
             loteBuilder.Append("<IdentificacaoRps>");
             loteBuilder.Append($"<tipos:Numero>{retornoWebservice.NumeroRps}</tipos:Numero>");
             loteBuilder.Append($"<tipos:Serie>{retornoWebservice.Serie}</tipos:Serie>");
@@ -866,7 +866,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var loteBuilder = new StringBuilder();
             loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            loteBuilder.Append("<ConsultarNfseEnvio xmlns=\"http://www.ginfes.com.br/servico_consultar_nfse_envio_v03.xsd\" xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
+            loteBuilder.Append("<ConsultarNfseEnvio xmlns=\"http://www.abrasf.org.br/nfse.xsd\" xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
             loteBuilder.Append("<Prestador>");
             loteBuilder.Append($"<tipos:Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</tipos:Cnpj>");
             loteBuilder.Append($"<tipos:InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</tipos:InscricaoMunicipal>");
@@ -950,7 +950,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var loteBuilder = new StringBuilder();
             loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            loteBuilder.Append("<CancelarNfseEnvio xmlns=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd\">");
+            loteBuilder.Append("<CancelarNfseEnvio xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
             loteBuilder.Append("<Pedido xmlns=\"\">");
             loteBuilder.Append($"<tipos:InfPedidoCancelamento Id=\"C{retornoWebservice.CodigoCancelamento}\" xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\">");
             loteBuilder.Append("<tipos:IdentificacaoNfse>");
@@ -1110,7 +1110,7 @@ namespace OpenAC.Net.NFSe.Providers
             infoRps.Add(ideRps);
 
             ideRps.AddChild(AdicionarTag(TipoCampo.Int, "", "Numero", ns, 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
-            ideRps.AddChild(AdicionarTag(TipoCampo.Int, "", "Serie", ns, 1, 5, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
+            ideRps.AddChild(AdicionarTag(TipoCampo.Str, "", "Serie", ns, 1, 5, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
             ideRps.AddChild(AdicionarTag(TipoCampo.Int, "", "Tipo", ns, 1, 1, Ocorrencia.Obrigatoria, tipoRps));
 
             infoRps.AddChild(AdicionarTag(TipoCampo.DatHor, "", "DataEmissao", ns, 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
@@ -1125,7 +1125,7 @@ namespace OpenAC.Net.NFSe.Providers
                 var rpsSubstituido = new XElement(ns + "RpsSubstituido");
 
                 rpsSubstituido.AddChild(AdicionarTag(TipoCampo.Int, "", "Numero", ns, 1, 15, Ocorrencia.Obrigatoria, nota.RpsSubstituido.NumeroRps));
-                rpsSubstituido.AddChild(AdicionarTag(TipoCampo.Int, "", "Serie", ns, 1, 5, Ocorrencia.Obrigatoria, nota.RpsSubstituido.Serie));
+                rpsSubstituido.AddChild(AdicionarTag(TipoCampo.Str, "", "Serie", ns, 1, 5, Ocorrencia.Obrigatoria, nota.RpsSubstituido.Serie));
                 rpsSubstituido.AddChild(AdicionarTag(TipoCampo.Int, "", "Tipo", ns, 1, 1, Ocorrencia.Obrigatoria, tipoRpsSubstituido));
 
                 infoRps.AddChild(rpsSubstituido);
@@ -1255,22 +1255,12 @@ namespace OpenAC.Net.NFSe.Providers
             switch (tipo)
             {
                 case TipoUrl.Enviar:
-                    return "servico_enviar_lote_rps_envio_v03.xsd";
-
                 case TipoUrl.ConsultarSituacao:
-                    return "servico_consultar_situacao_lote_rps_envio_v03.xsd";
-
                 case TipoUrl.ConsultarLoteRps:
-                    return "servico_consultar_lote_rps_envio_v03.xsd";
-
                 case TipoUrl.CancelarNFSe:
-                    return "servico_cancelar_nfse_envio_v03.xsd";
-
                 case TipoUrl.ConsultarNFSe:
-                    return "servico_consultar_nfse_envio_v03.xsd";
-
                 case TipoUrl.ConsultarNFSeRps:
-                    return "servico_consultar_nfse_rps_envio_v03.xsd";
+                    return "nfse.xsd";
 
                 case TipoUrl.EnviarSincrono:
                 case TipoUrl.ConsultarSequencialRps:
@@ -1292,7 +1282,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var cabecalho = new StringBuilder();
             cabecalho.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            cabecalho.Append("<ns2:cabecalho versao=\"3\" xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\">");
+            cabecalho.Append("<ns2:cabecalho versao=\"3\" xmlns:ns2=\"http://www.abrasf.org.br/nfse.xsd\">");
             cabecalho.Append("<versaoDados>3</versaoDados>");
             cabecalho.Append("</ns2:cabecalho>");
             return cabecalho.ToString();
