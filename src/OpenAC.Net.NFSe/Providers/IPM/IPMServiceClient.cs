@@ -3,11 +3,11 @@
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 30-05-2022
 //
-// Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 30-05-2022
+// Last Modified By : Rafael Dias
+// Last Modified On : 02-07-2022
 //
 // ***********************************************************************
-// <copyright file="ProviderBase.cs" company="OpenAC .Net">
+// <copyright file="IPMServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
@@ -30,7 +30,6 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using System;
 using System.Text;
@@ -51,6 +50,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string EnviarSincrono(string cabec, string msg) => Upload("", msg);
 
+        public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg);
+
         public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
         public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
@@ -58,8 +59,6 @@ namespace OpenAC.Net.NFSe.Providers
         public string Enviar(string cabec, string msg) => throw new NotImplementedException();
 
         public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg);
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
@@ -69,14 +68,16 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
-        public bool ValidarUsernamePassword() => !Provider.Configuracoes.WebServices.Usuario.IsEmpty() && !Provider.Configuracoes.WebServices.Senha.IsEmpty();
+        public bool ValidarUsernamePassword() => !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
 
         protected override string Authentication()
         {
-            if (!ValidarUsernamePassword()) throw new OpenDFeCommunicationException("Faltou informar [Configuracoes.WebServices.Usuario] e/ou [Configuracoes.WebServices.Senha]");
+            var result = ValidarUsernamePassword();
+            if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
 
-            var authenticationString = string.Concat(Provider.Configuracoes.WebServices.Usuario, ":", Provider.Configuracoes.WebServices.Senha);
-            return $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString))}";
+            string authenticationString = string.Concat(Provider.Configuracoes.WebServices.Usuario, ":", Provider.Configuracoes.WebServices.Senha);
+            string base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+            return "Basic " + base64EncodedAuthenticationString;
         }
 
         #endregion Methods

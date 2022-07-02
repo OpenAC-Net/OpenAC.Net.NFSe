@@ -7,9 +7,9 @@
 // Last Modified On : 30-05-2022
 //
 // ***********************************************************************
-// <copyright file="ProviderBase.cs" company="OpenAC .Net">
-//		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+// <copyright file="ProviderIPM.cs" company="OpenAC .Net">
+//		       		   The MIT License (MIT)
+//	     	Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -52,7 +52,7 @@ namespace OpenAC.Net.NFSe.Providers
             Name = "IPM";
         }
 
-        private string FormataDecimal(decimal valor)
+        private static string FormataDecimal(decimal valor)
         {
             return valor.ToString("0.00").Replace(".", ",");
         }
@@ -62,35 +62,27 @@ namespace OpenAC.Net.NFSe.Providers
             return new IPMServiceClient(this, tipo);
         }
 
-        private string GetTipoTomadorIPM(int tipoTomador, string cpfCnpj)
+        private static string GetTipoTomadorIPM(int tipoTomador, string cpfCnpj)
         {
             if (tipoTomador == 0)
             {
                 if (string.IsNullOrEmpty(cpfCnpj))
                     return "F";
 
-                if (cpfCnpj.Length == 14)
-                {
-                    return "J";
-                }
-                return "F";
+                return cpfCnpj.Length == 14 ? "J" : "F";
             }
+
             if (tipoTomador == TipoTomador.Sigiss.PessoaFisica)
             {
                 //F para Pessoa Física
                 return "F";
             }
-            else if(tipoTomador == TipoTomador.Sigiss.JuridicaForaPais)
-            {
-                //E para Estrangeiro
-                return "E";
-            }
-            else
-            {
-                //J para Pessoa Jurídica
-                return "J";
-            }
+
+            return tipoTomador == TipoTomador.Sigiss.JuridicaForaPais ? "E" : "J";
+
+            //J para Pessoa Jurídica
         }
+
         public override string WriteXmlRps(NotaServico nota, bool identado = true, bool showDeclaration = true)
         {
             var xmldoc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
@@ -411,7 +403,23 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
 
-        protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+        protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
+        {
+            try
+            {
+                var xmlDoc = new XmlDocument();
+                //verifica se a mensagem eh xml para exibicao correta do erro
+                xmlDoc.LoadXml(retornoWebservice.XmlRetorno);
+            }
+            catch
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
+                //LIMPA O XML RETORNO PARA NAO DAR ERRO DE PARSE MAIS ADIANTE
+                retornoWebservice.XmlRetorno = null;
+            }
+
+            return;
+        }
 
         protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
 
