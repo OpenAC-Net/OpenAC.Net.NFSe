@@ -152,6 +152,9 @@ namespace OpenAC.Net.NFSe.Providers
             EnvelopeEnvio = envelope.ToString();
 
             Execute(contetType, "POST", headers);
+            
+            if (!EnvelopeRetorno.IsValidXml())
+                throw new OpenDFeCommunicationException(EnvelopeRetorno);
 
             var xmlDocument = XDocument.Parse(EnvelopeRetorno);
             var body = xmlDocument.ElementAnyNs("Envelope").ElementAnyNs("Body");
