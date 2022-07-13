@@ -153,6 +153,9 @@ namespace OpenAC.Net.NFSe.Providers
 
             Execute(contetType, "POST", headers);
 
+            if (!EnvelopeRetorno.IsValidXml())
+                throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
+                
             var xmlDocument = XDocument.Parse(EnvelopeRetorno);
             var body = xmlDocument.ElementAnyNs("Envelope").ElementAnyNs("Body");
             var retorno = TratarRetorno(body, responseTag);
