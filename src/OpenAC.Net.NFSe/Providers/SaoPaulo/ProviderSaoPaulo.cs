@@ -882,7 +882,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             // Assinatura do RPS
             string hash = nota.Prestador.InscricaoMunicipal.ZeroFill(8) +
-                          nota.IdentificacaoRps.Serie.FillRight(5) +
+                          nota.IdentificacaoRps.Serie.FillLeft(5) +
                           nota.IdentificacaoRps.Numero.ZeroFill(12) +
                           nota.IdentificacaoRps.DataEmissao.Year.ToString().ZeroFill(4) +
                           nota.IdentificacaoRps.DataEmissao.Month.ToString().ZeroFill(2) +
