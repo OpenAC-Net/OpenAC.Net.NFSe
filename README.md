@@ -27,10 +27,11 @@ Biblioteca para emissão e trasmissão de NFSe.
 - Nota Carioca
 - NFe Cidades (GovDigital)
 - RLZ (RLZ Informática)
+- São Paulo
+- SIAPNet
 - SimplISS
 - SmarAPD ABRASAF
 - SystemPro
-- São Paulo
 - WebISS
 - WebIss2
 
@@ -48,7 +49,6 @@ Biblioteca para emissão e trasmissão de NFSe.
 - Mitra (Em Teste)
 - Porto Alegre (Em Teste)
 - Pronim v2 (Em Teste)
-- SIAPNet (Em Testes)
 - Sintese (Em Testes)
 - SpeedGov (Em Testes)
 - Vitoria (Em Testes)
