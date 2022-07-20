@@ -6,7 +6,7 @@
 // Last Modified By : Rafael Dias
 // Last Modified On : 09-03-2022
 // ***********************************************************************
-// <copyright file="ProviderBase.cs" company="OpenAC .Net">
+// <copyright file="NFSeRestServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
@@ -138,11 +138,11 @@ namespace OpenAC.Net.NFSe.Providers
                 var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
                 GravarSoap(EnvelopeEnvio, fileName);
 
-                string arquivoEnvio = Path.Combine(Path.GetTempPath(), fileName);
+                var arquivoEnvio = Path.Combine(Path.GetTempPath(), fileName);
                 File.WriteAllText(arquivoEnvio, EnvelopeEnvio);
 
-                string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
-                byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+                var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+                var boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
 
                 var request = WebRequest.CreateHttp(Url);
                 request.Method = "POST";
@@ -163,13 +163,13 @@ namespace OpenAC.Net.NFSe.Providers
                 using var streamWriter = request.GetRequestStream();
                 streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
 
-                int bytesRead = 0;
-                byte[] buffer = new byte[4096];
+                int bytesRead;
+                var buffer = new byte[4096];
                 var fileStream = new FileStream(arquivoEnvio, FileMode.Open, FileAccess.Read);
                 while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
                     streamWriter.Write(buffer, 0, bytesRead);
 
-                byte[] trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+                var trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
                 streamWriter.Write(trailer, 0, trailer.Length);
                 streamWriter.Close();
 
