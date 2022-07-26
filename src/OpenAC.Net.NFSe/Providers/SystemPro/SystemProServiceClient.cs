@@ -78,7 +78,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ns2:ConsultarNfseFaixa>");
 
-            return Execute("", message.ToString(), "return", "ConsultarNfseFaixaResponse");
+            return Execute("", message.ToString(), "ConsultarNfseFaixaResponse", "return");
         }
 
         public string CancelarNFSe(string cabec, string msg)
