@@ -54,6 +54,7 @@ namespace OpenAC.Net.NFSe.Providers
             Providers = new Dictionary<NFSeProvider, Type>
             {
                 {NFSeProvider.Abaco, typeof(ProviderAbaco)},
+                {NFSeProvider.ABase, typeof(ProviderABase)},
                 {NFSeProvider.Americana, typeof(ProviderAmericana)},
                 {NFSeProvider.AssessorPublico, typeof(ProviderAssessorPublico)},
                 {NFSeProvider.BHISS, typeof(ProviderBHISS)},
