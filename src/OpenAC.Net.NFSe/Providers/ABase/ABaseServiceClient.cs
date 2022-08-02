@@ -76,14 +76,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarLoteRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<nfs:ConsultarLoteRps>");
+            message.Append("<nfs:ConsultaLoteRps>");
             message.Append("<nfs:nfseCabecMsg>");
             message.AppendCData(cabec);
             message.Append("</nfs:nfseCabecMsg>");
             message.Append("<nfs:nfseDadosMsg>");
             message.AppendCData(msg);
             message.Append("</nfs:nfseDadosMsg>");
-            message.Append("</nfs:ConsultarLoteRps>");
+            message.Append("</nfs:ConsultaLoteRps>");
 
             return Execute("http://nfse.abase.com.br/NFSeWS/ConsultaLoteRps", message.ToString(), "ConsultaLoteRpsResponse");
         }
