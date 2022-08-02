@@ -495,11 +495,11 @@ namespace OpenAC.Net.NFSe.Demo
             if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
             // Setar o cnae de acordo com o schema aceito pelo provedor.
-            var cnae = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.Sintese) ? "5211701" : "861010101";
+            var cnae = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.Sintese, NFSeProvider.ABase) ? "5211701" : "861010101";
             if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
             nfSe.Servico.CodigoCnae = cnae;
 
-            var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SIAPNet) ? "5211701" : "01.07.00 / 00010700";
+            var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.ABase) ? "5211701" : "01.07.00 / 00010700";
 
             nfSe.Servico.ItemListaServico = itemListaServico;
             nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;

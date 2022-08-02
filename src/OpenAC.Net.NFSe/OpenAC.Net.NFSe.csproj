@@ -302,4 +302,13 @@
     <Folder Include="Providers\Sintese\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Schemas\ABase\nfse.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Schemas\ABase\xmldsig-core-schema20020212.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

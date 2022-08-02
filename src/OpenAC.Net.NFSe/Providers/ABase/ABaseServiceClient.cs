@@ -29,12 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
-using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -57,51 +57,35 @@ namespace OpenAC.Net.NFSe.Providers
         public string Enviar(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ws:recepcionarLoteRps>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:recepcionarLoteRps>");
+            message.Append("<nfs:RecepcionarLoteRps>");
+            message.Append("<nfs:nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfs:nfseCabecMsg>");
+            message.Append("<nfs:nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfs:nfseDadosMsg>");
+            message.Append("</nfs:RecepcionarLoteRps>");
 
-            return Execute("recepcionarLoteRps", message.ToString(), "recepcionarLoteRpsResponse");
+            return Execute("http://nfse.abase.com.br/NFSeWS/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
         }
 
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:recepcionarLoteRpsSincrono>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:recepcionarLoteRpsSincrono>");
-
-            return Execute("recepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
-        }
+        public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor ! Utilize o envio assincrono");
 
         public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ws:consultarLoteRps>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:consultarLoteRps>");
+            message.Append("<nfs:ConsultarLoteRps>");
+            message.Append("<nfs:nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfs:nfseCabecMsg>");
+            message.Append("<nfs:nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfs:nfseDadosMsg>");
+            message.Append("</nfs:ConsultarLoteRps>");
 
-            return Execute("consultarLoteRps", message.ToString(), "consultarLoteRpsResponse");
+            return Execute("http://nfse.abase.com.br/NFSeWS/ConsultaLoteRps", message.ToString(), "ConsultaLoteRpsResponse");
         }
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
@@ -109,82 +93,42 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSeRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ws:consultarNfsePorRps>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:consultarNfsePorRps>");
+            message.Append("<nfs:ConsultaNfseRps>");
+            message.Append("<nfs:nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfs:nfseCabecMsg>");
+            message.Append("<nfs:nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfs:nfseDadosMsg>");
+            message.Append("</nfs:ConsultaNfseRps>");
 
-            return Execute("consultarNfsePorRps", message.ToString(), "consultarNfsePorRpsResponse");
+            return Execute("http://nfse.abase.com.br/NFSeWS/ConsultaNfseRps", message.ToString(), "ConsultaNfseRpsResponse");
         }
 
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:consultarNfseServicoPrestado>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:consultarNfseServicoPrestado>");
-
-            return Execute("consultarNfseServicoPrestado", message.ToString(), "consultarNfseServicoPrestadoResponse");
-        }
+        public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string CancelarNFSe(string cabec, string msg)
         {
-            // Dados de homologação
-            // CNPJ=01001001000113, IM:15000, Login=01001001000113, Senha=123456;
             var message = new StringBuilder();
-            message.Append("<ws:cancelarNfse>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:cancelarNfse>");
+            message.Append("<nfs:CancelaNfse>");
+            message.Append("<nfs:nfseCabecMsg>");
+            message.AppendCData(cabec);
+            message.Append("</nfs:nfseCabecMsg>");
+            message.Append("<nfs:nfseDadosMsg>");
+            message.AppendCData(msg);
+            message.Append("</nfs:nfseDadosMsg>");
+            message.Append("</nfs:CancelaNfse>");
 
-            return Execute("cancelarNfse", message.ToString(), "cancelarNfseResponse");
+            return Execute("http://nfse.abase.com.br/NFSeWS/CancelaNfse", message.ToString(), "CancelaNfseResponse");
         }
 
         public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:substituirNfse>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:substituirNfse>");
-
-            return Execute("substituirNfse", message.ToString(), "substituirNfseResponse");
-        }
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            var result = ValidarUsernamePassword();
-            if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
-
-            return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://nfse.abase.com.br/\"");
-        }
-
-        public bool ValidarUsernamePassword()
-        {
-            return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
+            return Execute(soapAction, message, "", responseTag, "xmlns:nfs=\"http://nfse.abase.com.br/NFSeWS\"");
         }
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
@@ -202,5 +146,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         #endregion Methods
+
+
     }
 }

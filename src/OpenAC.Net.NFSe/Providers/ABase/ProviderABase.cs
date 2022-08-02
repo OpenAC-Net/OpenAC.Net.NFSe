@@ -29,7 +29,11 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
+using System.Linq;
+using System.Text;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -52,5 +56,15 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         #endregion Methods
+
+        #region Protected Methods
+
+        protected override string GetNamespace()
+        {
+            return "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance/\" xmlns=\"http://nfse.abase.com.br/nfse.xsd\"";
+        }
+
+        #endregion Protected Methods
+
     }
 }
