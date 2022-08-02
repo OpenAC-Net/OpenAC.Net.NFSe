@@ -991,7 +991,7 @@ namespace OpenAC.Net.NFSe.Providers
             retornoWebservice.Lote = xmlRet.Root?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
 
             var retornoLote = xmlRet.ElementAnyNs("ConsultarLoteRpsResposta");
-            var situacao = retornoLote.ElementAnyNs("Situacao");
+            var situacao = retornoLote?.ElementAnyNs("Situacao");
             if (situacao != null)
             {
                 switch (situacao.GetValue<int>())
