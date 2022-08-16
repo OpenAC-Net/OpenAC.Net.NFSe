@@ -147,9 +147,9 @@ namespace OpenAC.Net.NFSe.Providers.Pvh
             XElement rootSub = null;
             XElement rootRps;
 
-            var rootGrupo = xml.ElementAnyNs("ConsultarLoteRpsResposta");
-            var rootGrupoListaNfse = rootGrupo?.ElementAnyNs("ListaNfse");
-            var rootCompNfse = rootGrupoListaNfse?.ElementAnyNs("CompNfse");
+            //var rootGrupo = xml.ElementAnyNs("ConsultarLoteRpsResposta");
+            //var rootGrupoListaNfse = rootGrupo?.ElementAnyNs("ListaNfse");
+            var rootCompNfse = xml.ElementAnyNs("CompNfse");
 
             if (rootCompNfse != null)
             {
