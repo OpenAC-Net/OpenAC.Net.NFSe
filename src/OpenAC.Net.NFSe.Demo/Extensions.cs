@@ -18,12 +18,20 @@ namespace OpenAC.Net.NFSe.Demo
             var fileName = Guid.NewGuid() + ".xml";
             var fullFileName = Path.Combine(path, fileName);
             var xmlDoc = new XmlDocument();
-            if (File.Exists(xml))
-                xmlDoc.Load(xml);
-            else
-                xmlDoc.LoadXml(xml);
-            xmlDoc.Save(fullFileName);
-            browser.Navigate(fullFileName);
+            try
+            {
+                if (File.Exists(xml))
+                    xmlDoc.Load(xml);
+                else
+                    xmlDoc.LoadXml(xml);
+
+                xmlDoc.Save(fullFileName);
+                browser.Navigate(fullFileName);
+            }
+            catch
+            {
+                //EVITA MOSTRAR O ERRO INCORRETO SE O CONTEUDO NAO FOR XML
+            }
         }
 
         public static void AppendLine(this RichTextBox rtb, string text)
