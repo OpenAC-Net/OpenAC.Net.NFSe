@@ -17,7 +17,7 @@ namespace OpenAC.Net.NFSe.Test
 
         public static OpenNFSe Sigiss => sigiss ?? (sigiss = GetSigiss());
 
-        public static OpenNFSe Abrasf => sigiss ?? (sigiss = GetAbrasf());
+        public static OpenNFSe Abrasf => GetAbrasf();
 
         #endregion Properties
 
