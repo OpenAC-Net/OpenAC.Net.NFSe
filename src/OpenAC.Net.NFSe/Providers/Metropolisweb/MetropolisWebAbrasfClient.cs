@@ -32,52 +32,9 @@ namespace OpenAC.Net.NFSe.Providers.Metropolisweb
             return output?.Value;
         }
 
-        protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
-        {
-            string contetType;
-            NameValueCollection headers;
-            switch (MessageVersion)
-            {
-                case SoapVersion.Soap11:
-                    contetType = $"text/xml; charset={CharSet}";
-                    headers = new NameValueCollection {{"SOAPAction", soapAction}};
-                    break;
-                case SoapVersion.Soap12:
-                    contetType = $"application/soap+xml; charset={CharSet};action={soapAction}";
-                    headers = null;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            var envelope = new StringBuilder();
-            switch (MessageVersion)
-            {
-                case SoapVersion.Soap11:
-                    envelope.Append("<soapenv:Envelope xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\" xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">");
-                    break;
-                case SoapVersion.Soap12:
-                    envelope.Append("<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            envelope.Append(soapNamespaces.Aggregate("", (atual, next) => atual + $" {next}", namespaces => namespaces));
-            envelope.Append("<soapenv:Header/>");
-            envelope.Append("<soapenv:Body>");
-            envelope.Append(message);
-            envelope.Append("</soapenv:Body>");
-            envelope.Append("</soapenv:Envelope>");
-            EnvelopeEnvio = envelope.ToString();
-            Execute(contetType, "POST", headers);
-            if (!EnvelopeRetorno.IsValidXml())
-                throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
-            var xmlDocument = XDocument.Parse(EnvelopeRetorno);
-            var body = xmlDocument.ElementAnyNs("Envelope").ElementAnyNs("Body");
-            var retorno = TratarRetorno(body, responseTag);
-            if (retorno.IsValidXml()) return retorno;
-            throw new OpenDFeCommunicationException(retorno);
+         protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
+        { 
+            return base.Execute(soapAction, message, soapHeader, responseTag, "xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\"");
         }
 
         #region Implementacoes
