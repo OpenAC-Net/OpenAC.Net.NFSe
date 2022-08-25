@@ -374,12 +374,13 @@ namespace OpenAC.Net.NFSe.Demo
 
         private void txtNumeroSerie_TextChanged(object sender, EventArgs e)
         {
-            if (txtNumeroSerie.Text.IsEmpty()) return;
+            //nao limpar aqui pois a tela de selecao nao abre
+            //if (txtNumeroSerie.Text.IsEmpty()) return;
 
-            txtCertificado.Text = string.Empty;
-            txtSenha.Text = string.Empty;
-            openNFSe.Configuracoes.Certificados.Certificado = txtNumeroSerie.Text;
-            openNFSe.Configuracoes.Certificados.Senha = string.Empty;
+            //txtCertificado.Text = string.Empty;
+            //txtSenha.Text = string.Empty;
+            //openNFSe.Configuracoes.Certificados.Certificado = txtNumeroSerie.Text;
+            //openNFSe.Configuracoes.Certificados.Senha = string.Empty;
         }
 
         private void txtSchemas_TextChanged(object sender, EventArgs e)
