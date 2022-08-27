@@ -39,6 +39,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         public SigissWebServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
         {
+            AuthenticationHeader = "AUTHORIZATION";
         }
 
         #endregion Constructors

@@ -45,9 +45,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.1" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
@@ -132,6 +132,14 @@
       <Pack>True</Pack>
       <PackagePath>content\Schemas\ISSNet</PackagePath>
     </None>
+    <None Include="Schemas\MetropolisWeb\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\MetropolisWeb</PackagePath>
+    </None>
+    <None Include="Schemas\Mitra\*.*">
+      <Pack>True</Pack>
+      <PackagePath>content\Schemas\Mitra</PackagePath>
+    </None>
     <None Include="Schemas\NFe Cidades\*.*">
       <Pack>True</Pack>
       <PackagePath>content\Schemas\NFe Cidades</PackagePath>
@@ -183,10 +191,6 @@
     <None Include="Schemas\PVH\*.*">
       <Pack>True</Pack>
       <PackagePath>content\Schemas\PVH</PackagePath>
-    </None>
-    <None Include="Schemas\Mitra\*.*">
-      <Pack>True</Pack>
-      <PackagePath>content\Schemas\Mitra</PackagePath>
     </None>
     <None Include="Schemas\SIAPNet\*.*">
       <Pack>True</Pack>
@@ -257,6 +261,12 @@
     <None Update="Schemas\ISSNet\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Schemas\MetropolisWeb\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Schemas\Mitra\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Schemas\NFe Cidades\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -288,9 +298,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Schemas\PVH\*.*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Schemas\Mitra\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Schemas\SIAPNet\*.*">

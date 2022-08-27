@@ -38,7 +38,6 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Providers.Metropolisweb;
 using OpenAC.Net.NFSe.Providers.Pvh;
 
 namespace OpenAC.Net.NFSe.Providers
@@ -95,7 +94,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.Vitoria, typeof(ProviderVitoria)},
                 {NFSeProvider.WebIss, typeof(ProviderWebIss)},
                 {NFSeProvider.WebIss2, typeof(ProviderWebIss2)},
-                {NFSeProvider.MetroWebAbrasf, typeof(ProviderMetropolisWebAbrasf)}
+                {NFSeProvider.MetropolisWeb, typeof(ProviderMetropolisWeb)}
             };
 
             Load();

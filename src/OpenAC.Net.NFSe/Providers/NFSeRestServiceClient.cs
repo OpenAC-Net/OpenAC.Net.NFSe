@@ -4,7 +4,7 @@
 // Created          : 08-30-2021
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 09-03-2022
+// Last Modified On : 27-08-2022
 // ***********************************************************************
 // <copyright file="NFSeRestServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -41,12 +41,6 @@ namespace OpenAC.Net.NFSe.Providers
 {
     public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
     {
-        #region Fields
-
-        private const string formDatatemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
-
-        #endregion Fields
-
         #region Constructors
 
         /// <summary>
@@ -73,7 +67,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Properties
 
-        public string AuthenticationHeader { get; protected set; } = "AUTHORIZATION";
+        public string AuthenticationHeader { get; protected set; } = "Authorization";
 
         #endregion Properties
 

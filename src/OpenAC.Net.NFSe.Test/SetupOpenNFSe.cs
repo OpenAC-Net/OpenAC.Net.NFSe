@@ -8,16 +8,17 @@ namespace OpenAC.Net.NFSe.Test
 
         private static OpenNFSe ginfes;
         private static OpenNFSe sigiss;
+        private static OpenNFSe abrasf;
 
         #endregion Fields
 
         #region Properties
 
-        public static OpenNFSe Ginfes => ginfes ?? (ginfes = GetGinfes());
+        public static OpenNFSe Ginfes => ginfes ??= GetGinfes();
 
-        public static OpenNFSe Sigiss => sigiss ?? (sigiss = GetSigiss());
+        public static OpenNFSe Sigiss => sigiss ??= GetSigiss();
 
-        public static OpenNFSe Abrasf => GetAbrasf();
+        public static OpenNFSe Abrasf => abrasf ??= GetAbrasf();
 
         #endregion Properties
 
@@ -44,6 +45,7 @@ namespace OpenAC.Net.NFSe.Test
 
             return openNFSe;
         }
+
         private static OpenNFSe GetGinfes()
         {
             var openNFSe = new OpenNFSe();
