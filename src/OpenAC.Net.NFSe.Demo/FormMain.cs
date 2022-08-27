@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
 using NLog;
@@ -246,8 +247,18 @@ namespace OpenAC.Net.NFSe.Demo
         {
             ExecuteSafe(() =>
             {
-                var numeroSerie = openNFSe.Configuracoes.Certificados.SelecionarCertificado();
-                txtNumeroSerie.Text = numeroSerie;
+                var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+                store.Open(OpenFlags.MaxAllowed | OpenFlags.ReadOnly);
+
+                var certificates = store.Certificates.Find(X509FindType.FindByTimeValid, DateTime.Now, true)
+                    .Find(X509FindType.FindByKeyUsage, X509KeyUsageFlags.DigitalSignature, false);
+
+                X509Certificate2Collection certificadosSelecionados;
+                certificadosSelecionados = X509Certificate2UI.SelectFromCollection(certificates, "Certificados Digitais",
+                    "Selecione o Certificado Digital para uso no aplicativo", X509SelectionFlag.SingleSelection);
+
+                var certificado = certificadosSelecionados.Count < 1 ? null : certificadosSelecionados[0];
+                txtNumeroSerie.Text = certificado?.GetSerialNumberString() ?? string.Empty;
             });
         }
 
