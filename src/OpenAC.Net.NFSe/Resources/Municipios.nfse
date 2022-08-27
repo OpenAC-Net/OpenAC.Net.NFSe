@@ -97,7 +97,7 @@
         </Item>
       </UrlProducao>
     </Municipio>
-    <Municipio>
+   <Municipio>
       <Codigo>3501608</Codigo>
       <CodigoSiafi>6131</CodigoSiafi>
       <IdEntidade>0</IdEntidade>
@@ -107,24 +107,30 @@
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
+          <Url>https://americanahomologacao.nfe.com.br/nfse/wsnacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://americanahomologacao.nfe.com.br/nfse/wsnacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://americanahomologacao.nfe.com.br/nfse/wsnacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://americanahomologacao.nfe.com.br/nfse/wsnacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://americanahomologacao.nfe.com.br/nfse/wsnacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://americanahomologacao.nfe.com.br/nfse/wsnacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
@@ -134,6 +140,7 @@
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://americanahomologacao.nfe.com.br/nfse/wsnacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -142,40 +149,40 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional/nfse.asmx?wsdl</Url>
+          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional/nfse.asmx?wsdl</Url>
+          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional/nfse.asmx?wsdl</Url>
+          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional/nfse.asmx?wsdl</Url>
+          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional/nfse.asmx?wsdl</Url>
+          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional/nfse.asmx?wsdl</Url>
+          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional/nfse.asmx?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfse.americana.sp.gov.br/nfse/WSNacional2/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -3884,7 +3891,7 @@
         </Item>
       </UrlProducao>
     </Municipio>
-    <Municipio>
+   <Municipio>
       <Codigo>2104057</Codigo>
       <CodigoSiafi>0</CodigoSiafi>
       <IdEntidade>0</IdEntidade>
@@ -3938,42 +3945,42 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://nfse.adtrcloud.com.br:8096/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -10362,6 +10369,104 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>4319208</Codigo>
+      <CodigoSiafi>0</CodigoSiafi>
+      <IdEntidade>0</IdEntidade>
+      <Nome>Sao Nicolau</Nome>
+      <UF>RS</UF>
+      <Provedor>ABase</Provedor>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://testenfse.abase.com.br/webservice/nfsews.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfse.abase.com.br/webservice_v2/nfsews.asmx?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3550308</Codigo>
       <CodigoSiafi>7107</CodigoSiafi>
       <IdEntidade>0</IdEntidade>
@@ -12254,9 +12359,9 @@
         </Item>
       </UrlProducao>
     </Municipio>
-    <Municipio>
+   <Municipio>
       <Codigo>2933307</Codigo>
-      <CodigoSiafi>3965</CodigoSiafi>
+      <CodigoSiafi>0</CodigoSiafi>
       <IdEntidade>0</IdEntidade>
       <Nome>Vitoria da Conquista</Nome>
       <UF>BA</UF>

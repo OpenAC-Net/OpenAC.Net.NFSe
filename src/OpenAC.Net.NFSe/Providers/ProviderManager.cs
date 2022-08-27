@@ -36,6 +36,7 @@ using System.Linq;
 using System.Reflection;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Providers.Metropolisweb;
 using OpenAC.Net.NFSe.Providers.Pvh;
@@ -55,6 +56,7 @@ namespace OpenAC.Net.NFSe.Providers
             Providers = new Dictionary<NFSeProvider, Type>
             {
                 {NFSeProvider.Abaco, typeof(ProviderAbaco)},
+                {NFSeProvider.ABase, typeof(ProviderABase)},
                 {NFSeProvider.Americana, typeof(ProviderAmericana)},
                 {NFSeProvider.AssessorPublico, typeof(ProviderAssessorPublico)},
                 {NFSeProvider.BHISS, typeof(ProviderBHISS)},
@@ -141,16 +143,17 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="stream">O stream.</param>
         public static void Save(Stream stream)
         {
-            foreach (var m in Municipios)
+            foreach (var value in Enum.GetValues(typeof(TipoUrl)).Cast<TipoUrl>())
             {
-                if (!m.UrlHomologacao.ContainsKey(TipoUrl.Autenticacao))
-                    m.UrlHomologacao.Add(TipoUrl.Autenticacao, string.Empty);
-                if (!m.UrlProducao.ContainsKey(TipoUrl.Autenticacao))
-                    m.UrlProducao.Add(TipoUrl.Autenticacao, string.Empty);
+                foreach (var m in Municipios)
+                {
+                    if (!m.UrlHomologacao.ContainsKey(value)) m.UrlHomologacao.Add(value, string.Empty);
+                    if (!m.UrlProducao.ContainsKey(value)) m.UrlProducao.Add(value, string.Empty);
+                }
             }
 
             var serializer = new MunicipiosNFSe { Municipios = Municipios.OrderBy(x => x.Nome).ToArray() };
-            serializer.Save(stream);
+            serializer.Save(stream, DFeSaveOptions.None);
         }
 
         /// <summary>
