@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <OpenNFSe xmlns="https://www.openac.net.br/">
   <Municipios>
     <Municipio>
@@ -97,7 +97,7 @@
         </Item>
       </UrlProducao>
     </Municipio>
-    <Municipio>
+   <Municipio>
       <Codigo>3501608</Codigo>
       <CodigoSiafi>6131</CodigoSiafi>
       <IdEntidade>0</IdEntidade>
@@ -3891,103 +3891,7 @@
         </Item>
       </UrlProducao>
     </Municipio>
-    <Municipio>
-      <Codigo>2104057</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
-      <Nome>Estreito</Nome>
-      <UF>MA</UF>
-      <Provedor>Fiorilli</Provedor>
-      <UrlHomologacao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://nfse2.adtrinformatica.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-        </Item>
-      </UrlHomologacao>
-      <UrlProducao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://nfse.adtrcloud.com.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-        </Item>
-      </UrlProducao>
-    </Municipio>
-    <Municipio>
+   <Municipio>
       <Codigo>2104057</Codigo>
       <CodigoSiafi>0</CodigoSiafi>
       <IdEntidade>0</IdEntidade>
@@ -12455,7 +12359,7 @@
         </Item>
       </UrlProducao>
     </Municipio>
-    <Municipio>
+   <Municipio>
       <Codigo>2933307</Codigo>
       <CodigoSiafi>0</CodigoSiafi>
       <IdEntidade>0</IdEntidade>
@@ -12545,6 +12449,200 @@
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
           <Url>https://www4.webiss.com.br/vitoriadaconquistaba_wsnfse/NfseServices.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
+      <Codigo>2919207</Codigo>
+      <CodigoSiafi>3685</CodigoSiafi>
+      <IdEntidade>0</IdEntidade>
+      <Nome>Lauro de Freitas</Nome>
+      <UF>BA</UF>
+      <Provedor>MetroWebAbrasf</Provedor>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url/>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://lftributos.metropolisweb.com.br:9090/webservicenfse/nfse/services?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
+      <Codigo>2927408</Codigo>
+      <CodigoSiafi>3849</CodigoSiafi>
+      <IdEntidade>0</IdEntidade>
+      <Nome>Salvador</Nome>
+      <UF>BA</UF>
+      <Provedor>Salvador</Provedor>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://notahml.salvador.ba.gov.br/rps/ENVIOLOTERPS/EnvioLoteRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url/>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url/> 
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url></Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://notahml.salvador.ba.gov.br/rps/CONSULTANFSE/ConsultaNfse.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://notahml.salvador.ba.gov.br/rps/CONSULTANFSERPS/ConsultaNfseRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://notahml.salvador.ba.gov.br/rps/CONSULTALOTERPS/ConsultaLoteRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://notahml.salvador.ba.gov.br/rps/CONSULTASITUACAOLOTERPS/ConsultaSituacaoLoteRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url/> 
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url/> 
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfse.salvador.ba.gov.br/rps/ENVIOLOTERPS/EnvioLoteRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url/>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url/>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url/>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfse.salvador.ba.gov.br/rps/CONSULTANFSE/ConsultaNfse.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfse.salvador.ba.gov.br/rps/CONSULTANFSERPS/ConsultaNfseRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfse.salvador.ba.gov.br/rps/CONSULTALOTERPS/ConsultaLoteRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfse.salvador.ba.gov.br/rps/CONSULTASITUACAOLOTERPS/ConsultaSituacaoLoteRPS.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url/>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url/>S
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>

@@ -128,6 +128,9 @@ namespace OpenAC.Net.NFSe.Providers
         WebIss2 = 11,
 
         [Description("Porto Velho")]
-        PVH = 32
+        PVH = 32,
+
+        [Description("Metro Web")]
+        MetroWebAbrasf = 39
     }
 }
