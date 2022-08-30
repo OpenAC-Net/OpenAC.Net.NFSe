@@ -32,8 +32,6 @@
 
 using OpenAC.Net.DFe.Core;
 using System;
-using System.IO;
-using System.Net;
 using System.Text;
 
 namespace OpenAC.Net.NFSe.Providers
@@ -44,16 +42,15 @@ namespace OpenAC.Net.NFSe.Providers
 
         public IPMServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
         {
-            AuthenticationHeader = "Authorization";
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public string EnviarSincrono(string cabec, string msg) => Upload("", msg);
+        public string EnviarSincrono(string cabec, string msg) => Upload("", msg, true);
 
-        public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg);
+        public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg, true);
 
         public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 

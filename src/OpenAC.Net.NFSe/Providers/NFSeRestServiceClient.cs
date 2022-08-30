@@ -116,7 +116,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected string Upload(string action, string message)
+        protected string Upload(string action, string message, bool useDefaultAuth = false, bool keepAlive = false)
         {
             var url = Url;
 
@@ -140,6 +140,9 @@ namespace OpenAC.Net.NFSe.Providers
 
                 var request = WebRequest.CreateHttp(Url);
                 request.Method = "POST";
+                request.UseDefaultCredentials = useDefaultAuth;
+                request.KeepAlive = keepAlive;
+
                 request.ContentType = "multipart/form-data; boundary=" + boundary;
 
                 if (!ValidarCertificadoServidor())
@@ -156,12 +159,22 @@ namespace OpenAC.Net.NFSe.Providers
 
                 using var streamWriter = request.GetRequestStream();
                 streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
+                var formitembytes = Encoding.UTF8.GetBytes(arquivoEnvio);
+                streamWriter.Write(formitembytes, 0, formitembytes.Length);
 
-                int bytesRead;
-                var buffer = new byte[4096];
-                var fileStream = new FileStream(arquivoEnvio, FileMode.Open, FileAccess.Read);
-                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-                    streamWriter.Write(buffer, 0, bytesRead);
+                streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
+
+                var headerTemplate = $"Content-Disposition: form-data; name=\"file\"; filename=\"{fileName}\"\r\nContent-Type: text/xml\r\n\r\n";
+                var headerbytes = Encoding.UTF8.GetBytes(headerTemplate);
+                streamWriter.Write(headerbytes, 0, headerbytes.Length);
+
+                using (var fileStream = new FileStream(arquivoEnvio, FileMode.Open, FileAccess.Read))
+                {
+                    var buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                        streamWriter.Write(buffer, 0, bytesRead);
+                }
 
                 var trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
                 streamWriter.Write(trailer, 0, trailer.Length);

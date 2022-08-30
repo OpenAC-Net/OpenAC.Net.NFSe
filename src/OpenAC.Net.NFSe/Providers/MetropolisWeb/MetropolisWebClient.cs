@@ -62,7 +62,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</RecepcionarLoteRpsRequest>");
             message.Append("</end:RecepcionarLoteRps>");
-            return Execute("http://endpoint.nfse.ws.webservicenfse.edza.com.br/NfseEndpoint/RecepcionarLoteRpsRequest", message.ToString(), "RecepcionarLoteRpsResponse");
+            return Execute(message.ToString());
         }
 
         public string ConsultarSituacao(string cabec, string msg)
@@ -78,7 +78,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ConsultarSituacaoLoteRpsRequest>");
             message.Append("</end:ConsultarSituacaoLoteRps>");
-            return Execute("", message.ToString(), "");
+            return Execute(message.ToString());
         }
 
         public string ConsultarLoteRps(string cabec, string msg)
@@ -94,7 +94,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ConsultarLoteRpsRequest>");
             message.Append("</end:ConsultarLoteRps>");
-            return Execute("", message.ToString(), "");
+            return Execute(message.ToString());
         }
 
         public string ConsultarNFSeRps(string cabec, string msg)
@@ -110,7 +110,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ConsultarNfsePorRpsRequest>");
             message.Append("</end:ConsultarNfsePorRps>");
-            return Execute("", message.ToString(), "");
+            return Execute(message.ToString());
         }
 
         public string ConsultarNFSe(string cabec, string msg)
@@ -126,7 +126,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</ConsultarNfseRequest>");
             message.Append("</end:ConsultarNfse>");
-            return Execute("", message.ToString(), "");
+            return Execute(message.ToString());
         }
 
         public string CancelarNFSe(string cabec, string msg)
@@ -142,7 +142,7 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("</nfseDadosMsg>");
             message.Append("</CancelarNfseRequest>");
             message.Append("</end:CancelarNfse>");
-            return Execute("", message.ToString(), "");
+            return Execute(message.ToString());
         }
 
         public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Serviço não disponível por este provedor");
@@ -160,9 +160,9 @@ namespace OpenAC.Net.NFSe.Providers
             return output?.Value;
         }
 
-        protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
+        private string Execute(string message)
         {
-            return base.Execute(soapAction, message, soapHeader, responseTag, "xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\"");
+            return Execute("", message, "", "", "xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\"");
         }
 
         #endregion Methods
