@@ -166,7 +166,7 @@ namespace OpenAC.Net.NFSe.Providers
             if (path.IsEmpty())
             {
                 var assembly = Assembly.GetExecutingAssembly();
-                using var resourceStream = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Resources.Municipios.nfse");
+                using var resourceStream = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Recursos.Municipios.nfse");
                 if (resourceStream != null)
                 {
                     buffer = new byte[resourceStream.Length];

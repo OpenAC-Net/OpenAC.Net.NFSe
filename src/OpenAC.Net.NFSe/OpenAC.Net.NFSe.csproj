@@ -197,13 +197,16 @@
       <PackagePath>content\Schemas\SIAPNet</PackagePath>
     </None>
   </ItemGroup>
-
   <ItemGroup>
-    <None Remove="Resources\Municipios.nfse" />
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
   </ItemGroup>
-
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Municipios.nfse" />
+    <None Remove="Recursos\Municipios.nfse" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Recursos\Municipios.nfse" />
   </ItemGroup>
 
   <ItemGroup>
