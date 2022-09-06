@@ -35,7 +35,7 @@ namespace OpenAC.Net.NFSe.Test
             //webservices
             //Configure os dados da cidade e do Certificado aqui
             openNFSe.Configuracoes.WebServices.Ambiente = DFeTipoAmbiente.Homologacao;
-            openNFSe.Configuracoes.WebServices.CodigoMunicipio = 2919207;
+            openNFSe.Configuracoes.WebServices.CodigoMunicipio = 2931350;
 
             openNFSe.Configuracoes.Certificados.Certificado = "5F592202094BC68E";
             openNFSe.Configuracoes.Certificados.Senha = "1234";
