@@ -197,6 +197,12 @@
       <PackagePath>content\Schemas\SIAPNet</PackagePath>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\Municipios.nfse" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Municipios.nfse" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="Schemas\Abaco\*.*">
