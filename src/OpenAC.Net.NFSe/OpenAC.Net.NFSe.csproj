@@ -199,14 +199,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Municipios.nfse" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Municipios.nfse" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Schemas\Abaco\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -307,6 +299,7 @@
 
   <ItemGroup>
     <Folder Include="Providers\Sintese\" />
+    <Folder Include="Recursos\" />
   </ItemGroup>
 
   <ItemGroup>

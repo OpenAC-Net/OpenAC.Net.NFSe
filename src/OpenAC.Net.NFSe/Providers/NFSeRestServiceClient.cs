@@ -157,28 +157,30 @@ namespace OpenAC.Net.NFSe.Providers
                 if (Certificado != null)
                     request.ClientCertificates.Add(Certificado);
 
-                using var streamWriter = request.GetRequestStream();
-                streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
-                var formitembytes = Encoding.UTF8.GetBytes(arquivoEnvio);
-                streamWriter.Write(formitembytes, 0, formitembytes.Length);
-
-                streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
-
-                var headerTemplate = $"Content-Disposition: form-data; name=\"file\"; filename=\"{fileName}\"\r\nContent-Type: text/xml\r\n\r\n";
-                var headerbytes = Encoding.UTF8.GetBytes(headerTemplate);
-                streamWriter.Write(headerbytes, 0, headerbytes.Length);
-
-                using (var fileStream = new FileStream(arquivoEnvio, FileMode.Open, FileAccess.Read))
+                using (var streamWriter = request.GetRequestStream())
                 {
-                    var buffer = new byte[4096];
-                    int bytesRead;
-                    while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-                        streamWriter.Write(buffer, 0, bytesRead);
-                }
+                    streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
+                    var formitembytes = Encoding.UTF8.GetBytes(arquivoEnvio);
+                    streamWriter.Write(formitembytes, 0, formitembytes.Length);
 
-                var trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
-                streamWriter.Write(trailer, 0, trailer.Length);
-                streamWriter.Close();
+                    streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
+
+                    var headerTemplate =
+                        $"Content-Disposition: form-data; name=\"file\"; filename=\"{fileName}\"\r\nContent-Type: text/xml\r\n\r\n";
+                    var headerbytes = Encoding.UTF8.GetBytes(headerTemplate);
+                    streamWriter.Write(headerbytes, 0, headerbytes.Length);
+
+                    using (var fileStream = new FileStream(arquivoEnvio, FileMode.Open, FileAccess.Read))
+                    {
+                        int bytesRead;
+                        var buffer = new byte[4096];
+                        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                            streamWriter.Write(buffer, 0, bytesRead);
+                    }
+
+                    var trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+                    streamWriter.Write(trailer, 0, trailer.Length);
+                }
 
                 var response = request.GetResponse();
                 EnvelopeRetorno = GetResponse(response);
