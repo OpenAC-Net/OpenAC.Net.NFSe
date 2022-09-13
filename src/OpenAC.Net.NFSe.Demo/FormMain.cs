@@ -841,7 +841,7 @@ namespace OpenAC.Net.NFSe.Demo
                 }
             }
 
-            cmbAmbiente.SelectedItem = config.Get("Ambiente", DFeTipoAmbiente.Homologacao);
+            cmbAmbiente.SetSelectedValue(config.Get("Ambiente", DFeTipoAmbiente.Homologacao));
 
             txtCertificado.Text = config.Get("Certificado", string.Empty);
             txtSenha.Text = config.Get("Senha", string.Empty);

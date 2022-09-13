@@ -214,6 +214,50 @@ namespace OpenAC.Net.NFSe.Nota
             #endregion Properties
         }
 
+        public sealed class NtThema
+        {
+            #region Constructors
+
+            internal NtThema()
+            {
+                ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte51 = 51;
+                ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte52 = 52;
+                ISSQNFixo57 = 57;
+                NaoTributavel58 = 58;
+                ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao59 = 59;
+                ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte61 = 61;
+                ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte62 = 62;
+                ImpostoDevidoForaDeLajeadoComObrigacaoDeRetencaoNaFonte63 = 63;
+                ImpostoDevidoForaDeLajeadoSemObrigacaoDeRetencaoNaFonte64 = 64;
+                ISSQNFixo67 = 67;
+                NaoTributavel68 = 68;
+                ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao69 = 69;
+                NaoTributavel78 = 78;
+                ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao79 = 79;
+            }
+
+            #endregion Constructors
+
+            #region Properties
+
+            public int ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte51 { get; }
+            public int ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte52 { get; }
+            public int ISSQNFixo57 { get; }
+            public int NaoTributavel58 { get; }
+            public int ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao59 { get; }
+            public int ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte61 { get; }
+            public int ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte62 { get; }
+            public int ImpostoDevidoForaDeLajeadoComObrigacaoDeRetencaoNaFonte63 { get; }
+            public int ImpostoDevidoForaDeLajeadoSemObrigacaoDeRetencaoNaFonte64 { get; }
+            public int ISSQNFixo67 { get; }
+            public int NaoTributavel68 { get; }
+            public int ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao69 { get; }
+            public int NaoTributavel78 { get; private set; }
+            public int ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao79 { get; }
+
+            #endregion Properties
+        }
+
         #endregion InnerTypes
 
         #region Fields
@@ -221,6 +265,7 @@ namespace OpenAC.Net.NFSe.Nota
         private static NtABRASF abrasf;
         private static NtDSF dsf;
         private static NtSigiss sigiss;
+        private static NtThema thema;
 
         #endregion Fields
 
@@ -245,6 +290,11 @@ namespace OpenAC.Net.NFSe.Nota
         /// Obtém as Natura de Operações do Sigis
         /// </summary>
         public static NtSigiss Sigiss => sigiss ??= new NtSigiss();
+
+        /// <summary>
+        /// Obtém as Natureza de Operações do Thema
+        /// </summary>
+        public static NtThema Thema => thema ??= new NtThema();
 
         #endregion Properties
     }
