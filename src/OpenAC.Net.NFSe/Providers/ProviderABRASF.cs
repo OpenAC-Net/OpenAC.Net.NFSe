@@ -1500,7 +1500,8 @@ namespace OpenAC.Net.NFSe.Providers
                     Correcao = mensagem?.ElementAnyNs("Correcao")?.GetValue<string>() ?? string.Empty
                 };
 
-                retornoWs.Erros.Add(evento);
+                if (new[] { evento.Codigo, evento.Descricao, evento.Correcao }.Any(s => !string.IsNullOrWhiteSpace(s)))
+                    retornoWs.Erros.Add(evento);
             }
         }
 

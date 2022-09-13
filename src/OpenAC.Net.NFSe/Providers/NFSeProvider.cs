@@ -131,6 +131,8 @@ namespace OpenAC.Net.NFSe.Providers
         PVH = 32,
 
         [Description("Metro Web")]
-        MetropolisWeb = 40
+        MetropolisWeb = 40,
+
+        Thema = 41
     }
 }
