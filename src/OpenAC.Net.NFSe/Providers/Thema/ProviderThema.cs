@@ -30,6 +30,9 @@
 // ***********************************************************************
 
 using System;
+using System.Linq;
+using System.Xml.Linq;
+using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -72,6 +75,25 @@ namespace OpenAC.Net.NFSe.Providers.Thema
         protected override string GetSchema(TipoUrl tipo)
         {
             return "nfse.xsd";
+        }
+
+        protected override void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string elementName = "ListaMensagemRetorno", string messageElement = "MensagemRetorno")
+        {
+            var listaMenssagens = xmlRet?.ElementAnyNs(elementName);
+            if (listaMenssagens == null) return;
+
+            foreach (var mensagem in listaMenssagens.ElementsAnyNs(messageElement))
+            {
+                var evento = new Evento
+                {
+                    Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
+                    Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,
+                    Correcao = mensagem?.ElementAnyNs("Correcao")?.GetValue<string>() ?? string.Empty
+                };
+
+                if (new[] { evento.Codigo, evento.Descricao }.All(s => !string.IsNullOrWhiteSpace(s)))
+                    retornoWs.Erros.Add(evento);
+            }
         }
 
         #endregion Methods
