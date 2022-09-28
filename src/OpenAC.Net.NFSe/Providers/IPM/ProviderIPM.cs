@@ -158,6 +158,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
+            if (Municipio.CodigoSiafi == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Faltou informar o codigo Siafi(codigo tom) no cadastro de cidades" });
+
             if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
             if (notas.Count > 1) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Este provedor aceita apenas uma RPS por vez" });
             if (retornoWebservice.Erros.Count > 0) return;
