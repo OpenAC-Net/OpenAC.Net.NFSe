@@ -29,7 +29,7 @@ namespace OpenAC.Net.NFSe.Demo
             }
             catch
             {
-                // Suprime o erro caso n„o seja Xmnl.
+                // Suprime o erro caso n√£o seja Xmnl.
             }
         }
 
@@ -52,6 +52,13 @@ namespace OpenAC.Net.NFSe.Demo
         {
             var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString(), value)).ToArray();
             cmb.DataSource = list;
+            cmb.SelectedItem = list.SingleOrDefault(x => x.Content.Equals(valorPadrao));
+        }
+        
+        public static void EnumDataSourceSorted<T>(this ComboBox cmb, T valorPadrao) where T : struct
+        {
+            var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString(), value)).ToArray();
+            cmb.DataSource = list.OrderBy(p => p.Description).ToList(); 
             cmb.SelectedItem = list.SingleOrDefault(x => x.Content.Equals(valorPadrao));
         }
 
