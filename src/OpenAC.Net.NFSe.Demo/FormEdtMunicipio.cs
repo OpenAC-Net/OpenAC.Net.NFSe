@@ -58,7 +58,7 @@ namespace OpenAC.Net.NFSe.Demo
             nudCodIBGE.Value = target.Codigo;
             nudCodSiafi.Value = target.CodigoSiafi;
             nudIdEntidade.Value = target.IdEntidade;
-            cmbProvedor.EnumDataSource(target.Provedor);
+            cmbProvedor.EnumDataSourceSorted(target.Provedor);
 
             txtPEnviar.Text = target.UrlProducao[TipoUrl.Enviar];
             txtPEnviarSincrono.Text = target.UrlProducao[TipoUrl.EnviarSincrono];
