@@ -96,7 +96,8 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.WebIss, typeof(ProviderWebIss)},
                 {NFSeProvider.WebIss2, typeof(ProviderWebIss2)},
                 {NFSeProvider.MetropolisWeb, typeof(ProviderMetropolisWeb)},
-                {NFSeProvider.Thema, typeof(ProviderThema)}
+                {NFSeProvider.Thema, typeof(ProviderThema)},
+                {NFSeProvider.Brasilia, typeof(ProviderBrasilia)}
             };
 
             Load();
