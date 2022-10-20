@@ -614,7 +614,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (nota.ConstrucaoCivil.CodigoObra.IsEmpty()) return null;
 
-            var construcao = new XElement("ContrucaoCivil");
+            var construcao = new XElement("ConstrucaoCivil");
 
             construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoObra", 1, 15, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoObra));
             construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "Art", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.ArtObra));
