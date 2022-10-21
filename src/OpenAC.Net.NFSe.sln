@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAC.Net.NFSe", "OpenAC.N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAC.Net.NFSe.Test", "OpenAC.Net.NFSe.Test\OpenAC.Net.NFSe.Test.csproj", "{CB70B488-3A8C-4119-A4F0-FFE467DBC7BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAC.Net.NFSe.Demo", "OpenAC.Net.NFSe.Demo\OpenAC.Net.NFSe.Demo.csproj", "{507A1588-D006-445C-B729-3F1D3A5CE803}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAC.Net.NFSe.Demo", "OpenAC.Net.NFSe.Demo\OpenAC.Net.NFSe.Demo.csproj", "{507A1588-D006-445C-B729-3F1D3A5CE803}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAC.Net.NFSe.DANFSe.FastReport", "OpenAC.Net.NFSe.DANFSe.FastReport\OpenAC.Net.NFSe.DANFSe.FastReport.csproj", "{BA9DBAB3-31F1-4D98-AD4D-CD73CF0B6921}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource", "OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource.csproj", "{F16DBEED-46EB-46B1-8264-711EDFADC099}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAC.Net.NFSe.DANFSe.ReportNative", "OpenAC.Net.NFSe.DANFSe.ReportNative\OpenAC.Net.NFSe.DANFSe.ReportNative.csproj", "{47066847-7FF1-47DD-8DDE-9BA8E47666FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{F16DBEED-46EB-46B1-8264-711EDFADC099}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F16DBEED-46EB-46B1-8264-711EDFADC099}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F16DBEED-46EB-46B1-8264-711EDFADC099}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47066847-7FF1-47DD-8DDE-9BA8E47666FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47066847-7FF1-47DD-8DDE-9BA8E47666FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47066847-7FF1-47DD-8DDE-9BA8E47666FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47066847-7FF1-47DD-8DDE-9BA8E47666FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

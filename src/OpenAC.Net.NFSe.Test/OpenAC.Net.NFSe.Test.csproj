@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ReportTest.cs" />
     <Compile Include="TestAbrasfV1.cs" />
     <Compile Include="TestProviderSigiss.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -62,6 +63,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.ReportNative\OpenAC.Net.NFSe.DANFSe.ReportNative.csproj">
+      <Project>{47066847-7FF1-47DD-8DDE-9BA8E47666FF}</Project>
+      <Name>OpenAC.Net.NFSe.DANFSe.ReportNative</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj">
       <Project>{0ef298ca-a045-47e2-91ad-5c211e793c3b}</Project>
       <Name>ACBr.Net.NFSe</Name>
