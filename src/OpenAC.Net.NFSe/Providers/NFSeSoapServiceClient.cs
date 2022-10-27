@@ -110,17 +110,17 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
         {
-            string contetType;
+            string contentType;
             NameValueCollection headers;
             switch (MessageVersion)
             {
                 case SoapVersion.Soap11:
-                    contetType = $"text/xml; charset={CharSet}";
+                    contentType = $"text/xml; charset={CharSet}";
                     headers = new NameValueCollection { { "SOAPAction", soapAction } };
                     break;
 
                 case SoapVersion.Soap12:
-                    contetType = $"application/soap+xml; charset={CharSet};action={soapAction}";
+                    contentType = $"application/soap+xml; charset={CharSet};action={soapAction}";
                     headers = null;
                     break;
 
@@ -151,7 +151,7 @@ namespace OpenAC.Net.NFSe.Providers
             envelope.Append("</soapenv:Envelope>");
             EnvelopeEnvio = envelope.ToString();
 
-            Execute(contetType, "POST", headers);
+            Execute(contentType, "POST", headers);
 
             if (!EnvelopeRetorno.IsValidXml())
                 throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);

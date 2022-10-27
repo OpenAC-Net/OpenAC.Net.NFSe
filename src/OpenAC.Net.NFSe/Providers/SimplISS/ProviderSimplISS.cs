@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -206,6 +207,36 @@ namespace OpenAC.Net.NFSe.Providers
             }
 
             retornoWebservice.Nota = nota;
+            retornoWebservice.Sucesso = true;
+        }
+
+        /// <inheritdoc />
+        protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice, NotaServicoCollection notas)
+        {
+            // Analisa mensagem de retorno
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+            MensagemErro(retornoWebservice, xmlRet.Root);
+            if (retornoWebservice.Erros.Any()) return;
+
+            var retornoLote = xmlRet.ElementAnyNs("ConsultarNfseResult");
+            var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
+            if (listaNfse == null)
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+                return;
+            }
+
+            var notasServico = new List<NotaServico>();
+
+            foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
+            {
+                // Carrega a nota fiscal na coleção de Notas Fiscais
+                var nota = LoadXml(compNfse.AsString());
+                notas.Add(nota);
+                notasServico.Add(nota);
+            }
+
+            retornoWebservice.Notas = notasServico.ToArray();
             retornoWebservice.Sucesso = true;
         }
 

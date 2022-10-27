@@ -45,7 +45,7 @@ using OpenAC.Net.NFSe.Nota;
 namespace OpenAC.Net.NFSe.Providers
 {
     /// <summary>
-    /// Classe base para trabalhar com provedores que usam o padr„o ABRASF V1
+    /// Classe base para trabalhar com provedores que usam o padr√£o ABRASF V1
     /// </summary>
     public abstract class ProviderABRASF : ProviderBase
     {
@@ -125,7 +125,7 @@ namespace OpenAC.Net.NFSe.Providers
             else
                 ret.IdentificacaoRps.DataEmissao = rootDoc.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
 
-            // Natureza da OperaÁ„o
+            // Natureza da Opera√ß√£o
             ret.NaturezaOperacao = rootDoc.ElementAnyNs("NaturezaOperacao").GetValue<int>();
 
             // Simples Nacional
@@ -135,7 +135,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
             else
             {
-                // Regime Especial de TributaÁao
+                // Regime Especial de Tributa√ß√£o
                 switch (rootDoc.ElementAnyNs("RegimeEspecialTributacao")?.GetValue<int>())
                 {
                     case 1:
@@ -176,7 +176,7 @@ namespace OpenAC.Net.NFSe.Providers
                     break;
             }
 
-            // SituaÁ„o do RPS
+            // Situa√ß√£o do RPS
             if (isRps)
             {
                 ret.Situacao = (rootDoc.ElementAnyNs("Status")?.GetValue<string>() ?? string.Empty) == "2" ? SituacaoNFSeRps.Cancelado : SituacaoNFSeRps.Normal;
@@ -197,7 +197,7 @@ namespace OpenAC.Net.NFSe.Providers
                 ret.OutrasInformacoes = rootDoc.ElementAnyNs("OutrasInformacoes")?.GetValue<string>() ?? string.Empty;
             }
 
-            // ServiÁos e Valores
+            // Servi√ßos e Valores
             LoadServicosValoresRps(ret, rootDoc);
 
             if (isNFSe)
@@ -306,7 +306,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (isNFSe)
             {
-                // Org„o Gerador
+                // Org√£o Gerador
                 var rootOrgaoGerador = rootDoc.ElementAnyNs("OrgaoGerador");
                 if (rootOrgaoGerador != null)
                 {
@@ -315,7 +315,7 @@ namespace OpenAC.Net.NFSe.Providers
                 }
             }
 
-            // ConstruÁ„o Civil
+            // Constru√ß√£o Civil
             var rootConstrucaoCivil = rootDoc.ElementAnyNs("ConstrucaoCivil");
             if (rootConstrucaoCivil != null)
             {
@@ -323,7 +323,7 @@ namespace OpenAC.Net.NFSe.Providers
                 ret.ConstrucaoCivil.ArtObra = rootConstrucaoCivil.ElementAnyNs("Art")?.GetValue<string>() ?? string.Empty;
             }
 
-            // Verifica se a NFSe est· cancelada
+            // Verifica se a NFSe est√° cancelada
             if (rootCanc != null)
             {
                 ret.Situacao = SituacaoNFSeRps.Cancelado;
@@ -953,8 +953,8 @@ namespace OpenAC.Net.NFSe.Providers
         /// <inheritdoc />
         protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
-            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n„o informado." });
-            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n„o informado." });
+            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n√£o informado." });
+            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n√£o informado." });
             if (retornoWebservice.Erros.Count > 0) return;
 
             var xmlLoteRps = new StringBuilder();
@@ -985,8 +985,8 @@ namespace OpenAC.Net.NFSe.Providers
         /// <inheritdoc />
         protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
-            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n„o informado." });
-            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n„o informado." });
+            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n√£o informado." });
+            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n√£o informado." });
             if (notas.Count > 3) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Apenas 3 RPS podem ser enviados em modo Sincrono." });
             if (retornoWebservice.Erros.Count > 0) return;
 
@@ -1046,14 +1046,14 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
+        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor !");
 
         /// <inheritdoc />
         protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.NumeroRps < 1)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "N˙mero da RPS n„o informado para a consulta." });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "N√∫mero da RPS n√£o informado para a consulta." });
                 return;
             }
 
@@ -1130,7 +1130,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "AC0001", Descricao = "N˙mero da NFSe/Codigo de cancelamento n„o informado para cancelamento." });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "AC0001", Descricao = "N√∫mero da NFSe/Codigo de cancelamento n√£o informado para cancelamento." });
                 return;
             }
 
@@ -1153,10 +1153,10 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
+        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
-        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
+        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
@@ -1253,7 +1253,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (listaNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
                 return;
             }
 
@@ -1308,7 +1308,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (listaNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
                 return;
             }
 
@@ -1339,7 +1339,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
+        protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
         protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
@@ -1352,7 +1352,7 @@ namespace OpenAC.Net.NFSe.Providers
             var compNfse = xmlRet.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
             if (compNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal n„o encontrada! (CompNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal n√£o encontrada! (CompNfse)" });
                 return;
             }
 
@@ -1393,7 +1393,7 @@ namespace OpenAC.Net.NFSe.Providers
             var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
             if (listaNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
                 return;
             }
 
@@ -1401,7 +1401,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
             {
-                // Carrega a nota fiscal na coleÁ„o de Notas Fiscais
+                // Carrega a nota fiscal na cole√ß√£o de Notas Fiscais
                 var nota = LoadXml(compNfse.AsString());
                 notas.Add(nota);
                 notasServico.Add(nota);
@@ -1425,7 +1425,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (confirmacaoCancelamento == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "ConfirmaÁ„o do cancelamento n„o encontrada!" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Confirma√ß√£o do cancelamento n√£o encontrada!" });
                 return;
             }
 
@@ -1437,7 +1437,7 @@ namespace OpenAC.Net.NFSe.Providers
             var numeroNFSe = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("InfPedidoCancelamento")?
                                  .ElementAnyNs("IdentificacaoNfse")?.ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
 
-            // Se a nota fiscal cancelada existir na coleÁ„o de Notas Fiscais, atualiza seu status:
+            // Se a nota fiscal cancelada existir na cole√ß√£o de Notas Fiscais, atualiza seu status:
             var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == numeroNFSe);
             if (nota == null) return;
 
@@ -1447,10 +1447,10 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
+        protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
-        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
+        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         #endregion Services
 
