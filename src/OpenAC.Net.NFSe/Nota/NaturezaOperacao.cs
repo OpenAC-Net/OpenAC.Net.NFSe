@@ -34,7 +34,7 @@ using System;
 namespace OpenAC.Net.NFSe.Nota
 {
     /// <summary>
-    /// Classe que contém as naturezas de operação por provedor.
+    /// Classe que contÃ©m as naturezas de OperaÃ§Ã£o por provedor.
     /// </summary>
     public static class NaturezaOperacao
     {
@@ -59,32 +59,32 @@ namespace OpenAC.Net.NFSe.Nota
             #region Properties
 
             /// <summary>
-            /// Obtém a Natureza de Operação 1 – Tributação no município.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o 1 - TributaÃ§Ã£o no municÃ­pio.
             /// </summary>
             public int TributacaoNoMunicipio { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação 2 - Tributação fora do município.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o 2 - TributaÃ§Ã£o fora do municÃ­pio.
             /// </summary>
             public int TributacaoForaMunicipio { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação 3 - Isenção.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o 3 - IsenÃ§Ã£o.
             /// </summary>
             public int Isencao { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação 4 - Imune.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o 4 - Imune.
             /// </summary>
             public int Imune { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação 5 – Exigibilidade suspensa por decisão judicial.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o 5 - Exigibilidade suspensa por decisÃ£o judicial.
             /// </summary>
             public int ExigibilidadeSuspJud { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação 6 – Exigibilidade suspensa por procedimento administrativo.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o 6 - Exigibilidade suspensa por procedimento administrativo.
             /// </summary>
             public int ExigibilidadeSuspAdm { get; }
 
@@ -109,27 +109,27 @@ namespace OpenAC.Net.NFSe.Nota
             #region Properties
 
             /// <summary>
-            /// Obtém a Natureza de Operação A – Sem Dedução.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o A - Sem DeduÃ§Ã£o.
             /// </summary>
             public int SemDeducao { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação B – Com Dedução/Materiais.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o B - Com DeduÃ§Ã£o/Materiais.
             /// </summary>
             public int ComDeducaoMateriais { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação C – Imune/Isenta de ISSQN.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o C - Imune/Isenta de ISSQN.
             /// </summary>
             public int ImuneIsenta { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação D – Devolução/Simples Remessa.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o D - DevoluÃ§Ã£o/Simples Remessa.
             /// </summary>
             public int DevolucaoRemessa { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação J – Intermediação.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o J - IntermediaÃ§Ã£o.
             /// </summary>
             public int Intermediacao { get; }
 
@@ -146,7 +146,7 @@ namespace OpenAC.Net.NFSe.Nota
                 TributadaNoTomador = 2; //"tt";
                 Isenta = 3; //"is";
                 Imune = 4; // "im";
-                NãoTributada = 5; // "nt";
+                NaoTributada = 5; // "nt";
             }
 
             #endregion Constructors
@@ -154,7 +154,7 @@ namespace OpenAC.Net.NFSe.Nota
             #region Methods
 
             /// <summary>
-            /// Retorna o valor da natureza de operação
+            /// Retorna o valor da natureza de OperaÃ§Ã£o
             /// </summary>
             /// <param name="key">Chave</param>
             /// <returns></returns>
@@ -178,7 +178,7 @@ namespace OpenAC.Net.NFSe.Nota
                         return "nt";
 
                     default:
-                        throw new Exception("Natureza de operação de NtSigiss não implementada");
+                        throw new Exception("Natureza de operaÃ§Ã£o de NtSigiss nÃ£o implementada");
                 }
             }
 
@@ -187,29 +187,29 @@ namespace OpenAC.Net.NFSe.Nota
             #region Properties
 
             /// <summary>
-            /// Obtém a Natureza de Operação tp – Tributada no Prestador.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o tp - Tributada no Prestador.
             /// </summary>
             public int TributadaNoPrestador { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação tt - Tributada no Tomador.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o tt - Tributada no Tomador.
             /// </summary>
             public int TributadaNoTomador { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação is – Isenta.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o is - Isenta.
             /// </summary>
             public int Isenta { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação im – Imune.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o im - Imune.
             /// </summary>
             public int Imune { get; }
 
             /// <summary>
-            /// Obtém a Natureza de Operação nt – Não Tributada.
+            /// ObtÃ©m a Natureza de OperaÃ§Ã£o nt - NÃ£o Tributada.
             /// </summary>
-            public int NãoTributada { get; }
+            public int NaoTributada { get; }
 
             #endregion Properties
         }
@@ -272,27 +272,27 @@ namespace OpenAC.Net.NFSe.Nota
         #region Properties
 
         /// <summary>
-        /// Obtém as Natureza de Operação da ABRASAF v1.
+        /// ObtÃ©m as Natureza de OperaÃ§Ã£o da ABRASAF v1.
         /// </summary>
         public static NtABRASF ABRASF => abrasf ??= new NtABRASF();
 
         /// <summary>
-        /// Obtém as Natureza de Operação do Ginfes.
+        /// ObtÃ©m as Natureza de OperaÃ§Ã£o do Ginfes.
         /// </summary>
         public static NtABRASF Ginfes => ABRASF;
 
         /// <summary>
-        /// Obtém as Natureza de Operação do DSF.
+        /// ObtÃ©m as Natureza de OperaÃ§Ã£o do DSF.
         /// </summary>
         public static NtDSF DSF => dsf ??= new NtDSF();
 
         /// <summary>
-        /// Obtém as Natura de Operações do Sigis
+        /// ObtÃ©m as Natura de OperaÃ§Ãµes do Sigis
         /// </summary>
         public static NtSigiss Sigiss => sigiss ??= new NtSigiss();
 
         /// <summary>
-        /// Obtém as Natureza de Operações do Thema
+        /// ObtÃ©m as Natureza de OperaÃ§Ãµes do Thema
         /// </summary>
         public static NtThema Thema => thema ??= new NtThema();
 

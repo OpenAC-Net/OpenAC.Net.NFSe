@@ -84,12 +84,12 @@ namespace OpenAC.Net.NFSe.Providers
         /// <summary>
         /// The er r_ ms g_ maior
         /// </summary>
-        protected const string ErrMsgMaior = "Tamanho maior que o m·ximo permitido";
+        protected const string ErrMsgMaior = "Tamanho maior que o m√°ximo permitido";
 
         /// <summary>
         /// The er r_ ms g_ menor
         /// </summary>
-        protected const string ErrMsgMenor = "Tamanho menor que o mÌnimo permitido";
+        protected const string ErrMsgMenor = "Tamanho menor que o m√≠nimo permitido";
 
         /// <summary>
         /// The er r_ ms g_ vazio
@@ -99,27 +99,27 @@ namespace OpenAC.Net.NFSe.Providers
         /// <summary>
         /// The er r_ ms g_ invalido
         /// </summary>
-        protected const string ErrMsgInvalido = "Conte˙do inv·lido";
+        protected const string ErrMsgInvalido = "Conte√∫do inv√°lido";
 
         /// <summary>
         /// The er r_ ms g_ maxim o_ decimais
         /// </summary>
-        protected const string ErrMsgMaximoDecimais = "Numero m·ximo de casas decimais permitidas";
+        protected const string ErrMsgMaximoDecimais = "Numero m√°ximo de casas decimais permitidas";
 
         /// <summary>
         /// The er r_ ms g_ maio r_ maximo
         /// </summary>
-        protected const string ErrMsgMaiorMaximo = "N˙mero de ocorrÍncias maior que o m·ximo permitido - M·ximo ";
+        protected const string ErrMsgMaiorMaximo = "N√∫mero de ocorr√™ncias maior que o m√°ximo permitido - M√°ximo ";
 
         /// <summary>
         /// The er r_ ms g_ fina l_ meno r_ inicial
         /// </summary>
-        protected const string ErrMsgFinalMenorInicial = "O numero final n„o pode ser menor que o inicial";
+        protected const string ErrMsgFinalMenorInicial = "O numero final n√£o pode ser menor que o inicial";
 
         /// <summary>
         /// The er r_ ms g_ arquiv o_ na o_ encontrado
         /// </summary>
-        protected const string ErrMsgArquivoNaoEncontrado = "Arquivo n„o encontrado";
+        protected const string ErrMsgArquivoNaoEncontrado = "Arquivo n√£o encontrado";
 
         /// <summary>
         /// The er r_ ms g_ soment e_ um
@@ -129,7 +129,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// <summary>
         /// The er r_ ms g_ meno r_ minimo
         /// </summary>
-        protected const string ErrMsgMenorMinimo = "N˙mero de ocorrÍncias menor que o mÌnimo permitido - MÌnimo ";
+        protected const string ErrMsgMenorMinimo = "N√∫mero de ocorr√™ncias menor que o m√≠nimo permitido - M√≠nimo ";
 
         /// <summary>
         /// The ds c_ CNPJ
@@ -226,7 +226,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// <returns></returns>
         public NotaServico LoadXml(string xml, Encoding encoding = null)
         {
-            Guard.Against<ArgumentNullException>(xml.IsEmpty(), "Xml n„o pode ser vazio ou nulo");
+            Guard.Against<ArgumentNullException>(xml.IsEmpty(), "Xml n√£o pode ser vazio ou nulo");
 
             XDocument doc;
             if (File.Exists(xml))
@@ -256,7 +256,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// <returns></returns>
         public NotaServico LoadXml(Stream stream)
         {
-            Guard.Against<ArgumentNullException>(stream == null, "Stream n„o pode ser nulo !");
+            Guard.Against<ArgumentNullException>(stream == null, "Stream n√£o pode ser nulo !");
 
             var doc = XDocument.Load(stream);
             return LoadXml(doc);
@@ -294,7 +294,7 @@ namespace OpenAC.Net.NFSe.Providers
         #region Servicos
 
         /// <summary>
-        /// Enviar coleÁ„o de Rps para o provedor de forma assincrona.
+        /// Enviar cole√ß√£o de Rps para o provedor de forma ass√≠ncrona.
         /// </summary>
         /// <param name="lote"></param>
         /// <param name="notas"></param>
@@ -320,7 +320,7 @@ namespace OpenAC.Net.NFSe.Providers
 
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"Enviar-{lote}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                //Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -351,7 +351,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <summary>
-        /// Enviar coleÁ„o de Rps para o provedor de forma sincrona.
+        /// Enviar cole√ß√£o de Rps para o provedor de forma s√≠ncrona.
         /// </summary>
         /// <param name="lote"></param>
         /// <param name="notas"></param>
@@ -374,7 +374,7 @@ namespace OpenAC.Net.NFSe.Providers
             AssinarEnviarSincrono(retornoWebservice);
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"EnviarSincrono-{lote}-env.xml");
 
-            //Remover a declaraÁ„o do Xml se tiver
+            //Remover a declara√ß√£o do Xml se tiver
             retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
@@ -408,7 +408,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <summary>
-        /// Consulta a situaÁ„o do lote.
+        /// Consulta a situa√ß√£o do lote.
         /// </summary>
         /// <param name="lote"></param>
         /// <param name="protocolo"></param>
@@ -433,7 +433,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarConsultarSituacao(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarSituacao-{DateTime.Now:yyyyMMddssfff}-{protocolo}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                //Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -490,7 +490,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarConsultarLoteRps(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarLote-{DateTime.Now:yyyyMMddssfff}-{protocolo}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                // Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -521,7 +521,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <summary>
-        /// Consulta o n˙mero da ultima nota fiscal de serviÁo emitida da serie informada.
+        /// Consulta o n√∫mero da ultima nota fiscal de servi√ßo emitida da serie informada.
         /// </summary>
         /// <param name="serie"></param>
         /// <returns></returns>
@@ -544,7 +544,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarConsultarSequencialRps(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarSequencialRps-{DateTime.Now:yyyyMMddssfff}-{serie}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                // Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -575,7 +575,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <summary>
-        /// Consulta uma NFSe usando o n˙mero do RPS.
+        /// Consulta uma NFSe usando o n√∫mero do RPS.
         /// </summary>
         /// <param name="numero"></param>
         /// <param name="serie"></param>
@@ -607,7 +607,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarConsultarNFSeRps(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarNFSeRps-{numero}-{serie}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                // Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -681,7 +681,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarConsultarNFSe(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarNFSe-{DateTime.Now:yyyyMMddssfff}-{numeroNfse}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                // Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -692,7 +692,6 @@ namespace OpenAC.Net.NFSe.Providers
                 }
 
                 // Recebe mensagem de retorno
-
                 using (var cliente = GetClient(TipoUrl.ConsultarNFSe))
                 {
                     retornoWebservice.XmlRetorno = cliente.ConsultarNFSe(GerarCabecalho(), retornoWebservice.XmlEnvio);
@@ -741,7 +740,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarCancelarNFSe(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"CancelarNFSe-{numeroNFSe}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                // Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -795,7 +794,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarCancelarNFSeLote(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"CancelarNFSeLote-{lote}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                // Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -854,7 +853,7 @@ namespace OpenAC.Net.NFSe.Providers
                 AssinarSubstituirNFSe(retornoWebservice);
                 GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"SubstituirNFSe-{numeroNFSe}-env.xml");
 
-                //Remover a declaraÁ„o do Xml se tiver
+                // Remover a declara√ß√£o do Xml se tiver
                 retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
                 // Verifica Schema
@@ -891,7 +890,7 @@ namespace OpenAC.Net.NFSe.Providers
         #region Abstract
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo de enviar.
+        /// Gera o xml de envio para o servi√ßo de enviar.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
@@ -900,7 +899,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo de enviar sincrono.
+        /// Gera o xml de envio para o servi√ßo de enviar sincrono.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
@@ -909,7 +908,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo de consultar situaÁ„o.
+        /// Gera o xml de envio para o servi√ßo de consultar situa√ß√£o.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="lote"></param>
@@ -918,21 +917,21 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo de consultar lote rps.
+        /// Gera o xml de envio para o servi√ßo de consultar lote rps.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <returns></returns>
         protected abstract void PrepararConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo de consultar sequencial rps.
+        /// Gera o xml de envio para o servi√ßo de consultar sequencial rps.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <returns></returns>
         protected abstract void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo de consultar NFSe por RPS.
+        /// Gera o xml de envio para o servi√ßo de consultar NFSe por RPS.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
@@ -940,7 +939,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo consultar NFSe.
+        /// Gera o xml de envio para o servi√ßo consultar NFSe.
         /// </summary>
         /// <param name="notas"></param>
         /// <param name="inicio"></param>
@@ -957,7 +956,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo cancelar NFSe.
+        /// Gera o xml de envio para o servi√ßo cancelar NFSe.
         /// </summary>
         /// <param name="notas"></param>
         /// <param name="codigoCancelamento"></param>
@@ -967,7 +966,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void PrepararCancelarNFSe(RetornoCancelar retornoWebservice);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo cancelar NFSe.
+        /// Gera o xml de envio para o servi√ßo cancelar NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
@@ -977,7 +976,7 @@ namespace OpenAC.Net.NFSe.Providers
             NotaServicoCollection notas);
 
         /// <summary>
-        /// Gera o xml de envio para o serviÁo substituir NFSe.
+        /// Gera o xml de envio para o servi√ßo substituir NFSe.
         /// </summary>
         /// <param name="notas"></param>
         /// <param name="codigoCancelamento"></param>
@@ -987,61 +986,61 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo enviar.
+        /// Metodo para assinar o xml do servi√ßo enviar.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarEnviar(RetornoEnviar retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo enviar sincrono.
+        /// Metodo para assinar o xml do servi√ßo enviar sincrono.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarEnviarSincrono(RetornoEnviar retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo consultar situaÁ„o.
+        /// Metodo para assinar o xml do servi√ßo consultar situa√ß√£o.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo consultar lote rps.
+        /// Metodo para assinar o xml do servi√ßo consultar lote rps.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo consultar sequencial rps.
+        /// Metodo para assinar o xml do servi√ßo consultar sequencial rps.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo consultar NFSe por RPS.
+        /// Metodo para assinar o xml do servi√ßo consultar NFSe por RPS.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo consultar NFSe.
+        /// Metodo para assinar o xml do servi√ßo consultar NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo cancelar NFSe.
+        /// Metodo para assinar o xml do servi√ßo cancelar NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarCancelarNFSe(RetornoCancelar retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo cancelar NFSe lote.
+        /// Metodo para assinar o xml do servi√ßo cancelar NFSe lote.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice);
 
         /// <summary>
-        /// Metodo para assinar o xml do serviÁo substituir NFSe.
+        /// Metodo para assinar o xml do servi√ßo substituir NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice);
@@ -1061,74 +1060,74 @@ namespace OpenAC.Net.NFSe.Providers
         protected abstract void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Trata o retorno do serviÁo de consultar situaÁ„o.
+        /// Trata o retorno do servi√ßo de consultar situa√ß√£o.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice);
 
         /// <summary>
-        /// Trata o retorno do serviÁo de consultar lote Rps.
+        /// Trata o retorno do servi√ßo de consultar lote Rps.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
         protected abstract void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Trata o retorno do serviÁo de consultar sequencial Rps.
+        /// Trata o retorno do servi√ßo de consultar sequencial Rps.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         protected abstract void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice);
 
         /// <summary>
-        /// Trata o retorno do serviÁo de consultar situaÁ„o.
+        /// Trata o retorno do servi√ßo de consultar situa√ß√£o.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
         protected abstract void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Trata o retorno do serviÁo consulta NFSe.
+        /// Trata o retorno do servi√ßo consulta NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
         protected abstract void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Trata o retorno do serviÁo cancelar NFSe.
+        /// Trata o retorno do servi√ßo cancelar NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
         protected abstract void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Trata o retorno do serviÁo cancelar NFSe.
+        /// Trata o retorno do servi√ßo cancelar NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
         protected abstract void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Trata o retorno do serviÁo substituir NFSe.
+        /// Trata o retorno do servi√ßo substituir NFSe.
         /// </summary>
         /// <param name="retornoWebservice"></param>
         /// <param name="notas"></param>
         protected abstract void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas);
 
         /// <summary>
-        /// Retorna o cliente de comunicaÁ„o com o webservice.
+        /// Retorna o cliente de comunica√ß√£o com o webservice.
         /// </summary>
         /// <param name="tipo"></param>
         /// <returns></returns>
         protected abstract IServiceClient GetClient(TipoUrl tipo);
 
         /// <summary>
-        /// Retorna o cabeÁalho da mensagem.
+        /// Retorna o cabe√ßalho da mensagem.
         /// </summary>
         /// <returns></returns>
         protected abstract string GerarCabecalho();
 
         /// <summary>
-        /// Retorna o schema xml para validaÁ„o.
+        /// Retorna o schema xml para valida√ß√£o.
         /// </summary>
         /// <param name="tipo"></param>
         /// <returns></returns>
@@ -1139,7 +1138,7 @@ namespace OpenAC.Net.NFSe.Providers
         #region Protected
 
         /// <summary>
-        /// Retorna a URL para o tipo de serviÁo.
+        /// Retorna a URL para o tipo de servi√ßo.
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>System.String.</returns>
@@ -1164,14 +1163,14 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <summary>
-        /// Determinar ou n„o se deve validar o xml antes de enviar ao servidor.
+        /// Determinar ou n√£o se deve validar o xml antes de enviar ao servidor.
         /// </summary>
         /// <param name="tipo"></param>
         /// <returns></returns>
         protected virtual bool PrecisaValidarSchema(TipoUrl tipo) => true;
 
         /// <summary>
-        /// Retornar o XML da assinatura ou nulo caso n„o tenha nada.
+        /// Retornar o XML da assinatura ou nulo caso n√£o tenha nada.
         /// </summary>
         /// <param name="signature">The signature.</param>
         /// <returns>XElement.</returns>
@@ -1252,7 +1251,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// <returns>XmlElement.</returns>
         protected XElement AdicionarTag(TipoCampo tipo, string id, string tag, XNamespace ns, int min, int max, Ocorrencia ocorrencia, object valor, string descricao = "")
         {
-            Guard.Against<ArgumentException>(ns == null, "Namespace n„o informado");
+            Guard.Against<ArgumentException>(ns == null, "Namespace n√£o informado");
 
             return AdicionarTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, ns);
         }
@@ -1471,7 +1470,7 @@ namespace OpenAC.Net.NFSe.Providers
             // %TAG%       : Representa a TAG; ex: <nLacre>
             // %ID%        : Representa a ID da TAG; ex X34
             // %MSG%       : Representa a mensagem de alerta
-            // %DESCRICAO% : Representa a DescriÁ„o da TAG
+            // %DESCRICAO% : Representa a Descri√ß√£o da TAG
 
             var s = FormatoAlerta.Clone() as string;
             s = s.Replace("%ID%", id).Replace("%TAG%", $"<{tag}>")
@@ -1485,8 +1484,8 @@ namespace OpenAC.Net.NFSe.Providers
         /// Valida o XML de acordo com o schema.
         /// </summary>
         /// <param name="retorno"></param>
-        /// <param name="schema">O schema que ser· usado na verificaÁ„o.</param>
-        /// <returns>Se estiver tudo OK retorna null, caso contr·rio as mensagens de alertas e erros.</returns>
+        /// <param name="schema">O schema que ser√° usado na verifica√ß√£o.</param>
+        /// <returns>Se estiver tudo OK retorna null, caso contr√°rio as mensagens de alertas e erros.</returns>
         protected void ValidarSchema(RetornoWebservice retorno, string schema)
         {
             schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, Name, schema);
@@ -1526,7 +1525,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <summary>
-        /// Grava o xml de comunicaÁ„o com o webservice no disco
+        /// Grava o xml de comunica√ß√£o com o webservice no disco
         /// </summary>
         /// <param name="conteudoArquivo"></param>
         /// <param name="nomeArquivo"></param>
