@@ -135,6 +135,7 @@ namespace OpenAC.Net.NFSe.Nota
         public DateTime DataOptanteSimplesNacional { get; set; }
 
         public NFSeSimNao IncentivadorCultural { get; set; }
+        public NFSeSimNao IncentivadorFiscal { get; set; }
 
         public NFSeSimNao Producao { get; set; }
 

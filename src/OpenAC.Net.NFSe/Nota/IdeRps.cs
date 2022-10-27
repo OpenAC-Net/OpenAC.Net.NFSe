@@ -89,6 +89,12 @@ namespace OpenAC.Net.NFSe.Nota
         /// <value>The data emissao RPS.</value>
         public DateTime DataEmissao { get; set; }
 
+        /// <summary>
+        /// Gets or sets the status do RPS.
+        /// </summary>
+        /// <value>status do RPS.</value>
+        public StatusRps StatusRps { get; set; }
+
         #endregion Propriedades
     }
 }

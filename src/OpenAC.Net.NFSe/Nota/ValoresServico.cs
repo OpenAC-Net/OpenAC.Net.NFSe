@@ -67,7 +67,7 @@ namespace OpenAC.Net.NFSe.Nota
 
         public decimal ValorCsll { get; set; }
 
-        public SituacaoTributaria IssRetido { get; set; }
+        public SituacaoTributaria IssRetido { get; set; }        
 
         public decimal ValorIss { get; set; }
 

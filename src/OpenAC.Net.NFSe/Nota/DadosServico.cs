@@ -63,6 +63,8 @@ namespace OpenAC.Net.NFSe.Nota
 
         public ValoresServico Valores { get; }
 
+        public NFSeSimNao IssRetidoFonte { get; set; }
+
         public string ItemListaServico { get; set; }
 
         public string CodigoCnae { get; set; }
@@ -83,7 +85,7 @@ namespace OpenAC.Net.NFSe.Nota
 
         public string IdentifNaoExigibilidade { get; set; }
 
-        public int MunicipioIncidencia { get; set; }
+        public int? MunicipioIncidencia { get; set; }
 
         public string UfIncidencia { get; set; }
 

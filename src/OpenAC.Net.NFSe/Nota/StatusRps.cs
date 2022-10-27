@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
-// Created          : 10-01-2014
+// Created          : 05-19-2016
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 23-01-2020
+// Last Modified On : 05-19-2016
 // ***********************************************************************
-// <copyright file="DadosTomador.cs" company="OpenAC .Net">
+// <copyright file="TipoRPS.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
@@ -30,52 +30,12 @@
 // ***********************************************************************
 
 using System.ComponentModel;
-using OpenAC.Net.Core.Generics;
 
 namespace OpenAC.Net.NFSe.Nota
 {
-    public sealed class DadosTomador : GenericClone<DadosTomador>, INotifyPropertyChanged
+    public enum StatusRps
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        internal DadosTomador()
-        {
-            Endereco = new Endereco();
-            EnderecoExterior = new EnderecoExterior();
-            DadosContato = new DadosContato();
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        public string CpfCnpj { get; set; }
-
-        public string InscricaoMunicipal { get; set; }
-        public string NifTomador { get; set; }
-
-        public string InscricaoEstadual { get; set; }
-
-        public string DocTomadorEstrangeiro { get; set; }
-
-        public string RazaoSocial { get; set; }
-
-        public string NomeFantasia { get; set; }
-
-        public Endereco Endereco { get; }
-
-        public EnderecoExterior EnderecoExterior { get; }
-
-        public DadosContato DadosContato { get; }
-
-        public int Tipo { get; set; } //Utilize a classe TipoTomador
-
-        #endregion Propriedades
+        Normal = 1,
+        Cancelado = 2
     }
 }
