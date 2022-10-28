@@ -31,7 +31,7 @@
 
 namespace OpenAC.Net.NFSe.Nota
 {
-    public enum TipoDeducao
+    public enum TipoDeducaoRps
     {
         Nenhum,
         Materiais,

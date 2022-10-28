@@ -62,7 +62,13 @@ namespace OpenAC.Net.NFSe.Nota
         /// Gets or sets the tipo deducao.
         /// </summary>
         /// <value>The tipo deducao.</value>
-        public TipoDeducao TipoDeducao { get; set; }
+        public int TipoDeducao { get  ; set; }
+
+        /// <summary>
+        /// Gets or sets the descricao deducao.
+        /// </summary>
+        /// <value>The descricao deducao.</value>
+        public string DescricaoDeducao { get; set; }
 
         /// <summary>
         /// Gets or sets the CPFCNPJ referencia.
