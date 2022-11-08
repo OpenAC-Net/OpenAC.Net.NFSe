@@ -128,16 +128,16 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ConsultarNfseRequest xmlns=\"http://nfse.abrasf.org.br/\">");
+            message.Append("<ConsultarNfseServicoPrestadoRequest xmlns=\"http://nfse.abrasf.org.br/\">");
             message.Append("<nfseCabecMsg xmlns=\"\">");
             message.AppendCData(cabec);
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg xmlns=\"\">");
             message.AppendCData(msg);
             message.Append("</nfseDadosMsg>");
-            message.Append("</ConsultarNfseRequest>");
+            message.Append("</ConsultarNfseServicoPrestadoRequest>");
 
-            return Execute("http://nfse.abrasf.org.br/ConsultarNfse", message.ToString(), "ConsultarNfseResponse");
+            return Execute("http://nfse.abrasf.org.br/ConsultarNfseServicoPrestado", message.ToString(), "ConsultarNfseServicoPrestadoResponse");
         }
 
         public string CancelarNFSe(string cabec, string msg)
