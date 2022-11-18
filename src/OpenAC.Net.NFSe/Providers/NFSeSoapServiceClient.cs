@@ -161,7 +161,10 @@ namespace OpenAC.Net.NFSe.Providers
             var retorno = TratarRetorno(body, responseTag);
             if (retorno.IsValidXml()) return retorno;
 
-            throw new OpenDFeCommunicationException(retorno);
+            if (retorno!=null)
+                throw new OpenDFeCommunicationException(retorno);
+            else
+                throw new OpenDFeCommunicationException(EnvelopeRetorno);
         }
 
         protected abstract string TratarRetorno(XElement xmlDocument, string[] responseTag);
