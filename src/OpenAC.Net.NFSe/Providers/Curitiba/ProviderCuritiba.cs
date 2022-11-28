@@ -614,7 +614,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (nota.ConstrucaoCivil.CodigoObra.IsEmpty()) return null;
 
-            var construcao = new XElement("ConstrucaoCivil");
+            var construcao = new XElement("ConstruaoCivil");
 
             construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoObra", 1, 15, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoObra));
             construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "Art", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.ArtObra));
@@ -929,7 +929,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private XElement WriteConstrucaoCivilNFSe(NotaServico nota)
         {
-            var construcao = new XElement("ConstrucaoCivil");
+            var construcao = new XElement("ContrucaoCivil");
 
             construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoObra", 1, 15, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoObra));
             construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "Art", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.ArtObra));
