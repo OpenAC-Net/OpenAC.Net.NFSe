@@ -75,6 +75,7 @@ namespace OpenAC.Net.NFSe.Nota
             Tomador = new DadosTomador();
             Intermediario = new DadosIntermediario();
             ConstrucaoCivil = new DadosConstrucaoCivil();
+            Evento = new Evento();
             Material = new DadosMateriais();
             Pagamento = new DadosPagamento();
             OrgaoGerador = new IdeOrgaoGerador();
@@ -120,6 +121,8 @@ namespace OpenAC.Net.NFSe.Nota
 
         public DadosConstrucaoCivil ConstrucaoCivil { get; }
 
+        public Evento Evento { get; }
+
         public DadosMateriais Material { get; set; }
 
         public DadosTransportadora Transportadora { get; }
@@ -134,6 +137,7 @@ namespace OpenAC.Net.NFSe.Nota
 
         public DateTime DataOptanteSimplesNacional { get; set; }
 
+        public NFSeSimNao OptanteSimplesNacional { get; set; }
         public NFSeSimNao IncentivadorCultural { get; set; }
         public NFSeSimNao IncentivadorFiscal { get; set; }
 

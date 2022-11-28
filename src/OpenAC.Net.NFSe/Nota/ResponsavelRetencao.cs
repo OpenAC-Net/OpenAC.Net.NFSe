@@ -33,7 +33,8 @@ namespace OpenAC.Net.NFSe.Nota
 {
     public enum ResponsavelRetencao
     {
-        Tomador,        
+        Tomador,
+        Prestador,
         Intermediario
     }
 }

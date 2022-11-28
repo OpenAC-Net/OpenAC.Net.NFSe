@@ -42,11 +42,13 @@ namespace OpenAC.Net.NFSe.Providers
     {
         #region Constructors
 
-        public BrasiliaServiceClient(ProviderBrasilia provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
+        public BrasiliaServiceClient(ProviderBrasilia provider, TipoUrl tipoUrl) : 
+            base(provider, tipoUrl, SoapVersion.Soap12)
         {
         }
 
-        public BrasiliaServiceClient(ProviderBrasilia provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap12)
+        public BrasiliaServiceClient(ProviderBrasilia provider, TipoUrl tipoUrl, X509Certificate2 certificado) : 
+            base(provider, tipoUrl, certificado, SoapVersion.Soap12)
         {
         }
 
@@ -57,11 +59,16 @@ namespace OpenAC.Net.NFSe.Providers
         public string Enviar(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<RecepcionarLoteRps xmlns=\"http://www.issnetonline.com.br/webservice/nfd\">");
-            message.Append("<xml>");
-            message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            message.Append("</xml>");
-            message.Append("</RecepcionarLoteRps>");
+            message.Append("<nfse:RecepcionarLoteRps>");
+            message.Append("<nfseCabecMsg>");
+            message.Append("<cabecalho versao = \"2.04\" xmlns = \"http://www.abrasf.org.br/nfse.xsd\">");
+            message.Append("<versaoDados>2.04</versaoDados>");
+            message.Append("</cabecalho>");
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
+            message.Append(msg);
+            message.Append("</nfseDadosMsg>");
+            message.Append("</nfse:RecepcionarLoteRps>");
 
             return Execute("http://www.issnetonline.com.br/webservice/nfd/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRps");
         }

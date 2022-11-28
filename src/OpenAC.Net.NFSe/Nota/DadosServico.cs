@@ -79,7 +79,7 @@ namespace OpenAC.Net.NFSe.Nota
 
         public string Municipio { get; set; }
 
-        public int CodigoPais { get; set; }
+        public int? CodigoPais { get; set; }
 
         public ExigibilidadeIss ExigibilidadeIss { get; set; }
 
