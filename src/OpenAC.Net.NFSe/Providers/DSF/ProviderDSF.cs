@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderDSF.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -89,57 +90,86 @@ namespace OpenAC.Net.NFSe.Providers
             var root = xml.ElementAnyNs("Nota") ?? xml.ElementAnyNs("RPS");
             Guard.Against<XmlException>(root == null, "Xml de Nota/RPS invalida.");
 
-            var ret = new NotaServico(Configuracoes);
-
-            // Prestador
-            ret.Prestador.InscricaoMunicipal = root.ElementAnyNs("InscricaoMunicipalPrestador").GetValue<string>();
-            ret.Prestador.RazaoSocial = root.ElementAnyNs("RazaoSocialPrestador").GetValue<string>();
-            ret.Prestador.DadosContato.DDD = root.ElementAnyNs("DDDPrestador").GetValue<string>();
-            ret.Prestador.DadosContato.Telefone = root.ElementAnyNs("TelefonePrestador").GetValue<string>();
-            ret.Intermediario.CpfCnpj = root.ElementAnyNs("CPFCNPJIntermediario").GetValue<string>();
-
-            // Tomador
-            ret.Tomador.InscricaoMunicipal = root.ElementAnyNs("InscricaoMunicipalTomador").GetValue<string>();
-            ret.Tomador.CpfCnpj = root.ElementAnyNs("CPFCNPJTomador").GetValue<string>();
-            ret.Tomador.RazaoSocial = root.ElementAnyNs("RazaoSocialTomador").GetValue<string>();
-            ret.Tomador.Endereco.TipoLogradouro = root.ElementAnyNs("TipoLogradouroTomador").GetValue<string>();
-            ret.Tomador.Endereco.Logradouro = root.ElementAnyNs("LogradouroTomador").GetValue<string>();
-            ret.Tomador.Endereco.Numero = root.ElementAnyNs("NumeroEnderecoTomador").GetValue<string>();
-            ret.Tomador.Endereco.Complemento = root.ElementAnyNs("ComplementoEnderecoTomador").GetValue<string>();
-            ret.Tomador.Endereco.TipoBairro = root.ElementAnyNs("TipoBairroTomador").GetValue<string>();
-            ret.Tomador.Endereco.Bairro = root.ElementAnyNs("BairroTomador").GetValue<string>();
-            ret.Tomador.Endereco.CodigoMunicipio = root.ElementAnyNs("CidadeTomador").GetValue<int>();
-            ret.Tomador.Endereco.Municipio = root.ElementAnyNs("CidadeTomadorDescricao").GetValue<string>();
-            ret.Tomador.Endereco.Cep = root.ElementAnyNs("CEPTomador").GetValue<string>();
-            ret.Tomador.DadosContato.Email = root.ElementAnyNs("EmailTomador").GetValue<string>();
-            ret.Tomador.DadosContato.DDD = root.ElementAnyNs("DDDTomador").GetValue<string>();
-            ret.Tomador.DadosContato.Telefone = root.ElementAnyNs("TelefoneTomador").GetValue<string>();
-
-            // Dados NFSe
-            ret.IdentificacaoNFSe.Numero = root.ElementAnyNs("NumeroNota").GetValue<string>();
-            ret.IdentificacaoNFSe.DataEmissao = root.ElementAnyNs("DataProcessamento").GetValue<DateTime>();
-            ret.NumeroLote = root.ElementAnyNs("NumeroLote").GetValue<int>();
-            ret.IdentificacaoNFSe.Chave = root.ElementAnyNs("CodigoVerificacao").GetValue<string>();
-
-            //RPS
-            ret.IdentificacaoRps.Numero = root.ElementAnyNs("NumeroRPS").GetValue<string>();
-            ret.IdentificacaoRps.DataEmissao = root.ElementAnyNs("DataEmissaoRPS").GetValue<DateTime>();
-            ret.IdentificacaoRps.SeriePrestacao = root.ElementAnyNs("SeriePrestacao").GetValue<string>();
-
-            // RPS Substituido
-            ret.RpsSubstituido.Serie = root.ElementAnyNs("SerieRPSSubstituido").GetValue<string>();
-            ret.RpsSubstituido.NumeroRps = root.ElementAnyNs("NumeroRPSSubstituido").GetValue<string>();
-            ret.RpsSubstituido.NumeroNfse = root.ElementAnyNs("NumeroNFSeSubstituida").GetValue<string>();
-            ret.RpsSubstituido.DataEmissaoNfseSubstituida = root.ElementAnyNs("DataEmissaoNFSeSubstituida").GetValue<DateTime>();
-
-            // Servico
-            ret.Servico.CodigoCnae = root.ElementAnyNs("CodigoAtividade").GetValue<string>();
-            ret.Servico.Valores.Aliquota = root.ElementAnyNs("AliquotaAtividade").GetValue<decimal>();
-            ret.Servico.Valores.IssRetido = root.ElementAnyNs("TipoRecolhimento").GetValue<char>() == 'A' ? SituacaoTributaria.Normal : SituacaoTributaria.Retencao;
-            ret.Servico.CodigoMunicipio = root.ElementAnyNs("MunicipioPrestacao").GetValue<int>();
-            ret.Servico.Municipio = root.ElementAnyNs("MunicipioPrestacaoDescricao").GetValue<string>();
-
-            ret.NaturezaOperacao = root.ElementAnyNs("Operacao").GetValue<char>();
+            var ret = new NotaServico(Configuracoes)
+            {
+                XmlOriginal = xml.AsString(),
+                Prestador =
+                {
+                    // Prestador
+                    InscricaoMunicipal = root.ElementAnyNs("InscricaoMunicipalPrestador").GetValue<string>(),
+                    RazaoSocial = root.ElementAnyNs("RazaoSocialPrestador").GetValue<string>(),
+                    DadosContato =
+                    {
+                        DDD = root.ElementAnyNs("DDDPrestador").GetValue<string>(),
+                        Telefone = root.ElementAnyNs("TelefonePrestador").GetValue<string>()
+                    }
+                },
+                Intermediario =
+                {
+                    CpfCnpj = root.ElementAnyNs("CPFCNPJIntermediario").GetValue<string>()
+                },
+                Tomador =
+                {
+                    // Tomador
+                    InscricaoMunicipal = root.ElementAnyNs("InscricaoMunicipalTomador").GetValue<string>(),
+                    CpfCnpj = root.ElementAnyNs("CPFCNPJTomador").GetValue<string>(),
+                    RazaoSocial = root.ElementAnyNs("RazaoSocialTomador").GetValue<string>(),
+                    Endereco =
+                    {
+                        TipoLogradouro = root.ElementAnyNs("TipoLogradouroTomador").GetValue<string>(),
+                        Logradouro = root.ElementAnyNs("LogradouroTomador").GetValue<string>(),
+                        Numero = root.ElementAnyNs("NumeroEnderecoTomador").GetValue<string>(),
+                        Complemento = root.ElementAnyNs("ComplementoEnderecoTomador").GetValue<string>(),
+                        TipoBairro = root.ElementAnyNs("TipoBairroTomador").GetValue<string>(),
+                        Bairro = root.ElementAnyNs("BairroTomador").GetValue<string>(),
+                        CodigoMunicipio = root.ElementAnyNs("CidadeTomador").GetValue<int>(),
+                        Municipio = root.ElementAnyNs("CidadeTomadorDescricao").GetValue<string>(),
+                        Cep = root.ElementAnyNs("CEPTomador").GetValue<string>()
+                    },
+                    DadosContato =
+                    {
+                        Email = root.ElementAnyNs("EmailTomador").GetValue<string>(),
+                        DDD = root.ElementAnyNs("DDDTomador").GetValue<string>(),
+                        Telefone = root.ElementAnyNs("TelefoneTomador").GetValue<string>()
+                    }
+                },
+                IdentificacaoNFSe =
+                {
+                    // Dados NFSe
+                    Numero = root.ElementAnyNs("NumeroNota").GetValue<string>(),
+                    DataEmissao = root.ElementAnyNs("DataProcessamento").GetValue<DateTime>(),
+                    Chave = root.ElementAnyNs("CodigoVerificacao").GetValue<string>()
+                },
+                NumeroLote = root.ElementAnyNs("NumeroLote").GetValue<int>(),
+                IdentificacaoRps =
+                {
+                    //RPS
+                    Numero = root.ElementAnyNs("NumeroRPS").GetValue<string>(),
+                    DataEmissao = root.ElementAnyNs("DataEmissaoRPS").GetValue<DateTime>(),
+                    SeriePrestacao = root.ElementAnyNs("SeriePrestacao").GetValue<string>()
+                },
+                RpsSubstituido =
+                {
+                    // RPS Substituido
+                    Serie = root.ElementAnyNs("SerieRPSSubstituido").GetValue<string>(),
+                    NumeroRps = root.ElementAnyNs("NumeroRPSSubstituido").GetValue<string>(),
+                    NumeroNfse = root.ElementAnyNs("NumeroNFSeSubstituida").GetValue<string>(),
+                    DataEmissaoNfseSubstituida = root.ElementAnyNs("DataEmissaoNFSeSubstituida").GetValue<DateTime>()
+                },
+                Servico =
+                {
+                    // Servico
+                    CodigoCnae = root.ElementAnyNs("CodigoAtividade").GetValue<string>(),
+                    Valores =
+                    {
+                        Aliquota = root.ElementAnyNs("AliquotaAtividade").GetValue<decimal>(),
+                        IssRetido = root.ElementAnyNs("TipoRecolhimento").GetValue<char>() == 'A' ? SituacaoTributaria.Normal : SituacaoTributaria.Retencao
+                    },
+                    CodigoMunicipio = root.ElementAnyNs("MunicipioPrestacao").GetValue<int>(),
+                    Municipio = root.ElementAnyNs("MunicipioPrestacaoDescricao").GetValue<string>()
+                },
+                NaturezaOperacao = root.ElementAnyNs("Operacao").GetValue<char>()
+            };
 
             switch (root.ElementAnyNs("Tributacao").GetValue<char>())
             {
@@ -247,7 +277,7 @@ namespace OpenAC.Net.NFSe.Providers
             xmldoc.Add(rpsTag);
 
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "Assinatura", 1, 2000, Ocorrencia.Obrigatoria, assinatura));
-            rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalPrestador", 01, Municipio.TamanhoIm, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal.OnlyNumbers()));
+            rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalPrestador", 01, 0, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal));
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialPrestador", 1, 120, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Prestador.RazaoSocial.RemoveAccent() : nota.Prestador.RazaoSocial));
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoRPS", 1, 20, Ocorrencia.Obrigatoria, "RPS"));
 
@@ -264,7 +294,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             rpsTag.AddChild(AdicionarTag(TipoCampo.Int, "", "SeriePrestacao", 01, 02, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.SeriePrestacao.IsEmpty() ? "99" : nota.IdentificacaoRps.SeriePrestacao.OnlyNumbers()));
 
-            rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalTomador", 1, Municipio.TamanhoIm, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal.OnlyNumbers()));
+            rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalTomador", 1, 0, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal.OnlyNumbers()));
             rpsTag.AddChild(AdicionarTagCNPJCPF("", "CPFCNPJTomador", "CPFCNPJTomador", nota.Tomador.CpfCnpj));
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialTomador", 1, 120, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Tomador.RazaoSocial.RemoveAccent() : nota.Tomador.RazaoSocial));
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "DocTomadorEstrangeiro", 0, 20, Ocorrencia.Obrigatoria, nota.Tomador.DocTomadorEstrangeiro));
@@ -283,7 +313,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             //valores serviço
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoRecolhimento", 01, 01, Ocorrencia.Obrigatoria, recolhimento));
-            rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "MunicipioPrestacao", 1, 10, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio.ZeroFill(Municipio.TamanhoIm)));
+            rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "MunicipioPrestacao", 1, 10, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "MunicipioPrestacaoDescricao", 01, 30, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Servico.Municipio.RemoveAccent() : nota.Servico.Municipio));
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "Operacao", 01, 01, Ocorrencia.Obrigatoria, operacao));
             rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "Tributacao", 01, 01, Ocorrencia.Obrigatoria, tributacao));
@@ -316,7 +346,7 @@ namespace OpenAC.Net.NFSe.Providers
             if (nota.Servico.Deducoes.Count > 0)
                 rpsTag.AddChild(GerarDeducoes(nota.Servico.Deducoes));
 
-            return xmldoc.Root.AsString(identado, showDeclaration, Encoding.UTF8);
+            return xmldoc.AsString(identado, showDeclaration, Encoding.UTF8);
         }
 
         public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true)
@@ -332,7 +362,7 @@ namespace OpenAC.Net.NFSe.Providers
             notaTag.AddChild(AdicionarTag(TipoCampo.Int, "", "NumeroLote", 1, 11, Ocorrencia.Obrigatoria, nota.NumeroLote));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoVerificacao", 1, 200, Ocorrencia.Obrigatoria, nota.IdentificacaoNFSe.Chave));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "Assinatura", 1, 2000, Ocorrencia.Obrigatoria, nota.Assinatura));
-            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalPrestador", 01, Municipio.TamanhoIm, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal.OnlyNumbers()));
+            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalPrestador", 01, 0, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal.OnlyNumbers()));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialPrestador", 1, 120, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Prestador.RazaoSocial.RemoveAccent() : nota.Prestador.RazaoSocial));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoRPS", 1, 20, Ocorrencia.Obrigatoria, "RPS"));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "SerieRPS", 01, 02, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie.IsEmpty() ? "NF" : nota.IdentificacaoRps.Serie));
@@ -350,7 +380,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             notaTag.AddChild(AdicionarTag(TipoCampo.Int, "", "SeriePrestacao", 1, 2, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.SeriePrestacao.IsEmpty() ? "99" : nota.IdentificacaoRps.SeriePrestacao));
 
-            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalTomador", 1, Municipio.TamanhoIm, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal.OnlyNumbers()));
+            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalTomador", 1, 0, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal.OnlyNumbers()));
             notaTag.AddChild(AdicionarTagCNPJCPF("", "CPFCNPJTomador", "CPFCNPJTomador", nota.Tomador.CpfCnpj));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialTomador", 1, 120, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Tomador.RazaoSocial.RemoveAccent() : nota.Tomador.RazaoSocial));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "DocTomadorEstrangeiro", 0, 20, Ocorrencia.Obrigatoria, nota.Tomador.DocTomadorEstrangeiro));
@@ -416,7 +446,7 @@ namespace OpenAC.Net.NFSe.Providers
             var valorTotal = notas.Sum(nota => nota.Servico.Valores.ValorServicos);
             var deducaoTotal = notas.Sum(nota => nota.Servico.Valores.ValorDeducoes);
 
-            retornoWebservice.XmlEnvio = GerarEnvEnvio(rpsOrg.First().IdentificacaoRps.DataEmissao,
+            retornoWebservice.XmlEnvio = GerarEnvio(rpsOrg.First().IdentificacaoRps.DataEmissao,
                 rpsOrg.Last().IdentificacaoRps.DataEmissao, notas.Count, valorTotal, deducaoTotal, retornoWebservice.Lote.ToString());
 
             var xmlNotas = new StringBuilder();
@@ -427,12 +457,12 @@ namespace OpenAC.Net.NFSe.Providers
                 GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
             }
 
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.SafeReplace("%NOTAS%", xmlNotas.ToString());
+            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.Replace("%NOTAS%", xmlNotas.ToString());
         }
 
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "ns1:ReqEnvioLoteRPS", "Lote", Certificado, true);
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "ns1:ReqEnvioLoteRPS", "Lote", "", Certificado, comments: true);
         }
 
         protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
@@ -450,12 +480,10 @@ namespace OpenAC.Net.NFSe.Providers
             var alertas = xmlRet.ElementAnyNs("Alertas");
             retornoWebservice.Alertas.AddRange(ProcessarEventos(TipoEvento.Alertas, alertas));
 
-            if (!retornoWebservice.Sucesso) return;
+            if (!retornoWebservice.Sucesso || retornoWebservice.Erros.Any()) return;
 
             foreach (var nota in notas)
-            {
                 nota.NumeroLote = retornoWebservice.Lote;
-            }
         }
 
         protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
@@ -464,7 +492,7 @@ namespace OpenAC.Net.NFSe.Providers
             var valorTotal = notas.Sum(nota => nota.Servico.Valores.ValorServicos);
             var deducaoTotal = notas.Sum(nota => nota.Servico.Valores.ValorDeducoes);
 
-            retornoWebservice.XmlEnvio = GerarEnvEnvio(rpsOrg.First().IdentificacaoRps.DataEmissao,
+            retornoWebservice.XmlEnvio = GerarEnvio(rpsOrg.First().IdentificacaoRps.DataEmissao,
                 rpsOrg.Last().IdentificacaoRps.DataEmissao, notas.Count, valorTotal, deducaoTotal, retornoWebservice.Lote.ToString());
 
             var xmlNotas = new StringBuilder();
@@ -477,12 +505,12 @@ namespace OpenAC.Net.NFSe.Providers
                 GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
             }
 
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.SafeReplace("%NOTAS%", xmlNotas.ToString());
+            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.Replace("%NOTAS%", xmlNotas.ToString());
         }
 
         protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
         {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "ns1:ReqEnvioLoteRPS", "Lote", Certificado, true);
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "ns1:ReqEnvioLoteRPS", "Lote", "", Certificado, true);
         }
 
         protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
@@ -500,13 +528,10 @@ namespace OpenAC.Net.NFSe.Providers
             var alertas = xmlRet.ElementAnyNs("Alertas");
             retornoWebservice.Alertas.AddRange(ProcessarEventos(TipoEvento.Alertas, alertas));
 
-            if (!retornoWebservice.Sucesso) return;
+            if (!retornoWebservice.Sucesso || retornoWebservice.Erros.Any()) return;
 
-            // ReSharper disable once SuggestVarOrType_SimpleTypes
-            foreach (NotaServico nota in notas)
-            {
+            foreach (var nota in notas)
                 nota.NumeroLote = retornoWebservice.Lote;
-            }
 
             var nfseRps = ProcessarEventos(TipoEvento.ListNFSeRps, xmlRet.Element("ChavesNFSeRPS"));
             if (nfseRps == null) return;
@@ -520,8 +545,8 @@ namespace OpenAC.Net.NFSe.Providers
                 nota.IdentificacaoNFSe.Numero = nfse.IdentificacaoNfse.Numero;
                 nota.IdentificacaoNFSe.Chave = nfse.IdentificacaoNfse.Chave;
 
-                var xmlNFSe = WriteXmlNFSe(nota);
-                GravarNFSeEmDisco(xmlNFSe, $"NFSe-{nota.IdentificacaoNFSe.Chave}-{nota.IdentificacaoNFSe.Numero}.xml", nota.IdentificacaoNFSe.DataEmissao);
+                nota.XmlOriginal = WriteXmlNFSe(nota);
+                GravarNFSeEmDisco(nota.XmlOriginal, $"NFSe-{nota.IdentificacaoNFSe.Chave}-{nota.IdentificacaoNFSe.Numero}.xml", nota.IdentificacaoNFSe.DataEmissao);
             }
         }
 
@@ -589,8 +614,8 @@ namespace OpenAC.Net.NFSe.Providers
                 nota.IdentificacaoNFSe.Numero = nfse.ElementAnyNs("NumeroNFe")?.GetValue<string>() ?? string.Empty;
                 nota.IdentificacaoNFSe.Chave = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
 
-                var xml = WriteXmlNFSe(nota);
-                GravarNFSeEmDisco(xml, $"NFSe-{nota.IdentificacaoNFSe.Chave}-{nota.IdentificacaoNFSe.Numero}.xml", nota.IdentificacaoNFSe.DataEmissao);
+                nota.XmlOriginal = WriteXmlNFSe(nota);
+                GravarNFSeEmDisco(nota.XmlOriginal, $"NFSe-{nota.IdentificacaoNFSe.Chave}-{nota.IdentificacaoNFSe.Numero}.xml", nota.IdentificacaoNFSe.DataEmissao);
                 notasServico.Add(nota);
             }
 
@@ -604,8 +629,8 @@ namespace OpenAC.Net.NFSe.Providers
             lote.Append("<ns1:ConsultaSeqRps xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ConsultaSeqRps.xsd\">");
             lote.Append("<Cabecalho>");
             lote.Append($"<CodCid>{Municipio.CodigoSiafi}</CodCid>");
-            lote.Append($"<IMPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(Municipio.TamanhoIm)}</IMPrestador>");
-            lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CPFCNPJRemetente>");
+            lote.Append($"<IMPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.OnlyNumbers()}</IMPrestador>");
+            lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers()}</CPFCNPJRemetente>");
             lote.Append($"<SeriePrestacao>{retornoWebservice.Serie}</SeriePrestacao>");
             lote.Append("<Versao>1</Versao>");
             lote.Append("</Cabecalho>");
@@ -640,7 +665,7 @@ namespace OpenAC.Net.NFSe.Providers
             lote.Append("<ns1:ReqConsultaNFSeRPS xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqConsultaNFSeRPS.xsd\">");
             lote.Append("<Cabecalho>");
             lote.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
-            lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers().ZeroFill(14)}</CPFCNPJRemetente>");
+            lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers()}</CPFCNPJRemetente>");
             lote.Append("<transacao>true</transacao>");
             lote.Append("<Versao>1</Versao>");
             lote.Append("</Cabecalho>");
@@ -652,7 +677,7 @@ namespace OpenAC.Net.NFSe.Providers
                 foreach (var nota in notas.Where(x => !x.IdentificacaoNFSe.Numero.IsEmpty()))
                 {
                     lote.Append($"<Nota Id=\"nota:{nota.IdentificacaoNFSe.Numero}\">");
-                    lote.Append($"<InscricaoMunicipalPrestador>{nota.Prestador.InscricaoMunicipal.OnlyNumbers().ZeroFill(Municipio.TamanhoIm)}</InscricaoMunicipalPrestador>");
+                    lote.Append($"<InscricaoMunicipalPrestador>{nota.Prestador.InscricaoMunicipal.OnlyNumbers()}</InscricaoMunicipalPrestador>");
                     lote.Append($"<NumeroNota >{nota.IdentificacaoNFSe.Numero}</NumeroNota >");
                     lote.Append($"<CodigoVerificacao>{nota.IdentificacaoNFSe.Chave}</CodigoVerificacao>");
                     lote.Append("</Nota>");
@@ -668,7 +693,7 @@ namespace OpenAC.Net.NFSe.Providers
                 foreach (var nota in notas.Where(x => x.IdentificacaoNFSe.Numero.IsEmpty()))
                 {
                     lote.Append($"<RPS Id=\"rps:{nota.IdentificacaoRps.Numero}\">");
-                    lote.Append($"<InscricaoMunicipalPrestador>{nota.Prestador.InscricaoMunicipal.OnlyNumbers().ZeroFill(Municipio.TamanhoIm)}</InscricaoMunicipalPrestador>");
+                    lote.Append($"<InscricaoMunicipalPrestador>{nota.Prestador.InscricaoMunicipal.OnlyNumbers()}</InscricaoMunicipalPrestador>");
                     lote.Append($"<NumeroRPS>{nota.IdentificacaoRps.Numero}</NumeroRPS>");
                     lote.Append($"<SeriePrestacao>{nota.IdentificacaoRps.SeriePrestacao}</SeriePrestacao>");
                     lote.Append("</RPS>");
@@ -718,8 +743,8 @@ namespace OpenAC.Net.NFSe.Providers
                 "<ns1:ReqConsultaNotas xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqConsultaNotas.xsd\">");
             lote.Append("<Cabecalho Id=\"Consulta:notas\">");
             lote.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
-            lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CPFCNPJRemetente>");
-            lote.Append($"<InscricaoMunicipalPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(Municipio.TamanhoIm)}</InscricaoMunicipalPrestador>");
+            lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers()}</CPFCNPJRemetente>");
+            lote.Append($"<InscricaoMunicipalPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.OnlyNumbers()}</InscricaoMunicipalPrestador>");
             lote.Append($"<dtInicio>{retornoWebservice.Inicio:yyyy-MM-dd}</dtInicio>");
             lote.Append($"<dtFim>{retornoWebservice.Fim:yyyy-MM-dd}</dtFim>");
             lote.Append($"<NotaInicial>{retornoWebservice.NumeroNFse}</NotaInicial>");
@@ -806,7 +831,7 @@ namespace OpenAC.Net.NFSe.Providers
 
                 nota.Situacao = SituacaoNFSeRps.Cancelado;
                 nota.Cancelamento.MotivoCancelamento = notaCancelada.ElementAnyNs("MotivoCancelamento")?.GetValue<string>() ?? string.Empty;
-                nota.IdentificacaoNFSe.Chave = notaCancelada.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+                nota.Cancelamento.Pedido.CodigoCancelamento = notaCancelada.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
 
                 var xmlNFSe = WriteXmlNFSe(nota);
                 GravarNFSeEmDisco(xmlNFSe, $"NFSe-{nota.IdentificacaoNFSe.Chave}-{nota.IdentificacaoNFSe.Numero}-Canc.xml", nota.IdentificacaoNFSe.DataEmissao);
@@ -887,29 +912,17 @@ namespace OpenAC.Net.NFSe.Providers
             throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
         }
 
-        protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         #endregion Services
 
         #region Private
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new DSFServiceClient(this, tipo);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new DSFServiceClient(this, tipo);
 
-        protected override string GerarCabecalho()
-        {
-            return "";
-        }
+        protected override string GerarCabecalho() => "";
 
         protected override string GetSchema(TipoUrl tipo)
         {
@@ -944,8 +957,11 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        private string GerarEnvEnvio(DateTime dataIni, DateTime dataFim, int total, decimal valorTotal, decimal valorDeducao, string lote)
+        private string GerarEnvio(DateTime dataIni, DateTime dataFim, int total, decimal valorTotal, decimal valorDeducao, string lote)
         {
+            var numberFormat = new CultureInfo("en-US", false).NumberFormat;
+            numberFormat.NumberDecimalSeparator = ".";
+
             var xmlLote = new StringBuilder();
             xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             xmlLote.Append("<ns1:ReqEnvioLoteRPS xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqEnvioLoteRPS.xsd\">");
@@ -957,8 +973,8 @@ namespace OpenAC.Net.NFSe.Providers
             xmlLote.Append($"<dtInicio>{dataIni:yyyy-MM-dd}</dtInicio>");
             xmlLote.Append($"<dtFim>{dataFim:yyyy-MM-dd}</dtFim>");
             xmlLote.Append($"<QtdRPS>{total}</QtdRPS>");
-            xmlLote.Append($"<ValorTotalServicos>{valorTotal:0.00}</ValorTotalServicos>");
-            xmlLote.Append($"<ValorTotalDeducoes>{valorDeducao:0.00}</ValorTotalDeducoes>");
+            xmlLote.AppendFormat(numberFormat, "<ValorTotalServicos>{0:0.00}</ValorTotalServicos>", valorTotal);
+            xmlLote.AppendFormat(numberFormat, "<ValorTotalDeducoes>{0:0.00}</ValorTotalDeducoes>", valorDeducao);
             xmlLote.Append("<Versao>1</Versao>");
             xmlLote.Append("<MetodoEnvio>WS</MetodoEnvio>");
             xmlLote.Append("</Cabecalho>");
@@ -1071,7 +1087,11 @@ namespace OpenAC.Net.NFSe.Providers
 
             var valor = nota.Servico.Valores.ValorServicos - nota.Servico.Valores.ValorDeducoes;
             var rec = nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal ? "N" : "S";
-            var sign = $"{nota.Prestador.InscricaoMunicipal.ZeroFill(Municipio.TamanhoIm)}{nota.IdentificacaoRps.Serie.FillLeft(5)}" + $"{nota.IdentificacaoRps.Numero.ZeroFill(12)}{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}{tributacao} " + $"{situacao}{rec}{Math.Round(valor * 100).ToString().ZeroFill(15)}" + $"{Math.Round(nota.Servico.Valores.ValorDeducoes * 100).ToString().ZeroFill(15)}" + $"{nota.Servico.CodigoCnae.ZeroFill(10)}{nota.Tomador.CpfCnpj.ZeroFill(14)}";
+            var sign = $"{nota.Prestador.InscricaoMunicipal.OnlyNumbers().ZeroFill(11)}{nota.IdentificacaoRps.Serie.FillLeft(5)}" +
+                       $"{nota.IdentificacaoRps.Numero.OnlyNumbers().ZeroFill(12)}{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}{tributacao} " +
+                       $"{situacao}{rec}{Math.Round(valor * 100).ToString().ZeroFill(15)}" +
+                       $"{Math.Round(nota.Servico.Valores.ValorDeducoes * 100).ToString().ZeroFill(15)}" +
+                       $"{nota.Servico.CodigoCnae.ZeroFill(10)}{nota.Tomador.CpfCnpj.ZeroFill(14)}";
 
             assinatura = sign.ToSha1Hash().ToLowerInvariant();
         }

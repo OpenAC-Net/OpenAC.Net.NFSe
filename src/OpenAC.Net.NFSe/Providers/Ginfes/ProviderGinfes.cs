@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderGinfes.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -97,7 +97,10 @@ namespace OpenAC.Net.NFSe.Providers
 
             Guard.Against<XmlException>(rootDoc == null, "Xml de RPS ou NFSe invalido.");
 
-            var ret = new NotaServico(Configuracoes);
+            var ret = new NotaServico(Configuracoes)
+            {
+                XmlOriginal = xml.AsString()
+            };
 
             if (formatoXml == LoadXmlFormato.NFSe)
             {
@@ -783,6 +786,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {
                     nota.IdentificacaoNFSe.Numero = numeroNFSe;
                     nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                    nota.XmlOriginal = compNfse.AsString();
                 }
 
                 notas.Add(nota);

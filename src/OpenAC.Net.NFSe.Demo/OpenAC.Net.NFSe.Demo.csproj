@@ -1,136 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{507A1588-D006-445C-B729-3F1D3A5CE803}</ProjectGuid>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ 
+ <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenAC.Net.NFSe.Demo</RootNamespace>
-    <AssemblyName>OpenAC.Net.NFSe.Demo</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="NLog" Version="5.0.2" />
+    <PackageReference Include="NLog.Windows.Forms" Version="4.6.0" />
+    <PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
   </ItemGroup>
+  
   <ItemGroup>
-    <Compile Include="OpenConfig.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FormEdtMunicipio.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormEdtMunicipio.Designer.cs">
-      <DependentUpon>FormEdtMunicipio.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMain.Designer.cs">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers.cs" />
-    <Compile Include="InputBox.cs" />
-    <Compile Include="ItemData.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormEdtMunicipio.resx">
-      <DependentUpon>FormEdtMunicipio.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormMain.resx">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="App.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+	<ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource.csproj" />
+	<ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NLog">
-      <Version>4.7.11</Version>
-    </PackageReference>
-    <PackageReference Include="NLog.Windows.Forms">
-      <Version>4.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="OpenAC.Net.Core">
-      <Version>1.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="OpenAC.Net.DFe.Core">
-      <Version>1.0.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource.csproj">
-      <Project>{f16dbeed-46eb-46b1-8264-711edfadc099}</Project>
-      <Name>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj">
-      <Project>{0ef298ca-a045-47e2-91ad-5c211e793c3b}</Project>
-      <Name>OpenAC.Net.NFSe</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

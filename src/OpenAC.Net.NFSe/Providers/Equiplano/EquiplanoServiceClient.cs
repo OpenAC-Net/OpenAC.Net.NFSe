@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="EquiplanoServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -36,11 +36,11 @@ using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class EquiplanoServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class EquiplanoServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public EquiplanoServiceClient(ProviderEquiplano provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public EquiplanoServiceClient(ProviderEquiplano provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -146,9 +146,9 @@ namespace OpenAC.Net.NFSe.Providers
             throw new NotImplementedException();
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
-            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").ToString();
+            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value.ToString();
         }
 
         #endregion Methods

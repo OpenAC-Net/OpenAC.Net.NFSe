@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="OpenMunicipioNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -30,15 +30,16 @@
 // ***********************************************************************
 
 using System;
-using System.IO;
-using System.Runtime.Serialization;
+using System.Collections.Generic;
+using OpenAC.Net.DFe.Core.Attributes;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.DFe.Core.Document;
+using OpenAC.Net.DFe.Core.Serializer;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    [Serializable]
-    [DataContract(Name = "Municipio", Namespace = "")]
-    public sealed class OpenMunicipioNFSe : ICloneable
+    [DFeRoot("Municipio", Namespace = "https://www.openac.net.br/")]
+    public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
     {
         #region Constructors
 
@@ -47,7 +48,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// </summary>
         public OpenMunicipioNFSe()
         {
-            UrlHomologacao = new NFSeUrlDictionary(10)
+            UrlHomologacao = new Dictionary<TipoUrl, string>(10)
             {
                 { TipoUrl.Enviar, string.Empty },
                 { TipoUrl.EnviarSincrono, string.Empty },
@@ -62,7 +63,7 @@ namespace OpenAC.Net.NFSe.Providers
                 { TipoUrl.Autenticacao, string.Empty}
             };
 
-            UrlProducao = new NFSeUrlDictionary(10)
+            UrlProducao = new Dictionary<TipoUrl, string>(10)
             {
                 { TipoUrl.Enviar, string.Empty },
                 { TipoUrl.EnviarSincrono, string.Empty },
@@ -86,7 +87,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// Define ou retorna o codigo IBGE do municipio
         /// </summary>
         /// <value>The codigo.</value>
-        [DataMember]
+        [DFeElement(TipoCampo.Int, "Codigo")]
         public int Codigo { get; set; }
 
         /// <summary>
@@ -94,83 +95,55 @@ namespace OpenAC.Net.NFSe.Providers
         /// Obrigatorio para municipios com provedor DSF.
         /// </summary>
         /// <value>The codigo siafi.</value>
-        [DataMember]
+        [DFeElement(TipoCampo.Int, "CodigoSiafi")]
         public int CodigoSiafi { get; set; }
 
         /// <summary>
         /// Define ou retorna o identificador do município no provedor Equiplano
         /// </summary>
         /// <value>The Id Entidade.</value>
-        [DataMember]
+        [DFeElement(TipoCampo.Int, "IdEntidade")]
         public int IdEntidade { get; set; }
 
         /// <summary>
         /// Define ou retorna o nome do municipio
         /// </summary>
         /// <value>The nome.</value>
-        [DataMember]
+        [DFeElement(TipoCampo.Str, "Nome")]
         public string Nome { get; set; }
 
         /// <summary>
         /// Define ou retorna a UF do municipio.
         /// </summary>
         /// <value>The uf.</value>
-        [DataMember]
+        [DFeElement(TipoCampo.Enum, "UF")]
         public DFeSiglaUF UF { get; set; }
 
         /// <summary>
         /// Define ou retorna o provedor de NFSe.
         /// </summary>
         /// <value>The provedor.</value>
-        [DataMember]
+        [DFeElement(TipoCampo.Enum, "Provedor")]
         public NFSeProvider Provedor { get; set; }
-
-        /// <summary>
-        /// Define ou retorna o tamanho da inscrição municipal
-        /// Para validação em alguns provedores
-        /// </summary>
-        /// <value>The tamanho im.</value>
-        [DataMember]
-        public int TamanhoIm { get; set; }
 
         /// <summary>
         /// Lista de url de homologação dos serviços.
         /// </summary>
         /// <value>The URL homologacao.</value>
-        [DataMember]
-        public NFSeUrlDictionary UrlHomologacao { get; set; }
+        [DFeDictionary("UrlHomologacao", ItemName = "Item")]
+        [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
+        [DFeDictionaryValue(TipoCampo.Str, "Url")]
+        public Dictionary<TipoUrl, string> UrlHomologacao { get; set; }
 
         /// <summary>
         /// Lista de url de produção dos serviços.
         /// </summary>
         /// <value>The URL producao.</value>
-        [DataMember]
-        public NFSeUrlDictionary UrlProducao { get; set; }
+        [DFeDictionary("UrlProducao", ItemName = "Item")]
+        [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
+        [DFeDictionaryValue(TipoCampo.Str, "Url")]
+        public Dictionary<TipoUrl, string> UrlProducao { get; set; }
 
         #endregion Propriedades
-
-        #region Methods
-
-        /// <summary>
-        /// Cria um novo objeto que é uma copia da instancia atual.
-        /// </summary>
-        /// <returns>T.</returns>
-        public OpenMunicipioNFSe Clone()
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                var formatter = new DataContractSerializer(typeof(OpenMunicipioNFSe));
-                formatter.WriteObject(memoryStream, this);
-                memoryStream.Position = 0;
-                return (OpenMunicipioNFSe)formatter.ReadObject(memoryStream);
-            }
-        }
-
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
-
-        #endregion Methods
     }
 }

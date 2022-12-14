@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderCuritiba.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -70,11 +70,11 @@ namespace OpenAC.Net.NFSe.Providers
             var isRps = false;
             var isNFSe = false;
 
-            var rootGrupo = xml.ElementAnyNs("CompNfse");
+            var rootGrupo = xml.ElementAnyNs("tcCompNfse");
             if (rootGrupo != null)
             {
                 isNFSe = true;
-                rootDoc = rootGrupo.ElementAnyNs("tcCompNfse").ElementAnyNs("Nfse")?.ElementAnyNs("InfNfse");
+                rootDoc = rootGrupo.ElementAnyNs("Nfse")?.ElementAnyNs("InfNfse");
                 rootCanc = rootGrupo.ElementAnyNs("NfseCancelamento");
                 rootSub = rootGrupo.ElementAnyNs("NfseSubstituicao");
             }
@@ -1148,6 +1148,9 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
+            if (tipo == TipoUrl.ConsultarNFSe)
+                return new CuritibaServiceClient(this, tipo, Certificado);
+
             return new CuritibaServiceClient(this, tipo);
         }
 
@@ -1354,7 +1357,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var notasServico = new List<NotaServico>();
 
-            foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
+            foreach (var compNfse in listaNfse.ElementAnyNs("CompNfse").ElementsAnyNs("tcCompNfse"))
             {
                 // Carrega a nota fiscal na coleção de Notas Fiscais
                 var nota = LoadXml(compNfse.AsString());
@@ -1374,9 +1377,8 @@ namespace OpenAC.Net.NFSe.Providers
             MensagemErro(retornoWebservice, xmlCancelarNfseResult);
             if (retornoWebservice.Erros.Any()) return;
 
-            var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("RetCancelamento")?
-                                                     .ElementAnyNs("NfseCancelamento")?
-                                                     .ElementAnyNs("Confirmacao");
+            var confirmacaoCancelamento = xmlCancelarNfseResult.ElementAnyNs("Cancelamento")?
+                                                                .ElementAnyNs("Confirmacao");
 
             if (confirmacaoCancelamento == null)
             {

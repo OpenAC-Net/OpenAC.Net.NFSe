@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="SpeedGovServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -37,11 +37,11 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class SpeedGovServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class SpeedGovServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public SpeedGovServiceClient(ProviderSpeedGov provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null)
+        public SpeedGovServiceClient(ProviderSpeedGov provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
         {
         }
 
@@ -56,13 +56,10 @@ namespace OpenAC.Net.NFSe.Providers
             message.Append("<!--Optional:-->");
             message.Append("<header>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + cabec);
-            //message.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + cabec);
-            //message.Append(cabec);
             message.Append("</header>");
             message.Append("<!--Optional:-->");
             message.Append("<parameters>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            //message.Append(msg);
             message.Append("</parameters>");
             message.Append("</nfse:RecepcionarLoteRps>");
 
@@ -144,22 +141,16 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("*", "CancelarNfseResponse", message.ToString());
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
         private string Execute(string soapAction, string responseTag, string message)
         {
             return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;

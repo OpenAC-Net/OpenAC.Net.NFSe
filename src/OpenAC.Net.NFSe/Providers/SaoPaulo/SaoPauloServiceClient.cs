@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="SaoPauloServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -37,11 +37,11 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class SaoPauloServiceClient : NFSeSOAP12ServiceClient, IServiceClient
+    internal sealed class SaoPauloServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public SaoPauloServiceClient(ProviderSaoPaulo provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public SaoPauloServiceClient(ProviderSaoPaulo provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
         {
         }
 
@@ -52,7 +52,7 @@ namespace OpenAC.Net.NFSe.Providers
         public string Enviar(string cabec, string msg)
         {
             string tag, response, soapAction;
-            if (EhHomologação)
+            if (EhHomologacao)
             {
                 tag = "TesteEnvioLoteRPSRequest";
                 response = "TesteEnvioLoteRPSResponse";
@@ -166,7 +166,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(soapAction, message, "", responseTag, "xmlns:nfe=\"http://www.prefeitura.sp.gov.br/nfe\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element != null)

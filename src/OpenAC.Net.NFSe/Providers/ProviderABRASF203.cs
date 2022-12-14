@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderABRASF203.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -67,7 +67,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected override void LoadTomador(NotaServico nota, XElement rpsRoot)
         {
             // Tomador
-            var rootTomador = rpsRoot.ElementAnyNs("TomadorServico");
+            var rootTomador = rpsRoot.ElementAnyNs("Tomador");
             if (rootTomador == null) return;
 
             var tomadorIdentificacao = rootTomador.ElementAnyNs("IdentificacaoTomador");
@@ -111,16 +111,22 @@ namespace OpenAC.Net.NFSe.Providers
         /// <inheritdoc />
         protected override void LoadPrestador(NotaServico nota, XElement rootNFSe)
         {
-            // Endereco Prestador
-            var prestadorServico = rootNFSe.ElementAnyNs("PrestadorServico");
-            if (prestadorServico == null) return;
+            // Prestador
+            var rootPrestador = rootNFSe.ElementAnyNs("PrestadorServico");
+            if (rootPrestador == null) return;
 
-            nota.Prestador.RazaoSocial = prestadorServico.ElementAnyNs("RazaoSocial")?.GetValue<string>() ?? string.Empty;
-            nota.Prestador.NomeFantasia = prestadorServico.ElementAnyNs("NomeFantasia")?.GetValue<string>() ?? string.Empty;
-            nota.Prestador.NomeFantasia = prestadorServico.ElementAnyNs("NomeFantasia")?.GetValue<string>() ?? string.Empty;
+            var prestadorIdentificacao = rootPrestador.ElementAnyNs("IdentificacaoPrestador");
+            if (prestadorIdentificacao != null)
+            {
+                nota.Prestador.CpfCnpj = prestadorIdentificacao.ElementAnyNs("CpfCnpj")?.GetCPF_CNPJ() ?? string.Empty;
+                nota.Prestador.InscricaoMunicipal = prestadorIdentificacao.ElementAnyNs("InscricaoMunicipal")?.GetValue<string>() ?? string.Empty;
+            }
+
+            nota.Prestador.RazaoSocial = rootPrestador.ElementAnyNs("RazaoSocial")?.GetValue<string>() ?? string.Empty;
+            nota.Prestador.NomeFantasia = rootPrestador.ElementAnyNs("NomeFantasia")?.GetValue<string>() ?? string.Empty;
 
             // Endereco Prestador
-            var enderecoPrestador = rootNFSe.ElementAnyNs("Endereco");
+            var enderecoPrestador = rootPrestador.ElementAnyNs("Endereco");
             if (enderecoPrestador != null)
             {
                 nota.Prestador.Endereco.Logradouro = enderecoPrestador.ElementAnyNs("Endereco")?.GetValue<string>() ?? string.Empty;
@@ -133,7 +139,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
 
             // Contato Prestador
-            var contatoPrestador = rootNFSe.ElementAnyNs("Contato");
+            var contatoPrestador = rootPrestador.ElementAnyNs("Contato");
             if (contatoPrestador != null)
             {
                 nota.Prestador.DadosContato.Telefone = contatoPrestador.ElementAnyNs("Telefone")?.GetValue<string>() ?? string.Empty;
@@ -221,7 +227,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (nota.Tomador.CpfCnpj.IsEmpty()) return null;
 
-            var tomador = new XElement("TomadorServico");
+            var tomador = new XElement("Tomador");
 
             var idTomador = new XElement("IdentificacaoTomador");
             tomador.Add(idTomador);

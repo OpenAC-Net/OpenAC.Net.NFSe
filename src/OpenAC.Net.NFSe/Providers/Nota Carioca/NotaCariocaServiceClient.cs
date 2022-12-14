@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="NotaCariocaServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -38,18 +38,12 @@ using OpenAC.Net.Core.Extensions;
 namespace OpenAC.Net.NFSe.Providers
 {
     // ReSharper disable once InconsistentNaming
-    internal sealed class NotaCariocaServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class NotaCariocaServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public NotaCariocaServiceClient(ProviderNotaCarioca provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public NotaCariocaServiceClient(ProviderNotaCarioca provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
-            if (!(Endpoint?.Binding is BasicHttpBinding binding))
-                return;
-
-            binding.MaxReceivedMessageSize = long.MaxValue;
-            binding.MaxBufferPoolSize = long.MaxValue;
-            binding.MaxBufferSize = int.MaxValue;
         }
 
         #endregion Constructors
@@ -160,7 +154,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(soapAction, message, "", responseTag, "xmlns:not=\"http://notacarioca.rio.gov.br/\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
         }

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderABRASF.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -45,7 +45,7 @@ using OpenAC.Net.NFSe.Nota;
 namespace OpenAC.Net.NFSe.Providers
 {
     /// <summary>
-    /// Classe base para trabalhar com provedores que usam o padr„o ABRASF V1
+    /// Classe base para trabalhar com provedores que usam o padr√£o ABRASF V1
     /// </summary>
     public abstract class ProviderABRASF : ProviderBase
     {
@@ -98,7 +98,11 @@ namespace OpenAC.Net.NFSe.Providers
 
             Guard.Against<XmlException>(rootDoc == null, "Xml de RPS ou NFSe invalido.");
 
-            var ret = new NotaServico(Configuracoes);
+            var ret = new NotaServico(Configuracoes)
+            {
+                XmlOriginal = xml.AsString()
+            };
+
             if (isNFSe)
             {
                 // Nota Fiscal
@@ -121,7 +125,7 @@ namespace OpenAC.Net.NFSe.Providers
             else
                 ret.IdentificacaoRps.DataEmissao = rootDoc.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
 
-            // Natureza da OperaÁ„o
+            // Natureza da Opera√ß√£o
             ret.NaturezaOperacao = rootDoc.ElementAnyNs("NaturezaOperacao").GetValue<int>();
 
             // Simples Nacional
@@ -131,7 +135,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
             else
             {
-                // Regime Especial de TributaÁao
+                // Regime Especial de Tributa√ß√£o
                 switch (rootDoc.ElementAnyNs("RegimeEspecialTributacao")?.GetValue<int>())
                 {
                     case 1:
@@ -172,7 +176,7 @@ namespace OpenAC.Net.NFSe.Providers
                     break;
             }
 
-            // SituaÁ„o do RPS
+            // Situa√ß√£o do RPS
             if (isRps)
             {
                 ret.Situacao = (rootDoc.ElementAnyNs("Status")?.GetValue<string>() ?? string.Empty) == "2" ? SituacaoNFSeRps.Cancelado : SituacaoNFSeRps.Normal;
@@ -193,36 +197,9 @@ namespace OpenAC.Net.NFSe.Providers
                 ret.OutrasInformacoes = rootDoc.ElementAnyNs("OutrasInformacoes")?.GetValue<string>() ?? string.Empty;
             }
 
-            // ServiÁos e Valores
-            var rootServico = rootDoc.ElementAnyNs("Servico");
-            if (rootServico != null)
-            {
-                var rootServicoValores = rootServico.ElementAnyNs("Valores");
-                if (rootServicoValores != null)
-                {
-                    ret.Servico.Valores.ValorServicos = rootServicoValores.ElementAnyNs("ValorServicos")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorDeducoes = rootServicoValores.ElementAnyNs("ValorDeducoes")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorPis = rootServicoValores.ElementAnyNs("ValorPis")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorCofins = rootServicoValores.ElementAnyNs("ValorCofins")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorInss = rootServicoValores.ElementAnyNs("ValorInss")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorIr = rootServicoValores.ElementAnyNs("ValorIr")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorCsll = rootServicoValores.ElementAnyNs("ValorCsll")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.IssRetido = (rootServicoValores.ElementAnyNs("IssRetido")?.GetValue<int>() ?? 0) == 1 ? SituacaoTributaria.Retencao : SituacaoTributaria.Normal;
-                    ret.Servico.Valores.ValorIss = rootServicoValores.ElementAnyNs("ValorIss")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorOutrasRetencoes = rootServicoValores.ElementAnyNs("OutrasRetencoes")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.BaseCalculo = rootServicoValores.ElementAnyNs("BaseCalculo")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.Aliquota = rootServicoValores.ElementAnyNs("Aliquota")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorLiquidoNfse = rootServicoValores.ElementAnyNs("ValorLiquidoNfse")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.ValorIssRetido = rootServicoValores.ElementAnyNs("ValorIssRetido")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.DescontoCondicionado = rootServicoValores.ElementAnyNs("DescontoCondicionado")?.GetValue<decimal>() ?? 0;
-                    ret.Servico.Valores.DescontoIncondicionado = rootServicoValores.ElementAnyNs("DescontoIncondicionado")?.GetValue<decimal>() ?? 0;
-                }
-                ret.Servico.ItemListaServico = rootServico.ElementAnyNs("ItemListaServico")?.GetValue<string>() ?? string.Empty;
-                ret.Servico.CodigoCnae = rootServico.ElementAnyNs("CodigoCnae")?.GetValue<string>() ?? string.Empty;
-                ret.Servico.CodigoTributacaoMunicipio = rootServico.ElementAnyNs("CodigoTributacaoMunicipio")?.GetValue<string>() ?? string.Empty;
-                ret.Servico.Discriminacao = rootServico.ElementAnyNs("Discriminacao")?.GetValue<string>() ?? string.Empty;
-                ret.Servico.CodigoMunicipio = rootServico.ElementAnyNs("CodigoMunicipio")?.GetValue<int>() ?? 0;
-            }
+            // Servi√ßos e Valores
+            LoadServicosValoresRps(ret, rootDoc);
+
             if (isNFSe)
             {
                 ret.ValorCredito = rootDoc.ElementAnyNs("ValorCredito")?.GetValue<decimal>() ?? 0;
@@ -329,7 +306,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (isNFSe)
             {
-                // Org„o Gerador
+                // Org√£o Gerador
                 var rootOrgaoGerador = rootDoc.ElementAnyNs("OrgaoGerador");
                 if (rootOrgaoGerador != null)
                 {
@@ -338,7 +315,7 @@ namespace OpenAC.Net.NFSe.Providers
                 }
             }
 
-            // ConstruÁ„o Civil
+            // Constru√ß√£o Civil
             var rootConstrucaoCivil = rootDoc.ElementAnyNs("ConstrucaoCivil");
             if (rootConstrucaoCivil != null)
             {
@@ -346,7 +323,7 @@ namespace OpenAC.Net.NFSe.Providers
                 ret.ConstrucaoCivil.ArtObra = rootConstrucaoCivil.ElementAnyNs("Art")?.GetValue<string>() ?? string.Empty;
             }
 
-            // Verifica se a NFSe est· cancelada
+            // Verifica se a NFSe est√° cancelada
             if (rootCanc != null)
             {
                 ret.Situacao = SituacaoNFSeRps.Cancelado;
@@ -363,6 +340,39 @@ namespace OpenAC.Net.NFSe.Providers
             }
 
             return ret;
+        }
+
+        protected virtual void LoadServicosValoresRps(NotaServico nota, XElement rootNFSe)
+        {
+            var rootServico = rootNFSe.ElementAnyNs("Servico");
+            if (rootServico == null) return;
+
+            var rootServicoValores = rootServico.ElementAnyNs("Valores");
+            if (rootServicoValores != null)
+            {
+                nota.Servico.Valores.ValorServicos = rootServicoValores.ElementAnyNs("ValorServicos")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorDeducoes = rootServicoValores.ElementAnyNs("ValorDeducoes")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorPis = rootServicoValores.ElementAnyNs("ValorPis")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorCofins = rootServicoValores.ElementAnyNs("ValorCofins")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorInss = rootServicoValores.ElementAnyNs("ValorInss")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorIr = rootServicoValores.ElementAnyNs("ValorIr")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorCsll = rootServicoValores.ElementAnyNs("ValorCsll")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.IssRetido = (rootServicoValores.ElementAnyNs("IssRetido")?.GetValue<int>() ?? 0) == 1 ? SituacaoTributaria.Retencao : SituacaoTributaria.Normal;
+                nota.Servico.Valores.ValorIss = rootServicoValores.ElementAnyNs("ValorIss")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorOutrasRetencoes = rootServicoValores.ElementAnyNs("OutrasRetencoes")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.BaseCalculo = rootServicoValores.ElementAnyNs("BaseCalculo")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.Aliquota = rootServicoValores.ElementAnyNs("Aliquota")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorLiquidoNfse = rootServicoValores.ElementAnyNs("ValorLiquidoNfse")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.ValorIssRetido = rootServicoValores.ElementAnyNs("ValorIssRetido")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.DescontoCondicionado = rootServicoValores.ElementAnyNs("DescontoCondicionado")?.GetValue<decimal>() ?? 0;
+                nota.Servico.Valores.DescontoIncondicionado = rootServicoValores.ElementAnyNs("DescontoIncondicionado")?.GetValue<decimal>() ?? 0;
+            }
+
+            nota.Servico.ItemListaServico = rootServico.ElementAnyNs("ItemListaServico")?.GetValue<string>() ?? string.Empty;
+            nota.Servico.CodigoCnae = rootServico.ElementAnyNs("CodigoCnae")?.GetValue<string>() ?? string.Empty;
+            nota.Servico.CodigoTributacaoMunicipio = rootServico.ElementAnyNs("CodigoTributacaoMunicipio")?.GetValue<string>() ?? string.Empty;
+            nota.Servico.Discriminacao = rootServico.ElementAnyNs("Discriminacao")?.GetValue<string>() ?? string.Empty;
+            nota.Servico.CodigoMunicipio = rootServico.ElementAnyNs("CodigoMunicipio")?.GetValue<int>() ?? 0;
         }
 
         #endregion LoadXml
@@ -943,8 +953,8 @@ namespace OpenAC.Net.NFSe.Providers
         /// <inheritdoc />
         protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
-            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n„o informado." });
-            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n„o informado." });
+            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n√£o informado." });
+            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n√£o informado." });
             if (retornoWebservice.Erros.Count > 0) return;
 
             var xmlLoteRps = new StringBuilder();
@@ -975,8 +985,8 @@ namespace OpenAC.Net.NFSe.Providers
         /// <inheritdoc />
         protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
-            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n„o informado." });
-            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n„o informado." });
+            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote n√£o informado." });
+            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS n√£o informado." });
             if (notas.Count > 3) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Apenas 3 RPS podem ser enviados em modo Sincrono." });
             if (retornoWebservice.Erros.Count > 0) return;
 
@@ -1036,17 +1046,14 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice)
-        {
-            throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
-        }
+        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor !");
 
         /// <inheritdoc />
         protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.NumeroRps < 1)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "N˙mero da RPS n„o informado para a consulta." });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "N√∫mero da RPS n√£o informado para a consulta." });
                 return;
             }
 
@@ -1123,7 +1130,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "N˙mero da NFSe/Codigo de cancelamento n„o informado para cancelamento." });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "AC0001", Descricao = "N√∫mero da NFSe/Codigo de cancelamento n√£o informado para cancelamento." });
                 return;
             }
 
@@ -1146,16 +1153,10 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
-        }
+        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
-        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
-        }
+        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
@@ -1252,7 +1253,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (listaNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
                 return;
             }
 
@@ -1276,6 +1277,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {
                     nota.IdentificacaoNFSe.Numero = numeroNFSe;
                     nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                    nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
                     nota.XmlOriginal = compNfse.AsString();
                 }
             }
@@ -1306,7 +1308,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (listaNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
                 return;
             }
 
@@ -1337,10 +1339,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice)
-        {
-            throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
         protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
@@ -1353,7 +1352,7 @@ namespace OpenAC.Net.NFSe.Providers
             var compNfse = xmlRet.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
             if (compNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal n„o encontrada! (CompNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal n√£o encontrada! (CompNfse)" });
                 return;
             }
 
@@ -1375,6 +1374,7 @@ namespace OpenAC.Net.NFSe.Providers
                 nota.IdentificacaoNFSe.Numero = numeroNFSe;
                 nota.IdentificacaoNFSe.Chave = chaveNFSe;
                 nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                nota.XmlOriginal = compNfse.ToString();
             }
 
             retornoWebservice.Nota = nota;
@@ -1393,7 +1393,7 @@ namespace OpenAC.Net.NFSe.Providers
             var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
             if (listaNfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
                 return;
             }
 
@@ -1401,7 +1401,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
             {
-                // Carrega a nota fiscal na coleÁ„o de Notas Fiscais
+                // Carrega a nota fiscal na cole√ß√£o de Notas Fiscais
                 var nota = LoadXml(compNfse.AsString());
                 notas.Add(nota);
                 notasServico.Add(nota);
@@ -1425,7 +1425,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (confirmacaoCancelamento == null)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "ConfirmaÁ„o do cancelamento n„o encontrada!" });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Confirma√ß√£o do cancelamento n√£o encontrada!" });
                 return;
             }
 
@@ -1437,7 +1437,7 @@ namespace OpenAC.Net.NFSe.Providers
             var numeroNFSe = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("InfPedidoCancelamento")?
                                  .ElementAnyNs("IdentificacaoNfse")?.ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
 
-            // Se a nota fiscal cancelada existir na coleÁ„o de Notas Fiscais, atualiza seu status:
+            // Se a nota fiscal cancelada existir na cole√ß√£o de Notas Fiscais, atualiza seu status:
             var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == numeroNFSe);
             if (nota == null) return;
 
@@ -1447,16 +1447,10 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         /// <inheritdoc />
-        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
-        }
+        protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor!");
 
         #endregion Services
 

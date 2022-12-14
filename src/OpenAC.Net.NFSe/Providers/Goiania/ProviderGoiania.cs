@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderBetha2.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -269,10 +269,10 @@ namespace OpenAC.Net.NFSe.Providers
         {
             // Analisa mensagem de retorno
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            MensagemErro(retornoWebservice, xmlRet, ConsultarNfseRpsResposta);
+            MensagemErro(retornoWebservice, xmlRet, "ConsultarNfseRpsResposta");
             if (retornoWebservice.Erros.Any()) return;
 
-            var compNfse = xmlRet.ElementAnyNs(ConsultarNfseRpsResposta)?.ElementAnyNs("CompNfse");
+            var compNfse = xmlRet.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
 
             if (compNfse == null)
             {
@@ -309,20 +309,11 @@ namespace OpenAC.Net.NFSe.Providers
 
         #endregion Services
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new GoianiaServiceClient(this, tipo, Certificado);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new GoianiaServiceClient(this, tipo, Certificado);
 
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse_gyn_v02.xsd";
-        }
+        protected override string GetSchema(TipoUrl tipo) => "nfse_gyn_v02.xsd";
 
-        protected override string GetNamespace()
-        {
-            return "xmlns=\"http://nfse.goiania.go.gov.br/xsd/nfse_gyn_v02.xsd\"";
-        }
+        protected override string GetNamespace() => "xmlns=\"http://nfse.goiania.go.gov.br/xsd/nfse_gyn_v02.xsd\"";
 
         #endregion Protected Methods
 

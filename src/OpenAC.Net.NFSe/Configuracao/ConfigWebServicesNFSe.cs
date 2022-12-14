@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ConfigWebServicesNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,6 @@
 // ***********************************************************************
 
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using OpenAC.Net.Core;
@@ -39,8 +38,7 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Configuracao
 {
-    [TypeConverter(typeof(OpenExpandableObjectConverter))]
-    public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase<OpenNFSe>
+    public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
     {
         #region Fields
 
@@ -53,7 +51,7 @@ namespace OpenAC.Net.NFSe.Configuracao
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigWebServicesNFSe"/> class.
         /// </summary>
-        internal ConfigWebServicesNFSe(OpenNFSe parent) : base(parent)
+        internal ConfigWebServicesNFSe()
         {
             Usuario = string.Empty;
             Senha = string.Empty;
@@ -77,8 +75,9 @@ namespace OpenAC.Net.NFSe.Configuracao
         /// Uf do webservice em uso
         /// </summary>
         /// <value>The uf.</value>
-        [Browsable(true)]
         public string Municipio { get; private set; }
+
+        public NFSeProvider Provider { get; private set; } = NFSeProvider.Nenhum;
 
         public string Usuario { get; set; }
 
@@ -88,13 +87,10 @@ namespace OpenAC.Net.NFSe.Configuracao
 
         public string ChaveAcesso { get; set; }
 
-        public SecurityProtocolType Protocolos { get; set; }
-
         /// <summary>
         /// Codigo do municipio do Webservices em uso
         /// </summary>
         /// <value>The uf codigo.</value>
-        [Browsable(true)]
         public int CodigoMunicipio
         {
             get => codigoMunicipio;
@@ -102,13 +98,12 @@ namespace OpenAC.Net.NFSe.Configuracao
             {
                 if (codigoMunicipio == value) return;
 
-                codigoMunicipio = value;
-                var municipio = ProviderManager.Municipios.SingleOrDefault(x => x.Codigo == codigoMunicipio);
+                var municipio = ProviderManager.Municipios.SingleOrDefault(x => x.Codigo == value);
                 Guard.Against<ArgumentException>(municipio == null, "Município não cadastrado.");
-                Municipio = municipio.Nome;
 
-                Parent.provider?.Dispose();
-                Parent.provider = ProviderManager.GetProvider(Parent.Configuracoes);
+                codigoMunicipio = value;
+                Municipio = municipio.Nome;
+                Provider = municipio.Provedor;
             }
         }
 

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderManager.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Providers.Pvh;
+using OpenAC.Net.NFSe.Providers.Thema;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -54,36 +56,47 @@ namespace OpenAC.Net.NFSe.Providers
             Providers = new Dictionary<NFSeProvider, Type>
             {
                 {NFSeProvider.Abaco, typeof(ProviderAbaco)},
+                {NFSeProvider.ABase, typeof(ProviderABase)},
+                {NFSeProvider.Americana, typeof(ProviderAmericana)},
+                {NFSeProvider.AssessorPublico, typeof(ProviderAssessorPublico)},
                 {NFSeProvider.BHISS, typeof(ProviderBHISS)},
                 {NFSeProvider.Betha, typeof(ProviderBetha)},
                 {NFSeProvider.Betha2, typeof(ProviderBetha2)},
                 {NFSeProvider.CITTA, typeof(ProviderCITTA)},
+                {NFSeProvider.Conam, typeof(ProviderCONAM)},
                 {NFSeProvider.Coplan, typeof(ProviderCoplan)},
                 {NFSeProvider.Curitiba, typeof(ProviderCuritiba)},
                 {NFSeProvider.DBSeller, typeof(ProviderDBSeller)},
                 {NFSeProvider.DSF, typeof(ProviderDSF)},
+                {NFSeProvider.DSFSJC, typeof(ProviderDSFSJC)},
                 {NFSeProvider.Equiplano, typeof(ProviderEquiplano)},
                 {NFSeProvider.Fiorilli, typeof(ProviderFiorilli)},
                 {NFSeProvider.FissLex, typeof(ProviderFissLex)},
                 {NFSeProvider.Ginfes, typeof(ProviderGinfes)},
+                {NFSeProvider.Goiania, typeof(ProviderGoiania)},
+                {NFSeProvider.IPM, typeof(ProviderIPM)},
+                {NFSeProvider.ISSe, typeof(ProviderISSe)},
                 {NFSeProvider.ISSNet, typeof(ProviderISSNet)},
+                {NFSeProvider.Mitra, typeof(ProviderMitra)},
                 {NFSeProvider.NFeCidades, typeof(ProviderNFeCidades)},
                 {NFSeProvider.NotaCarioca, typeof(ProviderNotaCarioca)},
                 {NFSeProvider.Pronim2, typeof(ProviderPronim2)},
+                {NFSeProvider.PVH, typeof(ProviderPvh)},
+                {NFSeProvider.RLZ, typeof(ProviderRLZ)},
+                {NFSeProvider.SIAPNet, typeof(ProviderSIAPNet)},
+                {NFSeProvider.Sigiss, typeof(ProviderSigiss)},
+                {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
+                {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},
+                {NFSeProvider.Sintese, typeof(ProviderSintese)},
+                {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
+                {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
                 {NFSeProvider.SaoPaulo, typeof(ProviderSaoPaulo)},
                 {NFSeProvider.SmarAPDABRASF, typeof(ProviderSmarAPDABRASF)},
                 {NFSeProvider.Vitoria, typeof(ProviderVitoria)},
                 {NFSeProvider.WebIss, typeof(ProviderWebIss)},
                 {NFSeProvider.WebIss2, typeof(ProviderWebIss2)},
-                {NFSeProvider.Sigiss, typeof(ProviderSigiss)},
-                {NFSeProvider.Conam, typeof(ProviderCONAM)},
-                {NFSeProvider.Goiania, typeof(ProviderGoiania)},
-                {NFSeProvider.ISSe, typeof(ProviderISSe)},
-                {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},
-                {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
-                {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
-                {NFSeProvider.Americana, typeof(ProviderAmericana)},
-                {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)}
+                {NFSeProvider.MetropolisWeb, typeof(ProviderMetropolisWeb)},
+                {NFSeProvider.Thema, typeof(ProviderThema)}
             };
 
             Load();
@@ -121,10 +134,8 @@ namespace OpenAC.Net.NFSe.Providers
 
             if (File.Exists(path)) File.Delete(path);
 
-            using (var fileStream = new FileStream(path, FileMode.CreateNew))
-            {
-                Save(fileStream);
-            }
+            using var fileStream = new FileStream(path, FileMode.CreateNew);
+            Save(fileStream);
         }
 
         /// <summary>
@@ -133,16 +144,17 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="stream">O stream.</param>
         public static void Save(Stream stream)
         {
-            foreach (var m in Municipios)
+            foreach (var value in Enum.GetValues(typeof(TipoUrl)).Cast<TipoUrl>())
             {
-                if (!m.UrlHomologacao.ContainsKey(TipoUrl.Autenticacao))
-                    m.UrlHomologacao.Add(TipoUrl.Autenticacao, string.Empty);
-                if (!m.UrlProducao.ContainsKey(TipoUrl.Autenticacao))
-                    m.UrlProducao.Add(TipoUrl.Autenticacao, string.Empty);
+                foreach (var m in Municipios)
+                {
+                    if (!m.UrlHomologacao.ContainsKey(value)) m.UrlHomologacao.Add(value, string.Empty);
+                    if (!m.UrlProducao.ContainsKey(value)) m.UrlProducao.Add(value, string.Empty);
+                }
             }
-            var formatter = new DataContractSerializer(typeof(MunicipiosNFSe));
-            using (var writer = System.Xml.XmlWriter.Create(stream, new System.Xml.XmlWriterSettings { Indent = true }))
-                formatter.WriteObject(writer, new MunicipiosNFSe { Municipios = Municipios.OrderBy(x => x.Nome).ToArray() });
+
+            var serializer = new MunicipiosNFSe { Municipios = Municipios.OrderBy(x => x.Nome).ToArray() };
+            serializer.Save(stream, DFeSaveOptions.None);
         }
 
         /// <summary>
@@ -156,13 +168,11 @@ namespace OpenAC.Net.NFSe.Providers
             if (path.IsEmpty())
             {
                 var assembly = Assembly.GetExecutingAssembly();
-                using (var stream = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Resources.Municipios.nfse"))
+                using var resourceStream = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Resources.Municipios.nfse");
+                if (resourceStream != null)
                 {
-                    if (stream != null)
-                    {
-                        buffer = new byte[stream.Length];
-                        stream.Read(buffer, 0, buffer.Length);
-                    }
+                    buffer = new byte[resourceStream.Length];
+                    resourceStream.Read(buffer, 0, buffer.Length);
                 }
             }
             else if (File.Exists(path))
@@ -172,10 +182,8 @@ namespace OpenAC.Net.NFSe.Providers
 
             Guard.Against<ArgumentException>(buffer == null, "Arquivo de cidades não encontrado");
 
-            using (var stream = new MemoryStream(buffer))
-            {
-                Load(stream, clean);
-            }
+            using var stream = new MemoryStream(buffer);
+            Load(stream, clean);
         }
 
         /// <summary>
@@ -187,9 +195,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             Guard.Against<ArgumentException>(stream == null, "Arquivo de cidades não encontrado");
 
-            var formatter = new DataContractSerializer(typeof(MunicipiosNFSe));
-            var municipiosNFSe = (MunicipiosNFSe)formatter.ReadObject(stream);
-
+            var municipiosNFSe = MunicipiosNFSe.Load(stream);
             if (clean) Municipios.Clear();
             Municipios.AddRange(municipiosNFSe.Municipios);
         }

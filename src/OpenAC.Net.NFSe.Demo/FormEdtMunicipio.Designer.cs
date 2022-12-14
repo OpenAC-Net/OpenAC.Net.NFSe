@@ -1,4 +1,4 @@
-﻿namespace OpenAC.Net.NFSe.Demo
+namespace OpenAC.Net.NFSe.Demo
 {
 	partial class FormEdtMunicipio
 	{
@@ -36,6 +36,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label28 = new System.Windows.Forms.Label();
+            this.txtHAutenticacao = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.txtHCancelaNFSeLote = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -57,6 +59,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtHEnviar = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label29 = new System.Windows.Forms.Label();
+            this.txtPAutenticacao = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.txtPCancelaNFSeLote = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -78,26 +82,20 @@
             this.label20 = new System.Windows.Forms.Label();
             this.txtPEnviar = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.nudTamIM = new System.Windows.Forms.NumericUpDown();
             this.nudCodSiafi = new System.Windows.Forms.NumericUpDown();
             this.nudCodIBGE = new System.Windows.Forms.NumericUpDown();
             this.cmbProvedor = new System.Windows.Forms.ComboBox();
-            this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.cmbUf = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
             this.nudIdEntidade = new System.Windows.Forms.NumericUpDown();
-            this.label28 = new System.Windows.Forms.Label();
-            this.txtHAutenticacao = new System.Windows.Forms.TextBox();
-            this.label29 = new System.Windows.Forms.Label();
-            this.txtPAutenticacao = new System.Windows.Forms.TextBox();
+            this.btnAtualizar = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTamIM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCodSiafi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCodIBGE)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdEntidade)).BeginInit();
@@ -136,13 +134,13 @@
             // 
             this.txtMunicipio.Location = new System.Drawing.Point(12, 25);
             this.txtMunicipio.Name = "txtMunicipio";
-            this.txtMunicipio.Size = new System.Drawing.Size(223, 20);
+            this.txtMunicipio.Size = new System.Drawing.Size(255, 20);
             this.txtMunicipio.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(238, 9);
+            this.label2.Location = new System.Drawing.Point(267, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(21, 13);
             this.label2.TabIndex = 5;
@@ -185,11 +183,27 @@
             this.tabPage1.Controls.Add(this.txtHEnviar);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage1.Size = new System.Drawing.Size(676, 252);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Homologação";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(3, 198);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(108, 13);
+            this.label28.TabIndex = 20;
+            this.label28.Text = "Autenticacao (REST)";
+            // 
+            // txtHAutenticacao
+            // 
+            this.txtHAutenticacao.Location = new System.Drawing.Point(6, 214);
+            this.txtHAutenticacao.Name = "txtHAutenticacao";
+            this.txtHAutenticacao.Size = new System.Drawing.Size(328, 20);
+            this.txtHAutenticacao.TabIndex = 21;
             // 
             // label26
             // 
@@ -353,6 +367,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnAtualizar);
             this.tabPage2.Controls.Add(this.label29);
             this.tabPage2.Controls.Add(this.txtPAutenticacao);
             this.tabPage2.Controls.Add(this.label27);
@@ -377,11 +392,27 @@
             this.tabPage2.Controls.Add(this.txtPEnviar);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage2.Size = new System.Drawing.Size(676, 252);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Produção";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(3, 198);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(108, 13);
+            this.label29.TabIndex = 20;
+            this.label29.Text = "Autenticacao (REST)";
+            // 
+            // txtPAutenticacao
+            // 
+            this.txtPAutenticacao.Location = new System.Drawing.Point(6, 214);
+            this.txtPAutenticacao.Name = "txtPAutenticacao";
+            this.txtPAutenticacao.Size = new System.Drawing.Size(328, 20);
+            this.txtPAutenticacao.TabIndex = 21;
             // 
             // label27
             // 
@@ -553,16 +584,9 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "URL";
             // 
-            // nudTamIM
-            // 
-            this.nudTamIM.Location = new System.Drawing.Point(303, 25);
-            this.nudTamIM.Name = "nudTamIM";
-            this.nudTamIM.Size = new System.Drawing.Size(51, 20);
-            this.nudTamIM.TabIndex = 8;
-            // 
             // nudCodSiafi
             // 
-            this.nudCodSiafi.Location = new System.Drawing.Point(442, 25);
+            this.nudCodSiafi.Location = new System.Drawing.Point(412, 25);
             this.nudCodSiafi.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -574,7 +598,7 @@
             // 
             // nudCodIBGE
             // 
-            this.nudCodIBGE.Location = new System.Drawing.Point(360, 25);
+            this.nudCodIBGE.Location = new System.Drawing.Point(331, 25);
             this.nudCodIBGE.Maximum = new decimal(new int[] {
             99999999,
             0,
@@ -588,24 +612,15 @@
             // 
             this.cmbProvedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbProvedor.FormattingEnabled = true;
-            this.cmbProvedor.Location = new System.Drawing.Point(581, 25);
+            this.cmbProvedor.Location = new System.Drawing.Point(549, 25);
             this.cmbProvedor.Name = "cmbProvedor";
-            this.cmbProvedor.Size = new System.Drawing.Size(121, 21);
+            this.cmbProvedor.Size = new System.Drawing.Size(153, 21);
             this.cmbProvedor.TabIndex = 12;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(300, 8);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(46, 13);
-            this.label21.TabIndex = 13;
-            this.label21.Text = "Tam. IM";
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(360, 8);
+            this.label22.Location = new System.Drawing.Point(331, 8);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(57, 13);
             this.label22.TabIndex = 14;
@@ -614,7 +629,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(439, 8);
+            this.label23.Location = new System.Drawing.Point(409, 8);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(52, 13);
             this.label23.TabIndex = 15;
@@ -623,7 +638,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(578, 9);
+            this.label24.Location = new System.Drawing.Point(547, 9);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(50, 13);
             this.label24.TabIndex = 16;
@@ -639,7 +654,7 @@
             "Porto Alegre",
             "São Paulo",
             "WebISS"});
-            this.cmbUf.Location = new System.Drawing.Point(241, 25);
+            this.cmbUf.Location = new System.Drawing.Point(271, 25);
             this.cmbUf.Name = "cmbUf";
             this.cmbUf.Size = new System.Drawing.Size(56, 21);
             this.cmbUf.TabIndex = 17;
@@ -647,7 +662,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(508, 8);
+            this.label25.Location = new System.Drawing.Point(477, 8);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(58, 13);
             this.label25.TabIndex = 19;
@@ -655,7 +670,7 @@
             // 
             // nudIdEntidade
             // 
-            this.nudIdEntidade.Location = new System.Drawing.Point(511, 25);
+            this.nudIdEntidade.Location = new System.Drawing.Point(480, 25);
             this.nudIdEntidade.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -665,37 +680,15 @@
             this.nudIdEntidade.Size = new System.Drawing.Size(64, 20);
             this.nudIdEntidade.TabIndex = 18;
             // 
-            // label28
+            // btnAtualizar
             // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(3, 198);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(108, 13);
-            this.label28.TabIndex = 20;
-            this.label28.Text = "Autenticacao (REST)";
-            // 
-            // txtHAutenticacao
-            // 
-            this.txtHAutenticacao.Location = new System.Drawing.Point(6, 214);
-            this.txtHAutenticacao.Name = "txtHAutenticacao";
-            this.txtHAutenticacao.Size = new System.Drawing.Size(328, 20);
-            this.txtHAutenticacao.TabIndex = 21;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(3, 198);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(108, 13);
-            this.label29.TabIndex = 20;
-            this.label29.Text = "Autenticacao (REST)";
-            // 
-            // txtPAutenticacao
-            // 
-            this.txtPAutenticacao.Location = new System.Drawing.Point(6, 214);
-            this.txtPAutenticacao.Name = "txtPAutenticacao";
-            this.txtPAutenticacao.Size = new System.Drawing.Size(328, 20);
-            this.txtPAutenticacao.TabIndex = 21;
+            this.btnAtualizar.Location = new System.Drawing.Point(547, 211);
+            this.btnAtualizar.Name = "btnAtualizar";
+            this.btnAtualizar.Size = new System.Drawing.Size(121, 23);
+            this.btnAtualizar.TabIndex = 20;
+            this.btnAtualizar.Text = "Atualizar Endereços";
+            this.btnAtualizar.UseVisualStyleBackColor = true;
+            this.btnAtualizar.Click += new System.EventHandler(this.btnAtualizar_Click);
             // 
             // FormEdtMunicipio
             // 
@@ -708,11 +701,9 @@
             this.Controls.Add(this.label24);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.label22);
-            this.Controls.Add(this.label21);
             this.Controls.Add(this.cmbProvedor);
             this.Controls.Add(this.nudCodIBGE);
             this.Controls.Add(this.nudCodSiafi);
-            this.Controls.Add(this.nudTamIM);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtMunicipio);
@@ -732,7 +723,6 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudTamIM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCodSiafi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCodIBGE)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdEntidade)).EndInit();
@@ -788,11 +778,9 @@
 		private System.Windows.Forms.TextBox txtPCancelaNFSe;
 		private System.Windows.Forms.Label label20;
 		private System.Windows.Forms.TextBox txtPEnviar;
-		private System.Windows.Forms.NumericUpDown nudTamIM;
 		private System.Windows.Forms.NumericUpDown nudCodSiafi;
 		private System.Windows.Forms.NumericUpDown nudCodIBGE;
 		private System.Windows.Forms.ComboBox cmbProvedor;
-		private System.Windows.Forms.Label label21;
 		private System.Windows.Forms.Label label22;
 		private System.Windows.Forms.Label label23;
 		private System.Windows.Forms.Label label24;
@@ -807,5 +795,6 @@
         private System.Windows.Forms.TextBox txtHAutenticacao;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox txtPAutenticacao;
+        private System.Windows.Forms.Button btnAtualizar;
     }
 }

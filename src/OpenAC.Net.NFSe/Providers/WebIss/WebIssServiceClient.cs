@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="WebIssServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -38,11 +38,11 @@ using OpenAC.Net.DFe.Core;
 namespace OpenAC.Net.NFSe.Providers
 {
     // ReSharper disable once InconsistentNaming
-    internal sealed class WebIssServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class WebIssServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public WebIssServiceClient(ProviderWebIss provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public WebIssServiceClient(ProviderWebIss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -165,7 +165,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(soapAction, message, "");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ToString();

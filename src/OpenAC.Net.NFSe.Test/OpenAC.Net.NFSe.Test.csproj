@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -48,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestAbrasfV1.cs" />
     <Compile Include="TestProviderSigiss.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -78,40 +81,40 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.Platforms">
-      <Version>5.0.3</Version>
+      <Version>6.0.5</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager">
-      <Version>5.0.0</Version>
+      <Version>6.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Security.AccessControl">
-      <Version>5.0.0</Version>
+      <Version>6.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Security.Permissions">
-      <Version>5.0.0</Version>
+      <Version>6.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Security.Principal.Windows">
       <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="xunit">
-      <Version>2.4.1</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="xunit.abstractions">
       <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="xunit.analyzers">
-      <Version>0.10.0</Version>
+      <Version>1.0.0</Version>
     </PackageReference>
     <PackageReference Include="xunit.assert">
-      <Version>2.4.1</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="xunit.core">
-      <Version>2.4.1</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="xunit.extensibility.core">
-      <Version>2.4.1</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="xunit.extensibility.execution">
-      <Version>2.4.1</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

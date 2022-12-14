@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="BHISSServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -37,11 +37,11 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class BHISSServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public BHISSServiceClient(ProviderBHISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public BHISSServiceClient(ProviderBHISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -154,27 +154,15 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("http://ws.bhiss.pbh.gov.br/ConsultarSituacaoLoteRps", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
         }
 
-        public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
-        public string CancelarNFSeLote(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
-        public string SubstituirNFSe(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            throw new NotImplementedException();
-        }
+        public string SubstituirNFSe(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
-        private string Execute(string action, string message, string responseTag)
-        {
-            return Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
-        }
+        private string Execute(string action, string message, string responseTag) => Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;

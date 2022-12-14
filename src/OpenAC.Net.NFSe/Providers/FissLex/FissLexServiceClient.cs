@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="FissLexServiceClient.cs" company="OpenAC .Net">
 //		        	   The MIT License (MIT)
-//	     		Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -36,11 +36,11 @@ using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class FissLexServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class FissLexServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public FissLexServiceClient(ProviderFissLex provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public FissLexServiceClient(ProviderFissLex provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -101,9 +101,9 @@ namespace OpenAC.Net.NFSe.Providers
             throw new NotImplementedException();
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
-            var element = responseTag.Aggregate(xmlDocument.Root, (current, tag) => current.ElementAnyNs(tag));
+            var element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
             return element.ToString();
         }
 

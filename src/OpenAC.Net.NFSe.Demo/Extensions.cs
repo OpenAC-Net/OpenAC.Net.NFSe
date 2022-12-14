@@ -18,12 +18,19 @@ namespace OpenAC.Net.NFSe.Demo
             var fileName = Guid.NewGuid() + ".xml";
             var fullFileName = Path.Combine(path, fileName);
             var xmlDoc = new XmlDocument();
-            if (File.Exists(xml))
-                xmlDoc.Load(xml);
-            else
-                xmlDoc.LoadXml(xml);
-            xmlDoc.Save(fullFileName);
-            browser.Navigate(fullFileName);
+            try
+            {
+                if (File.Exists(xml))
+                    xmlDoc.Load(xml);
+                else
+                    xmlDoc.LoadXml(xml);
+                xmlDoc.Save(fullFileName);
+                browser.Navigate(fullFileName);
+            }
+            catch
+            {
+                // Suprime o erro caso não seja Xmnl.
+            }
         }
 
         public static void AppendLine(this RichTextBox rtb, string text)
@@ -45,6 +52,13 @@ namespace OpenAC.Net.NFSe.Demo
         {
             var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString(), value)).ToArray();
             cmb.DataSource = list;
+            cmb.SelectedItem = list.SingleOrDefault(x => x.Content.Equals(valorPadrao));
+        }
+        
+        public static void EnumDataSourceSorted<T>(this ComboBox cmb, T valorPadrao) where T : struct
+        {
+            var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString(), value)).ToArray();
+            cmb.DataSource = list.OrderBy(p => p.Description).ToList(); 
             cmb.SelectedItem = list.SingleOrDefault(x => x.Content.Equals(valorPadrao));
         }
 

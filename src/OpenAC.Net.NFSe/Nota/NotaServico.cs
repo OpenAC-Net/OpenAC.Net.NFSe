@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="NotaServico.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -39,6 +39,7 @@ using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Nota
 {
@@ -174,13 +175,10 @@ namespace OpenAC.Net.NFSe.Nota
         /// <summary>
         /// Salvar o xml da Rps/NFSe no determinado arquivo
         /// </summary>
-        /// <param name="provider">A nota para salvar</param>
         /// <param name="path">Caminho onde sera salvo o arquivo.</param>
         /// <returns></returns>
         public void Save(string path = "")
         {
-            Guard.Against<OpenException>(config?.Parent?.provider == null, "ERRO: Nenhuma cidade informada.");
-
             var isNFSe = IdentificacaoNFSe.Numero.IsEmpty();
 
             var file = isNFSe
@@ -198,13 +196,10 @@ namespace OpenAC.Net.NFSe.Nota
         /// <summary>
         /// Salvar o xml da Rps/NFSe no determinado arquivo
         /// </summary>
-        /// <param name="provider">O provedor</param>
         /// <param name="stream">Stream onde sera salvo o xml</param>
         /// <returns></returns>
         public void Save(Stream stream)
         {
-            Guard.Against<OpenException>(config?.Parent?.provider == null, "ERRO: Nenhuma cidade informada.");
-
             var xmlNota = GetXml();
 
             var doc = XDocument.Parse(xmlNota);
@@ -214,14 +209,19 @@ namespace OpenAC.Net.NFSe.Nota
         /// <summary>
         /// Gera o Xml Da Rps
         /// </summary>
-        /// <param name="provider">O provedor</param>
         /// <returns></returns>
         public string GetXml()
         {
-            Guard.Against<OpenException>(config?.Parent?.provider == null, "ERRO: Nenhuma cidade informada.");
+            var provider = ProviderManager.GetProvider(config);
 
-            return IdentificacaoNFSe.Numero.IsEmpty() ? config.Parent.provider.WriteXmlRps(this) :
-                                                        config.Parent.provider.WriteXmlNFSe(this);
+            try
+            {
+                return IdentificacaoNFSe.Numero.IsEmpty() ? provider.WriteXmlRps(this) : provider.WriteXmlNFSe(this);
+            }
+            finally
+            {
+                provider.Dispose();
+            }
         }
 
         #endregion Methods

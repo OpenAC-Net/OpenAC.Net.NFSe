@@ -3,12 +3,12 @@
 // Author           : Rafael Dias
 // Created          : 07-30-2017
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 07-30-2017
+// Last Modified By : Fabio Dias
+// Last Modified On : 12-11-2021
 // ***********************************************************************
 // <copyright file="NFSeProvider.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -30,12 +30,21 @@
 // ***********************************************************************
 
 using System.ComponentModel;
+using OpenAC.Net.DFe.Core.Attributes;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    public enum NFSeProvider : byte
+    public enum NFSeProvider : sbyte
     {
+        Nenhum = -1,
+
+        Americana = 29,
+
         Abaco = 0,
+
+        ABase = 39,
+
+        AssessorPublico = 33,
 
         Betha = 1,
 
@@ -54,6 +63,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         DSF = 4,
 
+        DSFSJC = 38,
+
         Equiplano = 15,
 
         Fiorilli = 16,
@@ -62,9 +73,13 @@ namespace OpenAC.Net.NFSe.Providers
 
         Ginfes = 5,
 
+        IPM = 36,
+
         ISSe = 23,
 
         ISSNet = 18,
+
+        Mitra = 34,
 
         [Description("NFe Cidades")]
         NFeCidades = 6,
@@ -81,9 +96,13 @@ namespace OpenAC.Net.NFSe.Providers
         [Description("SmarAPD ABRASF")]
         SmarAPDABRASF = 14,
 
+        SIAPNet = 35,
+
         Sigiss = 20,
 
         SimplISS = 24,
+
+        Sintese = 37,
 
         SpeedGov = 25,
 
@@ -95,6 +114,11 @@ namespace OpenAC.Net.NFSe.Providers
         [Description("Goiania")]
         Goiania = 22,
 
+        SigissWeb = 30,
+
+        [Description("RLZ Informática")]
+        RLZ = 31,
+
         [Description("Vitoria")]
         Vitoria = 13,
 
@@ -103,8 +127,12 @@ namespace OpenAC.Net.NFSe.Providers
         [Description("WebIss v2")]
         WebIss2 = 11,
 
-        Americana = 29,
+        [Description("Porto Velho")]
+        PVH = 32,
 
-        SigissWeb = 30
+        [Description("Metro Web")]
+        MetropolisWeb = 40,
+
+        Thema = 41
     }
 }

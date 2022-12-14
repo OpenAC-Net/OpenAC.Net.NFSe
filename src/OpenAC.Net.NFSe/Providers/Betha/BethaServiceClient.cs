@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="BethaServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -37,15 +37,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class BethaServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class BethaServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public BethaServiceClient(ProviderBetha provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public BethaServiceClient(ProviderBetha provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
-        public BethaServiceClient(ProviderBetha provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        public BethaServiceClient(ProviderBetha provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
         }
 
@@ -108,10 +108,10 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("", message, "", "", "xmlns:e=\"http://www.betha.com.br/e-nota-contribuinte-ws\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null) return xmlDocument.Root.FirstNode.ToString();
+            if (element == null) return xmlDocument.FirstNode.ToString();
 
             var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);

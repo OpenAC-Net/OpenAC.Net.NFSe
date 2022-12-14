@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DadosTomador.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -64,6 +64,8 @@ namespace OpenAC.Net.NFSe.Nota
         public string DocTomadorEstrangeiro { get; set; }
 
         public string RazaoSocial { get; set; }
+
+        public string NomeFantasia { get; set; }
 
         public Endereco Endereco { get; }
 

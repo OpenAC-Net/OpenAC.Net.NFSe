@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="FiorilliServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -38,15 +38,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class FiorilliServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class FiorilliServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
         }
 
-        public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -86,10 +86,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("recepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
         }
 
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
@@ -107,10 +104,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("consultarLoteRps", message.ToString(), "consultarLoteRpsResponse");
         }
 
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string ConsultarNFSeRps(string cabec, string msg)
         {
@@ -162,10 +156,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute("cancelarNfse", message.ToString(), "cancelarNfseResponse");
         }
 
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
+        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string SubstituirNFSe(string cabec, string msg)
         {
@@ -196,7 +187,7 @@ namespace OpenAC.Net.NFSe.Providers
             return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element != null)

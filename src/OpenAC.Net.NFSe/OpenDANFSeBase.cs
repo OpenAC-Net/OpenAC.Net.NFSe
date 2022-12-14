@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="OpenDANFSeBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,31 +29,24 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
-using System.Drawing;
+using System;
 using System.IO;
-using OpenAC.Net.DFe.Core.Common;
-
-#if !NETSTANDARD2_0
-
-#endif
+using OpenAC.Net.Core.Logging;
+using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe
 {
     /// <summary>
     /// Classe base para impressão de DANFSe
     /// </summary>
-    public abstract class OpenDANFSeBase : DFeReportClass<OpenNFSe>
+    public abstract class OpenDANFSeBase<TOptions, TFiltro> : IOpenLog
+        where TFiltro : Enum
+        where TOptions : DANFSeOptions<TFiltro>
     {
         #region Properties
 
-#if NETFULL
-        public Image LogoPrefeitura { get; set; }
-#else
-        public byte[] LogoPrefeitura { get; set; }
-#endif
-
-        public LayoutImpressao Layout { get; set; }
+        public TOptions Configuracoes { get; protected set; }
 
         #endregion Properties
 
@@ -62,39 +55,28 @@ namespace OpenAC.Net.NFSe
         /// <summary>
         /// Imprime as NFSe/RPS.
         /// </summary>
-        public abstract void Imprimir();
+        public abstract void Imprimir(NotaServico[] notas);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirPDF();
+        public abstract void ImprimirPDF(NotaServico[] notas);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirPDF(Stream stream);
+        public abstract void ImprimirPDF(NotaServico[] notas, Stream stream);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirHTML();
+        public abstract void ImprimirHTML(NotaServico[] notas);
 
         /// <summary>
         /// Imprimirs the PDF.
         /// </summary>
-        public abstract void ImprimirHTML(Stream stream);
+        public abstract void ImprimirHTML(NotaServico[] notas, Stream stream);
 
         #endregion Methods
-
-        #region Overrides
-
-        /// <inheritdoc />
-        protected override void ParentChanged(OpenNFSe oldParent, OpenNFSe newParent)
-        {
-            if (oldParent != null && oldParent.DANFSe == this) oldParent.DANFSe = null;
-            if (newParent != null && newParent.DANFSe != this) newParent.DANFSe = this;
-        }
-
-        #endregion Overrides
     }
 }

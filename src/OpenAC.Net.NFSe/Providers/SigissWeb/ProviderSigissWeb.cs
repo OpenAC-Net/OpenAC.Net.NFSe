@@ -6,7 +6,7 @@
 // ***********************************************************************
 // <copyright file="ProviderBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -28,6 +28,7 @@
 // ***********************************************************************
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -107,7 +108,7 @@ namespace OpenAC.Net.NFSe.Providers
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_inss", 1, 14, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorInss)));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "rps", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "serie_rps", 1, 3, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
-            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "data_emissao", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+            notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "data_emissao", 1, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.ToString("dd/MM/yyyy")));
             notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "sistema_gerador", 1, 15, Ocorrencia.Obrigatoria, "OpenAC.Net.NFSe"));
 
             return xmldoc.Root.AsString(identado, showDeclaration, Encoding.UTF8);
@@ -157,7 +158,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
 
-            retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("data_emissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
+            retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
             retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
             retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
 
@@ -165,7 +166,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var numeroNFSe = xmlRet.Root.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
             var chaveNFSe = xmlRet.Root.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-            var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>() ?? DateTime.Now;
+            var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.Now;
             var numeroRps = xmlRet.Root.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
 
             GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
@@ -190,7 +191,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var numeroNFSe = xmlRet.Root.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
             var chaveNFSe = xmlRet.Root.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-            var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>() ?? DateTime.Now;
+            var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.Now;
             var numeroRps = xmlRet.Root.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
 
             GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
@@ -233,13 +234,13 @@ namespace OpenAC.Net.NFSe.Providers
             // Nota Fiscal
             nota.IdentificacaoNFSe.Numero = notaXml.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
             nota.IdentificacaoNFSe.Chave = notaXml.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-            nota.IdentificacaoNFSe.DataEmissao = notaXml.ElementAnyNs("data_emissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
+            nota.IdentificacaoNFSe.DataEmissao = notaXml.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
 
             // RPS
             nota.IdentificacaoRps.Numero = notaXml.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
             nota.IdentificacaoRps.Serie = notaXml.ElementAnyNs("serie_rps")?.GetValue<string>() ?? string.Empty;
             nota.IdentificacaoRps.Tipo = TipoRps.RPS;
-            nota.IdentificacaoRps.DataEmissao = notaXml.ElementAnyNs("data_emissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
+            nota.IdentificacaoRps.DataEmissao = notaXml.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
 
             // Situação do RPS
             nota.Situacao = (notaXml.ElementAnyNs("cancelada")?.GetValue<string>() ?? string.Empty) == "S" ? SituacaoNFSeRps.Cancelado : SituacaoNFSeRps.Normal;

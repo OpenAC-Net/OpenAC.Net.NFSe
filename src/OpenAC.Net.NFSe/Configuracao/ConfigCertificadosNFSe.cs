@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ConfigCertificadosNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,21 +29,18 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
-using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
 
 namespace OpenAC.Net.NFSe.Configuracao
 {
-    [TypeConverter(typeof(OpenExpandableObjectConverter))]
-    public sealed class ConfigCertificadosNFSe : DFeCertificadosConfigBase<OpenNFSe>
+    public sealed class ConfigCertificadosNFSe : DFeCertificadosConfigBase
     {
         #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigCertificadosNFSe"/> class.
         /// </summary>
-        internal ConfigCertificadosNFSe(OpenNFSe parent) : base(parent)
+        internal ConfigCertificadosNFSe()
         {
         }
 

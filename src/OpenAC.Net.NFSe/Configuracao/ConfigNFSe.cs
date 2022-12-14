@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ConfigNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,23 +29,25 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
-using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Configuracao
 {
-    [TypeConverter(typeof(OpenExpandableObjectConverter))]
-    public sealed class ConfigNFSe : DFeConfigBase<OpenNFSe, ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
+    public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
     {
         #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigNFSe"/> class.
         /// </summary>
-        internal ConfigNFSe(OpenNFSe parent) : base(parent)
+        public ConfigNFSe()
         {
+            Geral = new ConfigGeralNFSe();
+            WebServices = new ConfigWebServicesNFSe();
+            Certificados = new ConfigCertificadosNFSe();
+            Arquivos = new ConfigArquivosNFSe();
+            PrestadorPadrao = new DadosPrestador();
         }
 
         #endregion Constructor
@@ -56,23 +58,8 @@ namespace OpenAC.Net.NFSe.Configuracao
         /// Gets the prestado padrão.
         /// </summary>
         /// <value>The prestado padrão.</value>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public DadosPrestador PrestadorPadrao { get; set; }
 
         #endregion Properties
-
-        #region Methods
-
-        /// <inheritdoc />
-        protected override void CreateConfigs()
-        {
-            Geral = new ConfigGeralNFSe(Parent);
-            WebServices = new ConfigWebServicesNFSe(Parent);
-            Certificados = new ConfigCertificadosNFSe(Parent);
-            Arquivos = new ConfigArquivosNFSe(Parent);
-            PrestadorPadrao = new DadosPrestador();
-        }
-
-        #endregion Methods
     }
 }

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderSaoPaulo.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -296,7 +296,7 @@ namespace OpenAC.Net.NFSe.Providers
             var chaveRPS = new XElement("ChaveRPS");
             rps.Add(chaveRPS);
             chaveRPS.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoPrestador", 1, 15, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal));
-            chaveRPS.AddChild(AdicionarTag(TipoCampo.Int, "", "SerieRPS", 1, 5, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
+            chaveRPS.AddChild(AdicionarTag(TipoCampo.Str, "", "SerieRPS", 1, 5, Ocorrencia.NaoObrigatoria, nota.IdentificacaoRps.Serie));
             chaveRPS.AddChild(AdicionarTag(TipoCampo.Int, "", "NumeroRPS", 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
 
             rps.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoRPS", 1, 1, Ocorrencia.Obrigatoria, tipoRps));
@@ -316,9 +316,12 @@ namespace OpenAC.Net.NFSe.Providers
             rps.AddChild(AdicionarTag(TipoCampo.De4, "", "AliquotaServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota / 100));  // Valor Percentual - Exemplos: 1% => 0.01   /   25,5% => 0.255   /   100% => 1
             rps.AddChild(AdicionarTag(TipoCampo.Str, "", "ISSRetido", 1, 4, Ocorrencia.Obrigatoria, issRetido));
 
-            var tomadorCpfCnpj = new XElement("CPFCNPJTomador");
-            rps.Add(tomadorCpfCnpj);
-            tomadorCpfCnpj.AddChild(AdicionarTagCNPJCPF("", "CPF", "CNPJ", nota.Tomador.CpfCnpj));
+            if (!nota.Tomador.CpfCnpj.IsEmpty())
+            {
+                var tomadorCpfCnpj = new XElement("CPFCNPJTomador");
+                rps.Add(tomadorCpfCnpj);
+                tomadorCpfCnpj.AddChild(AdicionarTagCNPJCPF("", "CPF", "CNPJ", nota.Tomador.CpfCnpj));
+            }
 
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoMunicipalTomador", 1, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoEstadualTomador", 1, 19, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoEstadual));
@@ -362,7 +365,6 @@ namespace OpenAC.Net.NFSe.Providers
 
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "CodigoCEI", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoCEI));
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "MatriculaObra", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.Matricula));
-            //rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "MunicipioPrestacao", 1, 7, Ocorrencia.MaiorQueZero, nota.Servico.CodigoMunicipio));
             rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "NumeroEncapsulamento", 1, 7, Ocorrencia.NaoObrigatoria, nota.Material.NumeroEncapsulamento));
 
             return xmlDoc.AsString(identado, showDeclaration, Encoding.UTF8);
@@ -536,6 +538,8 @@ namespace OpenAC.Net.NFSe.Providers
                 {
                     nota.IdentificacaoNFSe.Numero = numeroNFSe;
                     nota.IdentificacaoNFSe.Chave = codigoVerificacao;
+                    nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                    nota.XmlOriginal = nfse.ToString();
                 }
 
                 notasServico.Add(nota);
@@ -603,6 +607,7 @@ namespace OpenAC.Net.NFSe.Providers
                 nota.IdentificacaoNFSe.Numero = numeroNFSe;
                 nota.IdentificacaoNFSe.Chave = chaveNFSe;
                 nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                nota.XmlOriginal = xmlNFSe.ToString();
             }
 
             retornoWebservice.Nota = nota;
@@ -641,7 +646,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
         {
-            if (!retornoWebservice.NumeroNFSe.IsEmpty())
+            if (retornoWebservice.NumeroNFSe.IsEmpty())
             {
                 retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
                 return;
@@ -651,9 +656,18 @@ namespace OpenAC.Net.NFSe.Providers
             var hash = Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8) + retornoWebservice.NumeroNFSe.ZeroFill(12);
 
             var hashAssinado = "";
+#if NETSTANDARD2_0
+            var rsa = (RSACng)Certificado.PrivateKey;
+#else
             var rsa = (RSACryptoServiceProvider)Certificado.PrivateKey;
+#endif
+
             var hashBytes = Encoding.ASCII.GetBytes(hash);
-            byte[] signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+#if NETSTANDARD2_0
+            var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+#else
+            var signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+#endif
             hashAssinado = Convert.ToBase64String(signData);
 
             var loteBuilder = new StringBuilder();
@@ -802,15 +816,9 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new SaoPauloServiceClient(this, tipo);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new SaoPauloServiceClient(this, tipo);
 
-        protected override string GerarCabecalho()
-        {
-            return "";
-        }
+        protected override string GerarCabecalho() => "";
 
         private string GetHashRps(NotaServico nota)
         {
@@ -874,20 +882,20 @@ namespace OpenAC.Net.NFSe.Providers
             }
 
             // Assinatura do RPS
-            string hash = nota.Prestador.InscricaoMunicipal.PadLeft(8, '0') +
-                          nota.IdentificacaoRps.Serie.PadRight(5, ' ') +
-                          nota.IdentificacaoRps.Numero.PadLeft(12, '0') +
-                          nota.IdentificacaoRps.DataEmissao.Year.ToString().PadLeft(4, '0') +
-                          nota.IdentificacaoRps.DataEmissao.Month.ToString().PadLeft(2, '0') +
-                          nota.IdentificacaoRps.DataEmissao.Day.ToString().PadLeft(2, '0') +
+            string hash = nota.Prestador.InscricaoMunicipal.ZeroFill(8) +
+                          nota.IdentificacaoRps.Serie.FillLeft(5) +
+                          nota.IdentificacaoRps.Numero.ZeroFill(12) +
+                          nota.IdentificacaoRps.DataEmissao.Year.ToString().ZeroFill(4) +
+                          nota.IdentificacaoRps.DataEmissao.Month.ToString().ZeroFill(2) +
+                          nota.IdentificacaoRps.DataEmissao.Day.ToString().ZeroFill(2) +
                           tipoTributacao +
                           situacao +
                           issRetido +
-                          Convert.ToInt32(nota.Servico.Valores.ValorServicos * 100).ToString().PadLeft(15, '0') +
-                          Convert.ToInt32(nota.Servico.Valores.ValorDeducoes * 100).ToString().PadLeft(15, '0') +
-                          nota.Servico.ItemListaServico.PadLeft(5, '0') +
+                          Convert.ToInt32(nota.Servico.Valores.ValorServicos * 100).ToString().ZeroFill(15) +
+                          Convert.ToInt32(nota.Servico.Valores.ValorDeducoes * 100).ToString().ZeroFill(15) +
+                          nota.Servico.ItemListaServico.ZeroFill(5) +
                           indCpfCnpjTomador +
-                          nota.Tomador.CpfCnpj?.PadLeft(14, '0');
+                          nota.Tomador.CpfCnpj?.ZeroFill(14);
             if (!nota.Intermediario.CpfCnpj.IsEmpty())
             {
                 var indCpfCnpjIntermediario = "3";
@@ -905,13 +913,22 @@ namespace OpenAC.Net.NFSe.Providers
                 var issRetidoIntermediario = nota.Intermediario.IssRetido == SituacaoTributaria.Retencao ? "S" : "N";
                 hash = hash +
                        indCpfCnpjIntermediario +
-                       nota.Intermediario.CpfCnpj.PadLeft(14, '0') +
+                       nota.Intermediario.CpfCnpj.ZeroFill(14) +
                        issRetidoIntermediario;
             }
 
+#if  NETSTANDARD2_0
+            var rsa = (RSACng)Certificado.PrivateKey;
+#else
             var rsa = (RSACryptoServiceProvider)Certificado.PrivateKey;
+#endif
+
             var hashBytes = Encoding.ASCII.GetBytes(hash);
-            byte[] signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+#if NETSTANDARD2_0
+            var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+#else
+            var signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
+#endif
             return Convert.ToBase64String(signData);
         }
 

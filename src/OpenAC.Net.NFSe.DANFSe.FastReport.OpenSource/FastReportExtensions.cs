@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="FastReportExtensions.cs" company="OpenAC.Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -38,10 +38,6 @@ using FastReport.Export;
 using FastReport.Export.Image;
 using FastReport.Utils;
 
-#if !NETFULL
-using OpenAC.Net.DFe.Core;
-#endif
-
 namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 {
     internal static class FastReportExtensions
@@ -56,7 +52,6 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 
         public static void PrintWithDialog(this Report report)
         {
-#if NETFULL
             using (var dlg = new PrintDialog())
             {
                 dlg.AllowSomePages = true;
@@ -67,9 +62,6 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 
                 report.Print(dlg.PrinterSettings);
             }
-#else
-            throw new OpenDFeException("Metodo não suportado nesta plataforma.");
-#endif
         }
 
         public static void Print(this Report report, PrinterSettings settings = null)
@@ -83,11 +75,10 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
 
         public static void Show(this Report report, PrinterSettings settings = null)
         {
-#if NETFULL
             var doc = report.PrepareDoc(settings);
             if (doc == null) return;
 
-            using (var preview = new PrintPreviewDialog()
+            using (var preview = new PrintPreviewDialog
             {
                 Document = doc,
                 StartPosition = FormStartPosition.CenterScreen,
@@ -96,9 +87,6 @@ namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
                 preview.ShowDialog();
 
             doc.Dispose();
-#else
-            throw new OpenDFeException("Metodo não suportado nesta plataforma.");
-#endif
         }
 
         private static PrintDocument PrepareDoc(this Report report, PrinterSettings settings = null)

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderABRASF200.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -63,7 +63,6 @@ namespace OpenAC.Net.NFSe.Providers
             Name = "ABRASFv201";
             Versao = "2.00";
             UsaPrestadorEnvio = false;
-            ConsultarNfseRpsResposta = "ConsultarNfseRpsResposta";
         }
 
         #endregion Constructors
@@ -73,8 +72,6 @@ namespace OpenAC.Net.NFSe.Providers
         public string Versao { get; protected set; }
 
         public bool UsaPrestadorEnvio { get; protected set; }
-
-        public string ConsultarNfseRpsResposta { get; protected set; }
 
         #endregion Properties
 
@@ -107,7 +104,10 @@ namespace OpenAC.Net.NFSe.Providers
 
             Guard.Against<XmlException>(rootNFSe == null && rootRps == null, "Xml de RPS ou NFSe invalido.");
 
-            var ret = new NotaServico(Configuracoes);
+            var ret = new NotaServico(Configuracoes)
+            {
+                XmlOriginal = xml.AsString()
+            };
 
             if (rootRps != null) //Goiania não retorna o RPS, somente a NFSe
                 LoadRps(ret, rootRps);
@@ -932,6 +932,8 @@ namespace OpenAC.Net.NFSe.Providers
                 {
                     nota.IdentificacaoNFSe.Numero = numeroNFSe;
                     nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                    nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                    nota.XmlOriginal = compNfse.ToString();
                 }
 
                 nota.Protocolo = retornoWebservice.Protocolo;
@@ -989,7 +991,7 @@ namespace OpenAC.Net.NFSe.Providers
             retornoWebservice.Lote = xmlRet.Root?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
 
             var retornoLote = xmlRet.ElementAnyNs("ConsultarLoteRpsResposta");
-            var situacao = retornoLote.ElementAnyNs("Situacao");
+            var situacao = retornoLote?.ElementAnyNs("Situacao");
             if (situacao != null)
             {
                 switch (situacao.GetValue<int>())
@@ -1053,6 +1055,7 @@ namespace OpenAC.Net.NFSe.Providers
                     nota.IdentificacaoNFSe.Numero = numeroNFSe;
                     nota.IdentificacaoNFSe.Chave = chaveNFSe;
                     nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                    nota.XmlOriginal = compNfse.ToString();
                 }
 
                 nota.Protocolo = retornoWebservice.Protocolo;
@@ -1067,7 +1070,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "AC0001", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
                 return;
             }
 
@@ -1118,16 +1121,18 @@ namespace OpenAC.Net.NFSe.Providers
             var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == retornoWebservice.NumeroNFSe);
             if (nota == null) return;
 
+            retornoWebservice.Data = confirmacaoCancelamento.ElementAnyNs("DataHora")?.GetValue<DateTime>() ?? DateTime.MinValue;
+            retornoWebservice.Sucesso = retornoWebservice.Data != DateTime.MinValue;
+
             nota.Situacao = SituacaoNFSeRps.Cancelado;
             nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
-            nota.Cancelamento.DataHora = confirmacaoCancelamento.ElementAnyNs("DataHora")?.GetValue<DateTime>() ?? DateTime.MinValue;
+            nota.Cancelamento.DataHora = retornoWebservice.Data;
             nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
             nota.Cancelamento.Signature = DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature").ToString());
         }
 
         /// <inheritdoc />
-        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice,
-            NotaServicoCollection notas)
+        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas)
         {
             throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
         }
@@ -1145,8 +1150,7 @@ namespace OpenAC.Net.NFSe.Providers
         }
 
         /// <inheritdoc />
-        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice,
-            NotaServicoCollection notas)
+        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.NumeroRps < 1)
             {
@@ -1195,10 +1199,10 @@ namespace OpenAC.Net.NFSe.Providers
         {
             // Analisa mensagem de retorno
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            MensagemErro(retornoWebservice, xmlRet, ConsultarNfseRpsResposta);
+            MensagemErro(retornoWebservice, xmlRet, "ConsultarNfseRpsResposta");
             if (retornoWebservice.Erros.Any()) return;
 
-            var compNfse = xmlRet.ElementAnyNs(ConsultarNfseRpsResposta)?.ElementAnyNs("CompNfse");
+            var compNfse = xmlRet.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
 
             if (compNfse == null)
             {
@@ -1230,9 +1234,11 @@ namespace OpenAC.Net.NFSe.Providers
                 nota.IdentificacaoNFSe.Numero = numeroNFSe;
                 nota.IdentificacaoNFSe.Chave = chaveNFSe;
                 nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                nota.XmlOriginal = compNfse.ToString();
             }
 
             retornoWebservice.Nota = nota;
+            retornoWebservice.Sucesso = true;
         }
 
         /// <inheritdoc />
@@ -1303,8 +1309,7 @@ namespace OpenAC.Net.NFSe.Providers
                 loteBuilder.Append("</Intermediario>");
             }
 
-            if (retornoWebservice.Pagina > 0)
-                loteBuilder.Append($"<Pagina>{retornoWebservice.Pagina}</Pagina>");
+            loteBuilder.Append($"<Pagina>{Math.Max(retornoWebservice.Pagina, 1)}</Pagina>");
             loteBuilder.Append("</ConsultarNfseServicoPrestadoEnvio>");
             retornoWebservice.XmlEnvio = loteBuilder.ToString();
         }
@@ -1443,34 +1448,22 @@ namespace OpenAC.Net.NFSe.Providers
         #region Protected Methods
 
         /// <inheritdoc />
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse.xsd";
-        }
+        protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetVersao()
-        {
-            return $"versao=\"{Versao}\"";
-        }
+        protected virtual string GetVersao() => $"versao=\"{Versao}\"";
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetNamespace()
-        {
-            return "xmlns=\"http://www.abrasf.org.br/nfse.xsd\"";
-        }
+        protected virtual string GetNamespace() => "xmlns=\"http://www.abrasf.org.br/nfse.xsd\"";
 
         /// <inheritdoc />
-        protected override string GerarCabecalho()
-        {
-            return $"<cabecalho {GetVersao()} {GetNamespace()}><versaoDados>{Versao}</versaoDados></cabecalho>";
-        }
+        protected override string GerarCabecalho() => $"<cabecalho {GetVersao()} {GetNamespace()}><versaoDados>{Versao}</versaoDados></cabecalho>";
 
         /// <summary>
         ///

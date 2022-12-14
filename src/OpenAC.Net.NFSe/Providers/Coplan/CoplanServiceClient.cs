@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="CoplanServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -39,7 +39,7 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class CoplanServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Fields
 
@@ -49,13 +49,13 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Constructors
 
-        public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
             expect100Continue = ServicePointManager.Expect100Continue;
             ServicePointManager.Expect100Continue = false;
         }
 
-        public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
             expect100Continue = ServicePointManager.Expect100Continue;
             ServicePointManager.Expect100Continue = false;
@@ -209,7 +209,7 @@ namespace OpenAC.Net.NFSe.Providers
             return base.Execute($"Tributarioaction/ANFSE_WEB_SERVICE.{action}", message, responseTag);
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs(responseTag[0])?.ElementAnyNs("Fault");
             if (element != null)

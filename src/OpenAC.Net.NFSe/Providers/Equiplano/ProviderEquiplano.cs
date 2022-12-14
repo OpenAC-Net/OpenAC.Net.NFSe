@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderEquiplano.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -81,7 +81,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var rps = new XElement("rps");
             rps.AddChild(new XElement("nrRps", nota.IdentificacaoRps.Numero));
-            rps.AddChild(new XElement("nrEmissorRps", nota.Prestador.NumeroEmissorRps));
+            rps.AddChild(new XElement("nrEmissorRps", int.Parse(nota.Prestador.NumeroEmissorRps)));
 
             rps.AddChild(AdicionarTag(TipoCampo.DatHor, "", "dtEmissaoRps", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
             var stRps = nota.Situacao == SituacaoNFSeRps.Normal ? "1" : "2";
@@ -123,7 +123,8 @@ namespace OpenAC.Net.NFSe.Providers
             rps.AddChild(new XElement("vlTotalRps", nota.Servico.Valores.ValorServicos));
             rps.AddChild(new XElement("vlLiquidoRps", nota.Servico.Valores.ValorLiquidoNfse));
 
-            rps.AddChild(WriteRetencoes(nota));
+            if (issRetido == "1")
+                rps.AddChild(WriteRetencoes(nota));
 
             if (!nota.DiscriminacaoImpostos.IsEmpty())
                 rps.AddChild(new XElement("dsImpostos", nota.DiscriminacaoImpostos));
@@ -159,13 +160,9 @@ namespace OpenAC.Net.NFSe.Providers
                     servico.AddChild(new XElement("vlServico", servicoItem.ValorUnitario));
                     servico.AddChild(new XElement("vlAliquota", servicoItem.Aliquota));
 
-                    if (nota.Servico.Valores.ValorDeducoes > 0)
-                    {
-                        var deducao = new XElement("deducao");
-                        deducao.AddChild(AdicionarTag(TipoCampo.De2, "", "vlDeducao", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
-                        deducao.AddChild(AdicionarTag(TipoCampo.Str, "", "dsJustificativaDeducao", 1, 115, Ocorrencia.Obrigatoria, nota.Servico.Valores.JustificativaDeducao));
+                    XElement deducao = WriteDeducoes(nota);
+                    if (deducao != null)
                         servico.AddChild(deducao);
-                    }
 
                     servico.AddChild(AdicionarTag(TipoCampo.De2, "", "vlBaseCalculo", 1, 15, Ocorrencia.MaiorQueZero, servicoItem.BaseCalculo));
                     servico.AddChild(AdicionarTag(TipoCampo.De2, "", "vlIssServico", 1, 15, Ocorrencia.MaiorQueZero, servicoItem.ValorIss));
@@ -196,13 +193,9 @@ namespace OpenAC.Net.NFSe.Providers
                 servico.AddChild(new XElement("vlServico", nota.Servico.Valores.ValorServicos));
                 servico.AddChild(new XElement("vlAliquota", nota.Servico.Valores.Aliquota));
 
-                if (nota.Servico.Valores.ValorDeducoes > 0)
-                {
-                    var deducao = new XElement("deducao");
-                    deducao.AddChild(AdicionarTag(TipoCampo.De2, "", "vlDeducao", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
-                    deducao.AddChild(AdicionarTag(TipoCampo.Str, "", "dsJustificativaDeducao", 1, 115, Ocorrencia.Obrigatoria, nota.Servico.Valores.JustificativaDeducao));
+                XElement deducao = WriteDeducoes(nota);
+                if (deducao != null)
                     servico.AddChild(deducao);
-                }
 
                 servico.AddChild(AdicionarTag(TipoCampo.De2, "", "vlBaseCalculo", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.BaseCalculo));
                 servico.AddChild(AdicionarTag(TipoCampo.De2, "", "vlIssServico", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
@@ -212,6 +205,15 @@ namespace OpenAC.Net.NFSe.Providers
             }
 
             return listaServicos;
+        }
+
+        private XElement WriteDeducoes(NotaServico nota)
+        {
+            if (nota.Servico.Valores.ValorDeducoes == 0) return null;
+            var deducao = new XElement("deducao");
+            deducao.AddChild(AdicionarTag(TipoCampo.De2, "", "vlDeducao", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
+            deducao.AddChild(AdicionarTag(TipoCampo.Str, "", "dsJustificativaDeducao", 1, 115, Ocorrencia.Obrigatoria, nota.Servico.Valores.JustificativaDeducao));
+            return deducao;
         }
 
         private XElement WriteRetencoes(NotaServico nota)
@@ -268,7 +270,8 @@ namespace OpenAC.Net.NFSe.Providers
             var documento = new XElement("documento");
             documento.AddChild(AdicionarTagCNPJCPF("", "nrDocumento", "nrDocumento", nota.Tomador.CpfCnpj));
             documento.AddChild(AdicionarTag(TipoCampo.Int, "", "tpDocumento", 1, 1, Ocorrencia.Obrigatoria, sTpDoc));
-            documento.AddChild(AdicionarTag(TipoCampo.Str, "", "dsDocumentoEstrangeiro", 1, 115, Ocorrencia.Obrigatoria, nota.Tomador.DocTomadorEstrangeiro));
+            if (!nota.Tomador.DocTomadorEstrangeiro.IsEmpty())
+                documento.AddChild(AdicionarTag(TipoCampo.Str, "", "dsDocumentoEstrangeiro", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.DocTomadorEstrangeiro));
             tomador.Add(documento);
 
             tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "nmTomador", 1, 80, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
@@ -355,7 +358,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
             // Analisa mensagem de retorno
-            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno.HtmlDecode());
 
             var rootElement = xmlRet.ElementAnyNs("esEnviarLoteRpsResposta");
             MensagemErro(retornoWebservice, rootElement, "mensagemRetorno");
@@ -498,7 +501,7 @@ namespace OpenAC.Net.NFSe.Providers
                 .Append("<es:esConsultarNfsePorRpsEnvio xmlns:es=\"http://www.equiplano.com.br/esnfs\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.equiplano.com.br/enfs esConsultarNfsePorRpsEnvio_v01.xsd\">")
                 .Append("<rps>")
                 .Append($"<nrRps>{retornoWebservice.NumeroRps}</nrRps>")
-                .Append($"<nrEmissorRps>{Configuracoes.PrestadorPadrao.NumeroEmissorRps}</nrEmissorRps>")
+                .Append($"<nrEmissorRps>{int.Parse(Configuracoes.PrestadorPadrao.NumeroEmissorRps)}</nrEmissorRps>")
                 .Append("</rps>")
                 .Append("<prestador>")
                 .Append($"<cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj}</cnpj>")
@@ -510,7 +513,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice)
         {
-            //Não precisa assinar.
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "es:esConsultarNfsePorRpsEnvio", "", Certificado);
         }
 
         protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
@@ -586,7 +589,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
         {
-            //Não precisa assinar.
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "es:esConsultarNfseEnvio", "", Certificado);
         }
 
         protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice, NotaServicoCollection notas)
@@ -723,10 +726,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Private Methods
 
-        protected override string GerarCabecalho()
-        {
-            return "";
-        }
+        protected override string GerarCabecalho() => "";
 
         protected override string GetSchema(TipoUrl tipo)
         {
@@ -767,10 +767,7 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new EquiplanoServiceClient(this, tipo);
-        }
+        protected override IServiceClient GetClient(TipoUrl tipo) => new EquiplanoServiceClient(this, tipo);
 
         private static void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string xmlTag, string elementName = "listaErros", string messageElement = "erro")
         {

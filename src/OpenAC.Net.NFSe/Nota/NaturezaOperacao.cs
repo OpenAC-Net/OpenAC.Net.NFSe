@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="NaturezaOperacao.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@ using System;
 namespace OpenAC.Net.NFSe.Nota
 {
     /// <summary>
-    /// Classe que contÈm as naturezas de operaÁ„o por provedor.
+    /// Classe que cont√©m as naturezas de Opera√ß√£o por provedor.
     /// </summary>
     public static class NaturezaOperacao
     {
@@ -59,32 +59,32 @@ namespace OpenAC.Net.NFSe.Nota
             #region Properties
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o 1 ñ TributaÁ„o no municÌpio.
+            /// Obt√©m a Natureza de Opera√ß√£o 1 - Tributa√ß√£o no munic√≠pio.
             /// </summary>
             public int TributacaoNoMunicipio { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o 2 - TributaÁ„o fora do municÌpio.
+            /// Obt√©m a Natureza de Opera√ß√£o 2 - Tributa√ß√£o fora do munic√≠pio.
             /// </summary>
             public int TributacaoForaMunicipio { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o 3 - IsenÁ„o.
+            /// Obt√©m a Natureza de Opera√ß√£o 3 - Isen√ß√£o.
             /// </summary>
             public int Isencao { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o 4 - Imune.
+            /// Obt√©m a Natureza de Opera√ß√£o 4 - Imune.
             /// </summary>
             public int Imune { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o 5 ñ Exigibilidade suspensa por decis„o judicial.
+            /// Obt√©m a Natureza de Opera√ß√£o 5 - Exigibilidade suspensa por decis√£o judicial.
             /// </summary>
             public int ExigibilidadeSuspJud { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o 6 ñ Exigibilidade suspensa por procedimento administrativo.
+            /// Obt√©m a Natureza de Opera√ß√£o 6 - Exigibilidade suspensa por procedimento administrativo.
             /// </summary>
             public int ExigibilidadeSuspAdm { get; }
 
@@ -109,27 +109,27 @@ namespace OpenAC.Net.NFSe.Nota
             #region Properties
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o A ñ Sem DeduÁ„o.
+            /// Obt√©m a Natureza de Opera√ß√£o A - Sem Dedu√ß√£o.
             /// </summary>
             public int SemDeducao { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o B ñ Com DeduÁ„o/Materiais.
+            /// Obt√©m a Natureza de Opera√ß√£o B - Com Dedu√ß√£o/Materiais.
             /// </summary>
             public int ComDeducaoMateriais { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o C ñ Imune/Isenta de ISSQN.
+            /// Obt√©m a Natureza de Opera√ß√£o C - Imune/Isenta de ISSQN.
             /// </summary>
             public int ImuneIsenta { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o D ñ DevoluÁ„o/Simples Remessa.
+            /// Obt√©m a Natureza de Opera√ß√£o D - Devolu√ß√£o/Simples Remessa.
             /// </summary>
             public int DevolucaoRemessa { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o J ñ IntermediaÁ„o.
+            /// Obt√©m a Natureza de Opera√ß√£o J - Intermedia√ß√£o.
             /// </summary>
             public int Intermediacao { get; }
 
@@ -146,7 +146,7 @@ namespace OpenAC.Net.NFSe.Nota
                 TributadaNoTomador = 2; //"tt";
                 Isenta = 3; //"is";
                 Imune = 4; // "im";
-                N„oTributada = 5; // "nt";
+                NaoTributada = 5; // "nt";
             }
 
             #endregion Constructors
@@ -154,7 +154,7 @@ namespace OpenAC.Net.NFSe.Nota
             #region Methods
 
             /// <summary>
-            /// Retorna o valor da natureza de operaÁ„o
+            /// Retorna o valor da natureza de Opera√ß√£o
             /// </summary>
             /// <param name="key">Chave</param>
             /// <returns></returns>
@@ -178,7 +178,7 @@ namespace OpenAC.Net.NFSe.Nota
                         return "nt";
 
                     default:
-                        throw new Exception("Natureza de operaÁ„o de NtSigiss n„o implementada");
+                        throw new Exception("Natureza de opera√ß√£o de NtSigiss n√£o implementada");
                 }
             }
 
@@ -187,29 +187,73 @@ namespace OpenAC.Net.NFSe.Nota
             #region Properties
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o tp ñ Tributada no Prestador.
+            /// Obt√©m a Natureza de Opera√ß√£o tp - Tributada no Prestador.
             /// </summary>
             public int TributadaNoPrestador { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o tt - Tributada no Tomador.
+            /// Obt√©m a Natureza de Opera√ß√£o tt - Tributada no Tomador.
             /// </summary>
             public int TributadaNoTomador { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o is ñ Isenta.
+            /// Obt√©m a Natureza de Opera√ß√£o is - Isenta.
             /// </summary>
             public int Isenta { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o im ñ Imune.
+            /// Obt√©m a Natureza de Opera√ß√£o im - Imune.
             /// </summary>
             public int Imune { get; }
 
             /// <summary>
-            /// ObtÈm a Natureza de OperaÁ„o nt ñ N„o Tributada.
+            /// Obt√©m a Natureza de Opera√ß√£o nt - N√£o Tributada.
             /// </summary>
-            public int N„oTributada { get; }
+            public int NaoTributada { get; }
+
+            #endregion Properties
+        }
+
+        public sealed class NtThema
+        {
+            #region Constructors
+
+            internal NtThema()
+            {
+                ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte51 = 51;
+                ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte52 = 52;
+                ISSQNFixo57 = 57;
+                NaoTributavel58 = 58;
+                ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao59 = 59;
+                ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte61 = 61;
+                ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte62 = 62;
+                ImpostoDevidoForaDeLajeadoComObrigacaoDeRetencaoNaFonte63 = 63;
+                ImpostoDevidoForaDeLajeadoSemObrigacaoDeRetencaoNaFonte64 = 64;
+                ISSQNFixo67 = 67;
+                NaoTributavel68 = 68;
+                ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao69 = 69;
+                NaoTributavel78 = 78;
+                ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao79 = 79;
+            }
+
+            #endregion Constructors
+
+            #region Properties
+
+            public int ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte51 { get; }
+            public int ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte52 { get; }
+            public int ISSQNFixo57 { get; }
+            public int NaoTributavel58 { get; }
+            public int ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao59 { get; }
+            public int ImpostoDevidoNoMunicipioComObrigacaoDeRetencaoNaFonte61 { get; }
+            public int ImpostoDevidoNoMunicipioSemObrigacaoDeRetencaoNaFonte62 { get; }
+            public int ImpostoDevidoForaDeLajeadoComObrigacaoDeRetencaoNaFonte63 { get; }
+            public int ImpostoDevidoForaDeLajeadoSemObrigacaoDeRetencaoNaFonte64 { get; }
+            public int ISSQNFixo67 { get; }
+            public int NaoTributavel68 { get; }
+            public int ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao69 { get; }
+            public int NaoTributavel78 { get; private set; }
+            public int ImpostoRecolhidoPeloRegimeUnicoDeArrecadacao79 { get; }
 
             #endregion Properties
         }
@@ -221,30 +265,36 @@ namespace OpenAC.Net.NFSe.Nota
         private static NtABRASF abrasf;
         private static NtDSF dsf;
         private static NtSigiss sigiss;
+        private static NtThema thema;
 
         #endregion Fields
 
         #region Properties
 
         /// <summary>
-        /// ObtÈm as Natureza de OperaÁ„o da ABRASAF v1.
+        /// Obt√©m as Natureza de Opera√ß√£o da ABRASAF v1.
         /// </summary>
-        public static NtABRASF ABRASF => abrasf ?? (abrasf = new NtABRASF());
+        public static NtABRASF ABRASF => abrasf ??= new NtABRASF();
 
         /// <summary>
-        /// ObtÈm as Natureza de OperaÁ„o do Ginfes.
+        /// Obt√©m as Natureza de Opera√ß√£o do Ginfes.
         /// </summary>
         public static NtABRASF Ginfes => ABRASF;
 
         /// <summary>
-        /// ObtÈm as Natureza de OperaÁ„o do DSF.
+        /// Obt√©m as Natureza de Opera√ß√£o do DSF.
         /// </summary>
-        public static NtDSF DSF => dsf ?? (dsf = new NtDSF());
+        public static NtDSF DSF => dsf ??= new NtDSF();
 
         /// <summary>
-        /// ObtÈm as Natura de OperaÁıes do Sigis
+        /// Obt√©m as Natura de Opera√ß√µes do Sigis
         /// </summary>
-        public static NtSigiss Sigiss => sigiss ?? (sigiss = new NtSigiss());
+        public static NtSigiss Sigiss => sigiss ??= new NtSigiss();
+
+        /// <summary>
+        /// Obt√©m as Natureza de Opera√ß√µes do Thema
+        /// </summary>
+        public static NtThema Thema => thema ??= new NtThema();
 
         #endregion Properties
     }

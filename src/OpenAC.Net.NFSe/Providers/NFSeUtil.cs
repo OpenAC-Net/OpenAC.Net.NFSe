@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="NFSeUtil.cs" company="OpenAC .Net">
 //		        	   The MIT License (MIT)
-//	     		Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -41,10 +42,52 @@ namespace OpenAC.Net.NFSe.Providers
     {
         #region Fields
 
-        private static readonly string[] escapedCharacters = { "&amp;", "&lt;", "&gt;" };
-        private static readonly string[] unescapedCharacters = { "&", "<", ">", };
+        private static readonly Dictionary<string, string> htmlChars;
 
         #endregion Fields
+
+        #region Constructors
+
+        static NFSeUtil()
+        {
+            htmlChars = new Dictionary<string, string>()
+            {
+                {"&", "&amp;"},
+                {"<", "&lt;"},
+                {">", "&gt;"},
+                {"\"", "&quot;"},
+                {"'", "&apos;"},
+                {"#39", "&#39;"},
+                {"á", "&aacute;"},
+                {"Á", "&Aacute;"},
+                {"â", "&acirc;"},
+                {"Â", "&Acirc;"},
+                {"ã", "&atilde;"},
+                {"Ã", "&Atilde;"},
+                {"à", "&agrave;"},
+                {"À", "&Agrave;"},
+                {"é", "&eacute;"},
+                {"É", "&Eacute;"},
+                {"ê", "&ecirc;"},
+                {"Ê", "&Ecirc;"},
+                {"í", "&iacute;"},
+                {"Í", "&Iacute;"},
+                {"ó", "&oacute;"},
+                {"Ó", "&Oacute;"},
+                {"õ", "&otilde;"},
+                {"Õ", "&Otilde;"},
+                {"ô", "&ocirc;"},
+                {"Ô", "&Ocirc;"},
+                {"ú", "&uacute;"},
+                {"Ú", "&Uacute;"},
+                {"ü", "&uuml;"},
+                {"Ü", "&Uuml;"},
+                {"ç", "&ccedil;"},
+                {"Ç", "&Ccedil;"}
+            };
+        }
+
+        #endregion Constructors
 
         #region Methods
 
@@ -70,32 +113,13 @@ namespace OpenAC.Net.NFSe.Providers
             return posFinal < 0 ? xml : xml.Remove(posIni, (posFinal + 2) - posIni);
         }
 
-        public static StringBuilder AppendEnvio(this StringBuilder sb, string dados)
-        {
-            for (var i = 0; i < escapedCharacters.Length; i++)
-            {
-                dados = dados.Replace(unescapedCharacters[i], escapedCharacters[i]);
-            }
+        public static StringBuilder AppendEnvio(this StringBuilder sb, string dados) => sb.Append(dados.HtmlEncode());
 
-            sb.Append(dados);
-            return sb;
-        }
+        public static StringBuilder AppendCData(this StringBuilder sb, string dados) => sb.Append($"<![CDATA[{dados}]]>");
 
-        public static StringBuilder AppendCData(this StringBuilder sb, string dados)
-        {
-            sb.Append($"<![CDATA[{dados}]]>");
-            return sb;
-        }
+        public static string HtmlEncode(this string dados) => htmlChars.Aggregate(dados, (current, htmlChar) => current.Replace(htmlChar.Key, htmlChar.Value));
 
-        public static string AjustarString(this string dados)
-        {
-            for (var i = 0; i < escapedCharacters.Length; i++)
-            {
-                dados = dados.Replace(unescapedCharacters[i], escapedCharacters[i]);
-            }
-
-            return dados;
-        }
+        public static string HtmlDecode(this string dados) => htmlChars.Aggregate(dados, (current, htmlChar) => current.Replace(htmlChar.Value, htmlChar.Key));
 
         public static string GetCPF_CNPJ(this XElement element)
         {
@@ -108,6 +132,9 @@ namespace OpenAC.Net.NFSe.Providers
         {
             try
             {
+                if (string.IsNullOrEmpty(xmlstring))
+                    return false;
+
                 var xDocument = XDocument.Parse(xmlstring);
                 return true;
             }

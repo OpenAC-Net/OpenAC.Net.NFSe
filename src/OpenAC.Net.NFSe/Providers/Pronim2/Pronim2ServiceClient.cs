@@ -6,7 +6,7 @@
 // ***********************************************************************
 // <copyright file="Pronim2ServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -36,15 +36,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class Pronim2ServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class Pronim2ServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public Pronim2ServiceClient(ProviderPronim2 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        public Pronim2ServiceClient(ProviderPronim2 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
         }
 
-        public Pronim2ServiceClient(ProviderPronim2 provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public Pronim2ServiceClient(ProviderPronim2 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
@@ -156,7 +156,7 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(soapAction, message, "", responseTag, "xmlns:\"http://www.abrasf.org.br\"");
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element != null)

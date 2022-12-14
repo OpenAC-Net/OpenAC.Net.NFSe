@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ISSeServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -37,15 +37,15 @@ using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class CITTAServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class CITTAServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
         }
 
-        public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
         {
         }
 
@@ -126,15 +126,9 @@ namespace OpenAC.Net.NFSe.Providers
             return Execute(action, message, responseTag, ns);
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
-
-            //var element = xmlDocument.ElementAnyNs("Fault");
-            //if (element == null) return xmlDocument.Root.FirstNode.ToString();
-
-            //var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            //throw new OpenDFeCommunicationException(exMessage);
         }
 
         #endregion Methods

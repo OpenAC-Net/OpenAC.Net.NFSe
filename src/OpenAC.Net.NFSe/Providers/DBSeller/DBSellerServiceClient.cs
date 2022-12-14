@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DBSellerServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2021 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -38,15 +38,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class DBSellerServiceClient : NFSeSOAP11ServiceClient, IServiceClient
+    internal sealed class DBSellerServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+        public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 
-        public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+        public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
         }
 
@@ -148,14 +148,14 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            var baseUrl = Endpoint.Address.Uri.GetLeftPart(UriPartial.Authority);
-            var soapNs = EhHomologação ? $"xmlns:e=\"{baseUrl}/webservice/index/homologacao\"" :
+            var baseUrl = new Uri(Url).GetLeftPart(UriPartial.Authority);
+            var soapNs = EhHomologacao ? $"xmlns:e=\"{baseUrl}/webservice/index/homologacao\"" :
                                          $"xmlns:e=\"{baseUrl}/webservice/index/producao\"";
 
             return Execute(soapAction, message, "", responseTag, soapNs);
         }
 
-        protected override string TratarRetorno(XDocument xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
             var element = xmlDocument.ElementAnyNs("Fault");
             if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
