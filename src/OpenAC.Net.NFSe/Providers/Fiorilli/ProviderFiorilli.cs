@@ -29,7 +29,11 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
+using System.Xml.Linq;
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -45,6 +49,14 @@ namespace OpenAC.Net.NFSe.Providers
         #endregion Constructors
 
         #region Methods
+
+        protected override XElement WriteTomadorRps(NotaServico nota)
+        {
+            if (nota.Tomador.Endereco.CodigoMunicipio != 9999999)
+                nota.Tomador.Endereco.CodigoPais = 0;
+
+            return base.WriteTomadorRps(nota);
+        }
 
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
