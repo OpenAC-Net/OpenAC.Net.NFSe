@@ -197,8 +197,11 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected virtual string Authentication() => "";
 
-        protected void SetAction(string action) => Url = !Url.EndsWith("/") ? $"{Url}/{action}" : $"{Url}{action}";
-
+        protected void SetAction(string action)
+        {
+            if (Url == null) Url = "";
+            Url = !Url.EndsWith("/") ? $"{Url}/{action}" : $"{Url}{action}";
+        }
         #endregion Methods
     }
 }
