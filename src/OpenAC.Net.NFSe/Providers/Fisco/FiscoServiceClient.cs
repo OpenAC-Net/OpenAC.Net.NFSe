@@ -31,6 +31,7 @@
 
 using System;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 
@@ -56,7 +57,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string EnviarSincrono(string cabec, string msg)
         {
-            throw new NotImplementedException();
+            return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", msg, "RecepcionarLoteRpsSincronoResponse");
         }
 
         public string ConsultarSituacao(string cabec, string msg)

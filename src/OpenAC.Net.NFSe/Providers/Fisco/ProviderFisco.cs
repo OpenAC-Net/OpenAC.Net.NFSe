@@ -32,7 +32,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
@@ -112,7 +114,22 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+            var xmlLoteRps = new StringBuilder();
+
+            foreach (var nota in notas)
+            {
+                var xmlRps = WriteXmlRps(nota, false, false);
+                xmlLoteRps.Append(xmlRps);
+                GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
+            }
+            
+            var xmlLote = new StringBuilder();
+            xmlLote.Append("<recepcionarLoteRpsSincrono xmlns=\"https://www.fisco.net.br/wsnfseabrasf/ServicosNFSEAbrasf.asmx\">");
+            xmlLote.Append("<xml>");
+            xmlLote.Append(xmlLoteRps);
+            xmlLote.Append("</xml>");
+            xmlLote.Append("</recepcionarLoteRpsSincrono>");
+            retornoWebservice.XmlEnvio = xmlLote.ToString();
         }
 
         protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice)
@@ -349,6 +366,17 @@ namespace OpenAC.Net.NFSe.Providers
             loteBuilder.Append("</fiss:Cancelarnfseenvio>");
             loteBuilder.Append("</CWS_CancelarNfse.Execute>");
             retornoWebservice.XmlEnvio = loteBuilder.ToString();
+        }
+
+        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+        {
+            //NAO PRECISA ASSINAR
+            //retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
+        }
+
+        protected override bool PrecisaValidarSchema(TipoUrl tipo)
+        {
+            return false;
         }
 
         protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
