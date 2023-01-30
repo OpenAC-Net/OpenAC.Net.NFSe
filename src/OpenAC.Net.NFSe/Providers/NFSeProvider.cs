@@ -69,6 +69,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         Fiorilli = 16,
 
+        Fisco = 42,
+
         FissLex = 12,
 
         Ginfes = 5,

@@ -52,6 +52,7 @@ Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrôn
 - Curitiba
 - DBSeller
 - DSFSJC
+- Fisco
 - FissLex
 - ISSNet
 - Sigiss

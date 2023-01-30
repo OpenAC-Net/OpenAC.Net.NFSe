@@ -71,6 +71,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.DSFSJC, typeof(ProviderDSFSJC)},
                 {NFSeProvider.Equiplano, typeof(ProviderEquiplano)},
                 {NFSeProvider.Fiorilli, typeof(ProviderFiorilli)},
+                {NFSeProvider.Fisco, typeof(ProviderFisco)},
                 {NFSeProvider.FissLex, typeof(ProviderFissLex)},
                 {NFSeProvider.Ginfes, typeof(ProviderGinfes)},
                 {NFSeProvider.Goiania, typeof(ProviderGoiania)},
