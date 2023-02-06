@@ -171,6 +171,12 @@ namespace OpenAC.Net.NFSe.Providers
                 if (headers?.Count > 0)
                     request.Headers.Add(headers);
 
+                if (!string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.Proxy))
+                {
+                    var webProxy = new WebProxy(Provider.Configuracoes.WebServices.Proxy, true);
+                    request.Proxy = webProxy;
+                }
+
                 if (Certificado != null)
                     request.ClientCertificates.Add(Certificado);
 

@@ -10,7 +10,7 @@
     <PackageReference Include="NLog" Version="5.0.2" />
     <PackageReference Include="NLog.Windows.Forms" Version="4.6.0" />
     <PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.3" />
   </ItemGroup>
   
   <ItemGroup>
