@@ -40,7 +40,7 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class ProviderISSNet : ProviderABRASF
+    internal sealed class ProviderBrasilia : ProviderABRASF
     {
         #region Fields
 
@@ -50,10 +50,16 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Constructors
 
-        public ProviderISSNet(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+        public ProviderBrasilia(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
         {
-            Name = "ISSNet";
+            Name = "ABRASFv2";
+            Versao = "2.04";
+            UsaPrestadorEnvio = true;
         }
+
+        public string Versao { get; protected set; }
+
+        public bool UsaPrestadorEnvio { get; protected set; }
 
         #endregion Constructors
 
@@ -61,37 +67,89 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region RPS
 
-        protected override XElement WriteInfoRPS(NotaServico nota)
+        protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
-            var incentivadorCultural = nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2;
+            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
+            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+            if (retornoWebservice.Erros.Count > 0) return;
 
-            string regimeEspecialTributacao;
-            string optanteSimplesNacional;
+            var xmlLoteRps = new StringBuilder();
+
+            foreach (var nota in notas)
+            {
+                var xmlRps = WriteXmlRps(nota, false, false);
+                xmlLoteRps.Append(xmlRps);
+                GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
+            }
+
+            var xmlLote = new StringBuilder();
+            xmlLote.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+            xmlLote.Append("<EnviarLoteRpsEnvio xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
+            xmlLote.Append($"<LoteRps Id=\"lote{retornoWebservice.Lote.ToString().PadLeft(2, '0')}\" versao=\"{Versao}\">");
+            xmlLote.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
+
+            xmlLote.Append(WritePrestadorRps(notas[0]));
+
+            xmlLote.Append($"<QuantidadeRps>{notas.Count}</QuantidadeRps>");
+            xmlLote.Append("<ListaRps>");
+            xmlLote.Append(xmlLoteRps);
+            xmlLote.Append("</ListaRps>");
+            xmlLote.Append("</LoteRps>");
+            xmlLote.Append("</EnviarLoteRpsEnvio>");
+
+            var document = XDocument.Parse(xmlLote.ToString());
+            //document.ElementAnyNs("EnviarLoteRpsEnvio").AddAttribute(new XAttribute(XNamespace.Xmlns + "tc", tc));
+            //NFSeUtil.ApplyNamespace(document.Root, tc, "LoteRps", "EnviarLoteRpsEnvio");
+
+            retornoWebservice.XmlEnvio = document.AsString();
+        }
+
+        protected override XElement WriteRps(NotaServico nota)
+        {
+            var rps = new XElement("Rps");
+
+            var infoDeclaracao = new XElement("InfDeclaracaoPrestacaoServico");
+            infoDeclaracao.Add(WriteRpsInfDeclaracao(nota));
+            infoDeclaracao.AddChild(AdicionarTag(TipoCampo.Dat, "", "Competencia", 1, 1, Ocorrencia.Obrigatoria, nota.Competencia));
+            infoDeclaracao.AddChild(WriteServicosValoresRps(nota));
+            infoDeclaracao.AddChild(WritePrestadorRps(nota));
+            infoDeclaracao.AddChild(WriteTomadorRps(nota));
+            infoDeclaracao.AddChild(WriteIntermediarioRps(nota));
+            infoDeclaracao.AddChild(WriteConstrucaoCivilRps(nota));
+
             if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
             {
-                regimeEspecialTributacao = "1";
-                optanteSimplesNacional = "1";
+                infoDeclaracao.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, "6"));
+                infoDeclaracao.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, "1"));
             }
             else
             {
-                var regime = (int)nota.RegimeEspecialTributacao;
-                regimeEspecialTributacao = regime == 0 ? string.Empty : regime.ToString();
-                optanteSimplesNacional = "2";
+                var regimeEspecialTributacao = nota.RegimeEspecialTributacao == 0 ? string.Empty : nota.RegimeEspecialTributacao.ToString();
+
+                infoDeclaracao.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
+                infoDeclaracao.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, "2"));
             }
 
-            var situacao = nota.Situacao == SituacaoNFSeRps.Normal ? "1" : "2";
+            infoDeclaracao.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, (nota.IncentivadorFiscal == NFSeSimNao.Sim ? 1 : 2)));
 
-            var infoRps = new XElement("InfRps");
+            rps.Add(infoDeclaracao);
 
-            infoRps.Add(WriteIdentificacao(nota));
-            infoRps.AddChild(AdicionarTag(TipoCampo.DatHor, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "NaturezaOperacao", 1, 1, Ocorrencia.Obrigatoria, nota.NaturezaOperacao));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivadorCultural", 1, 1, Ocorrencia.Obrigatoria, incentivadorCultural));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, situacao));
+            return rps;
+        }
 
-            return infoRps;
+        
+
+        
+
+        private XElement WriteRpsInfDeclaracao(NotaServico nota)
+        {
+            var rps = new XElement("Rps");
+
+            rps.Add(WriteIdentificacao(nota));
+            rps.AddChild(AdicionarTag(TipoCampo.Dat, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+            rps.AddChild(AdicionarTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, (nota.Situacao == SituacaoNFSeRps.Normal ? "1" : "2")));
+
+            return rps;
         }
 
         protected override XElement WritePrestadorRps(NotaServico nota)
@@ -109,7 +167,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override XElement WriteTomadorRps(NotaServico nota)
         {
-            var tomador = new XElement("Tomador");
+            var tomador = new XElement("TomadorServico");
 
             var ideTomador = new XElement("IdentificacaoTomador");
             tomador.Add(ideTomador);
@@ -121,7 +179,7 @@ namespace OpenAC.Net.NFSe.Providers
             {
                 cpfCnpjTomador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Tomador.CpfCnpj));
 
-                ideTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
+                ideTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15, Ocorrencia.NaoObrigatoria, "123456"));
 
                 tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
 
@@ -137,8 +195,8 @@ namespace OpenAC.Net.NFSe.Providers
                     endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Numero));
                     endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Complemento", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
                     endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
-                    endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "Cidade", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
-                    endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Estado", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
+                    endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
+                    endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
                     endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
                 }
 
@@ -164,37 +222,37 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var servico = new XElement("Servico");
             var valores = new XElement("Valores");
-            servico.AddChild(valores);
 
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
-
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorPis));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorCofins));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorInss));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIr));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorCsll));
-
-            valores.AddChild(AdicionarTag(TipoCampo.Int, "", "IssRetido", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? 1 : 2));
-
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIssRetido", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIssRetido));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.OutrasRetencoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "BaseCalculo", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.BaseCalculo));
-
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorDeducoes));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorPis));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCofins));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorInss));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorIr));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCsll));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.OutrasRetencoes));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCargaTributaria));
+            //valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorIss));
             // Valor Percentual - Exemplos: 1% => 1.00   /   25,5% => 25.5   /   100% => 100
-            valores.AddChild(AdicionarTag(TipoCampo.De4, "", "Aliquota", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorLiquidoNfse", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorLiquidoNfse));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoCondicionado));
+            //valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.DescontoIncondicionado));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.DescontoCondicionado));
 
+            servico.AddChild(valores);
+
+            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "IssRetido", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.IssRetidoFonte.GetHashCode()));
+            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "ResponsavelRetencao", 0, 1, Ocorrencia.NaoObrigatoria, nota.Servico.ResponsavelRetencao));
             servico.AddChild(AdicionarTag(TipoCampo.Str, "", "ItemListaServico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
-
-            servico.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "CodigoCnae", 1, 7, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoCnae));
-
+            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoCnae", 0, 7, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoCnae));
             servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoTributacaoMunicipio", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoTributacaoMunicipio));
+            servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoNbs", 0, 9, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoNbs));
             servico.AddChild(AdicionarTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
-            servico.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "MunicipioPrestacaoServico", 1, 7, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
+            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 0, 7, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
+            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 0, 4, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoPais));
+            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "ExigibilidadeISS", 1, 2, Ocorrencia.Obrigatoria, nota.Servico.ExigibilidadeIss.GetHashCode() + 1));
+            servico.AddChild(AdicionarTag(TipoCampo.Str, "", "IdentifNaoExigibilidade", 0, 4, Ocorrencia.NaoObrigatoria, nota.Servico.IdentifNaoExigibilidade));
+            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "MunicipioIncidencia", 0, 7, Ocorrencia.NaoObrigatoria, nota.Servico.MunicipioIncidencia));
+            servico.AddChild(AdicionarTag(TipoCampo.Str, "", "NumeroProcesso", 0, 30, Ocorrencia.NaoObrigatoria, nota.Servico.NumeroProcesso));
 
             return servico;
         }
@@ -215,44 +273,11 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Services
 
-        protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
-            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
-            if (retornoWebservice.Erros.Count > 0) return;
-
-            var xmlLoteRps = new StringBuilder();
-
-            foreach (var nota in notas)
-            {
-                var xmlRps = WriteXmlRps(nota, false, false);
-                xmlLoteRps.Append(xmlRps);
-                GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
-            }
-
-            var xmlLote = new StringBuilder();
-            xmlLote.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-            xmlLote.Append("<EnviarLoteRpsEnvio xmlns=\"http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_enviar_lote_rps_envio.xsd\">");
-            xmlLote.Append("<LoteRps>");
-            xmlLote.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
-            xmlLote.Append($"<CpfCnpj><Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj></CpfCnpj>");
-            xmlLote.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
-            xmlLote.Append($"<QuantidadeRps>{notas.Count}</QuantidadeRps>");
-            xmlLote.Append("<ListaRps>");
-            xmlLote.Append(xmlLoteRps);
-            xmlLote.Append("</ListaRps>");
-            xmlLote.Append("</LoteRps>");
-            xmlLote.Append("</EnviarLoteRpsEnvio>");
-
-            var document = XDocument.Parse(xmlLote.ToString());
-            document.ElementAnyNs("EnviarLoteRpsEnvio").AddAttribute(new XAttribute(XNamespace.Xmlns + "tc", tc));
-            NFSeUtil.ApplyNamespace(document.Root, tc, "LoteRps", "EnviarLoteRpsEnvio");
-
-            retornoWebservice.XmlEnvio = document.AsString();
-        }
+        
 
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "", Certificado);
         }
 
@@ -412,7 +437,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
-            return new ISSNetServiceClient(this, tipo);
+            return new BrasiliaServiceClient(this, tipo);
         }
 
         protected override string GetNamespace()
@@ -422,17 +447,10 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string GetSchema(TipoUrl tipo)
         {
-            switch (tipo)
-            {
-                case TipoUrl.Enviar: return "servico_enviar_lote_rps_envio.xsd";
-                case TipoUrl.ConsultarSituacao: return "servico_consultar_situacao_lote_rps_envio.xsd";
-                case TipoUrl.ConsultarLoteRps: return "servico_consultar_lote_rps_envio.xsd";
-                case TipoUrl.ConsultarNFSeRps: return "servico_consultar_nfse_rps_envio.xsd";
-                case TipoUrl.ConsultarNFSe: return "servico_consultar_nfse_envio.xsd";
-                case TipoUrl.CancelarNFSe: return "Servico_Cancelar_justificativa.xsd";
-                default: throw new ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou serviço não suportado.");
-            }
+            return "nfse_v204.xsd";
         }
+
+        protected override bool PrecisaValidarSchema(TipoUrl tipo) => false;
 
         #endregion Protected Methods
 

@@ -389,8 +389,8 @@ namespace OpenAC.Net.NFSe.Providers
         protected virtual XElement WriteRps(NotaServico nota)
         {
             var rps = new XElement("Rps");
+
             var infoRps = WriteInfoRPS(nota);
-            rps.Add(infoRps);
 
             infoRps.AddChild(WriteRpsSubstituto(nota));
             infoRps.AddChild(WriteServicosValoresRps(nota));
@@ -398,6 +398,8 @@ namespace OpenAC.Net.NFSe.Providers
             infoRps.AddChild(WriteTomadorRps(nota));
             infoRps.AddChild(WriteIntermediarioRps(nota));
             infoRps.AddChild(WriteConstrucaoCivilRps(nota));
+
+            rps.Add(infoRps);
 
             return rps;
         }

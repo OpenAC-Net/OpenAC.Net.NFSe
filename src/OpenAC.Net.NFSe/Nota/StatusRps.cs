@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
-// Created          : 05-26-2016
+// Created          : 05-19-2016
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 06-07-2016
+// Last Modified On : 05-19-2016
 // ***********************************************************************
-// <copyright file="TipoDeducao.cs" company="OpenAC .Net">
+// <copyright file="TipoRPS.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
@@ -29,16 +29,13 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.ComponentModel;
+
 namespace OpenAC.Net.NFSe.Nota
 {
-    public enum TipoDeducao
+    public enum StatusRps
     {
-        Nenhum,
-        Materiais,
-        SubEmpreitada,
-        Mercadorias,
-        VeiculacaoeDivulgacao,
-        MapadeConstCivil,
-        Servicos
+        Normal = 1,
+        Cancelado = 2
     }
 }
