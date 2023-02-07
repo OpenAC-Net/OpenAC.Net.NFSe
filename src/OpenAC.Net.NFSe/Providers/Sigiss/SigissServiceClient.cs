@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : danilobreda
 // Created          : 07-10-2020
@@ -84,7 +84,20 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException();
+        public string ConsultarLoteRps(string cabec, string msg)
+        {
+            string Url = Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
+            string Namespace = "xmlns:ws=\"" + Url + "\"";
+            //string Namespace1 = "xmlns:ws=\"https://abrasfchapeco.meumunicipio.online/ws\"";
+
+            var message = new StringBuilder();
+            message.Append("<ws:ConsultarLoteRps>");
+            message.Append("<xml>");
+            message.AppendCData(msg);
+            message.Append("</xml>");
+            message.Append("</ws:ConsultarLoteRps>");
+            return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", new[] { "ConsultarLoteRpsResponse", "ConsultarLoteRpsResult" }, Namespace);
+        }
 
         public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
 
@@ -101,7 +114,7 @@ namespace OpenAC.Net.NFSe.Providers
             //verifica se o retorno tem os elementos corretos senão da erro.
             var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
             _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
-            _ = element.ElementAnyNs("DescricaoErros") ?? throw new OpenDFeCommunicationException($"Erro ({responseTag[1]}) do xml não encontrado");
+            //_ = element.ElementAnyNs("DescricaoErros") ?? throw new OpenDFeCommunicationException($"Erro ({responseTag[1]}) do xml não encontrado"); -> removido em concordancia com o Rafael pois o provedor nao mandava essa tag em alguns casos
 
             return element.ToString();
         }
