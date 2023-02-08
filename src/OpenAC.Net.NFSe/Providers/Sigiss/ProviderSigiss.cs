@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : danilobreda
 // Created          : 07-10-2020
@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -293,17 +294,124 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void PrepararConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
         {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+            var loteBuilder = new StringBuilder();
+            loteBuilder.Append($"<ConsultarLoteRpsEnvio xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
+            loteBuilder.Append("<Prestador>");
+            loteBuilder.Append("<CpfCnpj>");
+            loteBuilder.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
+                ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
+                : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+            loteBuilder.Append("</CpfCnpj>");
+            loteBuilder.Append("</Prestador>");
+            loteBuilder.Append($"<Protocolo>{retornoWebservice.Protocolo}</Protocolo>");
+            loteBuilder.Append("</ConsultarLoteRpsEnvio>");
+            retornoWebservice.XmlEnvio = loteBuilder.ToString();
         }
 
-        protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
+        protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice) { }
 
         protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
         {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+            // Analisa mensagem de retorno
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+
+            retornoWebservice.Lote = xmlRet.Root?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
+
+            var retornoLote = xmlRet.ElementAnyNs("ConsultarLoteRpsResposta");
+            var situacao = retornoLote?.ElementAnyNs("Situacao");
+            if (situacao != null)
+            {
+                switch (situacao.GetValue<int>())
+                {
+                    case 2:
+                        retornoWebservice.Situacao = "2 – Não Processado";
+                        break;
+
+                    case 3:
+                        retornoWebservice.Situacao = "3 – Processado com Erro";
+                        break;
+
+                    case 4:
+                        retornoWebservice.Situacao = "4 – Processado com Sucesso";
+                        break;
+
+                    default:
+                        retornoWebservice.Situacao = "1 – Não Recebido";
+                        break;
+                }
+            }
+
+            MensagemErro(retornoWebservice, xmlRet, "ConsultarLoteRpsResposta");
+            if (retornoWebservice.Erros.Any()) return;
+            if (retornoWebservice.XmlRetorno.Contains("ListaMensagemRetorno"))
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
+                return;
+            }
+            if (notas == null) return;
+
+            retornoWebservice.Sucesso = true;
+
+            var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
+
+            if (listaNfse == null)
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+                return;
+            }
+
+            var notasFiscais = new List<NotaServico>();
+
+            foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
+            {
+                var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
+                var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+                var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+                var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+                var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
+                                    .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
+                                    .ElementAnyNs("Rps")?
+                                    .ElementAnyNs("IdentificacaoRps")?
+                                    .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
+
+                GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+
+                var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+                if (nota == null)
+                {
+                    nota = notas.Load(compNfse.ToString());
+                }
+                else
+                {
+                    nota.IdentificacaoNFSe.Numero = numeroNFSe;
+                    nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                    nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                    nota.XmlOriginal = compNfse.ToString();
+                }
+
+                nota.Protocolo = retornoWebservice.Protocolo;
+                notasFiscais.Add(nota);
+            }
+
+            retornoWebservice.Notas = notasFiscais.ToArray();
+        }
+
+        private static void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string xmlTag)
+        {
+            var mensagens = xmlRet?.ElementAnyNs(xmlTag);
+            mensagens = mensagens?.ElementAnyNs("Messages");
+            if (mensagens == null)
+                return;
+
+            foreach (var mensagem in mensagens.ElementsAnyNs("Message"))
+            {
+                retornoWs.Erros.Add(new Evento
+                {
+                    Codigo = mensagem?.ElementAnyNs("Id")?.GetValue<string>() ?? string.Empty,
+                    Descricao = mensagem?.ElementAnyNs("Description")?.GetValue<string>() ?? string.Empty,
+                    Correcao = mensagem?.ElementAnyNs("Description")?.GetValue<string>() ?? string.Empty
+                });
+            }
         }
 
         protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice)
