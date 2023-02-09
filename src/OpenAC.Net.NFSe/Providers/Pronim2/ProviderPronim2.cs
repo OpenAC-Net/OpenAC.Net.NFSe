@@ -4,11 +4,11 @@
 // Created          : 02-14-2020
 //
 // Last Modified By : Felipe Silveira/Transis
-// Last Modified On : 02-17-2020
+// Last Modified On : 02-09-2023
 // ***********************************************************************
 // <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -50,6 +50,8 @@ namespace OpenAC.Net.NFSe.Providers
         {
             return new Pronim2ServiceClient(this, tipo, null);
         }
+        protected override bool PrecisaValidarSchema(TipoUrl tipo) { return false; }
+
 
         #endregion Methods
     }
