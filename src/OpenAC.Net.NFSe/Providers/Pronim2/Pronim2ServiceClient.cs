@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira/Transis
 // Created          : 14-02-2020
@@ -6,7 +6,7 @@
 // ***********************************************************************
 // <copyright file="Pronim2ServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -153,7 +153,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            return Execute(soapAction, message, "", responseTag, "xmlns:\"http://www.abrasf.org.br\"");
+            return Execute(soapAction, message, "", responseTag, "xmlns:tem\"http://tempuri.org/\"");
         }
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
