@@ -35,7 +35,6 @@ using FastReport;
 using FastReport.Export.Html;
 using FastReport.Export.Pdf;
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 

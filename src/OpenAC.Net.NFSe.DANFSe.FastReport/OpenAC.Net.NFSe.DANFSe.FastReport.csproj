@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenAC.Net.NFSe.DANFSe.FastReport</RootNamespace>
     <AssemblyName>OpenAC.Net.NFSe.DANFSe.FastReport</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -33,6 +33,15 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastReport">
+      <HintPath>C:\Users\rften\.nuget\packages\fastreport.opensource\2022.2.17\lib\net40\FastReport.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenAC.Net.Core">
+      <HintPath>C:\Users\rften\.nuget\packages\openac.net.core\1.5.0.1\lib\netstandard2.0\OpenAC.Net.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenAC.Net.DFe.Core">
+      <HintPath>C:\Users\rften\.nuget\packages\openac.net.dfe.core\1.5.0.2\lib\netstandard2.0\OpenAC.Net.DFe.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -63,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FastReport.Net.Demo">
-      <Version>2022.2.17</Version>
+      <Version>2023.1.12</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core">
       <Version>1.5.0.1</Version>

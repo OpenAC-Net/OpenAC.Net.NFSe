@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net452;net48;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net452;net48;netstandard2.0;net6.0;net7.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<AssemblyName>OpenAC.Net.NFSe</AssemblyName>
 		<RootNamespace>OpenAC.Net.NFSe</RootNamespace>
@@ -55,7 +55,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' != 'net452'">
-		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
 	</ItemGroup>
 
 	<!-- Itens do pacote nuget -->
@@ -148,6 +148,10 @@
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Nota Carioca</PackagePath>
 		</None>
+		<None Include="Schemas\Pronim2\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Pronim2</PackagePath>
+		</None>
 		<None Include="Schemas\São Paulo\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\São Paulo</PackagePath>
@@ -196,12 +200,16 @@
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SIAPNet</PackagePath>
 		</None>
+	</ItemGroup>
+	
+	<ItemGroup>
 		<None Remove="Resources\Municipios.nfse" />
 		<EmbeddedResource Include="Resources\Municipios.nfse" />
-		<None Update="Schemas\Thema\*.*">
+		
+		<None Update="Schemas\Abaco\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Abaco\*.*">
+		<None Update="Schemas\ABase\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\Americana\*.*">
@@ -267,7 +275,16 @@
 		<None Update="Schemas\Nota Carioca\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Schemas\Pronim2\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\PVH\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>		
 		<None Update="Schemas\São Paulo\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\SIAPNet\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\SimplISS\*.*">
@@ -282,6 +299,9 @@
 		<None Update="Schemas\SystemPro\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Schemas\Thema\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Schemas\Vitoria\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -290,19 +310,7 @@
 		</None>
 		<None Update="Schemas\WebISS\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\PVH\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\SIAPNet\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\ABase\nfse.xsd">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\ABase\xmldsig-core-schema20020212.xsd">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		</None>				
 	</ItemGroup>
 
 </Project>

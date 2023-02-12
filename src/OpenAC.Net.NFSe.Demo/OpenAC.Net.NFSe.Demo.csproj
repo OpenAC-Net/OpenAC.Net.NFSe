@@ -2,13 +2,13 @@
  
  <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.0.2" />
-    <PackageReference Include="NLog.Windows.Forms" Version="4.6.0" />
+    <PackageReference Include="NLog" Version="5.1.1" />
+    <PackageReference Include="NLog.Windows.Forms" Version="5.0.0" />
     <PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
     <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
   </ItemGroup>

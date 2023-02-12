@@ -1,5 +1,4 @@
 ﻿using System;
-using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Nota;
 using Xunit;
 
