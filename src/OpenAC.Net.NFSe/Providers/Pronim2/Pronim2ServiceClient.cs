@@ -153,7 +153,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            return Execute(soapAction, message, "", responseTag, "xmlns:tem\"http://tempuri.org/\"");
+            return Execute(soapAction, message, "", responseTag, "xmlns:tem=\"http://tempuri.org/\"");
         }
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
