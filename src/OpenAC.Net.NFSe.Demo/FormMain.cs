@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -506,7 +506,7 @@ namespace OpenAC.Net.NFSe.Demo
             if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
             // Setar o cnae de acordo com o schema aceito pelo provedor.
-            var cnae = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.Sintese, NFSeProvider.ABase) ? "5211701" : "861010101";
+            var cnae = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.Sintese, NFSeProvider.ABase, NFSeProvider.Pronim2) ? "5211701" : "861010101";
             if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
             nfSe.Servico.CodigoCnae = cnae;
 
@@ -901,5 +901,10 @@ namespace OpenAC.Net.NFSe.Demo
         }
 
         #endregion Methods
+
+        private void btnGerarEnviarRps_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
