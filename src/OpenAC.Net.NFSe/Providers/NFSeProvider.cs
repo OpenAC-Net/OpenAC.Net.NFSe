@@ -92,6 +92,9 @@ namespace OpenAC.Net.NFSe.Providers
         [Description("Pronim v2")]
         Pronim2 = 17,
 
+        [Description("Pronim v2.03")]
+        Pronim203 = 43,
+
         [Description("São Paulo")]
         SaoPaulo = 9,
 
@@ -101,6 +104,8 @@ namespace OpenAC.Net.NFSe.Providers
         SIAPNet = 35,
 
         Sigiss = 20,
+
+        Sigiss2 = 44,
 
         SimplISS = 24,
 
