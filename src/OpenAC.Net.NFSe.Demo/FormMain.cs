@@ -361,6 +361,7 @@ namespace OpenAC.Net.NFSe.Demo
 
             txtCodCidade.Text = municipio.Codigo.ToString();
             txtCodSiafi.Text = municipio.CodigoSiafi.ToString();
+            txtProvedor.Text = municipio.Provedor.ToString();
 
             openNFSe.Configuracoes.WebServices.CodigoMunicipio = municipio.Codigo;
             openNFSe.Configuracoes.PrestadorPadrao.Endereco.Municipio = municipio.Nome;

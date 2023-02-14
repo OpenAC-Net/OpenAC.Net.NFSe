@@ -97,6 +97,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.txtIM = new System.Windows.Forms.TextBox();
             this.txtCPFCNPJ = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label21 = new System.Windows.Forms.Label();
             this.btnGetCertificate = new System.Windows.Forms.Button();
             this.txtNumeroSerie = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -148,7 +149,8 @@ namespace OpenAC.Net.NFSe.Demo
             this.cmhProvedor = new System.Windows.Forms.ColumnHeader();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtProvedor = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -328,7 +330,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPage15.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage15.Name = "tabPage15";
             this.tabPage15.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage15.Size = new System.Drawing.Size(653, 161);
+            this.tabPage15.Size = new System.Drawing.Size(651, 161);
             this.tabPage15.TabIndex = 1;
             this.tabPage15.Text = "Consultas";
             this.tabPage15.UseVisualStyleBackColor = true;
@@ -384,7 +386,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPage16.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage16.Name = "tabPage16";
             this.tabPage16.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage16.Size = new System.Drawing.Size(653, 161);
+            this.tabPage16.Size = new System.Drawing.Size(651, 161);
             this.tabPage16.TabIndex = 2;
             this.tabPage16.Text = "Cancelamento";
             this.tabPage16.UseVisualStyleBackColor = true;
@@ -408,7 +410,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPage17.Location = new System.Drawing.Point(4, 24);
             this.tabPage17.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage17.Name = "tabPage17";
-            this.tabPage17.Size = new System.Drawing.Size(653, 161);
+            this.tabPage17.Size = new System.Drawing.Size(651, 161);
             this.tabPage17.TabIndex = 3;
             this.tabPage17.Text = "Impressão";
             this.tabPage17.UseVisualStyleBackColor = true;
@@ -494,7 +496,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPageNFSe.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageNFSe.Name = "tabPageNFSe";
             this.tabPageNFSe.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPageNFSe.Size = new System.Drawing.Size(653, 304);
+            this.tabPageNFSe.Size = new System.Drawing.Size(651, 304);
             this.tabPageNFSe.TabIndex = 3;
             this.tabPageNFSe.Text = "NFSe";
             this.tabPageNFSe.UseVisualStyleBackColor = true;
@@ -506,7 +508,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.wbbNFSe.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.wbbNFSe.MinimumSize = new System.Drawing.Size(23, 23);
             this.wbbNFSe.Name = "wbbNFSe";
-            this.wbbNFSe.Size = new System.Drawing.Size(647, 296);
+            this.wbbNFSe.Size = new System.Drawing.Size(645, 296);
             this.wbbNFSe.TabIndex = 2;
             // 
             // tabPageXmlEnvio
@@ -516,7 +518,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPageXmlEnvio.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageXmlEnvio.Name = "tabPageXmlEnvio";
             this.tabPageXmlEnvio.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPageXmlEnvio.Size = new System.Drawing.Size(653, 304);
+            this.tabPageXmlEnvio.Size = new System.Drawing.Size(651, 304);
             this.tabPageXmlEnvio.TabIndex = 5;
             this.tabPageXmlEnvio.Text = "Xml Envio";
             this.tabPageXmlEnvio.UseVisualStyleBackColor = true;
@@ -528,7 +530,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.wbbDados.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.wbbDados.MinimumSize = new System.Drawing.Size(23, 23);
             this.wbbDados.Name = "wbbDados";
-            this.wbbDados.Size = new System.Drawing.Size(647, 296);
+            this.wbbDados.Size = new System.Drawing.Size(645, 296);
             this.wbbDados.TabIndex = 2;
             // 
             // tabPageXmlResposta
@@ -538,7 +540,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPageXmlResposta.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageXmlResposta.Name = "tabPageXmlResposta";
             this.tabPageXmlResposta.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPageXmlResposta.Size = new System.Drawing.Size(653, 304);
+            this.tabPageXmlResposta.Size = new System.Drawing.Size(651, 304);
             this.tabPageXmlResposta.TabIndex = 1;
             this.tabPageXmlResposta.Text = "Xml Resposta";
             this.tabPageXmlResposta.UseVisualStyleBackColor = true;
@@ -550,7 +552,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.wbbResposta.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.wbbResposta.MinimumSize = new System.Drawing.Size(23, 23);
             this.wbbResposta.Name = "wbbResposta";
-            this.wbbResposta.Size = new System.Drawing.Size(647, 296);
+            this.wbbResposta.Size = new System.Drawing.Size(645, 296);
             this.wbbResposta.TabIndex = 1;
             // 
             // tabPageEnvelopeEnvio
@@ -559,7 +561,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPageEnvelopeEnvio.Location = new System.Drawing.Point(4, 24);
             this.tabPageEnvelopeEnvio.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageEnvelopeEnvio.Name = "tabPageEnvelopeEnvio";
-            this.tabPageEnvelopeEnvio.Size = new System.Drawing.Size(653, 304);
+            this.tabPageEnvelopeEnvio.Size = new System.Drawing.Size(651, 304);
             this.tabPageEnvelopeEnvio.TabIndex = 6;
             this.tabPageEnvelopeEnvio.Text = "Envelope Envio";
             this.tabPageEnvelopeEnvio.UseVisualStyleBackColor = true;
@@ -571,7 +573,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.wbbEnvelopeEnvio.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.wbbEnvelopeEnvio.MinimumSize = new System.Drawing.Size(23, 23);
             this.wbbEnvelopeEnvio.Name = "wbbEnvelopeEnvio";
-            this.wbbEnvelopeEnvio.Size = new System.Drawing.Size(653, 304);
+            this.wbbEnvelopeEnvio.Size = new System.Drawing.Size(651, 304);
             this.wbbEnvelopeEnvio.TabIndex = 3;
             // 
             // tabPageEnvelopeRetorno
@@ -581,7 +583,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPageEnvelopeRetorno.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageEnvelopeRetorno.Name = "tabPageEnvelopeRetorno";
             this.tabPageEnvelopeRetorno.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPageEnvelopeRetorno.Size = new System.Drawing.Size(653, 304);
+            this.tabPageEnvelopeRetorno.Size = new System.Drawing.Size(651, 304);
             this.tabPageEnvelopeRetorno.TabIndex = 4;
             this.tabPageEnvelopeRetorno.Text = "Envelope Retorno";
             this.tabPageEnvelopeRetorno.UseVisualStyleBackColor = true;
@@ -593,7 +595,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.wbbRetorno.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.wbbRetorno.MinimumSize = new System.Drawing.Size(23, 23);
             this.wbbRetorno.Name = "wbbRetorno";
-            this.wbbRetorno.Size = new System.Drawing.Size(647, 296);
+            this.wbbRetorno.Size = new System.Drawing.Size(645, 296);
             this.wbbRetorno.TabIndex = 2;
             // 
             // tabPageLog
@@ -603,7 +605,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPageLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageLog.Name = "tabPageLog";
             this.tabPageLog.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPageLog.Size = new System.Drawing.Size(653, 304);
+            this.tabPageLog.Size = new System.Drawing.Size(651, 304);
             this.tabPageLog.TabIndex = 2;
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
@@ -618,7 +620,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.rtbLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(647, 296);
+            this.rtbLog.Size = new System.Drawing.Size(645, 296);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             // 
@@ -638,7 +640,7 @@ namespace OpenAC.Net.NFSe.Demo
             // 
             // btnSalvarConfig
             // 
-            this.btnSalvarConfig.Location = new System.Drawing.Point(82, 441);
+            this.btnSalvarConfig.Location = new System.Drawing.Point(82, 482);
             this.btnSalvarConfig.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSalvarConfig.Name = "btnSalvarConfig";
             this.btnSalvarConfig.Size = new System.Drawing.Size(163, 26);
@@ -659,11 +661,13 @@ namespace OpenAC.Net.NFSe.Demo
             this.tbcConfiguracoes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tbcConfiguracoes.Name = "tbcConfiguracoes";
             this.tbcConfiguracoes.SelectedIndex = 0;
-            this.tbcConfiguracoes.Size = new System.Drawing.Size(324, 416);
+            this.tbcConfiguracoes.Size = new System.Drawing.Size(324, 456);
             this.tbcConfiguracoes.TabIndex = 0;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label22);
+            this.tabPage2.Controls.Add(this.txtProvedor);
             this.tabPage2.Controls.Add(this.label7);
             this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.txtCodSiafi);
@@ -694,7 +698,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage2.Size = new System.Drawing.Size(316, 388);
+            this.tabPage2.Size = new System.Drawing.Size(316, 428);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Emitente";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -957,6 +961,15 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Certificado";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(7, 14);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(219, 15);
+            this.label21.TabIndex = 15;
+            this.label21.Text = "Selecion o caminho ou Número de Série";
             // 
             // btnGetCertificate
             // 
@@ -1354,7 +1367,7 @@ namespace OpenAC.Net.NFSe.Demo
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage3.Size = new System.Drawing.Size(995, 545);
+            this.tabPage3.Size = new System.Drawing.Size(995, 540);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Gerenciador de Cidades";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1488,14 +1501,24 @@ namespace OpenAC.Net.NFSe.Demo
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // label21
+            // label22
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(7, 14);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(219, 15);
-            this.label21.TabIndex = 15;
-            this.label21.Text = "Selecion o caminho ou Número de Série";
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(6, 376);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(55, 15);
+            this.label22.TabIndex = 47;
+            this.label22.Text = "Provedor";
+            // 
+            // txtProvedor
+            // 
+            this.txtProvedor.BackColor = System.Drawing.SystemColors.Control;
+            this.txtProvedor.Location = new System.Drawing.Point(7, 395);
+            this.txtProvedor.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtProvedor.Name = "txtProvedor";
+            this.txtProvedor.ReadOnly = true;
+            this.txtProvedor.Size = new System.Drawing.Size(146, 23);
+            this.txtProvedor.TabIndex = 48;
             // 
             // FormMain
             // 
@@ -1671,6 +1694,8 @@ namespace OpenAC.Net.NFSe.Demo
         private System.Windows.Forms.TextBox txtWebserviceUsuario;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox txtProvedor;
     }
 }
 
