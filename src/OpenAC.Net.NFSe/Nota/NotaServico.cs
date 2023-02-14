@@ -133,6 +133,7 @@ namespace OpenAC.Net.NFSe.Nota
         public RegimeEspecialTributacao RegimeEspecialTributacao { get; set; }
 
         public DateTime DataOptanteSimplesNacional { get; set; }
+        public bool? OptanteSimplesNacional { get; set; }
 
         public NFSeSimNao IncentivadorCultural { get; set; }
 

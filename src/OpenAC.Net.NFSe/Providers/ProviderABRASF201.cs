@@ -81,6 +81,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             string regimeEspecialTributacao;
             string optanteSimplesNacional;
+
             if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
             {
                 regimeEspecialTributacao = "6";
@@ -89,8 +90,11 @@ namespace OpenAC.Net.NFSe.Providers
             else
             {
                 regimeEspecialTributacao = ((int)nota.RegimeEspecialTributacao).ToString();
-                optanteSimplesNacional = "2";
+                optanteSimplesNacional =  "2";
             }
+
+            if (nota.OptanteSimplesNacional.HasValue)
+                optanteSimplesNacional = nota.OptanteSimplesNacional == true ? "1" : "2";
 
             if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
                 infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
