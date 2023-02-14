@@ -1,12 +1,12 @@
-﻿// ***********************************************************************
-// Assembly         : OpenAC.Net.NFSe.DANFSe.FastReport
-// Author           : Rafael Dias
-// Created          : 01-31-2016
-//
-// Last Modified By : Rafael Dias
-// Last Modified On : 07-05-2018
 // ***********************************************************************
-// <copyright file="DANFSeExportEventArgs.cs" company="OpenAC.Net">
+// Assembly         : OpenAC.Net.NFSe
+// Author           : Felipe Silveira/Transis
+// Created          : 02-14-2020
+//
+// Last Modified By : Felipe Silveira/Transis
+// Last Modified On : 02-17-2020
+// ***********************************************************************
+// <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
 //
@@ -29,27 +29,32 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using FastReport.Export;
+using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.DANFSe.FastReport
+namespace OpenAC.Net.NFSe.Providers
 {
-    public sealed class DANFSeExportEventArgs : EventArgs
+    internal sealed class ProviderPronim203 : ProviderABRASF203
     {
         #region Constructors
 
-        internal DANFSeExportEventArgs()
+        public ProviderPronim203(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
         {
+            Name = "Pronim203";
         }
 
         #endregion Constructors
 
-        #region Properties
+        #region Methods
 
-        public FiltroDANFSe Filtro { get; internal set; }
+        protected override IServiceClient GetClient(TipoUrl tipo)
+        {
+            return new Pronim203ServiceClient(this, tipo, null);
+        }
 
-        public ExportBase Export { get; internal set; }
-
-        #endregion Properties
+        protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
+        {
+            //NAO PRECISA ASSINAR
+        }
+        #endregion Methods
     }
 }

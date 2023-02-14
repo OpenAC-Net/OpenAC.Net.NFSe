@@ -1,14 +1,14 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : danilobreda
-// Created          : 07-10-2020
+// Author           : Felipe Silveira/Transis
+// Created          : 02-13-2023
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 10-10-2020
+// Last Modified By : Felipe Silveira/Transis
+// Last Modified On : 02-13-2023
 // ***********************************************************************
 // <copyright file="ProviderSigiss.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -37,11 +37,11 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class SigissServiceClient : NFSeSoapServiceClient, IServiceClient
+    internal sealed class Sigiss2ServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public SigissServiceClient(ProviderSigiss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
+        public Sigiss2ServiceClient(ProviderSigiss2 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
         {
             CharSet = "iso-8859-1";
         }
@@ -53,13 +53,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string Enviar(string cabec, string msg)
         {
             var request = new StringBuilder();
-            request.Append("<urn:GerarNota soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            request.Append(msg);
-            request.Append("</urn:GerarNota>");
+            request.Append("<ws:GerarNfse>");
+            request.Append("<xml>");
+            request.AppendCData(msg);
+            request.Append("</xml>");
+            request.Append("</ws:GerarNfse>");
 
-            return Execute("urn:sigiss_ws#GerarNota", request.ToString(), new string[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+            return Execute(GetUrlWsProvedor + "#GerarNfse", request.ToString(), new string[] { "GerarNfseResponse", "RetornoNfse" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
         }
-
         public string ConsultarSituacao(string cabec, string msg)
         {
             var request = new StringBuilder();
@@ -86,22 +87,36 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
-            string Url = Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
-            string Namespace = "xmlns:ws=\"" + Url + "\"";
-            //string Namespace1 = "xmlns:ws=\"https://abrasfchapeco.meumunicipio.online/ws\"";
-
             var message = new StringBuilder();
             message.Append("<ws:ConsultarLoteRps>");
             message.Append("<xml>");
             message.AppendCData(msg);
             message.Append("</xml>");
             message.Append("</ws:ConsultarLoteRps>");
-            return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", new[] { "ConsultarLoteRpsResponse", "ConsultarLoteRpsResult" }, Namespace);
+            return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", new[] { "ConsultarLoteRpsResponse", "ConsultarLoteRpsResult" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
+        }
+
+        private string GetUrlWsProvedor
+        {
+            get
+            {
+                return Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
+            }
         }
 
         public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
+        public string ConsultarNFSeRps(string cabec, string msg)
+        {
+            var message = new StringBuilder();
+            message.Append("<ws:ConsultarNfsePorRps>");
+            message.Append("<xml>");
+            message.AppendCData(msg);
+            message.Append("</xml>");
+            message.Append("</ws:ConsultarNfsePorRps>");
+            //return Execute(GetUrlWsProvedor + "#ConsultarNfsePorRps", message.ToString(), "", new[] { "ConsultarNfsePorRpsResponse", "ConsultarNfsePorRpsResult" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
+            return Execute("ConsultarNfsePorRps", message.ToString(), "", new[] { "ConsultarNfsePorRpsResponse", "ConsultarNfsePorRpsResult" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
+        }
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
@@ -114,7 +129,6 @@ namespace OpenAC.Net.NFSe.Providers
             //verifica se o retorno tem os elementos corretos senão da erro.
             var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
             _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
-            //_ = element.ElementAnyNs("DescricaoErros") ?? throw new OpenDFeCommunicationException($"Erro ({responseTag[1]}) do xml não encontrado"); -> removido em concordancia com o Rafael pois o provedor nao mandava essa tag em alguns casos
 
             return element.ToString();
         }

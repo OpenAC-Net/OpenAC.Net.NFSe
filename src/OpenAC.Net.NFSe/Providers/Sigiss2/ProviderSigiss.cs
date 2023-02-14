@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : danilobreda
-// Created          : 07-10-2020
+// Author           : Felipe Silveira/Transis
+// Created          : 02-13-2023
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 10-10-2020
+// Last Modified By : Felipe Silveira/Transis
+// Last Modified On : 02-13-2023
 // ***********************************************************************
 // <copyright file="ProviderSigiss.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -41,11 +41,11 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class ProviderSigiss : ProviderBase
+    internal sealed class ProviderSigiss2 : ProviderBase
     {
         #region Constructors
 
-        public ProviderSigiss(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+        public ProviderSigiss2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
         {
         }
 
@@ -480,7 +480,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
-            return new SigissServiceClient(this, tipo);
+            return new Sigiss2ServiceClient(this, tipo);
         }
 
         protected override string GerarCabecalho()

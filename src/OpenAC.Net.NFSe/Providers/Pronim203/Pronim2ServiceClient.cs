@@ -1,7 +1,7 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira/Transis
-// Created          : 14-02-2020
+// Created          : 02-13-2023
 //
 // ***********************************************************************
 // <copyright file="Pronim2ServiceClient.cs" company="OpenAC .Net">
@@ -36,15 +36,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers
 {
-    internal sealed class Pronim2ServiceClient : NFSeSoapServiceClient, IServiceClient
+    internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         #region Constructors
 
-        public Pronim2ServiceClient(ProviderPronim2 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+        public Pronim203ServiceClient(ProviderPronim203 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
         {
         }
 
-        public Pronim2ServiceClient(ProviderPronim2 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+        public Pronim203ServiceClient(ProviderPronim203 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
         {
         }
 

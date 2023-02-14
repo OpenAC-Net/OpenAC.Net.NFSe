@@ -52,13 +52,16 @@ Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrôn
 - Curitiba
 - DBSeller
 - DSFSJC
+- Fisco
 - FissLex
 - ISSNet
 - Sigiss
+- Sigiss v2
 - Pvh
 - Mitra
 - Porto Alegre
 - Pronim v2
+- Pronim v203
 - Sintese
 - SpeedGov
 - Vitoria
