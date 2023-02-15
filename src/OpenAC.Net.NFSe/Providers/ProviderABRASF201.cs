@@ -93,9 +93,6 @@ namespace OpenAC.Net.NFSe.Providers
                 optanteSimplesNacional =  "2";
             }
 
-            if (nota.OptanteSimplesNacional.HasValue)
-                optanteSimplesNacional = nota.OptanteSimplesNacional == true ? "1" : "2";
-
             if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
                 infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
 
