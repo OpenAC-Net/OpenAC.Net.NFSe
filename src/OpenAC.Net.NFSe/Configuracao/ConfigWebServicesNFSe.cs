@@ -58,13 +58,14 @@ namespace OpenAC.Net.NFSe.Configuracao
             FraseSecreta = string.Empty;
             ChaveAcesso = string.Empty;
 
-#if NETCORE
+            //#if NETCORE
             Protocolos = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-#else
-            Protocolos = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls |
-                         SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //#else
+            //            Protocolos = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls |
+            //                         SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-#endif
+            //#endif
+
         }
 
         #endregion Constructor
@@ -99,7 +100,7 @@ namespace OpenAC.Net.NFSe.Configuracao
                 if (codigoMunicipio == value) return;
 
                 var municipio = ProviderManager.Municipios.SingleOrDefault(x => x.Codigo == value);
-                Guard.Against<ArgumentException>(municipio == null, "MunicÌpio n„o cadastrado.");
+                Guard.Against<ArgumentException>(municipio == null, "Munic√≠pio n√£o cadastrado.");
 
                 codigoMunicipio = value;
                 Municipio = municipio.Nome;
