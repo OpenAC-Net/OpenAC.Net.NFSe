@@ -55,6 +55,19 @@ namespace OpenAC.Net.NFSe.Providers
         {
             //NAO PRECISA ASSINAR
         }
+        
+        protected override void ValidarSchema(RetornoWebservice retorno, string schema)
+        {
+            schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, "Pronim2", schema);
+            if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
+
+            foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
+                retorno.Erros.Add(erro);
+
+            foreach (var alerta in alertasSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
+                retorno.Alertas.Add(alerta);
+        }
+        
         #endregion Methods
     }
 }
