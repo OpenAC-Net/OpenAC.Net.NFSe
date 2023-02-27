@@ -1486,7 +1486,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="retorno"></param>
         /// <param name="schema">O schema que será usado na verificação.</param>
         /// <returns>Se estiver tudo OK retorna null, caso contrário as mensagens de alertas e erros.</returns>
-        protected void ValidarSchema(RetornoWebservice retorno, string schema)
+        protected virtual void ValidarSchema(RetornoWebservice retorno, string schema)
         {
             schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, Name, schema);
             if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
