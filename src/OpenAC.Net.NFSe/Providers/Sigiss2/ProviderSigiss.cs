@@ -4,11 +4,11 @@
 // Created          : 02-13-2023
 //
 // Last Modified By : Felipe Silveira/Transis
-// Last Modified On : 02-13-2023
+// Last Modified On : 02-27-2023
 // ***********************************************************************
 // <copyright file="ProviderSigiss.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -491,11 +491,6 @@ namespace OpenAC.Net.NFSe.Providers
         protected override string GetSchema(TipoUrl tipo)
         {
             return "";
-        }
-
-        protected override bool PrecisaValidarSchema(TipoUrl tipo)
-        {
-            return false;
         }
 
         private string FormataDecimalModeloSigiss(decimal valor)
