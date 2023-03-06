@@ -214,7 +214,7 @@ namespace OpenAC.Net.NFSe.Providers
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValTotTributos));
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
 
-            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
+            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional || nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
                 valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 5, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
 
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
