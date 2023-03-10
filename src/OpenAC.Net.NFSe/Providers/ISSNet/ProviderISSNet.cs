@@ -6,9 +6,9 @@
 // Last Modified By : Rafael Dias
 // Last Modified On : 05-22-2018
 // ***********************************************************************
-// <copyright file="ProviderBetha.cs" company="OpenAC .Net">
+// <copyright file="ProviderISSNet.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
