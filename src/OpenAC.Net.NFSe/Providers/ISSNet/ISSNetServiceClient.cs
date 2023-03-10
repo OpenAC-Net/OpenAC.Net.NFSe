@@ -1,14 +1,14 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 05-22-2018
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 05-22-2018
+// Last Modified By : Felipe Silveira (Transis Software)
+// Last Modified On : 03-08-2023
 // ***********************************************************************
-// <copyright file="BethaServiceClient.cs" company="OpenAC .Net">
+// <copyright file="ISSNetServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,6 +31,7 @@
 
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Permissions;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -54,16 +55,17 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
+        private const string SoapNamespace = "xmlns:nfd=\"http://www.issnetonline.com.br/webservice/nfd\"";
         public string Enviar(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<RecepcionarLoteRps xmlns=\"http://www.issnetonline.com.br/webservice/nfd\">");
-            message.Append("<xml>");
+            message.Append($"<nfd:RecepcionarLoteRps {SoapNamespace}>");
+            message.Append("<nfd:xml>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            message.Append("</xml>");
-            message.Append("</RecepcionarLoteRps>");
+            message.Append("</nfd:xml>");
+            message.Append("</nfd:RecepcionarLoteRps>");
 
-            return Execute("http://www.issnetonline.com.br/webservice/nfd/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRps");
+            return Execute($"{SoapNamespace}/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRps");
         }
 
         public string EnviarSincrono(string cabec, string msg)
@@ -74,25 +76,25 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarSituacao(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ConsultaSituacaoLoteRPS xmlns=\"http://www.issnetonline.com.br/webservice/nfd\">");
-            message.Append("<xml>");
+            message.Append($"<nfd:ConsultaSituacaoLoteRPS {SoapNamespace}>");
+            message.Append("<nfd:xml>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            message.Append("</xml>");
-            message.Append("</ConsultaSituacaoLoteRPS>");
+            message.Append("</nfd:xml>");
+            message.Append("</nfd:ConsultaSituacaoLoteRPS>");
 
-            return Execute("http://www.issnetonline.com.br/webservice/nfd/ConsultaSituacaoLoteRPS", message.ToString(), "ConsultaSituacaoLoteRPS");
+            return Execute($"{SoapNamespace}/ConsultaSituacaoLoteRPS", message.ToString(), "ConsultaSituacaoLoteRPS");
         }
 
         public string ConsultarLoteRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ConsultarLoteRps xmlns=\"http://www.issnetonline.com.br/webservice/nfd\">");
-            message.Append("<xml>");
+            message.Append($"<nfd:ConsultarLoteRps {SoapNamespace}>");
+            message.Append("<nfd:xml>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            message.Append("</xml>");
-            message.Append("</ConsultarLoteRps>");
+            message.Append("</nfd:xml>");
+            message.Append("</nfd:ConsultarLoteRps>");
 
-            return Execute("http://www.issnetonline.com.br/webservice/nfd/ConsultarLoteRps", message.ToString(), "ConsultarLoteRps");
+            return Execute($"{SoapNamespace}/ConsultarLoteRps", message.ToString(), "ConsultarLoteRps");
         }
 
         public string ConsultarSequencialRps(string cabec, string msg)
@@ -103,37 +105,37 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSeRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ConsultarNFSePorRPS xmlns=\"http://www.issnetonline.com.br/webservice/nfd\">");
-            message.Append("<xml>");
+            message.Append($"<nfd:ConsultarNFSePorRPS {SoapNamespace}>");
+            message.Append("<nfd:xml>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            message.Append("</xml>");
-            message.Append("</ConsultarNFSePorRPS>");
+            message.Append("</nfd:xml>");
+            message.Append("</nfd:ConsultarNFSePorRPS>");
 
-            return Execute("http://www.issnetonline.com.br/webservice/nfd/ConsultarNFSePorRPS", message.ToString(), "ConsultarNFSePorRPS");
+            return Execute($"{SoapNamespace}/ConsultarNFSePorRPS", message.ToString(), "ConsultarNFSePorRPS");
         }
 
         public string ConsultarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<ConsultarNfse xmlns=\"http://www.issnetonline.com.br/webservice/nfd\">");
-            message.Append("<xml>");
+            message.Append($"<nfd:ConsultarNfse {SoapNamespace}>");
+            message.Append("<nfd:xml>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            message.Append("</xml>");
-            message.Append("</ConsultarNfse>");
+            message.Append("</nfd:xml>");
+            message.Append("</nfd:ConsultarNfse>");
 
-            return Execute("http://www.issnetonline.com.br/webservice/nfd/ConsultarNfse", message.ToString(), "ConsultarNfse");
+            return Execute($"{SoapNamespace}/ConsultarNfse", message.ToString(), "ConsultarNfse");
         }
 
         public string CancelarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<CancelarNfse xmlns=\"http://www.issnetonline.com.br/webservice/nfd\">");
-            message.Append("<xml>");
+            message.Append($"<nfd:CancelarNfse {SoapNamespace}>");
+            message.Append("<nfd:xml>");
             message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
-            message.Append("</xml>");
-            message.Append("</CancelarNfse>");
+            message.Append("</nfd:xml>");
+            message.Append("</nfd:CancelarNfse>");
 
-            return Execute("http://www.issnetonline.com.br/webservice/nfd/CancelarNfse", message.ToString(), "CancelarNfse");
+            return Execute($"{SoapNamespace}/CancelarNfse", message.ToString(), "CancelarNfse");
         }
 
         public string CancelarNFSeLote(string cabec, string msg)
@@ -148,7 +150,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string action, string message, string responseTag)
         {
-            return Execute(action, message, responseTag, new string[0]);
+            return Execute(action, message, responseTag, "", SoapNamespace);
         }
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
