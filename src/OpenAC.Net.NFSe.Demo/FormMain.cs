@@ -902,5 +902,18 @@ namespace OpenAC.Net.NFSe.Demo
         }
 
         #endregion Methods
+
+        private void btnEditCidade_Click(object sender, EventArgs e)
+        {
+            ExecuteSafe(() =>
+            {
+                var municipio = cmbCidades.GetSelectedValue<OpenMunicipioNFSe>();
+                if (municipio == null) return;
+
+                if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
+
+                LoadData();
+            });
+        }
     }
 }
