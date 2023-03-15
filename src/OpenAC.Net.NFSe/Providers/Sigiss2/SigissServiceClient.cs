@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -126,13 +127,19 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
         {
-            //verifica se o retorno tem os elementos corretos senão da erro.
-            var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
-            _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
+            var element = xmlDocument.ElementAnyNs("Fault");
+            if (element == null)
+            {
+                element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
+                if (element == null)
+                    return xmlDocument.ToString();
 
-            return element.ToString();
+                return element.ToString();
+            }
+
+            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            throw new OpenDFeCommunicationException(exMessage);
         }
-
         protected override bool ValidarCertificadoServidor() => false;
 
         #endregion Methods
