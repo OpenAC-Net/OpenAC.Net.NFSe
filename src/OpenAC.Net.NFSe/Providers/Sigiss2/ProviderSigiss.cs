@@ -4,11 +4,11 @@
 // Created          : 02-13-2023
 //
 // Last Modified By : Felipe Silveira/Transis
-// Last Modified On : 02-13-2023
+// Last Modified On : 03-15-2023
 // ***********************************************************************
 // <copyright file="ProviderSigiss.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -302,6 +302,7 @@ namespace OpenAC.Net.NFSe.Providers
                 ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
                 : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
             loteBuilder.Append("</CpfCnpj>");
+            loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
             loteBuilder.Append("</Prestador>");
             loteBuilder.Append($"<Protocolo>{retornoWebservice.Protocolo}</Protocolo>");
             loteBuilder.Append("</ConsultarLoteRpsEnvio>");
