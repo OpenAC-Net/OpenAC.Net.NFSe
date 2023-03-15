@@ -4,7 +4,7 @@
 // Created          : 01-11-2023
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 02-27-2023
+// Last Modified On : 03-15-2023
 // ***********************************************************************
 // <copyright file="ProviderFisco.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -38,6 +38,7 @@ using System.Xml;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -124,11 +125,16 @@ namespace OpenAC.Net.NFSe.Providers
             }
             
             var xmlLote = new StringBuilder();
-            xmlLote.Append("<recepcionarLoteRpsSincrono xmlns=\"https://www.fisco.net.br/wsnfseabrasf/ServicosNFSEAbrasf.asmx\">");
-            xmlLote.Append("<xml>");
+            xmlLote.Append("<GerarNfseEnvio>");
             xmlLote.Append(xmlLoteRps);
-            xmlLote.Append("</xml>");
-            xmlLote.Append("</recepcionarLoteRpsSincrono>");
+            xmlLote.Append("</GerarNfseEnvio>");
+
+            //var xmlLote = new StringBuilder();
+            //xmlLote.Append("<recepcionarLoteRpsSincrono xmlns=\"https://www.fisco.net.br/wsnfseabrasf/ServicosNFSEAbrasf.asmx\">");
+            //xmlLote.Append("<xml>");
+            //xmlLote.Append(xmlLoteRps);
+            //xmlLote.Append("</xml>");
+            //xmlLote.Append("</recepcionarLoteRpsSincrono>");
             retornoWebservice.XmlEnvio = xmlLote.ToString();
         }
 
@@ -140,7 +146,72 @@ namespace OpenAC.Net.NFSe.Providers
             retornoWebservice.Lote = xmlRet?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
             retornoWebservice.Situacao = xmlRet?.ElementAnyNs("Situacao")?.GetValue<string>() ?? "0";
             retornoWebservice.Sucesso = !retornoWebservice.Erros.Any();
-        } 
+        }
+
+        protected override XElement WriteInfoRPS(NotaServico nota)
+        {
+            //var incentivadorCultural = nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2;
+
+            //string regimeEspecialTributacao;
+            //string optanteSimplesNacional;
+            //if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
+            //{
+            //    regimeEspecialTributacao = "6";
+            //    optanteSimplesNacional = "1";
+            //}
+            //else
+            //{
+            //    var regime = (int)nota.RegimeEspecialTributacao;
+            //    regimeEspecialTributacao = regime == 0 ? string.Empty : regime.ToString();
+            //    optanteSimplesNacional = "2";
+            //}
+
+            var situacao = nota.Situacao == SituacaoNFSeRps.Normal ? "1" : "2";
+
+            var infoRps = new XElement("InfDeclaracaoPrestacaoServico");
+
+            var Rps = new XElement("Rps");
+            Rps.Add(WriteIdentificacao(nota));
+            Rps.AddChild(AdicionarTag(TipoCampo.Dat, "", "DataEmissao", 10, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+            //Rps.AddChild(AdicionarTag(TipoCampo.Int, "", "NaturezaOperacao", 1, 1, Ocorrencia.Obrigatoria, nota.NaturezaOperacao));
+            //Rps.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
+            //Rps.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
+            //Rps.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivadorCultural", 1, 1, Ocorrencia.Obrigatoria, incentivadorCultural));
+            Rps.AddChild(AdicionarTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, situacao));
+
+            infoRps.Add(Rps);
+            return infoRps;
+        }
+
+        protected override XElement WriteRps(NotaServico nota)
+        {
+            var rps = new XElement("Rps");
+            var infoRps = WriteInfoRPS(nota);
+            rps.Add(infoRps);
+
+            infoRps.AddChild(WriteRpsSubstituto(nota));
+            infoRps.AddChild(AdicionarTag(TipoCampo.Dat, "", "Competencia", 10, 10, Ocorrencia.Obrigatoria, nota.Competencia));
+            infoRps.AddChild(WriteServicosValoresRps(nota));
+            infoRps.AddChild(WritePrestadorRps(nota));
+            infoRps.AddChild(WriteTomadorRps(nota));
+            infoRps.AddChild(WriteIntermediarioRps(nota));
+            infoRps.AddChild(WriteConstrucaoCivilRps(nota));
+
+            return rps;
+        }
+
+        protected override XElement WritePrestadorRps(NotaServico nota)
+        {
+            var prestador = new XElement("Prestador");
+
+            var cpfCnpjPrestador = new XElement("CpfCnpj");
+
+            cpfCnpjPrestador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Prestador.CpfCnpj));
+            prestador.Add(cpfCnpjPrestador);
+            prestador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15, Ocorrencia.NaoObrigatoria, nota.Prestador.InscricaoMunicipal));
+
+            return prestador;
+        }
 
         protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
         {
@@ -155,7 +226,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
         {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Pedido", "InfPedidoCancelamento", Certificado);
+            //NAO PRECISA ASSINAR NO FISCO
+            //retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Pedido", "InfPedidoCancelamento", Certificado);
         }
 
         #endregion Services
