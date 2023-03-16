@@ -32,6 +32,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
@@ -43,7 +44,7 @@ namespace OpenAC.Net.NFSe.Providers
     {
         #region Fields
 
-        private XNamespace tc = "http://www.sistema.com.br/Nfse/arquivos/nfse_3.xsd";
+        private XNamespace tc = "http://www.abrasf.org.br/nfse.xsd";
 
         #endregion Fields
 
@@ -61,7 +62,7 @@ namespace OpenAC.Net.NFSe.Providers
         {
             var message = new StringBuilder();
             message.Append("<sis:RecepcionarLoteRps>");
-            message.Append(AjustarMensagem(msg, "LoteRps"));
+            message.Append(msg);
             message.Append("</sis:RecepcionarLoteRps>");
 
             return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResult");
@@ -133,7 +134,8 @@ namespace OpenAC.Net.NFSe.Providers
         private string Execute(string soapAction, string message, string responseTag)
         {
             return Execute(soapAction, message, "", responseTag, "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
-                                                                 "xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\"");
+                                                                 "xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\"",
+                                                                 "xmlns:xd=\"http://www.w3.org/2000/09/xmldsig#\"");
         }
 
         public string AjustarMensagem(string msg, params string[] tags)
