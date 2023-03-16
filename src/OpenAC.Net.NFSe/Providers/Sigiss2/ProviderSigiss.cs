@@ -35,6 +35,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -124,7 +125,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         private XElement WriteTomadorRps(NotaServico nota)
         {
-            var tomador = new XElement("Tomador");
+            var tomador = new XElement("TomadorServico");
 
             if (!nota.Tomador.CpfCnpj.IsEmpty())
             {
@@ -160,7 +161,7 @@ namespace OpenAC.Net.NFSe.Providers
                 endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
                 endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
                 endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
-                endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoPais));
+                //endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoPais));
                 endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
             }
 
@@ -325,7 +326,7 @@ namespace OpenAC.Net.NFSe.Providers
             var xmlLote = new StringBuilder();
             xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             xmlLote.Append($"<EnviarLoteRpsEnvio {GetNamespace()}>");
-            xmlLote.Append($"<LoteRps versao=\"2.04\">");
+            xmlLote.Append($"<LoteRps Id=\"L{retornoWebservice.Lote}\" versao=\"2.04\">");
             xmlLote.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
             xmlLote.Append("<Prestador>");
             xmlLote.Append("<CpfCnpj>");
@@ -346,7 +347,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
-            //não assina
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
         }
 
         //GerarNotaResponse
