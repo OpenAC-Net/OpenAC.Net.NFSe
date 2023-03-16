@@ -61,7 +61,7 @@ namespace OpenAC.Net.NFSe.Providers
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "nfse:LoteRps", Certificado);
         }
 
         protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
