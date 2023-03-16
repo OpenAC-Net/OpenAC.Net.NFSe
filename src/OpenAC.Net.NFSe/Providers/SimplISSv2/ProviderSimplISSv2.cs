@@ -57,13 +57,16 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "nfse:LoteRps", Certificado);
+            //retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
+            //retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "nfse:LoteRps", Certificado);
         }
-
+        //protected override bool PrecisaValidarSchema(TipoUrl tipo)
+        //{
+        //    return false;
+        //}
+        private XNamespace tc = "http://www.abrasf.org.br/nfse.xsd";
         protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
@@ -79,8 +82,15 @@ namespace OpenAC.Net.NFSe.Providers
                 GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
             }
 
+            //Add o prefixo nfse
+            var document = XDocument.Parse(xmlLoteRps.ToString());
+            document.ElementAnyNs("Rps").AddAttribute(new XAttribute(XNamespace.Xmlns + "nfse", tc));
+            NFSeUtil.ApplyNamespace(document.Root, tc);
+
+            string mensagemComPrefixo = document.AsString();
+
             var xmlLote = new StringBuilder();
-            xmlLote.Append($"<EnviarLoteRpsEnvio {GetNamespace()}>");
+            xmlLote.Append($"<sis:EnviarLoteRpsEnvio {GetNamespace()}>");
             xmlLote.Append($"<nfse:LoteRps Id=\"L{retornoWebservice.Lote}\">");
             xmlLote.Append($"<nfse:NumeroLote>{retornoWebservice.Lote}</nfse:NumeroLote>");
             xmlLote.Append("<nfse:CpfCnpj>");
@@ -91,10 +101,10 @@ namespace OpenAC.Net.NFSe.Providers
             xmlLote.Append($"<nfse:InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</nfse:InscricaoMunicipal>");
             xmlLote.Append($"<nfse:QuantidadeRps>{notas.Count}</nfse:QuantidadeRps>");
             xmlLote.Append("<nfse:ListaRps>");
-            xmlLote.Append(xmlLoteRps);
+            xmlLote.Append(mensagemComPrefixo);
             xmlLote.Append("</nfse:ListaRps>");
             xmlLote.Append("</nfse:LoteRps>");
-            xmlLote.Append("</EnviarLoteRpsEnvio>");
+            xmlLote.Append("</sis:EnviarLoteRpsEnvio>");
 
             retornoWebservice.XmlEnvio = xmlLote.ToString();
         }
@@ -144,7 +154,7 @@ namespace OpenAC.Net.NFSe.Providers
 
             var infoRps = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero}"));
 
-            var rps = new XElement("Rps");
+            var rps = new XElement("Rps", new XAttribute("Id", $"N{nota.IdentificacaoRps.Numero}"));
 
             rps.Add(WriteIdentificacao(nota));
             rps.AddChild(AdicionarTag(TipoCampo.DatHor, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
