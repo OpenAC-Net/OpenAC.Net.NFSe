@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <OpenNFSe xmlns="https://www.openac.net.br/">
   <Municipios>
     <Municipio>
@@ -1322,7 +1322,7 @@
       <IdEntidade>0</IdEntidade>
       <Nome>Blumenau</Nome>
       <UF>SC</UF>
-      <Provedor>SimplISS</Provedor>
+      <Provedor>SimplISSv2</Provedor>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>

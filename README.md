@@ -57,6 +57,7 @@ Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrôn
 - ISSNet
 - Sigiss
 - Sigiss v2
+- SimplISS v2
 - Pvh
 - Mitra
 - Porto Alegre
