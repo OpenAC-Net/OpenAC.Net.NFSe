@@ -38,7 +38,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers
@@ -134,8 +133,12 @@ namespace OpenAC.Net.NFSe.Providers
         {
             if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
             if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+            foreach (var nota in notas)
+            {
+                if (!nota.IdentificacaoRps.Serie.IsNumeric())
+                    retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "A serie da nota precisa ser numérica. Serie informada: " + nota.IdentificacaoRps.Serie });
+            }
             if (retornoWebservice.Erros.Count > 0) return;
-
             var xmlLoteRps = new StringBuilder();
 
             foreach (var nota in notas)
