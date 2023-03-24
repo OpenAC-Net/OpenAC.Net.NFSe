@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Felipe Silveira/Transis
 // Created          : 16-03-2023
@@ -31,6 +31,7 @@
 
 using System;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -44,7 +45,7 @@ namespace OpenAC.Net.NFSe.Providers
     {
         #region Fields
 
-        private XNamespace tc = "http://www.abrasf.org.br/nfse.xsd";
+        private XNamespace tc = "http://www.sistema.com.br/Nfse/arquivos/nfse_3.xsd";
 
         #endregion Fields
 
@@ -104,24 +105,15 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<sis:ConsultarNfse>");
-            message.Append(AjustarMensagem(msg));
-            message.Append("</sis:ConsultarNfse>");
+            message.Append("<sis:ConsultarNfseRps>");
+            message.Append(msg);
+            message.Append("</sis:ConsultarNfseRps>");
 
             return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarNfse",
                 message.ToString(), "ConsultarNfseResult");
         }
 
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<sis:CancelarNfse>");
-            message.Append(AjustarMensagem(msg));
-            message.Append("</sis:CancelarNfse>");
-
-            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/CancelarNfse",
-                message.ToString(), "CancelarNfseResult");
-        }
+        public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
         public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
@@ -134,8 +126,7 @@ namespace OpenAC.Net.NFSe.Providers
         private string Execute(string soapAction, string message, string responseTag)
         {
             return Execute(soapAction, message, "", responseTag, "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
-                                                                 "xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\"",
-                                                                 "xmlns:xd=\"http://www.w3.org/2000/09/xmldsig#\"");
+                                                                 "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\"");
         }
 
         public string AjustarMensagem(string msg, params string[] tags)
