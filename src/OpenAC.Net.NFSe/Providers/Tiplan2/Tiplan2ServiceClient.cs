@@ -32,6 +32,7 @@
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -61,14 +62,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string EnviarSincrono(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<nfse:RecepcionarLoteRpsSincronoRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(EmpacotaXml(cabec));
+            message.Append("<RecepcionarLoteRpsSincronoRequest xmlns=\"http://nfse.abrasf.org.br\">");
+            message.Append("<nfseCabecMsg xmlns=\"\">");
+            message.AppendCData(cabec);
             message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(EmpacotaXml(msg));
+            message.Append("<nfseDadosMsg xmlns=\"\">");
+            message.AppendCData(msg);
             message.Append("</nfseDadosMsg>");
-            message.Append("</nfse:RecepcionarLoteRpsSincronoRequest>");
+            message.Append("</RecepcionarLoteRpsSincronoRequest>");
 
             return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse ");
         }
@@ -82,14 +83,14 @@ namespace OpenAC.Net.NFSe.Providers
         public string ConsultarNFSeRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<nfse:ConsultarNfsePorRpsRequest>");
+            message.Append("<ConsultarNfsePorRpsRequest>");
             message.Append("<nfseCabecMsg>");
-            message.AppendCData(EmpacotaXml(cabec));
+            message.AppendCData(cabec);
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
-            message.AppendCData(EmpacotaXml(msg));
+            message.AppendCData(msg);
             message.Append("</nfseDadosMsg>");
-            message.Append("</nfse:ConsultarNfsePorRpsRequest>");
+            message.Append("</ConsultarNfsePorRpsRequest>");
 
             return Execute("consultarNfsePorRps", message.ToString(), "consultarNfsePorRpsResponse");
         }
@@ -104,7 +105,41 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string Execute(string soapAction, string message, string responseTag)
         {
-            return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
+            return Execute(soapAction, message, "", responseTag, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
+        }
+
+        protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
+        {
+            string contentType;
+            NameValueCollection headers;
+
+            contentType = $"text/xml; charset={CharSet}";
+            headers = new NameValueCollection { { "SOAPAction", soapAction } };
+
+            var envelope = new StringBuilder();
+            envelope.Append("<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"");
+
+            envelope.Append(soapNamespaces.Aggregate("", (atual, next) => atual + $" {next}", namespaces => namespaces + ">"));
+            envelope.Append("<soap:Body>");
+            envelope.Append(message);
+            envelope.Append("</soap:Body>");
+            envelope.Append("</soap:Envelope>");
+            EnvelopeEnvio = envelope.ToString();
+
+            Execute(contentType, "POST", headers);
+
+            if (!EnvelopeRetorno.IsValidXml())
+                throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
+
+            var xmlDocument = XDocument.Parse(EnvelopeRetorno);
+            var body = xmlDocument.ElementAnyNs("Envelope").ElementAnyNs("Body");
+            var retorno = TratarRetorno(body, responseTag);
+            if (retorno.IsValidXml()) return retorno;
+
+            if (retorno != null)
+                throw new OpenDFeCommunicationException(retorno);
+            else
+                throw new OpenDFeCommunicationException(EnvelopeRetorno);
         }
 
         protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

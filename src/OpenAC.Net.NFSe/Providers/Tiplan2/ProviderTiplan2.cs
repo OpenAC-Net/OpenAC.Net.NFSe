@@ -52,128 +52,16 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
+        protected override string GerarCabecalho() => $"<cabecalho {GetVersao()} {GetNamespace()} xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><versaoDados>{Versao}</versaoDados></cabecalho>";
+
         protected override IServiceClient GetClient(TipoUrl tipo) => new Tiplan2ServiceClient(this, tipo, Certificado);
 
-        //protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
-        //{
-        //    retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado, true, false, true, SignDigest.SHA1);
-        //    retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado, true, false, true, SignDigest.SHA1);
-        //}
+        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+        {
+            //NAO PRECISA ASSINAR
+        }
 
         #endregion Methods
-
-        //#region RPS
-
-        //protected override XElement WriteRps(NotaServico nota)
-        //{
-        //    var rootRps = new XElement("Rps");
-
-        //    var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
-        //    rootRps.Add(infServico);
-
-        //    infServico.Add(WriteRpsRps(nota));
-
-        //    infServico.AddChild(AdicionarTag(TipoCampo.Dat, "", "Competencia", 10, 10, Ocorrencia.Obrigatoria, nota.Competencia));
-
-        //    infServico.AddChild(WriteServicosRps(nota));
-        //    infServico.AddChild(WritePrestadorRps(nota));
-        //    infServico.AddChild(WriteTomadorRps(nota));
-        //    infServico.AddChild(WriteIntermediarioRps(nota));
-        //    infServico.AddChild(WriteConstrucaoCivilRps(nota));
-
-        //    string regimeEspecialTributacao;
-        //    string optanteSimplesNacional;
-        //    if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
-        //    {
-        //        regimeEspecialTributacao = "6";
-        //        optanteSimplesNacional = "1";
-        //    }
-        //    else
-        //    {
-        //        regimeEspecialTributacao = ((int)nota.RegimeEspecialTributacao).ToString();
-        //        optanteSimplesNacional = "2";
-        //    }
-
-        //    //if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
-        //    //    infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
-
-        //    infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
-        //    infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
-
-        //    return rootRps;
-        //}
-
-        //protected override XElement WriteRpsRps(NotaServico nota)
-        //{
-        //    var rps = new XElement("Rps");
-
-        //    rps.Add(WriteIdentificacaoRps(nota));
-
-        //    rps.AddChild(AdicionarTag(TipoCampo.Dat, "", "DataEmissao", 10, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
-        //    rps.AddChild(AdicionarTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, (int)nota.Situacao + 1));
-
-        //    rps.AddChild(WriteSubstituidoRps(nota));
-
-        //    return rps;
-        //}
-
-        //protected override XElement WriteTomadorRps(NotaServico nota)
-        //{
-        //    var tomador = new XElement("Tomador");
-
-        //    if (!nota.Tomador.CpfCnpj.IsEmpty())
-        //    {
-        //        var ideTomador = new XElement("IdentificacaoTomador");
-        //        tomador.Add(ideTomador);
-
-        //        var cpfCnpjTomador = new XElement("CpfCnpj");
-        //        ideTomador.Add(cpfCnpjTomador);
-
-        //        cpfCnpjTomador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Tomador.CpfCnpj));
-
-        //        ideTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15,
-        //            Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
-        //    }
-
-        //    tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
-
-        //    if (!nota.Tomador.Endereco.Logradouro.IsEmpty() ||
-        //        !nota.Tomador.Endereco.Numero.IsEmpty() ||
-        //        !nota.Tomador.Endereco.Complemento.IsEmpty() ||
-        //        !nota.Tomador.Endereco.Bairro.IsEmpty() ||
-        //        nota.Tomador.Endereco.CodigoMunicipio > 0 ||
-        //        !nota.Tomador.Endereco.Uf.IsEmpty() ||
-        //        nota.Tomador.Endereco.CodigoPais > 0 ||
-        //        !nota.Tomador.Endereco.Cep.IsEmpty())
-        //    {
-        //        var endereco = new XElement("Endereco");
-        //        tomador.Add(endereco);
-
-        //        endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Endereco", 1, 125, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Logradouro));
-        //        endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Numero));
-        //        endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Complemento", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
-        //        endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
-        //        endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
-        //        endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
-        //        //endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoPais));
-        //        endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
-        //    }
-
-        //    if (!nota.Tomador.DadosContato.Telefone.IsEmpty() ||
-        //        !nota.Tomador.DadosContato.Email.IsEmpty())
-        //    {
-        //        var contato = new XElement("Contato");
-        //        tomador.Add(contato);
-
-        //        contato.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Telefone", 1, 11, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.DDD + nota.Tomador.DadosContato.Telefone));
-        //        contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Email", 1, 80, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
-        //    }
-
-        //    return tomador;
-        //}
-
-
-        //#endregion RPS
 
     }
 }
