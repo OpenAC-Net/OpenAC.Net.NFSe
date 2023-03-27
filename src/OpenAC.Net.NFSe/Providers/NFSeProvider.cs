@@ -128,6 +128,8 @@ namespace OpenAC.Net.NFSe.Providers
         [Description("RLZ Informática")]
         RLZ = 31,
 
+        Tiplanv2 = 46,
+
         [Description("Vitoria")]
         Vitoria = 13,
 
