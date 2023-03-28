@@ -96,6 +96,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
                 {NFSeProvider.SaoPaulo, typeof(ProviderSaoPaulo)},
                 {NFSeProvider.SmarAPDABRASF, typeof(ProviderSmarAPDABRASF)},
+                {NFSeProvider.Tiplanv2, typeof(ProviderTiplan2)},
                 {NFSeProvider.Vitoria, typeof(ProviderVitoria)},
                 {NFSeProvider.WebIss, typeof(ProviderWebIss)},
                 {NFSeProvider.WebIss2, typeof(ProviderWebIss2)},

@@ -320,6 +320,12 @@
 	  <None Update="Schemas\SimplISSv2\xmldsig-core-schema20020212.xsd">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Schemas\Tiplan2\nfse.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Schemas\Tiplan2\xmldsig-core-schema20020212.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>
