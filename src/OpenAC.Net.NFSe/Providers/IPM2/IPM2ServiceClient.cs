@@ -48,7 +48,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        public string EnviarSincrono(string cabec, string msg) => Upload("", msg, true,true, GetAuthOverride, false);
+        //public string EnviarSincrono(string cabec, string msg) => Upload("", msg, false, true, GetAuthOverride, false);
+        public string EnviarSincrono(string cabec, string msg) => UploadHttpClient(msg);
 
         public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg, true, true, GetAuthOverride, false);
 
@@ -62,7 +63,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarNFSe(string cabec, string msg) => Upload("", msg, true, true, GetAuthOverride, false);
+        public string ConsultarNFSe(string cabec, string msg) => UploadHttpClient(msg);
 
         public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 

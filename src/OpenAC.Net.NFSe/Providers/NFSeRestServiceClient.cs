@@ -33,6 +33,7 @@ using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
@@ -108,6 +109,37 @@ namespace OpenAC.Net.NFSe.Providers
                 EnvelopeEnvio = message;
 
                 Execute(contentyType, "POST", headers);
+                return EnvelopeRetorno;
+            }
+            finally
+            {
+                Url = url;
+            }
+        }
+
+        protected string UploadHttpClient(string message)
+        {
+            var url = Url;
+
+            try
+            {
+                var auth = Authentication();
+                var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
+                var arquivoEnvio = Path.Combine(Path.GetTempPath(), fileName);
+                File.WriteAllText(arquivoEnvio, message);
+
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, Url);
+                request.Headers.Add("Authorization", auth);
+
+                var content = new StringContent(message);
+
+                request.Content = content;
+                var response = client.SendAsync(request).Result;
+                response.EnsureSuccessStatusCode();
+
+                EnvelopeRetorno = response.Content.ReadAsStringAsync().Result;
+
                 return EnvelopeRetorno;
             }
             finally
