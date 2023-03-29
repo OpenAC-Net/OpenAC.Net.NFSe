@@ -62,7 +62,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
 
-        public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
+        public string ConsultarNFSe(string cabec, string msg) => Upload("", msg, true, true, GetAuthOverride, false);
 
         public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 

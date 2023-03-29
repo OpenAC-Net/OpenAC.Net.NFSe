@@ -371,11 +371,11 @@ namespace OpenAC.Net.NFSe.Providers
         protected override void PrepararConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
         {
             var message = new StringBuilder();
-            message.Append("<nfse>");
+            message.Append("<net:ConsultarNfseServicoPrestadoEnvio>");
             message.Append("<pesquisa>");
             message.Append($"<codigo_autenticidade>{retornoWebservice.Protocolo}</codigo_autenticidade>");
             message.Append("</pesquisa>");
-            message.Append("</nfse>");
+            message.Append("</net:ConsultarNfseServicoPrestadoEnvio>");
             retornoWebservice.XmlEnvio = message.ToString();
         }
 
@@ -574,7 +574,56 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
 
-        protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice) => throw new NotImplementedException();
+        protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice) 
+        {
+            var loteBuilder = new StringBuilder();
+
+            loteBuilder.Append($"<ConsultarNfseServicoPrestadoEnvio>");
+            loteBuilder.Append("<Prestador>");
+            loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
+            loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+            loteBuilder.Append("</Prestador>");
+
+            if (retornoWebservice.NumeroNFse > 0)
+                loteBuilder.Append($"<NumeroNfse>{retornoWebservice.NumeroNFse}</NumeroNfse>");
+
+            //if (retornoWebservice.Inicio.HasValue && retornoWebservice.Fim.HasValue)
+            //{
+            //    loteBuilder.Append("<PeriodoEmissao>");
+            //    loteBuilder.Append($"<DataInicial>{retornoWebservice.Inicio:yyyy-MM-dd}</DataInicial>");
+            //    loteBuilder.Append($"<DataFinal>{retornoWebservice.Fim:yyyy-MM-dd}</DataFinal>");
+            //    loteBuilder.Append("</PeriodoEmissao>");
+            //}
+
+            if (!retornoWebservice.CPFCNPJTomador.IsEmpty())
+            {
+                loteBuilder.Append("<Tomador>");
+                loteBuilder.Append("<CpfCnpj>");
+                loteBuilder.Append(retornoWebservice.CPFCNPJTomador.IsCNPJ()
+                    ? $"<Cnpj>{retornoWebservice.CPFCNPJTomador.ZeroFill(14)}</Cnpj>"
+                    : $"<Cpf>{retornoWebservice.CPFCNPJTomador.ZeroFill(11)}</Cpf>");
+                loteBuilder.Append("</CpfCnpj>");
+                if (!retornoWebservice.IMTomador.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{retornoWebservice.IMTomador}</InscricaoMunicipal>");
+                loteBuilder.Append("</Tomador>");
+            }
+
+            //if (!retornoWebservice.NomeIntermediario.IsEmpty() && !retornoWebservice.CPFCNPJIntermediario.IsEmpty())
+            //{
+            //    loteBuilder.Append("<IntermediarioServico>");
+            //    loteBuilder.Append($"<RazaoSocial>{retornoWebservice.NomeIntermediario}</RazaoSocial>");
+            //    loteBuilder.Append("<CpfCnpj>");
+            //    loteBuilder.Append(retornoWebservice.CPFCNPJIntermediario.IsCNPJ()
+            //        ? $"<Cnpj>{retornoWebservice.CPFCNPJIntermediario.ZeroFill(14)}</Cnpj>"
+            //        : $"<Cpf>{retornoWebservice.CPFCNPJIntermediario.ZeroFill(11)}</Cpf>");
+            //    loteBuilder.Append("</CpfCnpj>");
+            //    if (!retornoWebservice.IMIntermediario.IsEmpty())
+            //        loteBuilder.Append($"<InscricaoMunicipal>{retornoWebservice.IMIntermediario}</InscricaoMunicipal>");
+            //    loteBuilder.Append("</IntermediarioServico>");
+            //}
+
+            loteBuilder.Append("</ConsultarNfseServicoPrestadoEnvio>");
+            retornoWebservice.XmlEnvio = loteBuilder.ToString();
+        }
 
         protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
 
@@ -592,7 +641,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
 
-        protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) => throw new NotImplementedException();
+        protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) { }
 
         protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice) => throw new NotImplementedException();
 
