@@ -48,10 +48,9 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        //public string EnviarSincrono(string cabec, string msg) => Upload("", msg, false, true, GetAuthOverride, false);
         public string EnviarSincrono(string cabec, string msg) => UploadHttpClient(msg);
 
-        public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg, true, true, GetAuthOverride, false);
+        public string ConsultarLoteRps(string cabec, string msg) => UploadHttpClient(msg);
 
         public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
