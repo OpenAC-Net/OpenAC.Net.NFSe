@@ -77,6 +77,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         IPM = 36,
 
+        IPM2 = 47,
+
         ISSe = 23,
 
         ISSNet = 18,

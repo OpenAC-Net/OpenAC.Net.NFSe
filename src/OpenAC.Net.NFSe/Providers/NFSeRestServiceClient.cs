@@ -116,13 +116,14 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected string Upload(string action, string message, bool useDefaultAuth = false, bool keepAlive = false)
+        protected string Upload(string action, string message, bool useDefaultAuth = false, bool keepAlive = false, string authOverride = "", bool executeSetAction = true)
         {
             var url = Url;
 
             try
             {
-                SetAction(action);
+                if (executeSetAction)
+                    SetAction(action);
 
                 var auth = Authentication();
                 var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
@@ -151,8 +152,14 @@ namespace OpenAC.Net.NFSe.Providers
                 if (Provider.TimeOut.HasValue)
                     request.Timeout = Provider.TimeOut.Value.Milliseconds;
 
-                if (headers?.Count > 0)
+                if (!string.IsNullOrEmpty(authOverride))
+                {
+                    request.Headers.Add(authOverride);
+                }
+                else if(headers?.Count > 0)
+                {
                     request.Headers.Add(headers);
+                }
 
                 if (Certificado != null)
                     request.ClientCertificates.Add(Certificado);
