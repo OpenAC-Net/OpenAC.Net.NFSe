@@ -115,7 +115,15 @@ namespace OpenAC.Net.NFSe.Providers
 
         public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-        public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+        public string EnviarSincrono(string cabec, string msg)
+        {
+            var message = new StringBuilder();
+            message.Append("<sis:GerarNfse>");
+            message.Append(msg);
+            message.Append("</sis:GerarNfse>");
+
+            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse", message.ToString(), "GerarNfseResult");
+        }
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 

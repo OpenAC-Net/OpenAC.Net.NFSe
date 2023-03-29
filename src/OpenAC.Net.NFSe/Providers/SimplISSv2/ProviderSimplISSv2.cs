@@ -241,7 +241,37 @@ namespace OpenAC.Net.NFSe.Providers
             retornoWebservice.XmlEnvio = loteBuilder.ToString();
         }
 
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+        {
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
+        }
+
+        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+        {
+            if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
+            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+            foreach (var nota in notas)
+            {
+                if (!nota.IdentificacaoRps.Serie.IsNumeric())
+                    retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "A serie da nota precisa ser numérica. Serie informada: " + nota.IdentificacaoRps.Serie });
+            }
+            if (retornoWebservice.Erros.Count > 0) return;
+            var xmlLoteRps = new StringBuilder();
+
+            foreach (var nota in notas)
+            {
+                var xmlRps = WriteXmlRps(nota, false, false);
+                xmlLoteRps.Append(xmlRps);
+                GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
+            }
+
+            var xmlLote = new StringBuilder();
+            xmlLote.Append($"<sis:GerarNfseEnvio xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\" xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\">");
+            xmlLote.Append(xmlLoteRps);
+            xmlLote.Append("</sis:GerarNfseEnvio>");
+
+            retornoWebservice.XmlEnvio = xmlLote.ToString();
+        }
 
         protected override string GetNamespace() => "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\" xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\"";
 
