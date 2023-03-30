@@ -30,19 +30,17 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers
 {
@@ -53,35 +51,9 @@ namespace OpenAC.Net.NFSe.Providers
             Name = "IPM";
         }
 
-        private static string FormataDecimal(decimal valor)
-        {
-            return valor.ToString("0.00").Replace(".", ",");
-        }
-
         protected override IServiceClient GetClient(TipoUrl tipo)
         {
             return new IPM2ServiceClient(this, tipo);
-        }
-
-        private static string GetTipoTomadorIPM(int tipoTomador, string cpfCnpj)
-        {
-            if (tipoTomador == 0)
-            {
-                if (string.IsNullOrEmpty(cpfCnpj))
-                    return "F";
-
-                return cpfCnpj.Length == 14 ? "J" : "F";
-            }
-
-            if (tipoTomador == TipoTomador.Sigiss.PessoaFisica)
-            {
-                //F para Pessoa Física
-                return "F";
-            }
-
-            return tipoTomador == TipoTomador.Sigiss.JuridicaForaPais ? "E" : "J";
-
-            //J para Pessoa Jurídica
         }
 
         public override string WriteXmlRps(NotaServico nota, bool identado = true, bool showDeclaration = true)
@@ -182,7 +154,6 @@ namespace OpenAC.Net.NFSe.Providers
 
             return indRps;
         }
-
 
         private XElement WriteServicosRps(NotaServico nota)
         {
@@ -564,23 +535,17 @@ namespace OpenAC.Net.NFSe.Providers
             //retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "nfse", "", Certificado);
         }
 
-        #region Não implementados
-
-        public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true) => throw new NotImplementedException();
-
-        protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
-
-        protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
-
-        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
-
-        protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice) 
+        protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
         {
             var loteBuilder = new StringBuilder();
 
-            loteBuilder.Append($"<ConsultarNfseServicoPrestadoEnvio>");
+            loteBuilder.Append($"<net:ConsultarNfseServicoPrestadoEnvio>");
             loteBuilder.Append("<Prestador>");
-            loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
+            loteBuilder.Append("<CpfCnpj>");
+            loteBuilder.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
+                ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
+                : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+            loteBuilder.Append("</CpfCnpj>");
             loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
             loteBuilder.Append("</Prestador>");
 
@@ -621,35 +586,10 @@ namespace OpenAC.Net.NFSe.Providers
             //    loteBuilder.Append("</IntermediarioServico>");
             //}
 
-            loteBuilder.Append("</ConsultarNfseServicoPrestadoEnvio>");
-            retornoWebservice.XmlEnvio = loteBuilder.ToString();
+            loteBuilder.Append($"<Pagina>{Math.Max(retornoWebservice.Pagina, 1)}</Pagina>");
+            loteBuilder.Append("</net:ConsultarNfseServicoPrestadoEnvio>");
+            retornoWebservice.XmlEnvio = AdicionaEnvelope(loteBuilder.ToString());
         }
-
-        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
-
-        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
-
-        protected override void AssinarEnviar(RetornoEnviar retornoWebservice) => throw new NotImplementedException();
-
-        protected override void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
-
-        protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
-        {
-            //NAO PRECISA ASSINAR A CONSULTA
-            return;
-        }
-
-        protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
-
-        protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) { }
-
-        protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice) => throw new NotImplementedException();
-
-        protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) => throw new NotImplementedException();
-
-        protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
-
-        protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
 
         protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
         {
@@ -668,6 +608,40 @@ namespace OpenAC.Net.NFSe.Providers
 
             return;
         }
+        protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
+        {
+            //NAO PRECISA ASSINAR A CONSULTA
+            return;
+        }
+        protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) { }
+
+        #region Não implementados
+
+        public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true) => throw new NotImplementedException();
+
+        protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+
+        protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
+
+        protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
+
+        protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+
+        protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+
+        protected override void AssinarEnviar(RetornoEnviar retornoWebservice) => throw new NotImplementedException();
+
+        protected override void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
+
+        protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
+
+        protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice) => throw new NotImplementedException();
+
+        protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) => throw new NotImplementedException();
+
+        protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+
+        protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
 
         protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
 
