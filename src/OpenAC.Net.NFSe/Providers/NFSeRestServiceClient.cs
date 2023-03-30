@@ -33,6 +33,7 @@ using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
@@ -116,13 +117,45 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected string Upload(string action, string message, bool useDefaultAuth = false, bool keepAlive = false)
+        protected string UploadHttpClient(string message)
         {
             var url = Url;
 
             try
             {
-                SetAction(action);
+                var auth = Authentication();
+                var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
+                var arquivoEnvio = Path.Combine(Path.GetTempPath(), fileName);
+                File.WriteAllText(arquivoEnvio, message);
+
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, Url);
+                request.Headers.Add("Authorization", auth);
+
+                var content = new StringContent(message);
+
+                request.Content = content;
+                var response = client.SendAsync(request).Result;
+                response.EnsureSuccessStatusCode();
+
+                EnvelopeRetorno = response.Content.ReadAsStringAsync().Result;
+
+                return EnvelopeRetorno;
+            }
+            finally
+            {
+                Url = url;
+            }
+        }
+
+        protected string Upload(string action, string message, bool useDefaultAuth = false, bool keepAlive = false, string authOverride = "", bool executeSetAction = true)
+        {
+            var url = Url;
+
+            try
+            {
+                if (executeSetAction)
+                    SetAction(action);
 
                 var auth = Authentication();
                 var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
@@ -151,8 +184,14 @@ namespace OpenAC.Net.NFSe.Providers
                 if (Provider.TimeOut.HasValue)
                     request.Timeout = Provider.TimeOut.Value.Milliseconds;
 
-                if (headers?.Count > 0)
+                if (!string.IsNullOrEmpty(authOverride))
+                {
+                    request.Headers.Add(authOverride);
+                }
+                else if(headers?.Count > 0)
+                {
                     request.Headers.Add(headers);
+                }
 
                 if (Certificado != null)
                     request.ClientCertificates.Add(Certificado);
