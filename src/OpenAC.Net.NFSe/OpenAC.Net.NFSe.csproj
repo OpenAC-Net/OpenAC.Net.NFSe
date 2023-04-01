@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net462;net470;net48;netstandard2.0;net6.0;net7.0</TargetFrameworks>
@@ -209,6 +209,10 @@
 	<ItemGroup>
 		<None Remove="Resources\Municipios.nfse" />
 		<EmbeddedResource Include="Resources\Municipios.nfse" />
+		<Reference Include="System.Net.Http">
+		  <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Net.Http.dll</HintPath>
+		  <Private>False</Private>
+		</Reference>
 		
 		<None Update="Schemas\Abaco\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

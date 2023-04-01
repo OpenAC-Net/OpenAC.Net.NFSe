@@ -120,7 +120,18 @@ namespace OpenAC.Net.NFSe.Demo
         {
             ExecuteSafe(() =>
             {
-                var ret = openNFSe.ConsultaNFSePeriodo(DateTime.Today.AddDays(-7), DateTime.Today);
+                var numero = 0;
+                if (InputBox.Show("Numero da Nota", "Digite o numero da Nota", ref numero).Equals(DialogResult.Cancel)) return;
+
+                var serie = "0";
+                if (InputBox.Show("Serie da Nota", "Digite a serie da Nota", ref serie).Equals(DialogResult.Cancel)) return;
+
+                RetornoConsultarNFSe ret;
+                if (numero > 0)
+                    ret = openNFSe.ConsultaNFSe(numero, serie);
+                else
+                    ret = openNFSe.ConsultaNFSePeriodo(DateTime.Today.AddDays(-7), DateTime.Today);
+
                 ProcessarRetorno(ret);
             });
         }

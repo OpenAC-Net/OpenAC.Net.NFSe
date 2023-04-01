@@ -76,6 +76,7 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.Ginfes, typeof(ProviderGinfes)},
                 {NFSeProvider.Goiania, typeof(ProviderGoiania)},
                 {NFSeProvider.IPM, typeof(ProviderIPM)},
+                {NFSeProvider.IPM2, typeof(ProviderIPM2)},
                 {NFSeProvider.ISSe, typeof(ProviderISSe)},
                 {NFSeProvider.ISSNet, typeof(ProviderISSNet)},
                 {NFSeProvider.Mitra, typeof(ProviderMitra)},

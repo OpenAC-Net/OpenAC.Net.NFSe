@@ -30,10 +30,10 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
@@ -84,7 +84,7 @@ namespace OpenAC.Net.NFSe.Providers
                 EnvelopeEnvio = string.Empty;
 
                 var auth = Authentication();
-                var headers = !auth.IsEmpty() ? new Dictionary<string, string> { { AuthenticationHeader, auth } } : null;
+                var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
 
                 Execute(contentyType, "GET", headers);
                 return EnvelopeRetorno;
@@ -104,7 +104,7 @@ namespace OpenAC.Net.NFSe.Providers
                 SetAction(action);
 
                 var auth = Authentication();
-                var headers = !auth.IsEmpty() ? new Dictionary<string, string>() { { AuthenticationHeader, auth } } : null;
+                var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
 
                 EnvelopeEnvio = message;
 
@@ -117,16 +117,48 @@ namespace OpenAC.Net.NFSe.Providers
             }
         }
 
-        protected string Upload(string action, string message, bool useDefaultAuth = false, bool keepAlive = false)
+        protected string UploadHttpClient(string message)
         {
             var url = Url;
 
             try
             {
-                SetAction(action);
+                var auth = Authentication();
+                var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
+                var arquivoEnvio = Path.Combine(Path.GetTempPath(), fileName);
+                File.WriteAllText(arquivoEnvio, message);
+
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, Url);
+                request.Headers.Add("Authorization", auth);
+
+                var content = new StringContent(message);
+
+                request.Content = content;
+                var response = client.SendAsync(request).Result;
+                response.EnsureSuccessStatusCode();
+
+                EnvelopeRetorno = response.Content.ReadAsStringAsync().Result;
+
+                return EnvelopeRetorno;
+            }
+            finally
+            {
+                Url = url;
+            }
+        }
+
+        protected string Upload(string action, string message, bool useDefaultAuth = false, bool keepAlive = false, string authOverride = "", bool executeSetAction = true)
+        {
+            var url = Url;
+
+            try
+            {
+                if (executeSetAction)
+                    SetAction(action);
 
                 var auth = Authentication();
-                var headers = !auth.IsEmpty() ? new Dictionary<string, string>() { { AuthenticationHeader, auth } } : null;
+                var headers = !auth.IsEmpty() ? new NameValueCollection { { AuthenticationHeader, auth } } : null;
 
                 EnvelopeEnvio = message;
 
@@ -138,6 +170,56 @@ namespace OpenAC.Net.NFSe.Providers
 
                 var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
                 var boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+
+                var request = WebRequest.CreateHttp(Url);
+                request.Method = "POST";
+                request.UseDefaultCredentials = useDefaultAuth;
+                request.KeepAlive = keepAlive;
+
+                request.ContentType = "multipart/form-data; boundary=" + boundary;
+
+                if (!ValidarCertificadoServidor())
+                    request.ServerCertificateValidationCallback += (_, _, _, _) => true;
+
+                if (Provider.TimeOut.HasValue)
+                    request.Timeout = Provider.TimeOut.Value.Milliseconds;
+
+                if (!string.IsNullOrEmpty(authOverride))
+                {
+                    request.Headers.Add(authOverride);
+                }
+                else if(headers?.Count > 0)
+                {
+                    request.Headers.Add(headers);
+                }
+
+                if (Certificado != null)
+                    request.ClientCertificates.Add(Certificado);
+
+                using (var streamWriter = request.GetRequestStream())
+                {
+                    streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
+                    var formitembytes = Encoding.UTF8.GetBytes(arquivoEnvio);
+                    streamWriter.Write(formitembytes, 0, formitembytes.Length);
+
+                    streamWriter.Write(boundarybytes, 0, boundarybytes.Length);
+
+                    var headerTemplate =
+                        $"Content-Disposition: form-data; name=\"file\"; filename=\"{fileName}\"\r\nContent-Type: text/xml\r\n\r\n";
+                    var headerbytes = Encoding.UTF8.GetBytes(headerTemplate);
+                    streamWriter.Write(headerbytes, 0, headerbytes.Length);
+
+                    using (var fileStream = new FileStream(arquivoEnvio, FileMode.Open, FileAccess.Read))
+                    {
+                        int bytesRead;
+                        var buffer = new byte[4096];
+                        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                            streamWriter.Write(buffer, 0, bytesRead);
+                    }
+
+                    var trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+                    streamWriter.Write(trailer, 0, trailer.Length);
+                }
 
                 var response = request.GetResponse();
                 EnvelopeRetorno = GetResponse(response);
