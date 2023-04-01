@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -111,12 +112,12 @@ namespace OpenAC.Net.NFSe.Providers
         protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
         {
             string contentType;
-            NameValueCollection headers;
+            Dictionary<string, string> headers;
             switch (MessageVersion)
             {
                 case SoapVersion.Soap11:
                     contentType = $"text/xml; charset={CharSet}";
-                    headers = new NameValueCollection { { "SOAPAction", soapAction } };
+                    headers = new Dictionary<string, string> { { "SOAPAction", soapAction } };
                     break;
 
                 case SoapVersion.Soap12:

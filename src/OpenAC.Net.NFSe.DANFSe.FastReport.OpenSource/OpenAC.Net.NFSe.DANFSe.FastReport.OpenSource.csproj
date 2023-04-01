@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net470;net48;net6.0-windows;net7.0-windows</TargetFrameworks>
     <AssemblyName>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</AssemblyName>
     <RootNamespace>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</RootNamespace>
     <SignAssembly>true</SignAssembly>
@@ -49,11 +49,11 @@
     <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
     <Reference Include="System.Drawing" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' != 'net452'">
+	
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows' or '$(TargetFramework)' == 'net7.0-windows'">
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 

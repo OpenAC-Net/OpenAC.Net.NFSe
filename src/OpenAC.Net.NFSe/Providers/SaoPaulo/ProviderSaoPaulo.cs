@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -68,8 +69,10 @@ namespace OpenAC.Net.NFSe.Providers
             XElement rootDoc = xml.Root;
             Guard.Against<XmlException>(rootDoc == null, "Xml de RPS ou NFSe invalido.");
 
-            var ret = new NotaServico(Configuracoes);
-            ret.Assinatura = rootDoc.ElementAnyNs("Assinatura")?.GetValue<string>() ?? string.Empty;
+            var ret = new NotaServico(Configuracoes)
+            {
+                Assinatura = rootDoc.ElementAnyNs("Assinatura")?.GetValue<string>() ?? string.Empty
+            };
 
             // Nota Fiscal
             ret.IdentificacaoNFSe.Numero = rootDoc.ElementAnyNs("ChaveNFe")?.ElementAnyNs("NumeroNFe")?.GetValue<string>() ?? string.Empty;
@@ -215,70 +218,26 @@ namespace OpenAC.Net.NFSe.Providers
 
         public override string WriteXmlRps(NotaServico nota, bool identado, bool showDeclaration)
         {
-            string tipoRps;
-            switch (nota.IdentificacaoRps.Tipo)
+            string tipoRps = nota.IdentificacaoRps.Tipo switch
             {
-                case TipoRps.RPS:
-                    tipoRps = "RPS";
-                    break;
-
-                case TipoRps.NFConjugada:
-                    tipoRps = "RPS-M";
-                    break;
-
-                case TipoRps.Cupom:
-                    tipoRps = "RPS-C";
-                    break;
-
-                default:
-                    tipoRps = "";
-                    break;
-            }
-
-            string tipoTributacao;
-            switch (nota.TipoTributacao)
+                TipoRps.RPS => "RPS",
+                TipoRps.NFConjugada => "RPS-M",
+                TipoRps.Cupom => "RPS-C",
+                _ => "",
+            };
+            string tipoTributacao = nota.TipoTributacao switch
             {
-                case TipoTributacao.Tributavel:
-                    tipoTributacao = "T";
-                    break;
-
-                case TipoTributacao.ForaMun:
-                    tipoTributacao = "F";
-                    break;
-
-                case TipoTributacao.Isenta:
-                    tipoTributacao = "A";
-                    break;
-
-                case TipoTributacao.ForaMunIsento:
-                    tipoTributacao = "B";
-                    break;
-
-                case TipoTributacao.Imune:
-                    tipoTributacao = "M";
-                    break;
-
-                case TipoTributacao.ForaMunImune:
-                    tipoTributacao = "N";
-                    break;
-
-                case TipoTributacao.Suspensa:
-                    tipoTributacao = "X";
-                    break;
-
-                case TipoTributacao.ForaMunSuspensa:
-                    tipoTributacao = "V";
-                    break;
-
-                case TipoTributacao.ExpServicos:
-                    tipoTributacao = "P";
-                    break;
-
-                default:
-                    tipoTributacao = "";
-                    break;
-            }
-
+                TipoTributacao.Tributavel => "T",
+                TipoTributacao.ForaMun => "F",
+                TipoTributacao.Isenta => "A",
+                TipoTributacao.ForaMunIsento => "B",
+                TipoTributacao.Imune => "M",
+                TipoTributacao.ForaMunImune => "N",
+                TipoTributacao.Suspensa => "X",
+                TipoTributacao.ForaMunSuspensa => "V",
+                TipoTributacao.ExpServicos => "P",
+                _ => "",
+            };
             var situacao = nota.Situacao == SituacaoNFSeRps.Normal ? "N" : "C";
 
             var issRetido = nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? "true" : "false";
@@ -654,21 +613,11 @@ namespace OpenAC.Net.NFSe.Providers
 
             // Hash Cancelamento
             var hash = Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8) + retornoWebservice.NumeroNFSe.ZeroFill(12);
-
-            var hashAssinado = "";
-#if NETSTANDARD2_0
-            var rsa = (RSACng)Certificado.PrivateKey;
-#else
-            var rsa = (RSACryptoServiceProvider)Certificado.PrivateKey;
-#endif
-
+            var rsa = (RSA)Certificado.GetRSAPrivateKey();
             var hashBytes = Encoding.ASCII.GetBytes(hash);
-#if NETSTANDARD2_0
             var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
-#else
-            var signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
-#endif
-            hashAssinado = Convert.ToBase64String(signData);
+
+            string hashAssinado = Convert.ToBase64String(signData);
 
             var loteBuilder = new StringBuilder();
             loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -779,41 +728,20 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string GetSchema(TipoUrl tipo)
         {
-            switch (tipo)
+            return tipo switch
             {
-                case TipoUrl.Enviar:
-                    return "PedidoEnvioLoteRPS_v01.xsd";
-
-                case TipoUrl.EnviarSincrono:
-                    return "PedidoEnvioRPS_v01.xsd";
-
-                case TipoUrl.ConsultarSituacao:
-                    return "PedidoInformacoesLote_v01.xsd";
-
-                case TipoUrl.ConsultarLoteRps:
-                    return "PedidoConsultaLote_v01.xsd";
-
-                case TipoUrl.ConsultarSequencialRps:
-                    return "";
-
-                case TipoUrl.ConsultarNFSeRps:
-                    return "PedidoConsultaNFe_v01.xsd";
-
-                case TipoUrl.ConsultarNFSe:
-                    return "PedidoConsultaNFe_v01.xsd";
-
-                case TipoUrl.CancelarNFSe:
-                    return "PedidoCancelamentoNFe_v01.xsd";
-
-                case TipoUrl.CancelarNFSeLote:
-                    return "PedidoCancelamentoLote_v01.xsd";
-
-                case TipoUrl.SubstituirNFSe:
-                    return "";
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null);
-            }
+                TipoUrl.Enviar => "PedidoEnvioLoteRPS_v01.xsd",
+                TipoUrl.EnviarSincrono => "PedidoEnvioRPS_v01.xsd",
+                TipoUrl.ConsultarSituacao => "PedidoInformacoesLote_v01.xsd",
+                TipoUrl.ConsultarLoteRps => "PedidoConsultaLote_v01.xsd",
+                TipoUrl.ConsultarSequencialRps => "",
+                TipoUrl.ConsultarNFSeRps => "PedidoConsultaNFe_v01.xsd",
+                TipoUrl.ConsultarNFSe => "PedidoConsultaNFe_v01.xsd",
+                TipoUrl.CancelarNFSe => "PedidoCancelamentoNFe_v01.xsd",
+                TipoUrl.CancelarNFSeLote => "PedidoCancelamentoLote_v01.xsd",
+                TipoUrl.SubstituirNFSe => "",
+                _ => throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null),
+            };
         }
 
         protected override IServiceClient GetClient(TipoUrl tipo) => new SaoPauloServiceClient(this, tipo);
@@ -822,50 +750,19 @@ namespace OpenAC.Net.NFSe.Providers
 
         private string GetHashRps(NotaServico nota)
         {
-            string tipoTributacao;
-            switch (nota.TipoTributacao)
+            string tipoTributacao = nota.TipoTributacao switch
             {
-                case TipoTributacao.Tributavel:
-                    tipoTributacao = "T";
-                    break;
-
-                case TipoTributacao.ForaMun:
-                    tipoTributacao = "F";
-                    break;
-
-                case TipoTributacao.Isenta:
-                    tipoTributacao = "A";
-                    break;
-
-                case TipoTributacao.ForaMunIsento:
-                    tipoTributacao = "B";
-                    break;
-
-                case TipoTributacao.Imune:
-                    tipoTributacao = "M";
-                    break;
-
-                case TipoTributacao.ForaMunImune:
-                    tipoTributacao = "N";
-                    break;
-
-                case TipoTributacao.Suspensa:
-                    tipoTributacao = "X";
-                    break;
-
-                case TipoTributacao.ForaMunSuspensa:
-                    tipoTributacao = "V";
-                    break;
-
-                case TipoTributacao.ExpServicos:
-                    tipoTributacao = "P";
-                    break;
-
-                default:
-                    tipoTributacao = "?";
-                    break;
-            }
-
+                TipoTributacao.Tributavel => "T",
+                TipoTributacao.ForaMun => "F",
+                TipoTributacao.Isenta => "A",
+                TipoTributacao.ForaMunIsento => "B",
+                TipoTributacao.Imune => "M",
+                TipoTributacao.ForaMunImune => "N",
+                TipoTributacao.Suspensa => "X",
+                TipoTributacao.ForaMunSuspensa => "V",
+                TipoTributacao.ExpServicos => "P",
+                _ => "?",
+            };
             var situacao = nota.Situacao == SituacaoNFSeRps.Normal ? "N" : "C";
             var issRetido = nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? "S" : "N";
 
@@ -917,18 +814,9 @@ namespace OpenAC.Net.NFSe.Providers
                        issRetidoIntermediario;
             }
 
-#if  NETSTANDARD2_0
-            var rsa = (RSACng)Certificado.PrivateKey;
-#else
-            var rsa = (RSACryptoServiceProvider)Certificado.PrivateKey;
-#endif
-
+            var rsa = (RSA)Certificado.GetRSAPublicKey();
             var hashBytes = Encoding.ASCII.GetBytes(hash);
-#if NETSTANDARD2_0
             var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
-#else
-            var signData = rsa.SignData(hashBytes, new SHA1CryptoServiceProvider());
-#endif
             return Convert.ToBase64String(signData);
         }
 

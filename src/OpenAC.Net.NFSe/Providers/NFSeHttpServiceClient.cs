@@ -30,12 +30,13 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
@@ -148,7 +149,7 @@ namespace OpenAC.Net.NFSe.Providers
 
         #region Methods
 
-        protected void Execute(string contentType, string method, NameValueCollection headers = null)
+        protected async void Execute(string contentType, string method, Dictionary<string, string> headers = null)
         {
             var protocolos = ServicePointManager.SecurityProtocol;
             ServicePointManager.SecurityProtocol = Provider.Configuracoes.WebServices.Protocolos;
@@ -157,32 +158,40 @@ namespace OpenAC.Net.NFSe.Providers
             {
                 if (!EnvelopeEnvio.IsEmpty())
                     GravarSoap(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
-
-                var request = WebRequest.CreateHttp(Url);
-                request.Method = method.IsEmpty() ? "POST" : method;
-                request.ContentType = contentType;
-
-                if (!ValidarCertificadoServidor())
-                    request.ServerCertificateValidationCallback += (_, _, _, _) => true;
-
-                if (Provider.TimeOut.HasValue)
-                    request.Timeout = Provider.TimeOut.Value.Milliseconds;
-
-                if (headers?.Count > 0)
-                    request.Headers.Add(headers);
+                
+                var handler = new HttpClientHandler();
+                if(!ValidarCertificadoServidor())
+                    handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
 
                 if (Certificado != null)
-                    request.ClientCertificates.Add(Certificado);
+                    handler.ClientCertificates.Add(Certificado);
+                
+                var client = new HttpClient(handler);
 
-                if (!EnvelopeEnvio.IsEmpty())
+                if (Provider.TimeOut.HasValue)
+                    client.Timeout =Provider.TimeOut.Value;
+                
+                var httpMethod = method.ToUpper() switch
                 {
-                    using var streamWriter = new StreamWriter(request.GetRequestStream());
-                    streamWriter.Write(EnvelopeEnvio);
-                    streamWriter.Flush();
+                    "GET" => HttpMethod.Get,
+                    "DELETE" => HttpMethod.Delete,
+                    "PUT" => HttpMethod.Put,
+                    _ => HttpMethod.Post
+                };
+                
+
+                var request = new HttpRequestMessage(httpMethod, Url);
+                if (headers?.Count > 0)
+                {
+                    foreach (var header in headers)
+                        request.Headers.Add(header.Key, header.Value);
                 }
 
-                var response = request.GetResponse();
-                EnvelopeRetorno = GetResponse(response);
+                if (!EnvelopeEnvio.IsEmpty())
+                    request.Content = new StringContent(EnvelopeEnvio, Encoding.UTF8, contentType);
+
+                var response = await client.SendAsync(request);
+                EnvelopeRetorno = await response.Content.ReadAsStringAsync();
 
                 GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
             }
@@ -193,20 +202,6 @@ namespace OpenAC.Net.NFSe.Providers
             finally
             {
                 ServicePointManager.SecurityProtocol = protocolos;
-            }
-        }
-
-        protected static string GetResponse(WebResponse response)
-        {
-            var stream = response.GetResponseStream();
-            Guard.Against<OpenDFeCommunicationException>(stream == null, "Erro ao ler retorno do servidor.");
-
-            using (stream)
-            {
-                using var reader = new StreamReader(stream!);
-                var retorno = reader.ReadToEnd();
-                response.Close();
-                return retorno;
             }
         }
 

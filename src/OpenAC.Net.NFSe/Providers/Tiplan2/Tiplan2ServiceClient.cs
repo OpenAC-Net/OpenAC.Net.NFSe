@@ -32,6 +32,7 @@
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -110,11 +111,8 @@ namespace OpenAC.Net.NFSe.Providers
 
         protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
         {
-            string contentType;
-            NameValueCollection headers;
-
-            contentType = $"text/xml; charset={CharSet}";
-            headers = new NameValueCollection { { "SOAPAction", soapAction } };
+            var contentType = $"text/xml; charset={CharSet}";
+            var headers = new Dictionary<string, string>() { { "SOAPAction", soapAction } };
 
             var envelope = new StringBuilder();
             envelope.Append("<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"");
@@ -148,10 +146,7 @@ namespace OpenAC.Net.NFSe.Providers
             if (element == null)
             {
                 element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
-                if (element == null)
-                    return xmlDocument.ToString();
-
-                return element.ToString();
+                return element == null ? xmlDocument.ToString() : element.ToString();
             }
 
             var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
