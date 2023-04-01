@@ -49,12 +49,12 @@
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.2" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.2" />		
 	</ItemGroup>
-	
+
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
 		<Reference Include="System.Drawing" />
 	</ItemGroup>
-
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470'">
+	
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
 
@@ -209,10 +209,6 @@
 	<ItemGroup>
 		<None Remove="Resources\Municipios.nfse" />
 		<EmbeddedResource Include="Resources\Municipios.nfse" />
-		<Reference Include="System.Net.Http">
-		  <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Net.Http.dll</HintPath>
-		  <Private>False</Private>
-		</Reference>
 		
 		<None Update="Schemas\Abaco\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -29,11 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum NFSeSimNao
 {
-    public enum NFSeSimNao
-    {
-        Sim,
-        Nao
-    }
+    Sim,
+    Nao
 }

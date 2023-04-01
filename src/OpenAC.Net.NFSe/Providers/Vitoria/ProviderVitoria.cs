@@ -31,30 +31,29 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderVitoria : ProviderABRASF201
 {
-    internal sealed class ProviderVitoria : ProviderABRASF201
+    #region Constructors
+
+    public ProviderVitoria(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderVitoria(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Vitoria";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        #region Protected Methods
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new VitoriaServiceClient(this, tipo, Certificado);
-        }
-
-        #endregion Protected Methods
-
-        #endregion Methods
+        Name = "Vitoria";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    #region Protected Methods
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new VitoriaServiceClient(this, tipo, Certificado);
+    }
+
+    #endregion Protected Methods
+
+    #endregion Methods
 }

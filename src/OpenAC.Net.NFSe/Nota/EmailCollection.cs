@@ -31,27 +31,26 @@
 
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class EmailCollection : DFeCollection<EmailItem>
 {
-    public sealed class EmailCollection : DFeCollection<EmailItem>
+    #region Contructors
+
+    internal EmailCollection()
     {
-        #region Contructors
-
-        internal EmailCollection()
-        {
-        }
-
-        #endregion Contructors
-
-        #region Methods
-
-        public override EmailItem AddNew()
-        {
-            var ret = new EmailItem();
-            Add(ret);
-            return ret;
-        }
-
-        #endregion Methods
     }
+
+    #endregion Contructors
+
+    #region Methods
+
+    public override EmailItem AddNew()
+    {
+        var ret = new EmailItem();
+        Add(ret);
+        return ret;
+    }
+
+    #endregion Methods
 }

@@ -28,76 +28,76 @@
 // ***********************************************************************
 
 using System;
+using System.Net.Http;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+public class SigissWebServiceClient : NFSeRestServiceClient, IServiceClient
 {
-    public class SigissWebServiceClient : NFSeRestServiceClient, IServiceClient
+    #region Constructors
+
+    public SigissWebServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
-        #region Constructors
-
-        public SigissWebServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
-        {
-            AuthenticationHeader = "AUTHORIZATION";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, "application/xml");
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var xml = XDocument.Parse(msg);
-            var numerorps = xml.Root?.ElementAnyNs("NumeroRPS")?.GetValue<string>();
-            var serierps = xml.Root?.ElementAnyNs("SerieRPS")?.GetValue<string>();
-            return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}", "application/xml");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var xml = XDocument.Parse(msg);
-            var numeronf = xml.Root?.ElementAnyNs("NumeroNFSe")?.GetValue<string>();
-            var serie = xml.Root?.ElementAnyNs("SerieNFSe")?.GetValue<string>();
-            var motivo = xml.Root?.ElementAnyNs("Motivo")?.GetValue<string>();
-            return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}", "application/xml");
-        }
-
-        public string Enviar(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
-
-        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
-
-        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
-
-        protected override string Authentication()
-        {
-            var url = Url;
-
-            try
-            {
-                Url = Provider.GetUrl(TipoUrl.Autenticacao);
-                SetAction("/login");
-
-                EnvelopeEnvio = "{ \"login\": \"" + Provider.Configuracoes.WebServices.Usuario + "\"  , \"senha\":\"" + Provider.Configuracoes.WebServices.Senha + "\"}";
-                Execute("application/json; charset=utf-8", "POST");
-                return EnvelopeRetorno;
-            }
-            finally
-            {
-                Url = url;
-            }
-        }
-
-        #endregion Methods
+        AuthenticationHeader = "AUTHORIZATION";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, "application/xml");
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var xml = XDocument.Parse(msg);
+        var numerorps = xml.Root?.ElementAnyNs("NumeroRPS")?.GetValue<string>();
+        var serierps = xml.Root?.ElementAnyNs("SerieRPS")?.GetValue<string>();
+        return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}", "application/xml");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var xml = XDocument.Parse(msg);
+        var numeronf = xml.Root?.ElementAnyNs("NumeroNFSe")?.GetValue<string>();
+        var serie = xml.Root?.ElementAnyNs("SerieNFSe")?.GetValue<string>();
+        var motivo = xml.Root?.ElementAnyNs("Motivo")?.GetValue<string>();
+        return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}", "application/xml");
+    }
+
+    public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
+
+    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+    protected override string Authentication()
+    {
+        var url = Url;
+
+        try
+        {
+            Url = Provider.GetUrl(TipoUrl.Autenticacao);
+            SetAction("/login");
+
+            EnvelopeEnvio = "{ \"login\": \"" + Provider.Configuracoes.WebServices.Usuario + "\"  , \"senha\":\"" + Provider.Configuracoes.WebServices.Senha + "\"}";
+            Execute("application/json; charset=utf-8", HttpMethod.Post);
+            return EnvelopeRetorno;
+        }
+        finally
+        {
+            Url = url;
+        }
+    }
+
+    #endregion Methods
 }

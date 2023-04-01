@@ -36,98 +36,97 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class GoianiaServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class GoianiaServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public GoianiaServiceClient(ProviderGoiania provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public GoianiaServiceClient(ProviderGoiania provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:GerarNfse>");
-            message.Append("<ws:ArquivoXML>");
-            message.AppendCData(msg);
-            message.Append("</ws:ArquivoXML>");
-            message.Append("</ws:GerarNfse>");
-
-            return Execute("http://nfse.goiania.go.gov.br/ws/GerarNfse", new[] { "GerarNfseResponse", "GerarNfseResult" }, message.ToString());
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:ConsultarNfseRps>");
-            message.Append("<ws:ArquivoXML>");
-            message.AppendCData(msg);
-            message.Append("</ws:ArquivoXML>");
-            message.Append("</ws:ConsultarNfseRps>");
-
-            return Execute("http://nfse.goiania.go.gov.br/ws/ConsultarNfseRps", new[] { "ConsultarNfseRpsResponse", "ConsultarNfseRpsResult" }, message.ToString());
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        private string Execute(string soapAction, string[] responseTag, string message)
-        {
-            return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://nfse.goiania.go.gov.br/ws/\"");
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs(responseTag[1]).Value;
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:GerarNfse>");
+        message.Append("<ws:ArquivoXML>");
+        message.AppendCData(msg);
+        message.Append("</ws:ArquivoXML>");
+        message.Append("</ws:GerarNfse>");
+
+        return Execute("http://nfse.goiania.go.gov.br/ws/GerarNfse", new[] { "GerarNfseResponse", "GerarNfseResult" }, message.ToString());
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:ConsultarNfseRps>");
+        message.Append("<ws:ArquivoXML>");
+        message.AppendCData(msg);
+        message.Append("</ws:ArquivoXML>");
+        message.Append("</ws:ConsultarNfseRps>");
+
+        return Execute("http://nfse.goiania.go.gov.br/ws/ConsultarNfseRps", new[] { "ConsultarNfseRpsResponse", "ConsultarNfseRpsResult" }, message.ToString());
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    private string Execute(string soapAction, string[] responseTag, string message)
+    {
+        return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://nfse.goiania.go.gov.br/ws/\"");
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs(responseTag[1]).Value;
+
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion Methods
 }

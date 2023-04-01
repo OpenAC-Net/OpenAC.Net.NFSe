@@ -32,83 +32,82 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class ValoresServico : GenericClone<ValoresServico>, INotifyPropertyChanged
 {
-    public sealed class ValoresServico : GenericClone<ValoresServico>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal ValoresServico()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal ValoresServico()
-        {
-            IssRetido = SituacaoTributaria.Normal;
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public decimal ValorServicos { get; set; }
-
-        public decimal ValorDeducoes { get; set; }
-
-        public decimal ValorPis { get; set; }
-
-        public decimal ValorCofins { get; set; }
-
-        public decimal ValorInss { get; set; }
-
-        public decimal ValorIr { get; set; }
-
-        public decimal ValorCsll { get; set; }
-
-        public SituacaoTributaria IssRetido { get; set; }
-
-        public decimal ValorIss { get; set; }
-
-        public decimal OutrasRetencoes { get; set; }
-
-        public decimal ValTotTributos { get; set; }
-
-        public decimal BaseCalculo { get; set; }
-
-        public decimal Aliquota { get; set; }
-
-        public decimal AliquotaPis { get; set; }
-
-        public decimal AliquotaCofins { get; set; }
-
-        public decimal AliquotaInss { get; set; }
-
-        public decimal AliquotaIR { get; set; }
-
-        public decimal AliquotaCsll { get; set; }
-
-        public decimal ValorLiquidoNfse { get; set; }
-
-        public decimal ValorIssRetido { get; set; }
-
-        public decimal DescontoCondicionado { get; set; }
-
-        public decimal DescontoIncondicionado { get; set; }
-
-        public string JustificativaDeducao { get; set; }
-
-        public decimal ValorOutrasRetencoes { get; set; }
-
-        public string DescricaoOutrasRetencoes { get; set; }
-
-        public decimal ValorCargaTributaria { get; set; }
-
-        public decimal AliquotaCargaTributaria { get; set; }
-
-        public string FonteCargaTributaria { get; set; }
-
-        #endregion Propriedades
+        IssRetido = SituacaoTributaria.Normal;
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public decimal ValorServicos { get; set; }
+
+    public decimal ValorDeducoes { get; set; }
+
+    public decimal ValorPis { get; set; }
+
+    public decimal ValorCofins { get; set; }
+
+    public decimal ValorInss { get; set; }
+
+    public decimal ValorIr { get; set; }
+
+    public decimal ValorCsll { get; set; }
+
+    public SituacaoTributaria IssRetido { get; set; }
+
+    public decimal ValorIss { get; set; }
+
+    public decimal OutrasRetencoes { get; set; }
+
+    public decimal ValTotTributos { get; set; }
+
+    public decimal BaseCalculo { get; set; }
+
+    public decimal Aliquota { get; set; }
+
+    public decimal AliquotaPis { get; set; }
+
+    public decimal AliquotaCofins { get; set; }
+
+    public decimal AliquotaInss { get; set; }
+
+    public decimal AliquotaIR { get; set; }
+
+    public decimal AliquotaCsll { get; set; }
+
+    public decimal ValorLiquidoNfse { get; set; }
+
+    public decimal ValorIssRetido { get; set; }
+
+    public decimal DescontoCondicionado { get; set; }
+
+    public decimal DescontoIncondicionado { get; set; }
+
+    public string JustificativaDeducao { get; set; }
+
+    public decimal ValorOutrasRetencoes { get; set; }
+
+    public string DescricaoOutrasRetencoes { get; set; }
+
+    public decimal ValorCargaTributaria { get; set; }
+
+    public decimal AliquotaCargaTributaria { get; set; }
+
+    public string FonteCargaTributaria { get; set; }
+
+    #endregion Propriedades
 }

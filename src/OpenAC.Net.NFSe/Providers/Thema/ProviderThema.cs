@@ -36,66 +36,65 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers.Thema
+namespace OpenAC.Net.NFSe.Providers.Thema;
+
+internal sealed class ProviderThema : ProviderABRASF
 {
-    internal sealed class ProviderThema : ProviderABRASF
+    #region Constructors
+
+    public ProviderThema(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderThema(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Thema";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
-        }
-
-        protected override string GetNamespace()
-        {
-            return "xmlns=\"http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd\"";
-        }
-
-        /// <inheritdoc />
-        protected override string GerarCabecalho()
-        {
-            return "xmlns=\"http://server.nfse.thema.inf.br\"";
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new ThemaServiceClient(this, tipo);
-        }
-
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse.xsd";
-        }
-
-        protected override void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string elementName = "ListaMensagemRetorno", string messageElement = "MensagemRetorno")
-        {
-            var listaMenssagens = xmlRet?.ElementAnyNs(elementName);
-            if (listaMenssagens == null) return;
-
-            foreach (var mensagem in listaMenssagens.ElementsAnyNs(messageElement))
-            {
-                var evento = new Evento
-                {
-                    Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
-                    Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,
-                    Correcao = mensagem?.ElementAnyNs("Correcao")?.GetValue<string>() ?? string.Empty
-                };
-
-                if (new[] { evento.Codigo, evento.Descricao }.All(s => !string.IsNullOrWhiteSpace(s)))
-                    retornoWs.Erros.Add(evento);
-            }
-        }
-
-        #endregion Methods
+        Name = "Thema";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
+    }
+
+    protected override string GetNamespace()
+    {
+        return "xmlns=\"http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd\"";
+    }
+
+    /// <inheritdoc />
+    protected override string GerarCabecalho()
+    {
+        return "xmlns=\"http://server.nfse.thema.inf.br\"";
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new ThemaServiceClient(this, tipo);
+    }
+
+    protected override string GetSchema(TipoUrl tipo)
+    {
+        return "nfse.xsd";
+    }
+
+    protected override void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string elementName = "ListaMensagemRetorno", string messageElement = "MensagemRetorno")
+    {
+        var listaMenssagens = xmlRet?.ElementAnyNs(elementName);
+        if (listaMenssagens == null) return;
+
+        foreach (var mensagem in listaMenssagens.ElementsAnyNs(messageElement))
+        {
+            var evento = new Evento
+            {
+                Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
+                Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,
+                Correcao = mensagem?.ElementAnyNs("Correcao")?.GetValue<string>() ?? string.Empty
+            };
+
+            if (new[] { evento.Codigo, evento.Descricao }.All(s => !string.IsNullOrWhiteSpace(s)))
+                retornoWs.Erros.Add(evento);
+        }
+    }
+
+    #endregion Methods
 }

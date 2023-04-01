@@ -31,26 +31,25 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderPronim2 : ProviderABRASF201
 {
-    internal sealed class ProviderPronim2 : ProviderABRASF201
+    #region Constructors
+
+    public ProviderPronim2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderPronim2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Pronim2";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new Pronim2ServiceClient(this, tipo, null);
-        }
-
-        #endregion Methods
+        Name = "Pronim2";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new Pronim2ServiceClient(this, tipo, null);
+    }
+
+    #endregion Methods
 }

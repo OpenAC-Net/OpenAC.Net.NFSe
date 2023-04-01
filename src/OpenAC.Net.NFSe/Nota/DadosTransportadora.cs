@@ -32,48 +32,47 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosTransportadora : GenericClone<DadosTransportadora>, INotifyPropertyChanged
 {
-    public sealed class DadosTransportadora : GenericClone<DadosTransportadora>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal DadosTransportadora()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal DadosTransportadora()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public string xNomeTrans { get; set; }
-
-        public string xCpfCnpjTrans { get; set; }
-
-        public string xInscEstTrans { get; set; }
-
-        public string xPlacaTrans { get; set; }
-
-        public string xEndTrans { get; set; }
-
-        public int cMunTrans { get; set; }
-
-        public string xMunTrans { get; set; }
-
-        public string xUFTrans { get; set; }
-
-        public int cPaisTrans { get; set; }
-
-        public string xPaisTrans { get; set; }
-
-        public NfseFrete vTipoFreteTrans { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public string xNomeTrans { get; set; }
+
+    public string xCpfCnpjTrans { get; set; }
+
+    public string xInscEstTrans { get; set; }
+
+    public string xPlacaTrans { get; set; }
+
+    public string xEndTrans { get; set; }
+
+    public int cMunTrans { get; set; }
+
+    public string xMunTrans { get; set; }
+
+    public string xUFTrans { get; set; }
+
+    public int cPaisTrans { get; set; }
+
+    public string xPaisTrans { get; set; }
+
+    public NfseFrete vTipoFreteTrans { get; set; }
+
+    #endregion Propriedades
 }

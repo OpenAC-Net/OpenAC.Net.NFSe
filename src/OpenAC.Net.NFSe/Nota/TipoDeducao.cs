@@ -29,16 +29,15 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum TipoDeducao
 {
-    public enum TipoDeducao
-    {
-        Nenhum,
-        Materiais,
-        SubEmpreitada,
-        Mercadorias,
-        VeiculacaoeDivulgacao,
-        MapadeConstCivil,
-        Servicos
-    }
+    Nenhum,
+    Materiais,
+    SubEmpreitada,
+    Mercadorias,
+    VeiculacaoeDivulgacao,
+    MapadeConstCivil,
+    Servicos
 }

@@ -29,20 +29,19 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+public enum TipoUrl
 {
-    public enum TipoUrl
-    {
-        Enviar,
-        EnviarSincrono,
-        ConsultarSituacao,
-        ConsultarLoteRps,
-        ConsultarSequencialRps,
-        ConsultarNFSeRps,
-        ConsultarNFSe,
-        CancelarNFSe,
-        CancelarNFSeLote,
-        SubstituirNFSe,
-        Autenticacao,
-    }
+    Enviar,
+    EnviarSincrono,
+    ConsultarSituacao,
+    ConsultarLoteRps,
+    ConsultarSequencialRps,
+    ConsultarNFSeRps,
+    ConsultarNFSe,
+    CancelarNFSe,
+    CancelarNFSeLote,
+    SubstituirNFSe,
+    Autenticacao,
 }

@@ -31,19 +31,18 @@
 
 using OpenAC.Net.DFe.Core.Common;
 
-namespace OpenAC.Net.NFSe.Configuracao
+namespace OpenAC.Net.NFSe.Configuracao;
+
+public sealed class ConfigCertificadosNFSe : DFeCertificadosConfigBase
 {
-    public sealed class ConfigCertificadosNFSe : DFeCertificadosConfigBase
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConfigCertificadosNFSe"/> class.
+    /// </summary>
+    internal ConfigCertificadosNFSe()
     {
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigCertificadosNFSe"/> class.
-        /// </summary>
-        internal ConfigCertificadosNFSe()
-        {
-        }
-
-        #endregion Constructor
     }
+
+    #endregion Constructor
 }

@@ -29,13 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe
+namespace OpenAC.Net.NFSe;
+
+public enum LayoutImpressao
 {
-    public enum LayoutImpressao
-    {
-        ABRASF,
-        ABRASF2,
-        DSF,
-        Ginfes
-    }
+    ABRASF,
+    ABRASF2,
+    DSF,
+    Ginfes
 }

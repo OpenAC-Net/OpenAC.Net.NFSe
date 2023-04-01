@@ -31,35 +31,34 @@
 
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+public class Evento
 {
-    public class Evento
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Evento"/> class.
+    /// </summary>
+    public Evento()
     {
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Evento"/> class.
-        /// </summary>
-        public Evento()
-        {
-            IdentificacaoNfse = new IdeNFSe();
-            IdentificacaoRps = new IdeRps();
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        public string Codigo { get; set; }
-
-        public string Descricao { get; set; }
-
-        public string Correcao { get; set; }
-
-        public IdeRps IdentificacaoRps { get; set; }
-
-        public IdeNFSe IdentificacaoNfse { get; set; }
-
-        #endregion Propriedades
+        IdentificacaoNfse = new IdeNFSe();
+        IdentificacaoRps = new IdeRps();
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    public string Codigo { get; set; }
+
+    public string Descricao { get; set; }
+
+    public string Correcao { get; set; }
+
+    public IdeRps IdentificacaoRps { get; set; }
+
+    public IdeNFSe IdentificacaoNfse { get; set; }
+
+    #endregion Propriedades
 }

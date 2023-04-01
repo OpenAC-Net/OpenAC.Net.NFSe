@@ -34,60 +34,51 @@ using OpenAC.Net.DFe.Core;
 using System;
 using System.Text;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+public class IPM2ServiceClient : NFSeRestServiceClient, IServiceClient
 {
-    public class IPM2ServiceClient : NFSeRestServiceClient, IServiceClient
+    #region Constructors
+
+    public IPM2ServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
-        #region Constructors
-
-        public IPM2ServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string EnviarSincrono(string cabec, string msg) => UploadHttpClient(msg);
-
-        public string ConsultarLoteRps(string cabec, string msg) => UploadHttpClient(msg);
-
-        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
-
-        public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
-
-        public string Enviar(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarNFSe(string cabec, string msg) => UploadHttpClient(msg);
-
-        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
-
-        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
-
-        public bool ValidarUsernamePassword() => !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
-
-        private string GetAuthOverride
-        {
-            get
-            {
-                var auth = Authentication();
-                return "Authorization: " + auth;
-            }
-        }
-        protected override string Authentication()
-        {
-            var result = ValidarUsernamePassword();
-            if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
-
-            var authenticationString = string.Concat(Provider.Configuracoes.WebServices.Usuario, ":", Provider.Configuracoes.WebServices.Senha);
-            var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-            return "Basic " + base64EncodedAuthenticationString;
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string EnviarSincrono(string cabec, string msg) => Upload("", msg);
+
+    public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg);
+
+    public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
+
+    public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+    public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarNFSe(string cabec, string msg) => Upload("", msg);
+
+    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
+
+    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+    public bool ValidarUsernamePassword() => !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
+
+    protected override string Authentication()
+    {
+        var result = ValidarUsernamePassword();
+        if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
+
+        var authenticationString = string.Concat(Provider.Configuracoes.WebServices.Usuario, ":", Provider.Configuracoes.WebServices.Senha);
+        var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+        return "Basic " + base64EncodedAuthenticationString;
+    }
+
+    #endregion Methods
 }

@@ -32,24 +32,23 @@
 using System;
 using FastReport.Export;
 
-namespace OpenAC.Net.NFSe.DANFSe.FastReport
+namespace OpenAC.Net.NFSe.DANFSe.FastReport;
+
+public sealed class DANFSeExportEventArgs : EventArgs
 {
-    public sealed class DANFSeExportEventArgs : EventArgs
+    #region Constructors
+
+    internal DANFSeExportEventArgs()
     {
-        #region Constructors
-
-        internal DANFSeExportEventArgs()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public FiltroDANFSe Filtro { get; internal set; }
-
-        public ExportBase Export { get; internal set; }
-
-        #endregion Properties
     }
+
+    #endregion Constructors
+
+    #region Properties
+
+    public FiltroDANFSe Filtro { get; internal set; }
+
+    public ExportBase Export { get; internal set; }
+
+    #endregion Properties
 }

@@ -32,50 +32,49 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class Endereco : GenericClone<Endereco>, INotifyPropertyChanged
 {
-    public sealed class Endereco : GenericClone<Endereco>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    internal Endereco()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        internal Endereco()
-        {
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        public string TipoLogradouro { get; set; }
-
-        public string Logradouro { get; set; }
-
-        public string Numero { get; set; }
-
-        public string Complemento { get; set; }
-
-        public string TipoBairro { get; set; }
-
-        public string Bairro { get; set; }
-
-        public int CodigoMunicipio { get; set; }
-
-        public string Uf { get; set; }
-
-        public string Cep { get; set; }
-
-        public string Municipio { get; set; }
-
-        public int CodigoPais { get; set; }
-
-        public string Pais { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    public string TipoLogradouro { get; set; }
+
+    public string Logradouro { get; set; }
+
+    public string Numero { get; set; }
+
+    public string Complemento { get; set; }
+
+    public string TipoBairro { get; set; }
+
+    public string Bairro { get; set; }
+
+    public int CodigoMunicipio { get; set; }
+
+    public string Uf { get; set; }
+
+    public string Cep { get; set; }
+
+    public string Municipio { get; set; }
+
+    public int CodigoPais { get; set; }
+
+    public string Pais { get; set; }
+
+    #endregion Propriedades
 }

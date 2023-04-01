@@ -33,35 +33,34 @@ using System;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderNFeCidades : ProviderABRASF201
 {
-    internal sealed class ProviderNFeCidades : ProviderABRASF201
+    #region Constructors
+
+    public ProviderNFeCidades(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderNFeCidades(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "NFe Cidades";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        #region Protected Methods
-
-        protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException($"O provedor [{Name}] não implementa o método [{nameof(Enviar)}], utilize o método [{nameof(EnviarSincrono)}]");
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new NFeCidadesServiceClient(this, tipo);
-        }
-
-        #endregion Protected Methods
-
-        #endregion Methods
+        Name = "NFe Cidades";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    #region Protected Methods
+
+    protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        throw new NotImplementedException($"O provedor [{Name}] não implementa o método [{nameof(Enviar)}], utilize o método [{nameof(EnviarSincrono)}]");
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new NFeCidadesServiceClient(this, tipo);
+    }
+
+    #endregion Protected Methods
+
+    #endregion Methods
 }

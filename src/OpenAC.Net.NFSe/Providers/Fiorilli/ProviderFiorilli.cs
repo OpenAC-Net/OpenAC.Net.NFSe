@@ -35,34 +35,33 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderFiorilli : ProviderABRASF201
 {
-    internal sealed class ProviderFiorilli : ProviderABRASF201
+    #region Constructors
+
+    public ProviderFiorilli(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderFiorilli(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Fiorilli";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override XElement WriteTomadorRps(NotaServico nota)
-        {
-            if (nota.Tomador.Endereco.CodigoMunicipio != 9999999)
-                nota.Tomador.Endereco.CodigoPais = 0;
-
-            return base.WriteTomadorRps(nota);
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new FiorilliServiceClient(this, tipo);
-        }
-
-        #endregion Methods
+        Name = "Fiorilli";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override XElement WriteTomadorRps(NotaServico nota)
+    {
+        if (nota.Tomador.Endereco.CodigoMunicipio != 9999999)
+            nota.Tomador.Endereco.CodigoPais = 0;
+
+        return base.WriteTomadorRps(nota);
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new FiorilliServiceClient(this, tipo);
+    }
+
+    #endregion Methods
 }

@@ -31,32 +31,31 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderTiplan2 : ProviderABRASF203
 {
-    internal sealed class ProviderTiplan2 : ProviderABRASF203
+    #region Constructors
+
+    public ProviderTiplan2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderTiplan2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Tiplan2";
-            Versao = "2.03";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override string GerarCabecalho() => $"<cabecalho {GetVersao()} {GetNamespace()} xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><versaoDados>{Versao}</versaoDados></cabecalho>";
-
-        protected override IServiceClient GetClient(TipoUrl tipo) => new Tiplan2ServiceClient(this, tipo, Certificado);
-
-        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
-        {
-            //NAO PRECISA ASSINAR
-        }
-
-        #endregion Methods
-
+        Name = "Tiplan2";
+        Versao = "2.03";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override string GerarCabecalho() => $"<cabecalho {GetVersao()} {GetNamespace()} xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><versaoDados>{Versao}</versaoDados></cabecalho>";
+
+    protected override IServiceClient GetClient(TipoUrl tipo) => new Tiplan2ServiceClient(this, tipo, Certificado);
+
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {
+        //NAO PRECISA ASSINAR
+    }
+
+    #endregion Methods
+
 }

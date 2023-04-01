@@ -35,102 +35,101 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class CITTAServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class CITTAServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
-        {
-        }
-
-        public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", msg, "RecepcionarLoteRpsSincronoResposta");
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            return Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", msg, "ConsultarLoteRpsResposta");
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", msg, "ConsultarNfsePorRpsResposta");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<nfse:ConsultarNfsePorFaixaEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append(msg);
-            message.Append("</nfse:ConsultarNfsePorFaixaEnvio>");
-
-            return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorFaixa", message.ToString(), "ConsultarNfseFaixaResponse");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<nfse:CancelarNfseEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append(msg);
-            message.Append("</nfse:CancelarNfseEnvio>");
-
-            return Execute("http://nfse.abrasf.org.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<nfse:SubstituirNfseEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            message.Append(msg);
-            message.Append("</nfse:SubstituirNfseEnvio>");
-
-            return Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), "SubstituirNfseResponse");
-        }
-
-        private string Execute(string action, string message, params string[] responseTag)
-        {
-            var ns = "xmlns:nfse=\"http://nfse.abrasf.org.br\" xmlns:nfs=\"http://localhost:8080/nfse/services/nfseSOAP?wsdl\"";
-            if (action == "http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono") ns += " xmlns:nfse1=\"http://nfse.citta.com.br\"";
-
-            return Execute(action, message, responseTag, ns);
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
-        }
-
-        #endregion Methods
     }
+
+    public CITTAServiceClient(ProviderCITTA provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
+    {
+    }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", msg, "RecepcionarLoteRpsSincronoResposta");
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        return Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", msg, "ConsultarLoteRpsResposta");
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", msg, "ConsultarNfsePorRpsResposta");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:ConsultarNfsePorFaixaEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        message.Append(msg);
+        message.Append("</nfse:ConsultarNfsePorFaixaEnvio>");
+
+        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorFaixa", message.ToString(), "ConsultarNfseFaixaResponse");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:CancelarNfseEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        message.Append(msg);
+        message.Append("</nfse:CancelarNfseEnvio>");
+
+        return Execute("http://nfse.abrasf.org.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:SubstituirNfseEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        message.Append(msg);
+        message.Append("</nfse:SubstituirNfseEnvio>");
+
+        return Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), "SubstituirNfseResponse");
+    }
+
+    private string Execute(string action, string message, params string[] responseTag)
+    {
+        var ns = "xmlns:nfse=\"http://nfse.abrasf.org.br\" xmlns:nfs=\"http://localhost:8080/nfse/services/nfseSOAP?wsdl\"";
+        if (action == "http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono") ns += " xmlns:nfse1=\"http://nfse.citta.com.br\"";
+
+        return Execute(action, message, responseTag, ns);
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
+    }
+
+    #endregion Methods
 }

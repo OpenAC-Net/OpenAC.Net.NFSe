@@ -35,142 +35,141 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public BHISSServiceClient(ProviderBHISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public BHISSServiceClient(ProviderBHISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:RecepcionarLoteRpsRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(nfseCabecMsg);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(nfseDadosMsg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ws:RecepcionarLoteRpsRequest>");
-
-            return Execute("http://ws.bhiss.pbh.gov.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:GerarNfseRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ws:GerarNfseRequest>");
-
-            return Execute("http://ws.bhiss.pbh.gov.br/GerarNfse", message.ToString(), "GerarNfseResponse");
-        }
-
-        public string CancelarNFSe(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:CancelarNfseRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(nfseCabecMsg);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(nfseDadosMsg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ws:CancelarNfseRequest>");
-
-            return Execute("http://ws.bhiss.pbh.gov.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
-        }
-
-        public string ConsultarLoteRps(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:ConsultarLoteRpsRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(nfseCabecMsg);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(nfseDadosMsg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ws:ConsultarLoteRpsRequest>");
-
-            return Execute("http://ws.bhiss.pbh.gov.br/ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResponse");
-        }
-
-        public string ConsultarNFSe(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:ConsultarNfseRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(nfseCabecMsg);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(nfseDadosMsg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ws:ConsultarNfseRequest>");
-
-            return Execute("http://ws.bhiss.pbh.gov.br/ConsultarNfse", message.ToString(), "ConsultarNfseResponse");
-        }
-
-        public string ConsultarNFSeRps(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:ConsultarNfsePorRpsRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(nfseCabecMsg);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(nfseDadosMsg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ws:ConsultarNfsePorRpsRequest>");
-
-            return Execute("http://ws.bhiss.pbh.gov.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
-        }
-
-        public string ConsultarSituacao(string nfseCabecMsg, string nfseDadosMsg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:ConsultarSituacaoLoteRpsRequest>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(nfseCabecMsg);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(nfseDadosMsg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ws:ConsultarSituacaoLoteRpsRequest>");
-
-            return Execute("http://ws.bhiss.pbh.gov.br/ConsultarSituacaoLoteRps", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
-        }
-
-        public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
-
-        public string CancelarNFSeLote(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
-
-        public string SubstituirNFSe(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
-
-        private string Execute(string action, string message, string responseTag) => Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string nfseCabecMsg, string nfseDadosMsg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:RecepcionarLoteRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(nfseCabecMsg);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(nfseDadosMsg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:RecepcionarLoteRpsRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:GerarNfseRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:GerarNfseRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/GerarNfse", message.ToString(), "GerarNfseResponse");
+    }
+
+    public string CancelarNFSe(string nfseCabecMsg, string nfseDadosMsg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:CancelarNfseRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(nfseCabecMsg);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(nfseDadosMsg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:CancelarNfseRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
+    }
+
+    public string ConsultarLoteRps(string nfseCabecMsg, string nfseDadosMsg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:ConsultarLoteRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(nfseCabecMsg);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(nfseDadosMsg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:ConsultarLoteRpsRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResponse");
+    }
+
+    public string ConsultarNFSe(string nfseCabecMsg, string nfseDadosMsg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:ConsultarNfseRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(nfseCabecMsg);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(nfseDadosMsg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:ConsultarNfseRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarNfse", message.ToString(), "ConsultarNfseResponse");
+    }
+
+    public string ConsultarNFSeRps(string nfseCabecMsg, string nfseDadosMsg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:ConsultarNfsePorRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(nfseCabecMsg);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(nfseDadosMsg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:ConsultarNfsePorRpsRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
+    }
+
+    public string ConsultarSituacao(string nfseCabecMsg, string nfseDadosMsg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:ConsultarSituacaoLoteRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(nfseCabecMsg);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(nfseDadosMsg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:ConsultarSituacaoLoteRpsRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarSituacaoLoteRps", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
+    }
+
+    public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
+
+    public string CancelarNFSeLote(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
+
+    public string SubstituirNFSe(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
+
+    private string Execute(string action, string message, string responseTag) => Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion Methods
 }

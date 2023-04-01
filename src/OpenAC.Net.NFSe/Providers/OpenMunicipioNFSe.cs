@@ -36,114 +36,113 @@ using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Serializer;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+[DFeRoot("Municipio", Namespace = "https://www.openac.net.br/")]
+public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
 {
-    [DFeRoot("Municipio", Namespace = "https://www.openac.net.br/")]
-    public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
+    #region Constructors
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpenMunicipioNFSe"/> class.
+    /// </summary>
+    public OpenMunicipioNFSe()
     {
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OpenMunicipioNFSe"/> class.
-        /// </summary>
-        public OpenMunicipioNFSe()
+        UrlHomologacao = new Dictionary<TipoUrl, string>(10)
         {
-            UrlHomologacao = new Dictionary<TipoUrl, string>(10)
-            {
-                { TipoUrl.Enviar, string.Empty },
-                { TipoUrl.EnviarSincrono, string.Empty },
-                { TipoUrl.CancelarNFSe, string.Empty },
-                { TipoUrl.CancelarNFSeLote, string.Empty },
-                { TipoUrl.ConsultarNFSe, string.Empty },
-                { TipoUrl.ConsultarNFSeRps, string.Empty },
-                { TipoUrl.ConsultarLoteRps, string.Empty },
-                { TipoUrl.ConsultarSituacao, string.Empty },
-                { TipoUrl.ConsultarSequencialRps, string.Empty },
-                { TipoUrl.SubstituirNFSe, string.Empty},
-                { TipoUrl.Autenticacao, string.Empty}
-            };
+            { TipoUrl.Enviar, string.Empty },
+            { TipoUrl.EnviarSincrono, string.Empty },
+            { TipoUrl.CancelarNFSe, string.Empty },
+            { TipoUrl.CancelarNFSeLote, string.Empty },
+            { TipoUrl.ConsultarNFSe, string.Empty },
+            { TipoUrl.ConsultarNFSeRps, string.Empty },
+            { TipoUrl.ConsultarLoteRps, string.Empty },
+            { TipoUrl.ConsultarSituacao, string.Empty },
+            { TipoUrl.ConsultarSequencialRps, string.Empty },
+            { TipoUrl.SubstituirNFSe, string.Empty},
+            { TipoUrl.Autenticacao, string.Empty}
+        };
 
-            UrlProducao = new Dictionary<TipoUrl, string>(10)
-            {
-                { TipoUrl.Enviar, string.Empty },
-                { TipoUrl.EnviarSincrono, string.Empty },
-                { TipoUrl.CancelarNFSe, string.Empty },
-                { TipoUrl.CancelarNFSeLote, string.Empty },
-                { TipoUrl.ConsultarNFSe, string.Empty },
-                { TipoUrl.ConsultarNFSeRps, string.Empty },
-                { TipoUrl.ConsultarLoteRps, string.Empty },
-                { TipoUrl.ConsultarSituacao, string.Empty },
-                { TipoUrl.ConsultarSequencialRps, string.Empty },
-                { TipoUrl.SubstituirNFSe, string.Empty },
-                { TipoUrl.Autenticacao, string.Empty }
-            };
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        /// <summary>
-        /// Define ou retorna o codigo IBGE do municipio
-        /// </summary>
-        /// <value>The codigo.</value>
-        [DFeElement(TipoCampo.Int, "Codigo")]
-        public int Codigo { get; set; }
-
-        /// <summary>
-        /// Define ou retorna o codigo Siafi do municipio
-        /// Obrigatorio para municipios com provedor DSF.
-        /// </summary>
-        /// <value>The codigo siafi.</value>
-        [DFeElement(TipoCampo.Int, "CodigoSiafi")]
-        public int CodigoSiafi { get; set; }
-
-        /// <summary>
-        /// Define ou retorna o identificador do município no provedor Equiplano
-        /// </summary>
-        /// <value>The Id Entidade.</value>
-        [DFeElement(TipoCampo.Int, "IdEntidade")]
-        public int IdEntidade { get; set; }
-
-        /// <summary>
-        /// Define ou retorna o nome do municipio
-        /// </summary>
-        /// <value>The nome.</value>
-        [DFeElement(TipoCampo.Str, "Nome")]
-        public string Nome { get; set; }
-
-        /// <summary>
-        /// Define ou retorna a UF do municipio.
-        /// </summary>
-        /// <value>The uf.</value>
-        [DFeElement(TipoCampo.Enum, "UF")]
-        public DFeSiglaUF UF { get; set; }
-
-        /// <summary>
-        /// Define ou retorna o provedor de NFSe.
-        /// </summary>
-        /// <value>The provedor.</value>
-        [DFeElement(TipoCampo.Enum, "Provedor")]
-        public NFSeProvider Provedor { get; set; }
-
-        /// <summary>
-        /// Lista de url de homologação dos serviços.
-        /// </summary>
-        /// <value>The URL homologacao.</value>
-        [DFeDictionary("UrlHomologacao", ItemName = "Item")]
-        [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
-        [DFeDictionaryValue(TipoCampo.Str, "Url")]
-        public Dictionary<TipoUrl, string> UrlHomologacao { get; set; }
-
-        /// <summary>
-        /// Lista de url de produção dos serviços.
-        /// </summary>
-        /// <value>The URL producao.</value>
-        [DFeDictionary("UrlProducao", ItemName = "Item")]
-        [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
-        [DFeDictionaryValue(TipoCampo.Str, "Url")]
-        public Dictionary<TipoUrl, string> UrlProducao { get; set; }
-
-        #endregion Propriedades
+        UrlProducao = new Dictionary<TipoUrl, string>(10)
+        {
+            { TipoUrl.Enviar, string.Empty },
+            { TipoUrl.EnviarSincrono, string.Empty },
+            { TipoUrl.CancelarNFSe, string.Empty },
+            { TipoUrl.CancelarNFSeLote, string.Empty },
+            { TipoUrl.ConsultarNFSe, string.Empty },
+            { TipoUrl.ConsultarNFSeRps, string.Empty },
+            { TipoUrl.ConsultarLoteRps, string.Empty },
+            { TipoUrl.ConsultarSituacao, string.Empty },
+            { TipoUrl.ConsultarSequencialRps, string.Empty },
+            { TipoUrl.SubstituirNFSe, string.Empty },
+            { TipoUrl.Autenticacao, string.Empty }
+        };
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    /// <summary>
+    /// Define ou retorna o codigo IBGE do municipio
+    /// </summary>
+    /// <value>The codigo.</value>
+    [DFeElement(TipoCampo.Int, "Codigo")]
+    public int Codigo { get; set; }
+
+    /// <summary>
+    /// Define ou retorna o codigo Siafi do municipio
+    /// Obrigatorio para municipios com provedor DSF.
+    /// </summary>
+    /// <value>The codigo siafi.</value>
+    [DFeElement(TipoCampo.Int, "CodigoSiafi")]
+    public int CodigoSiafi { get; set; }
+
+    /// <summary>
+    /// Define ou retorna o identificador do municÃ­pio no provedor Equiplano
+    /// </summary>
+    /// <value>The Id Entidade.</value>
+    [DFeElement(TipoCampo.Int, "IdEntidade")]
+    public int IdEntidade { get; set; }
+
+    /// <summary>
+    /// Define ou retorna o nome do municipio
+    /// </summary>
+    /// <value>The nome.</value>
+    [DFeElement(TipoCampo.Str, "Nome")]
+    public string Nome { get; set; }
+
+    /// <summary>
+    /// Define ou retorna a UF do municipio.
+    /// </summary>
+    /// <value>The uf.</value>
+    [DFeElement(TipoCampo.Enum, "UF")]
+    public DFeSiglaUF UF { get; set; }
+
+    /// <summary>
+    /// Define ou retorna o provedor de NFSe.
+    /// </summary>
+    /// <value>The provedor.</value>
+    [DFeElement(TipoCampo.Enum, "Provedor")]
+    public NFSeProvider Provedor { get; set; }
+
+    /// <summary>
+    /// Lista de url de homologaÃ§Ã£o dos serviÃ§os.
+    /// </summary>
+    /// <value>The URL homologacao.</value>
+    [DFeDictionary("UrlHomologacao", ItemName = "Item")]
+    [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
+    [DFeDictionaryValue(TipoCampo.Str, "Url")]
+    public Dictionary<TipoUrl, string> UrlHomologacao { get; set; }
+
+    /// <summary>
+    /// Lista de url de produÃ§Ã£o dos serviÃ§os.
+    /// </summary>
+    /// <value>The URL producao.</value>
+    [DFeDictionary("UrlProducao", ItemName = "Item")]
+    [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
+    [DFeDictionaryValue(TipoCampo.Str, "Url")]
+    public Dictionary<TipoUrl, string> UrlProducao { get; set; }
+
+    #endregion Propriedades
 }

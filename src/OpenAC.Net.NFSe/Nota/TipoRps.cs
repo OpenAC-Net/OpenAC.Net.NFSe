@@ -31,15 +31,14 @@
 
 using System.ComponentModel;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum TipoRps
 {
-    public enum TipoRps
-    {
-        RPS = 0,
+    RPS = 0,
 
-        [Description("NFSe Conjugada")]
-        NFConjugada = 1,
+    [Description("NFSe Conjugada")]
+    NFConjugada = 1,
 
-        Cupom = 2
-    }
+    Cupom = 2
 }

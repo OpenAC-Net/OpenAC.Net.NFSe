@@ -31,35 +31,34 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderMetropolisWeb : ProviderABRASF
 {
-    internal sealed class ProviderMetropolisWeb : ProviderABRASF
+    #region Construtor
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ProviderABRASF" /> class.
+    /// </summary>
+    /// <param name="config">The configuration.</param>
+    /// <param name="municipio">The municipio.</param>
+    public ProviderMetropolisWeb(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Construtor
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ProviderABRASF" /> class.
-        /// </summary>
-        /// <param name="config">The configuration.</param>
-        /// <param name="municipio">The municipio.</param>
-        public ProviderMetropolisWeb(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "MetropolisWeb";
-        }
-
-        #endregion Construtor
-
-        #region Methods
-
-        protected override bool PrecisaValidarSchema(TipoUrl tipo) => false;
-
-        /// <summary>
-        ///     Retorna o cliente de comunicação com o webservice.
-        /// </summary>
-        /// <param name="tipo"></param>
-        /// <returns></returns>
-        protected override IServiceClient GetClient(TipoUrl tipo) => new MetropolisWebClient(this, tipo, Certificado);
-
-        #endregion Methods
+        Name = "MetropolisWeb";
     }
+
+    #endregion Construtor
+
+    #region Methods
+
+    protected override bool PrecisaValidarSchema(TipoUrl tipo) => false;
+
+    /// <summary>
+    ///     Retorna o cliente de comunicação com o webservice.
+    /// </summary>
+    /// <param name="tipo"></param>
+    /// <returns></returns>
+    protected override IServiceClient GetClient(TipoUrl tipo) => new MetropolisWebClient(this, tipo, Certificado);
+
+    #endregion Methods
 }

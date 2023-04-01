@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal static class CorrelacaoCidadeGoianiaXCodigoIBGE
 {
-    internal static class CorrelacaoCidadeGoianiaXCodigoIBGE
+    public static string GetCodigoCidadeFromCodigoIBGE(string codigoIBGE)
     {
-        public static string GetCodigoCidadeFromCodigoIBGE(string codigoIBGE)
-        {
-            if (!_codigoCidadeGoiania.ContainsKey(codigoIBGE))
-                throw new NotImplementedException("Código IBGE não encontrado na correlação para Goiânia");
+        if (!_codigoCidadeGoiania.ContainsKey(codigoIBGE))
+            throw new NotImplementedException("Código IBGE não encontrado na correlação para Goiânia");
 
-            var ret = _codigoCidadeGoiania[codigoIBGE];
+        var ret = _codigoCidadeGoiania[codigoIBGE];
 
-            if (string.IsNullOrEmpty(ret))
-                throw new NotImplementedException("Código de Cidade no banco de dados de Goiânia não encontrado na correlação para o IBGE");
+        if (string.IsNullOrEmpty(ret))
+            throw new NotImplementedException("Código de Cidade no banco de dados de Goiânia não encontrado na correlação para o IBGE");
 
-            return ret;
-        }
+        return ret;
+    }
 
-        #region Cidades Goiania X Código IBGE
+    #region Cidades Goiania X Código IBGE
 
-        private static Dictionary<string, string> _codigoCidadeGoiania = new Dictionary<string, string>
-        {
+    private static Dictionary<string, string> _codigoCidadeGoiania = new()
+    {
             { "1200013", "107200" }, // ACRELÂNDIA/AC
             { "1200054", "078600" }, // ASSIS BRASIL/AC
             { "1200104", "078700" }, // BRASILÉIA/AC
@@ -5575,6 +5575,5 @@ namespace OpenAC.Net.NFSe.Providers
             { "1722107", "001500" }, // XAMBIOÁ/TO
         };
 
-        #endregion
-    }
+    #endregion Cidades Goiania X Código IBGE
 }

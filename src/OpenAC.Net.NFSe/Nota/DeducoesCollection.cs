@@ -32,33 +32,32 @@
 using System.ComponentModel;
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DeducoesCollection : DFeCollection<Deducao>, INotifyPropertyChanged
 {
-    public sealed class DeducoesCollection : DFeCollection<Deducao>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Contructors
+
+    internal DeducoesCollection()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Contructors
-
-        internal DeducoesCollection()
-        {
-        }
-
-        #endregion Contructors
-
-        #region Methods
-
-        public override Deducao AddNew()
-        {
-            var ret = new Deducao();
-            Add(ret);
-            return ret;
-        }
-
-        #endregion Methods
     }
+
+    #endregion Contructors
+
+    #region Methods
+
+    public override Deducao AddNew()
+    {
+        var ret = new Deducao();
+        Add(ret);
+        return ret;
+    }
+
+    #endregion Methods
 }

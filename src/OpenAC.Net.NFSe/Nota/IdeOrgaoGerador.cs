@@ -32,30 +32,29 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class IdeOrgaoGerador : GenericClone<IdeOrgaoGerador>, INotifyPropertyChanged
 {
-    public sealed class IdeOrgaoGerador : GenericClone<IdeOrgaoGerador>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal IdeOrgaoGerador()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal IdeOrgaoGerador()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public int CodigoMunicipio { get; set; }
-
-        public string Uf { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public int CodigoMunicipio { get; set; }
+
+    public string Uf { get; set; }
+
+    #endregion Propriedades
 }

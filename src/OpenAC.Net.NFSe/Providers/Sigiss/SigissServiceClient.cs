@@ -35,92 +35,91 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class SigissServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class SigissServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public SigissServiceClient(ProviderSigiss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public SigissServiceClient(ProviderSigiss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
-        {
-            CharSet = "iso-8859-1";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            var request = new StringBuilder();
-            request.Append("<urn:GerarNota soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            request.Append(msg);
-            request.Append("</urn:GerarNota>");
-
-            return Execute("urn:sigiss_ws#GerarNota", request.ToString(), new string[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            var request = new StringBuilder();
-            request.Append("<urn:ConsultarNotaValida soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            request.Append("<DadosConsultaNota xsi:type=\"urn:tcDadosConsultaNota\">");
-            request.Append(msg);
-            request.Append("</DadosConsultaNota>");
-            request.Append("</urn:ConsultarNotaValida>");
-
-            return Execute("urn:sigiss_ws#ConsultarNotaValida", request.ToString(), new[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var request = new StringBuilder();
-            request.Append("<urn:CancelarNota soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
-            request.Append(msg);
-            request.Append("</urn:CancelarNota>");
-
-            return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), new[] { "CancelarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            string Url = Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
-            string Namespace = "xmlns:ws=\"" + Url + "\"";
-            //string Namespace1 = "xmlns:ws=\"https://abrasfchapeco.meumunicipio.online/ws\"";
-
-            var message = new StringBuilder();
-            message.Append("<ws:ConsultarLoteRps>");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</ws:ConsultarLoteRps>");
-            return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", new[] { "ConsultarLoteRpsResponse", "ConsultarLoteRpsResult" }, Namespace);
-        }
-
-        public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
-
-        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
-
-        public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException();
-
-        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            //verifica se o retorno tem os elementos corretos senão da erro.
-            var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
-            _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
-            //_ = element.ElementAnyNs("DescricaoErros") ?? throw new OpenDFeCommunicationException($"Erro ({responseTag[1]}) do xml não encontrado"); -> removido em concordancia com o Rafael pois o provedor nao mandava essa tag em alguns casos
-
-            return element.ToString();
-        }
-
-        protected override bool ValidarCertificadoServidor() => false;
-
-        #endregion Methods
+        CharSet = "iso-8859-1";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        var request = new StringBuilder();
+        request.Append("<urn:GerarNota soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        request.Append(msg);
+        request.Append("</urn:GerarNota>");
+
+        return Execute("urn:sigiss_ws#GerarNota", request.ToString(), new string[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        var request = new StringBuilder();
+        request.Append("<urn:ConsultarNotaValida soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        request.Append("<DadosConsultaNota xsi:type=\"urn:tcDadosConsultaNota\">");
+        request.Append(msg);
+        request.Append("</DadosConsultaNota>");
+        request.Append("</urn:ConsultarNotaValida>");
+
+        return Execute("urn:sigiss_ws#ConsultarNotaValida", request.ToString(), new[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var request = new StringBuilder();
+        request.Append("<urn:CancelarNota soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        request.Append(msg);
+        request.Append("</urn:CancelarNota>");
+
+        return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), new[] { "CancelarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        string Url = Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
+        string Namespace = "xmlns:ws=\"" + Url + "\"";
+        //string Namespace1 = "xmlns:ws=\"https://abrasfchapeco.meumunicipio.online/ws\"";
+
+        var message = new StringBuilder();
+        message.Append("<ws:ConsultarLoteRps>");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</ws:ConsultarLoteRps>");
+        return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", new[] { "ConsultarLoteRpsResponse", "ConsultarLoteRpsResult" }, Namespace);
+    }
+
+    public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
+
+    public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException();
+
+    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        //verifica se o retorno tem os elementos corretos senão da erro.
+        var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
+        _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
+        //_ = element.ElementAnyNs("DescricaoErros") ?? throw new OpenDFeCommunicationException($"Erro ({responseTag[1]}) do xml não encontrado"); -> removido em concordancia com o Rafael pois o provedor nao mandava essa tag em alguns casos
+
+        return element.ToString();
+    }
+
+    protected override bool ValidarCertificadoServidor() => false;
+
+    #endregion Methods
 }

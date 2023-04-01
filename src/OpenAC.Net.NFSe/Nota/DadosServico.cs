@@ -32,71 +32,70 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyChanged
 {
-    public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal DadosServico()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal DadosServico()
-        {
-            Valores = new ValoresServico();
-            ItemListaServico = string.Empty;
-            CodigoCnae = string.Empty;
-            CodigoTributacaoMunicipio = string.Empty;
-            Discriminacao = string.Empty;
-            NumeroProcesso = string.Empty;
-            ExigibilidadeIss = ExigibilidadeIss.Exigivel;
-            ItensServico = new ServicosCollection();
-            Deducoes = new DeducoesCollection();
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public ValoresServico Valores { get; }
-
-        public string ItemListaServico { get; set; }
-
-        public string CodigoCnae { get; set; }
-
-        public string CodigoTributacaoMunicipio { get; set; }
-
-        public string CodigoNbs { get; set; }
-
-        public string Discriminacao { get; set; }
-
-        public int CodigoMunicipio { get; set; }
-
-        public string Municipio { get; set; }
-
-        public int CodigoPais { get; set; }
-
-        public ExigibilidadeIss ExigibilidadeIss { get; set; }
-
-        public string IdentifNaoExigibilidade { get; set; }
-
-        public int MunicipioIncidencia { get; set; }
-
-        public string UfIncidencia { get; set; }
-
-        public string NumeroProcesso { get; set; }
-
-        public ServicosCollection ItensServico { get; }
-
-        public ResponsavelRetencao? ResponsavelRetencao { get; set; }
-
-        public string Descricao { get; set; }
-
-        public DeducoesCollection Deducoes { get; }
-
-        #endregion Propriedades
+        Valores = new ValoresServico();
+        ItemListaServico = string.Empty;
+        CodigoCnae = string.Empty;
+        CodigoTributacaoMunicipio = string.Empty;
+        Discriminacao = string.Empty;
+        NumeroProcesso = string.Empty;
+        ExigibilidadeIss = ExigibilidadeIss.Exigivel;
+        ItensServico = new ServicosCollection();
+        Deducoes = new DeducoesCollection();
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public ValoresServico Valores { get; }
+
+    public string ItemListaServico { get; set; }
+
+    public string CodigoCnae { get; set; }
+
+    public string CodigoTributacaoMunicipio { get; set; }
+
+    public string CodigoNbs { get; set; }
+
+    public string Discriminacao { get; set; }
+
+    public int CodigoMunicipio { get; set; }
+
+    public string Municipio { get; set; }
+
+    public int CodigoPais { get; set; }
+
+    public ExigibilidadeIss ExigibilidadeIss { get; set; }
+
+    public string IdentifNaoExigibilidade { get; set; }
+
+    public int MunicipioIncidencia { get; set; }
+
+    public string UfIncidencia { get; set; }
+
+    public string NumeroProcesso { get; set; }
+
+    public ServicosCollection ItensServico { get; }
+
+    public ResponsavelRetencao? ResponsavelRetencao { get; set; }
+
+    public string Descricao { get; set; }
+
+    public DeducoesCollection Deducoes { get; }
+
+    #endregion Propriedades
 }

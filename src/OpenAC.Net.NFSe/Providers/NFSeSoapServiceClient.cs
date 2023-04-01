@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -40,136 +41,135 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 {
-    public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
+    #region Inner Types
+
+    public enum SoapVersion
     {
-        #region Inner Types
-
-        public enum SoapVersion
-        {
-            Soap11,
-            Soap12,
-        }
-
-        #endregion Inner Types
-
-        #region Constructors
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="provider"></param>
-        /// <param name="tipoUrl"></param>
-        protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, SoapVersion message) : base(provider, tipoUrl, provider.Certificado)
-        {
-            Guard.Against<ArgumentException>(!Enum.IsDefined(typeof(SoapVersion), message), "Versão Soap não definida.");
-
-            MessageVersion = message;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="provider"></param>
-        /// <param name="tipoUrl"></param>
-        /// <param name="certificado"></param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado, SoapVersion message) : base(provider, tipoUrl, certificado)
-        {
-            Guard.Against<ArgumentException>(!Enum.IsDefined(typeof(SoapVersion), message), "Versão Soap não definida.");
-
-            MessageVersion = message;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        protected SoapVersion MessageVersion { get; }
-
-        protected string CharSet { get; set; } = "utf-8";
-
-        #endregion Properties
-
-        #region Methods
-
-        protected virtual string Execute(string soapAction, string message, string responseTag, params string[] soapNamespaces)
-        {
-            return Execute(soapAction, message, string.Empty, new[] { responseTag }, soapNamespaces);
-        }
-
-        protected virtual string Execute(string soapAction, string message, string[] responseTag, params string[] soapNamespaces)
-        {
-            return Execute(soapAction, message, string.Empty, responseTag, soapNamespaces);
-        }
-
-        protected virtual string Execute(string soapAction, string message, string soapHeader, string responseTag, params string[] soapNamespaces)
-        {
-            return Execute(soapAction, message, soapHeader, new[] { responseTag }, soapNamespaces);
-        }
-
-        protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
-        {
-            string contentType;
-            Dictionary<string, string> headers;
-            switch (MessageVersion)
-            {
-                case SoapVersion.Soap11:
-                    contentType = $"text/xml; charset={CharSet}";
-                    headers = new Dictionary<string, string> { { "SOAPAction", soapAction } };
-                    break;
-
-                case SoapVersion.Soap12:
-                    contentType = $"application/soap+xml; charset={CharSet};action={soapAction}";
-                    headers = null;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            var envelope = new StringBuilder();
-            switch (MessageVersion)
-            {
-                case SoapVersion.Soap11:
-                    envelope.Append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"");
-                    break;
-
-                case SoapVersion.Soap12:
-                    envelope.Append("<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"");
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            envelope.Append(soapNamespaces.Aggregate("", (atual, next) => atual + $" {next}", namespaces => namespaces + ">"));
-            envelope.Append(soapHeader.IsEmpty() ? "<soapenv:Header/>" : $"<soapenv:Header>{soapHeader}</soapenv:Header>");
-            envelope.Append("<soapenv:Body>");
-            envelope.Append(message);
-            envelope.Append("</soapenv:Body>");
-            envelope.Append("</soapenv:Envelope>");
-            EnvelopeEnvio = envelope.ToString();
-
-            Execute(contentType, "POST", headers);
-
-            if (!EnvelopeRetorno.IsValidXml())
-                throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
-                
-            var xmlDocument = XDocument.Parse(EnvelopeRetorno);
-            var body = xmlDocument.ElementAnyNs("Envelope").ElementAnyNs("Body");
-            var retorno = TratarRetorno(body, responseTag);
-            if (retorno.IsValidXml()) return retorno;
-
-            if (retorno!=null)
-                throw new OpenDFeCommunicationException(retorno);
-            else
-                throw new OpenDFeCommunicationException(EnvelopeRetorno);
-        }
-
-        protected abstract string TratarRetorno(XElement xmlDocument, string[] responseTag);
-
-        #endregion Methods
+        Soap11,
+        Soap12,
     }
+
+    #endregion Inner Types
+
+    #region Constructors
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="provider"></param>
+    /// <param name="tipoUrl"></param>
+    protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, SoapVersion message) : base(provider, tipoUrl, provider.Certificado)
+    {
+        Guard.Against<ArgumentException>(!Enum.IsDefined(typeof(SoapVersion), message), "Versão Soap não definida.");
+
+        MessageVersion = message;
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="provider"></param>
+    /// <param name="tipoUrl"></param>
+    /// <param name="certificado"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado, SoapVersion message) : base(provider, tipoUrl, certificado)
+    {
+        Guard.Against<ArgumentException>(!Enum.IsDefined(typeof(SoapVersion), message), "Versão Soap não definida.");
+
+        MessageVersion = message;
+    }
+
+    #endregion Constructors
+
+    #region Properties
+
+    protected SoapVersion MessageVersion { get; }
+
+    protected string CharSet { get; set; } = "utf-8";
+
+    #endregion Properties
+
+    #region Methods
+
+    protected virtual string Execute(string soapAction, string message, string responseTag, params string[] soapNamespaces)
+    {
+        return Execute(soapAction, message, string.Empty, new[] { responseTag }, soapNamespaces);
+    }
+
+    protected virtual string Execute(string soapAction, string message, string[] responseTag, params string[] soapNamespaces)
+    {
+        return Execute(soapAction, message, string.Empty, responseTag, soapNamespaces);
+    }
+
+    protected virtual string Execute(string soapAction, string message, string soapHeader, string responseTag, params string[] soapNamespaces)
+    {
+        return Execute(soapAction, message, soapHeader, new[] { responseTag }, soapNamespaces);
+    }
+
+    protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
+    {
+        string contentType;
+        Dictionary<string, string> headers;
+        switch (MessageVersion)
+        {
+            case SoapVersion.Soap11:
+                contentType = $"text/xml; charset={CharSet}";
+                headers = new Dictionary<string, string> { { "SOAPAction", soapAction } };
+                break;
+
+            case SoapVersion.Soap12:
+                contentType = $"application/soap+xml; charset={CharSet};action={soapAction}";
+                headers = null;
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        var envelope = new StringBuilder();
+        switch (MessageVersion)
+        {
+            case SoapVersion.Soap11:
+                envelope.Append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"");
+                break;
+
+            case SoapVersion.Soap12:
+                envelope.Append("<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"");
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        envelope.Append(soapNamespaces.Aggregate("", (atual, next) => atual + $" {next}", namespaces => namespaces + ">"));
+        envelope.Append(soapHeader.IsEmpty() ? "<soapenv:Header/>" : $"<soapenv:Header>{soapHeader}</soapenv:Header>");
+        envelope.Append("<soapenv:Body>");
+        envelope.Append(message);
+        envelope.Append("</soapenv:Body>");
+        envelope.Append("</soapenv:Envelope>");
+        EnvelopeEnvio = envelope.ToString();
+
+        Execute(contentType, HttpMethod.Post, headers);
+
+        if (!EnvelopeRetorno.IsValidXml())
+            throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
+
+        var xmlDocument = XDocument.Parse(EnvelopeRetorno);
+        var body = xmlDocument.ElementAnyNs("Envelope").ElementAnyNs("Body");
+        var retorno = TratarRetorno(body, responseTag);
+        if (retorno.IsValidXml()) return retorno;
+
+        if (retorno != null)
+            throw new OpenDFeCommunicationException(retorno);
+        else
+            throw new OpenDFeCommunicationException(EnvelopeRetorno);
+    }
+
+    protected abstract string TratarRetorno(XElement xmlDocument, string[] responseTag);
+
+    #endregion Methods
 }

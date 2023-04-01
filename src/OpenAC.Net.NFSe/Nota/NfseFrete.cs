@@ -29,11 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum NfseFrete
 {
-    public enum NfseFrete
-    {
-        Prestador,
-        Tomador
-    }
+    Prestador,
+    Tomador
 }

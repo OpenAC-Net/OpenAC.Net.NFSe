@@ -31,27 +31,26 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+// ReSharper disable once InconsistentNaming
+internal sealed class ProviderWebIss2 : ProviderABRASF202
 {
-    // ReSharper disable once InconsistentNaming
-    internal sealed class ProviderWebIss2 : ProviderABRASF202
+    #region Constructors
+
+    public ProviderWebIss2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderWebIss2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "WebISS2";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new WebIss2ServiceClient(this, tipo);
-        }
-
-        #endregion Methods
+        Name = "WebISS2";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new WebIss2ServiceClient(this, tipo);
+    }
+
+    #endregion Methods
 }

@@ -35,145 +35,144 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+// ReSharper disable once InconsistentNaming
+internal sealed class WebIssServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    // ReSharper disable once InconsistentNaming
-    internal sealed class WebIssServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public WebIssServiceClient(ProviderWebIss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public WebIssServiceClient(ProviderWebIss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<RecepcionarLoteRps xmlns=\"http://tempuri.org/\">");
-            message.Append("<cabec>");
-            message.AppendCData(cabec);
-            message.Append("</cabec>");
-            message.Append("<msg>");
-            message.AppendCData(msg);
-            message.Append("</msg>");
-            message.Append("</RecepcionarLoteRps>");
-
-            return Execute("http://tempuri.org/INfseServices/RecepcionarLoteRps", message.ToString());
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ConsultarSituacaoLoteRps xmlns=\"http://tempuri.org/\">");
-            message.Append("<cabec>");
-            message.AppendCData(cabec);
-            message.Append("</cabec>");
-            message.Append("<msg>");
-            message.AppendCData(msg);
-            message.Append("</msg>");
-            message.Append("</ConsultarSituacaoLoteRps>");
-
-            return Execute("http://tempuri.org/INfseServices/ConsultarSituacaoLoteRps", message.ToString());
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ConsultarLoteRps xmlns=\"http://tempuri.org/\">");
-            message.Append("<cabec>");
-            message.AppendCData(cabec);
-            message.Append("</cabec>");
-            message.Append("<msg>");
-            message.AppendCData(msg);
-            message.Append("</msg>");
-            message.Append("</ConsultarLoteRps>");
-
-            return Execute("http://tempuri.org/INfseServices/ConsultarLoteRps", message.ToString());
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ConsultarNfsePorRps xmlns=\"http://tempuri.org/\">");
-            message.Append("<cabec>");
-            message.AppendCData(cabec);
-            message.Append("</cabec>");
-            message.Append("<msg>");
-            message.AppendCData(msg);
-            message.Append("</msg>");
-            message.Append("</ConsultarNfsePorRps>");
-
-            return Execute("http://tempuri.org/INfseServices/ConsultarNfsePorRps", message.ToString());
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ConsultarNfse xmlns=\"http://tempuri.org/\">");
-            message.Append("<cabec>");
-            message.AppendCData(cabec);
-            message.Append("</cabec>");
-            message.Append("<msg>");
-            message.AppendCData(msg);
-            message.Append("</msg>");
-            message.Append("</ConsultarNfse>");
-
-            return Execute("http://tempuri.org/INfseServices/ConsultarNfse", message.ToString());
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<CancelarNfse xmlns=\"http://tempuri.org/\">");
-            message.Append("<cabec>");
-            message.AppendCData(cabec);
-            message.Append("</cabec>");
-            message.Append("<msg>");
-            message.AppendCData(msg);
-            message.Append("</msg>");
-            message.Append("</CancelarNfse>");
-
-            return Execute("http://tempuri.org/INfseServices/CancelarNfse", message.ToString());
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        private string Execute(string soapAction, string message)
-        {
-            return Execute(soapAction, message, "");
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null) return xmlDocument.ToString();
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<RecepcionarLoteRps xmlns=\"http://tempuri.org/\">");
+        message.Append("<cabec>");
+        message.AppendCData(cabec);
+        message.Append("</cabec>");
+        message.Append("<msg>");
+        message.AppendCData(msg);
+        message.Append("</msg>");
+        message.Append("</RecepcionarLoteRps>");
+
+        return Execute("http://tempuri.org/INfseServices/RecepcionarLoteRps", message.ToString());
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ConsultarSituacaoLoteRps xmlns=\"http://tempuri.org/\">");
+        message.Append("<cabec>");
+        message.AppendCData(cabec);
+        message.Append("</cabec>");
+        message.Append("<msg>");
+        message.AppendCData(msg);
+        message.Append("</msg>");
+        message.Append("</ConsultarSituacaoLoteRps>");
+
+        return Execute("http://tempuri.org/INfseServices/ConsultarSituacaoLoteRps", message.ToString());
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ConsultarLoteRps xmlns=\"http://tempuri.org/\">");
+        message.Append("<cabec>");
+        message.AppendCData(cabec);
+        message.Append("</cabec>");
+        message.Append("<msg>");
+        message.AppendCData(msg);
+        message.Append("</msg>");
+        message.Append("</ConsultarLoteRps>");
+
+        return Execute("http://tempuri.org/INfseServices/ConsultarLoteRps", message.ToString());
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ConsultarNfsePorRps xmlns=\"http://tempuri.org/\">");
+        message.Append("<cabec>");
+        message.AppendCData(cabec);
+        message.Append("</cabec>");
+        message.Append("<msg>");
+        message.AppendCData(msg);
+        message.Append("</msg>");
+        message.Append("</ConsultarNfsePorRps>");
+
+        return Execute("http://tempuri.org/INfseServices/ConsultarNfsePorRps", message.ToString());
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ConsultarNfse xmlns=\"http://tempuri.org/\">");
+        message.Append("<cabec>");
+        message.AppendCData(cabec);
+        message.Append("</cabec>");
+        message.Append("<msg>");
+        message.AppendCData(msg);
+        message.Append("</msg>");
+        message.Append("</ConsultarNfse>");
+
+        return Execute("http://tempuri.org/INfseServices/ConsultarNfse", message.ToString());
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<CancelarNfse xmlns=\"http://tempuri.org/\">");
+        message.Append("<cabec>");
+        message.AppendCData(cabec);
+        message.Append("</cabec>");
+        message.Append("<msg>");
+        message.AppendCData(msg);
+        message.Append("</msg>");
+        message.Append("</CancelarNfse>");
+
+        return Execute("http://tempuri.org/INfseServices/CancelarNfse", message.ToString());
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    private string Execute(string soapAction, string message)
+    {
+        return Execute(soapAction, message, "");
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null) return xmlDocument.ToString();
+
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion Methods
 }

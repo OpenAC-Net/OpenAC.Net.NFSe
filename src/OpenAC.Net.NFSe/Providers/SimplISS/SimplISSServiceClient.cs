@@ -37,149 +37,148 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class SimplISSServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class SimplISSServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Fields
+
+    private XNamespace tc = "http://www.sistema.com.br/Nfse/arquivos/nfse_3.xsd";
+
+    #endregion Fields
+
+    #region Constructors
+
+    public SimplISSServiceClient(ProviderSimplISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Fields
-
-        private XNamespace tc = "http://www.sistema.com.br/Nfse/arquivos/nfse_3.xsd";
-
-        #endregion Fields
-
-        #region Constructors
-
-        public SimplISSServiceClient(ProviderSimplISS provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<sis:RecepcionarLoteRps>");
-            message.Append(AjustarMensagem(msg, "LoteRps"));
-            message.Append(DadosUsuario());
-            message.Append("</sis:RecepcionarLoteRps>");
-
-            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResult");
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<sis:ConsultarSituacaoLoteRps>");
-            message.Append(AjustarMensagem(msg));
-            message.Append(DadosUsuario());
-            message.Append("</sis:ConsultarSituacaoLoteRps>");
-
-            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarSituacaoLoteRps",
-                message.ToString(), "ConsultarSituacaoLoteRpsResult");
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<sis:ConsultarLoteRps>");
-            message.Append(AjustarMensagem(msg));
-            message.Append(DadosUsuario());
-            message.Append("</sis:ConsultarLoteRps>");
-
-            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarLoteRps",
-                message.ToString(), "ConsultarLoteRpsResult");
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<sis:ConsultarNfsePorRps>");
-            message.Append(AjustarMensagem(msg));
-            message.Append(DadosUsuario());
-            message.Append("</sis:ConsultarNfsePorRps>");
-
-            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarNfsePorRps",
-                message.ToString(), "ConsultarNfsePorRpsResult");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<sis:ConsultarNfse>");
-            message.Append(AjustarMensagem(msg));
-            message.Append(DadosUsuario());
-            message.Append("</sis:ConsultarNfse>");
-
-            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarNfse",
-                message.ToString(), "ConsultarNfseResult");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<sis:CancelarNfse>");
-            message.Append(AjustarMensagem(msg));
-            message.Append(DadosUsuario());
-            message.Append("</sis:CancelarNfse>");
-
-            return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/CancelarNfse",
-                message.ToString(), "CancelarNfseResult");
-        }
-
-        public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-
-        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-
-        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-
-        public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-
-        private string Execute(string soapAction, string message, string responseTag)
-        {
-            Guard.Against<OpenDFeCommunicationException>(ValidarUsernamePassword(), "Faltou informar username e/ou password");
-
-            return Execute(soapAction, message, "", responseTag, "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
-                                                                 "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\"");
-        }
-
-        public string AjustarMensagem(string msg, params string[] tags)
-        {
-            var document = XDocument.Parse(msg);
-            var element = tags.Aggregate(document.Root, (current, tag) => current.ElementAnyNs(tag));
-
-            element.AddAttribute(new XAttribute(XNamespace.Xmlns + "nfse", tc));
-            NFSeUtil.ApplyNamespace(element, tc);
-
-            var result = document.AsString(false, false);
-            var tagName = document.Root?.Name.LocalName ?? "";
-
-            return result.Contains($"nfse:{tagName}") ? result.Replace($"nfse:{tagName}", $"sis:{tagName}") :
-                result.Replace(tagName, $"sis:{tagName}");
-        }
-
-        private bool ValidarUsernamePassword() => Provider.Configuracoes.WebServices.Usuario.IsEmpty() && Provider.Configuracoes.WebServices.Senha.IsEmpty();
-
-        private string DadosUsuario()
-        {
-            return $"<sis:pParam><sis1:P1>{Provider.Configuracoes.WebServices.Usuario.OnlyNumbers()}</sis1:P1>" +
-                   $"<sis1:P2>{Provider.Configuracoes.WebServices.Senha.HtmlEncode()}</sis1:P2></sis:pParam>";
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null)
-            {
-                element = responseTag.Aggregate(xmlDocument.Elements().First(), (current, tag) => current.ElementAnyNs(tag));
-                return element.ToString();
-            }
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<sis:RecepcionarLoteRps>");
+        message.Append(AjustarMensagem(msg, "LoteRps"));
+        message.Append(DadosUsuario());
+        message.Append("</sis:RecepcionarLoteRps>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResult");
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<sis:ConsultarSituacaoLoteRps>");
+        message.Append(AjustarMensagem(msg));
+        message.Append(DadosUsuario());
+        message.Append("</sis:ConsultarSituacaoLoteRps>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarSituacaoLoteRps",
+            message.ToString(), "ConsultarSituacaoLoteRpsResult");
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<sis:ConsultarLoteRps>");
+        message.Append(AjustarMensagem(msg));
+        message.Append(DadosUsuario());
+        message.Append("</sis:ConsultarLoteRps>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarLoteRps",
+            message.ToString(), "ConsultarLoteRpsResult");
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<sis:ConsultarNfsePorRps>");
+        message.Append(AjustarMensagem(msg));
+        message.Append(DadosUsuario());
+        message.Append("</sis:ConsultarNfsePorRps>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarNfsePorRps",
+            message.ToString(), "ConsultarNfsePorRpsResult");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<sis:ConsultarNfse>");
+        message.Append(AjustarMensagem(msg));
+        message.Append(DadosUsuario());
+        message.Append("</sis:ConsultarNfse>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/ConsultarNfse",
+            message.ToString(), "ConsultarNfseResult");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<sis:CancelarNfse>");
+        message.Append(AjustarMensagem(msg));
+        message.Append(DadosUsuario());
+        message.Append("</sis:CancelarNfse>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/CancelarNfse",
+            message.ToString(), "CancelarNfseResult");
+    }
+
+    public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    private string Execute(string soapAction, string message, string responseTag)
+    {
+        Guard.Against<OpenDFeCommunicationException>(ValidarUsernamePassword(), "Faltou informar username e/ou password");
+
+        return Execute(soapAction, message, "", responseTag, "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
+            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\"");
+    }
+
+    public string AjustarMensagem(string msg, params string[] tags)
+    {
+        var document = XDocument.Parse(msg);
+        var element = tags.Aggregate(document.Root, (current, tag) => current.ElementAnyNs(tag));
+
+        element.AddAttribute(new XAttribute(XNamespace.Xmlns + "nfse", tc));
+        NFSeUtil.ApplyNamespace(element, tc);
+
+        var result = document.AsString(false, false);
+        var tagName = document.Root?.Name.LocalName ?? "";
+
+        return result.Contains($"nfse:{tagName}") ? result.Replace($"nfse:{tagName}", $"sis:{tagName}") :
+            result.Replace(tagName, $"sis:{tagName}");
+    }
+
+    private bool ValidarUsernamePassword() => Provider.Configuracoes.WebServices.Usuario.IsEmpty() && Provider.Configuracoes.WebServices.Senha.IsEmpty();
+
+    private string DadosUsuario()
+    {
+        return $"<sis:pParam><sis1:P1>{Provider.Configuracoes.WebServices.Usuario.OnlyNumbers()}</sis1:P1>" +
+               $"<sis1:P2>{Provider.Configuracoes.WebServices.Senha.HtmlEncode()}</sis1:P2></sis:pParam>";
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null)
+        {
+            element = responseTag.Aggregate(xmlDocument.Elements().First(), (current, tag) => current.ElementAnyNs(tag));
+            return element.ToString();
+        }
+
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion Methods
 }

@@ -34,40 +34,39 @@ using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core.Document;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class IdeCancelamento : GenericClone<IdeCancelamento>, INotifyPropertyChanged
 {
-    public sealed class IdeCancelamento : GenericClone<IdeCancelamento>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal IdeCancelamento()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal IdeCancelamento()
-        {
-            Id = 0;
-            Pedido = new PedidoCancelamento();
-            Signature = new DFeSignature();
-            DataHora = DateTime.Now;
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public int Id { get; set; }
-
-        public PedidoCancelamento Pedido { get; }
-
-        public string MotivoCancelamento { get; set; }
-
-        public DateTime DataHora { get; set; }
-
-        public DFeSignature Signature { get; internal set; }
-
-        #endregion Propriedades
+        Id = 0;
+        Pedido = new PedidoCancelamento();
+        Signature = new DFeSignature();
+        DataHora = DateTime.Now;
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public int Id { get; set; }
+
+    public PedidoCancelamento Pedido { get; }
+
+    public string MotivoCancelamento { get; set; }
+
+    public DateTime DataHora { get; set; }
+
+    public DFeSignature Signature { get; internal set; }
+
+    #endregion Propriedades
 }

@@ -31,28 +31,27 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+// ReSharper disable once InconsistentNaming
+/// <summary>
+/// Classe base para trabalhar com provedores que usam o padrão ABRASF 2.02
+/// </summary>
+/// <seealso cref="ProviderBase" />
+public abstract class ProviderABRASF202 : ProviderABRASF201
 {
-    // ReSharper disable once InconsistentNaming
+    #region Constructors
+
     /// <summary>
-    /// Classe base para trabalhar com provedores que usam o padrão ABRASF 2.02
+    /// Initializes a new instance of the <see cref="ProviderABRASF202"/> class.
     /// </summary>
-    /// <seealso cref="ProviderBase" />
-    public abstract class ProviderABRASF202 : ProviderABRASF201
+    /// <param name="config">The configuration.</param>
+    /// <param name="municipio">The municipio.</param>
+    protected ProviderABRASF202(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderABRASF202"/> class.
-        /// </summary>
-        /// <param name="config">The configuration.</param>
-        /// <param name="municipio">The municipio.</param>
-        protected ProviderABRASF202(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "ABRASFv202";
-            Versao = "2.02";
-        }
-
-        #endregion Constructors
+        Name = "ABRASFv202";
+        Versao = "2.02";
     }
+
+    #endregion Constructors
 }

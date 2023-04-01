@@ -32,120 +32,119 @@
 using System.ComponentModel;
 using OpenAC.Net.DFe.Core.Attributes;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+public enum NFSeProvider : sbyte
 {
-    public enum NFSeProvider : sbyte
-    {
-        Nenhum = -1,
+    Nenhum = -1,
 
-        Americana = 29,
+    Americana = 29,
 
-        Abaco = 0,
+    Abaco = 0,
 
-        ABase = 39,
+    ABase = 39,
 
-        AssessorPublico = 33,
+    AssessorPublico = 33,
 
-        Betha = 1,
+    Betha = 1,
 
-        [Description("Betha v2")]
-        Betha2 = 2,
+    [Description("Betha v2")]
+    Betha2 = 2,
 
-        BHISS = 8,
+    BHISS = 8,
 
-        CITTA = 28,
+    CITTA = 28,
 
-        Coplan = 3,
+    Coplan = 3,
 
-        Curitiba = 26,
+    Curitiba = 26,
 
-        DBSeller = 19,
+    DBSeller = 19,
 
-        DSF = 4,
+    DSF = 4,
 
-        DSFSJC = 38,
+    DSFSJC = 38,
 
-        Equiplano = 15,
+    Equiplano = 15,
 
-        Fiorilli = 16,
+    Fiorilli = 16,
 
-        Fisco = 42,
+    Fisco = 42,
 
-        FissLex = 12,
+    FissLex = 12,
 
-        Ginfes = 5,
+    Ginfes = 5,
 
-        IPM = 36,
+    IPM = 36,
 
-        IPM2 = 47,
+    IPM2 = 47,
 
-        ISSe = 23,
+    ISSe = 23,
 
-        ISSNet = 18,
+    ISSNet = 18,
 
-        Mitra = 34,
+    Mitra = 34,
 
-        [Description("NFe Cidades")]
-        NFeCidades = 6,
+    [Description("NFe Cidades")]
+    NFeCidades = 6,
 
-        [Description("Nota Carioca")]
-        NotaCarioca = 7,
+    [Description("Nota Carioca")]
+    NotaCarioca = 7,
 
-        [Description("Pronim v2")]
-        Pronim2 = 17,
+    [Description("Pronim v2")]
+    Pronim2 = 17,
 
-        [Description("Pronim v2.03")]
-        Pronim203 = 43,
+    [Description("Pronim v2.03")]
+    Pronim203 = 43,
 
-        [Description("São Paulo")]
-        SaoPaulo = 9,
+    [Description("São Paulo")]
+    SaoPaulo = 9,
 
-        [Description("SmarAPD ABRASF")]
-        SmarAPDABRASF = 14,
+    [Description("SmarAPD ABRASF")]
+    SmarAPDABRASF = 14,
 
-        SIAPNet = 35,
+    SIAPNet = 35,
 
-        Sigiss = 20,
+    Sigiss = 20,
 
-        Sigiss2 = 44,
+    Sigiss2 = 44,
 
-        SimplISS = 24,
+    SimplISS = 24,
 
-        SimplISSv2 = 45,
+    SimplISSv2 = 45,
 
-        Sintese = 37,
+    Sintese = 37,
 
-        SpeedGov = 25,
+    SpeedGov = 25,
 
-        SystemPro = 27,
+    SystemPro = 27,
 
-        [Description("CONAM")]
-        Conam = 21,
+    [Description("CONAM")]
+    Conam = 21,
 
-        [Description("Goiania")]
-        Goiania = 22,
+    [Description("Goiania")]
+    Goiania = 22,
 
-        SigissWeb = 30,
+    SigissWeb = 30,
 
-        [Description("RLZ Informática")]
-        RLZ = 31,
+    [Description("RLZ Informática")]
+    RLZ = 31,
 
-        Tiplanv2 = 46,
+    Tiplanv2 = 46,
 
-        [Description("Vitoria")]
-        Vitoria = 13,
+    [Description("Vitoria")]
+    Vitoria = 13,
 
-        WebIss = 10,
+    WebIss = 10,
 
-        [Description("WebIss v2")]
-        WebIss2 = 11,
+    [Description("WebIss v2")]
+    WebIss2 = 11,
 
-        [Description("Porto Velho")]
-        PVH = 32,
+    [Description("Porto Velho")]
+    PVH = 32,
 
-        [Description("Metro Web")]
-        MetropolisWeb = 40,
+    [Description("Metro Web")]
+    MetropolisWeb = 40,
 
-        Thema = 41
-    }
+    Thema = 41
 }

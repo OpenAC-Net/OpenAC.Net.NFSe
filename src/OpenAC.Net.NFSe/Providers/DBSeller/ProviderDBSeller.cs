@@ -33,36 +33,35 @@ using System;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderDBSeller : ProviderABRASF
 {
-    internal sealed class ProviderDBSeller : ProviderABRASF
+    #region Constructors
+
+    public ProviderDBSeller(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderDBSeller(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "DBSeller";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
-        }
-
-        protected override bool PrecisaValidarSchema(TipoUrl tipo)
-        {
-            return false;
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new DBSellerServiceClient(this, tipo);
-        }
-
-        #endregion Methods
+        Name = "DBSeller";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
+    }
+
+    protected override bool PrecisaValidarSchema(TipoUrl tipo)
+    {
+        return false;
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new DBSellerServiceClient(this, tipo);
+    }
+
+    #endregion Methods
 }

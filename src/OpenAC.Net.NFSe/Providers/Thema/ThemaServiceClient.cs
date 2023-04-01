@@ -37,138 +37,137 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
 
-namespace OpenAC.Net.NFSe.Providers.Thema
+namespace OpenAC.Net.NFSe.Providers.Thema;
+
+internal sealed class ThemaServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class ThemaServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public ThemaServiceClient(ProviderThema provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public ThemaServiceClient(ProviderThema provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        public ThemaServiceClient(ProviderThema provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            StringBuilder message = new StringBuilder();
-            message.Append("<recepcionarLoteRps xmlns=\"http://server.nfse.thema.inf.br\">");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</recepcionarLoteRps>");
-
-            return Execute("recepcionarLoteRps", $"{message}", "recepcionarLoteRpsResponse");
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            StringBuilder message = new StringBuilder();
-            message.Append("<consultarSituacaoLoteRps xmlns=\"http://server.nfse.thema.inf.br\">");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</consultarSituacaoLoteRps>");
-
-            return Execute("consultarSituacaoLoteRps", $"{message}", "consultarSituacaoLoteRpsResponse");
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            StringBuilder message = new StringBuilder();
-            message.Append("<consultarLoteRps xmlns=\"http://server.nfse.thema.inf.br\">");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</consultarLoteRps>");
-
-            return Execute("consultarLoteRps", $"{message}", "consultarLoteRpsResponse");
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            StringBuilder message = new StringBuilder();
-            message.Append("<consultarNfsePorRps xmlns=\"http://server.nfse.thema.inf.br\">");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</consultarNfsePorRps>");
-
-            return Execute("consultarNfsePorRps", $"{message}", "consultarNfsePorRpsResponse");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            StringBuilder message = new StringBuilder();
-            message.Append("<consultarNfse xmlns=\"http://server.nfse.thema.inf.br\">");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</consultarNfse>");
-
-            return Execute("consultarNfse", $"{message}", "consultarNfseResponse");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            StringBuilder message = new StringBuilder();
-            message.Append("<cancelarNfse xmlns=\"http://server.nfse.thema.inf.br\">");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</cancelarNfse>");
-
-            return Execute("cancelarNfse", $"{message}", "cancelarNfseResponse");
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
-
-        private string Execute(string soapAction, string message, string responseTag)
-        {
-            return Execute(soapAction, message, "", responseTag, "xmlns:e=\"http://www.e-nfs.com.br\"");
-        }
-
-        protected override bool ValidarCertificadoServidor()
-        {
-            return Provider.Configuracoes.WebServices.Ambiente != DFeTipoAmbiente.Homologacao;
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            XElement element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null)
-            {
-                return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
-            }
-
-            string exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion Methods
     }
+
+    public ThemaServiceClient(ProviderThema provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    {
+    }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        StringBuilder message = new StringBuilder();
+        message.Append("<recepcionarLoteRps xmlns=\"http://server.nfse.thema.inf.br\">");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</recepcionarLoteRps>");
+
+        return Execute("recepcionarLoteRps", $"{message}", "recepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        StringBuilder message = new StringBuilder();
+        message.Append("<consultarSituacaoLoteRps xmlns=\"http://server.nfse.thema.inf.br\">");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</consultarSituacaoLoteRps>");
+
+        return Execute("consultarSituacaoLoteRps", $"{message}", "consultarSituacaoLoteRpsResponse");
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        StringBuilder message = new StringBuilder();
+        message.Append("<consultarLoteRps xmlns=\"http://server.nfse.thema.inf.br\">");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</consultarLoteRps>");
+
+        return Execute("consultarLoteRps", $"{message}", "consultarLoteRpsResponse");
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        StringBuilder message = new StringBuilder();
+        message.Append("<consultarNfsePorRps xmlns=\"http://server.nfse.thema.inf.br\">");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</consultarNfsePorRps>");
+
+        return Execute("consultarNfsePorRps", $"{message}", "consultarNfsePorRpsResponse");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        StringBuilder message = new StringBuilder();
+        message.Append("<consultarNfse xmlns=\"http://server.nfse.thema.inf.br\">");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</consultarNfse>");
+
+        return Execute("consultarNfse", $"{message}", "consultarNfseResponse");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        StringBuilder message = new StringBuilder();
+        message.Append("<cancelarNfse xmlns=\"http://server.nfse.thema.inf.br\">");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</cancelarNfse>");
+
+        return Execute("cancelarNfse", $"{message}", "cancelarNfseResponse");
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    private string Execute(string soapAction, string message, string responseTag)
+    {
+        return Execute(soapAction, message, "", responseTag, "xmlns:e=\"http://www.e-nfs.com.br\"");
+    }
+
+    protected override bool ValidarCertificadoServidor()
+    {
+        return Provider.Configuracoes.WebServices.Ambiente != DFeTipoAmbiente.Homologacao;
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        XElement element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null)
+        {
+            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
+        }
+
+        string exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion Methods
 }

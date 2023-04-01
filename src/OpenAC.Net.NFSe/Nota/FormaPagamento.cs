@@ -29,14 +29,13 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum FormaPagamento
 {
-    public enum FormaPagamento
-    {
-        AVista,
-        NaApresentacao,
-        APrazo,
-        CartaoCredito,
-        CartaoDebito
-    }
+    AVista,
+    NaApresentacao,
+    APrazo,
+    CartaoCredito,
+    CartaoDebito
 }

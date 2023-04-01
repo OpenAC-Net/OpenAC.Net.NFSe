@@ -31,40 +31,39 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderBetha2 : ProviderABRASF202
 {
-    internal sealed class ProviderBetha2 : ProviderABRASF202
+    #region Constructors
+
+    public ProviderBetha2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderBetha2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Betha2";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        #region Protected Methods
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new Betha2ServiceClient(this, tipo);
-        }
-
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse_v202.xsd";
-        }
-
-        protected override string GetNamespace()
-        {
-            return "xmlns=\"http://www.betha.com.br/e-nota-contribuinte-ws\"";
-        }
-
-        #endregion Protected Methods
-
-        #endregion Methods
+        Name = "Betha2";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    #region Protected Methods
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new Betha2ServiceClient(this, tipo);
+    }
+
+    protected override string GetSchema(TipoUrl tipo)
+    {
+        return "nfse_v202.xsd";
+    }
+
+    protected override string GetNamespace()
+    {
+        return "xmlns=\"http://www.betha.com.br/e-nota-contribuinte-ws\"";
+    }
+
+    #endregion Protected Methods
+
+    #endregion Methods
 }

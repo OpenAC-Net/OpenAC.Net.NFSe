@@ -32,30 +32,29 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class EnderecoExterior : GenericClone<EnderecoExterior>, INotifyPropertyChanged
 {
-    public sealed class EnderecoExterior : GenericClone<EnderecoExterior>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    internal EnderecoExterior()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        internal EnderecoExterior()
-        {
-        }
-
-        #endregion Constructor
-
-        #region Properties
-
-        public int CodigoPais { get; set; }
-
-        public string EnderecoCompleto { get; set; }
-
-        #endregion Properties
     }
+
+    #endregion Constructor
+
+    #region Properties
+
+    public int CodigoPais { get; set; }
+
+    public string EnderecoCompleto { get; set; }
+
+    #endregion Properties
 }

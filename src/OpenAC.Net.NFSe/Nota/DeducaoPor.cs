@@ -29,12 +29,11 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum DeducaoPor
 {
-    public enum DeducaoPor
-    {
-        Nenhum,
-        Percentual,
-        Valor
-    }
+    Nenhum,
+    Percentual,
+    Valor
 }

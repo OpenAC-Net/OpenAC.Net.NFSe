@@ -39,119 +39,118 @@ using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+// ReSharper disable once InconsistentNaming
+internal sealed class ProviderNotaCarioca : ProviderABRASF
 {
-    // ReSharper disable once InconsistentNaming
-    internal sealed class ProviderNotaCarioca : ProviderABRASF
+    #region Constructors
+
+    public ProviderNotaCarioca(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderNotaCarioca(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Nota Carioca";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override XElement WriteInfoRPS(NotaServico nota)
-        {
-            var incentivadorCultural = nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2;
-
-            string regimeEspecialTributacao;
-            string optanteSimplesNacional;
-            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
-            {
-                regimeEspecialTributacao = "";
-                optanteSimplesNacional = "1";
-            }
-            else
-            {
-                var regime = (int)nota.RegimeEspecialTributacao;
-                regimeEspecialTributacao = regime == 0 ? string.Empty : regime.ToString();
-                optanteSimplesNacional = "2";
-            }
-
-            var situacao = nota.Situacao == SituacaoNFSeRps.Normal ? "1" : "2";
-
-            var infoRps = new XElement("InfRps", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero}"));
-
-            infoRps.Add(WriteIdentificacao(nota));
-            infoRps.AddChild(AdicionarTag(TipoCampo.DatHor, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "NaturezaOperacao", 1, 1, Ocorrencia.Obrigatoria, nota.NaturezaOperacao));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivadorCultural", 1, 1, Ocorrencia.Obrigatoria, incentivadorCultural));
-            infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, situacao));
-
-            return infoRps;
-        }
-
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nenhuma RPS informada." });
-            if (notas.Count > 1) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Apenas uma RPS pode ser enviada em modo Sincrono." });
-            if (retornoWebservice.Erros.Count > 0) return;
-
-            var xmlLote = new StringBuilder();
-            xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            xmlLote.Append("<GerarNfseEnvio xmlns=\"http://notacarioca.rio.gov.br/WSNacional/XSD/1/nfse_pcrj_v01.xsd\">");
-
-            var xmlRps = WriteXmlRps(notas[0], false, false);
-            XmlSigning.AssinarXml(xmlRps, "Rps", "InfRps", Certificado);
-            GravarRpsEmDisco(xmlRps, $"Rps-{notas[0].IdentificacaoRps.DataEmissao:yyyyMMdd}-{notas[0].IdentificacaoRps.Numero}.xml", notas[0].IdentificacaoRps.DataEmissao);
-
-            xmlLote.Append(xmlRps);
-            xmlLote.Append("</GerarNfseEnvio>");
-            retornoWebservice.XmlEnvio = xmlLote.ToString();
-        }
-
-        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
-        {
-            //
-        }
-
-        protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            MensagemErro(retornoWebservice, xmlRet.Root);
-            if (retornoWebservice.Erros.Any()) return;
-
-            var compNfse = xmlRet.ElementAnyNs("GerarNfseResposta")?.ElementAnyNs("CompNfse");
-            var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
-            var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
-            var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
-            var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
-            var numeroRps = nfse?.ElementAnyNs("IdentificacaoRps")?.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
-
-            GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
-
-            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
-            if (nota == null)
-            {
-                nota = LoadXml(compNfse.ToString());
-            }
-            else
-            {
-                nota.IdentificacaoNFSe.Numero = numeroNFSe;
-                nota.IdentificacaoNFSe.Chave = chaveNFSe;
-            }
-
-            notas.Add(nota);
-            retornoWebservice.Sucesso = true;
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new NotaCariocaServiceClient(this, tipo);
-        }
-
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse.xsd";
-        }
-
-        #endregion Methods
+        Name = "Nota Carioca";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override XElement WriteInfoRPS(NotaServico nota)
+    {
+        var incentivadorCultural = nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2;
+
+        string regimeEspecialTributacao;
+        string optanteSimplesNacional;
+        if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
+        {
+            regimeEspecialTributacao = "";
+            optanteSimplesNacional = "1";
+        }
+        else
+        {
+            var regime = (int)nota.RegimeEspecialTributacao;
+            regimeEspecialTributacao = regime == 0 ? string.Empty : regime.ToString();
+            optanteSimplesNacional = "2";
+        }
+
+        var situacao = nota.Situacao == SituacaoNFSeRps.Normal ? "1" : "2";
+
+        var infoRps = new XElement("InfRps", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero}"));
+
+        infoRps.Add(WriteIdentificacao(nota));
+        infoRps.AddChild(AdicionarTag(TipoCampo.DatHor, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+        infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "NaturezaOperacao", 1, 1, Ocorrencia.Obrigatoria, nota.NaturezaOperacao));
+        infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
+        infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
+        infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivadorCultural", 1, 1, Ocorrencia.Obrigatoria, incentivadorCultural));
+        infoRps.AddChild(AdicionarTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, situacao));
+
+        return infoRps;
+    }
+
+    protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nenhuma RPS informada." });
+        if (notas.Count > 1) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Apenas uma RPS pode ser enviada em modo Sincrono." });
+        if (retornoWebservice.Erros.Count > 0) return;
+
+        var xmlLote = new StringBuilder();
+        xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xmlLote.Append("<GerarNfseEnvio xmlns=\"http://notacarioca.rio.gov.br/WSNacional/XSD/1/nfse_pcrj_v01.xsd\">");
+
+        var xmlRps = WriteXmlRps(notas[0], false, false);
+        XmlSigning.AssinarXml(xmlRps, "Rps", "InfRps", Certificado);
+        GravarRpsEmDisco(xmlRps, $"Rps-{notas[0].IdentificacaoRps.DataEmissao:yyyyMMdd}-{notas[0].IdentificacaoRps.Numero}.xml", notas[0].IdentificacaoRps.DataEmissao);
+
+        xmlLote.Append(xmlRps);
+        xmlLote.Append("</GerarNfseEnvio>");
+        retornoWebservice.XmlEnvio = xmlLote.ToString();
+    }
+
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {
+        //
+    }
+
+    protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        MensagemErro(retornoWebservice, xmlRet.Root);
+        if (retornoWebservice.Erros.Any()) return;
+
+        var compNfse = xmlRet.ElementAnyNs("GerarNfseResposta")?.ElementAnyNs("CompNfse");
+        var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
+        var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+        var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+        var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+        var numeroRps = nfse?.ElementAnyNs("IdentificacaoRps")?.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+
+        GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+
+        var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+        if (nota == null)
+        {
+            nota = LoadXml(compNfse.ToString());
+        }
+        else
+        {
+            nota.IdentificacaoNFSe.Numero = numeroNFSe;
+            nota.IdentificacaoNFSe.Chave = chaveNFSe;
+        }
+
+        notas.Add(nota);
+        retornoWebservice.Sucesso = true;
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new NotaCariocaServiceClient(this, tipo);
+    }
+
+    protected override string GetSchema(TipoUrl tipo)
+    {
+        return "nfse.xsd";
+    }
+
+    #endregion Methods
 }

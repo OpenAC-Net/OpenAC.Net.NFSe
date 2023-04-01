@@ -32,16 +32,15 @@
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
+namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource;
+
+public sealed class DANFSeFastOpenOptions : DANFSeOptions<FiltroDFeReport>
 {
-    public sealed class DANFSeFastOpenOptions : DANFSeOptions<FiltroDFeReport>
+    #region Constructors
+
+    public DANFSeFastOpenOptions(ConfigNFSe configuracoes) : base(configuracoes)
     {
-        #region Constructors
-
-        public DANFSeFastOpenOptions(ConfigNFSe configuracoes) : base(configuracoes)
-        {
-        }
-
-        #endregion Constructors
     }
+
+    #endregion Constructors
 }

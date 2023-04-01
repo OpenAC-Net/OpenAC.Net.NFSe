@@ -32,49 +32,48 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosContato : GenericClone<DadosContato>, INotifyPropertyChanged
 {
-    public sealed class DadosContato : GenericClone<DadosContato>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DadosContato"/> class.
+    /// </summary>
+    internal DadosContato()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DadosContato"/> class.
-        /// </summary>
-        internal DadosContato()
-        {
-            Telefone = string.Empty;
-            Email = string.Empty;
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        /// <summary>
-        /// Gets or sets the DDD.
-        /// </summary>
-        /// <value>The DDD.</value>
-        public string DDD { get; set; }
-
-        /// <summary>
-        /// Gets or sets the telefone.
-        /// </summary>
-        /// <value>The telefone.</value>
-        public string Telefone { get; set; }
-
-        /// <summary>
-        /// Gets or sets the email.
-        /// </summary>
-        /// <value>The email.</value>
-        public string Email { get; set; }
-
-        #endregion Propriedades
+        Telefone = string.Empty;
+        Email = string.Empty;
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    /// <summary>
+    /// Gets or sets the DDD.
+    /// </summary>
+    /// <value>The DDD.</value>
+    public string DDD { get; set; }
+
+    /// <summary>
+    /// Gets or sets the telefone.
+    /// </summary>
+    /// <value>The telefone.</value>
+    public string Telefone { get; set; }
+
+    /// <summary>
+    /// Gets or sets the email.
+    /// </summary>
+    /// <value>The email.</value>
+    public string Email { get; set; }
+
+    #endregion Propriedades
 }

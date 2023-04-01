@@ -32,40 +32,39 @@
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Configuracao;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderISSe : ProviderABRASF201
 {
-    internal sealed class ProviderISSe : ProviderABRASF201
+    #region Constructors
+
+    public ProviderISSe(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderISSe(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "ISSe";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        #region Protected Methods
-
-        protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
-        {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
-        }
-
-        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
-        {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new ISSeServiceClient(this, tipo);
-        }
-
-        #endregion Protected Methods
-
-        #endregion Methods
+        Name = "ISSe";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    #region Protected Methods
+
+    protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
+    {
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
+    }
+
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new ISSeServiceClient(this, tipo);
+    }
+
+    #endregion Protected Methods
+
+    #endregion Methods
 }

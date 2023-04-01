@@ -37,107 +37,106 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public SystemProServiceClient(ProviderSystemPro provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public SystemProServiceClient(ProviderSystemPro provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ns2:EnviarLoteRpsSincrono>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:EnviarLoteRpsSincrono>");
-
-            return Execute("", message.ToString(), "return", "EnviarLoteRpsSincronoResponse");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ns2:ConsultarNfseFaixa>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:ConsultarNfseFaixa>");
-
-            return Execute("", message.ToString(), "ConsultarNfseFaixaResponse", "return");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ns2:CancelarNfse>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:CancelarNfse>");
-
-            return Execute("", message.ToString(), "return", "CancelarNfseResponse");
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ns2:SubstituirNfse>");
-            message.Append("<nfseCabecMsg>");
-            message.AppendCData(cabec);
-            message.Append("</nfseCabecMsg>");
-            message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
-            message.Append("</nfseDadosMsg>");
-            message.Append("</ns2:SubstituirNfse>");
-
-            return Execute("", message.ToString(), "return", "SubstituirNfseResposta");
-        }
-
-        public string Enviar(string cabec, string msg) => throw new NotImplementedException("Enviar nao implementada/suportada para este provedor.");
-
-        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("ConsultarSituacao nao implementada/suportada para este provedor.");
-
-        public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException("ConsultarLoteRps nao implementada/suportada para este provedor.");
-
-        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("ConsultarSequencialRps nao implementada/suportada para este provedor.");
-
-        public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException("ConsultarNFSeRps nao implementada/suportada para este provedor.");
-
-        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("CancelarNFSeLote nao implementada/suportada para este provedor.");
-
-        private string Execute(string action, string message, params string[] responseTag) => Execute(action, message, responseTag, new string[] { "xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\"" });
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null)
-            {
-                element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
-                return element.ToString();
-            }
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ns2:EnviarLoteRpsSincrono>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ns2:EnviarLoteRpsSincrono>");
+
+        return Execute("", message.ToString(), "return", "EnviarLoteRpsSincronoResponse");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ns2:ConsultarNfseFaixa>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ns2:ConsultarNfseFaixa>");
+
+        return Execute("", message.ToString(), "ConsultarNfseFaixaResponse", "return");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ns2:CancelarNfse>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ns2:CancelarNfse>");
+
+        return Execute("", message.ToString(), "return", "CancelarNfseResponse");
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ns2:SubstituirNfse>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ns2:SubstituirNfse>");
+
+        return Execute("", message.ToString(), "return", "SubstituirNfseResposta");
+    }
+
+    public string Enviar(string cabec, string msg) => throw new NotImplementedException("Enviar nao implementada/suportada para este provedor.");
+
+    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("ConsultarSituacao nao implementada/suportada para este provedor.");
+
+    public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException("ConsultarLoteRps nao implementada/suportada para este provedor.");
+
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("ConsultarSequencialRps nao implementada/suportada para este provedor.");
+
+    public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException("ConsultarNFSeRps nao implementada/suportada para este provedor.");
+
+    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("CancelarNFSeLote nao implementada/suportada para este provedor.");
+
+    private string Execute(string action, string message, params string[] responseTag) => Execute(action, message, responseTag, new string[] { "xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\"" });
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null)
+        {
+            element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
+            return element.ToString();
+        }
+
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion Methods
 }

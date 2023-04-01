@@ -29,22 +29,21 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum TipoTributacao
 {
-    public enum TipoTributacao
-    {
-        Tributavel,
-        NaoTributavel,
-        Isenta,
-        ForaMun,
-        ForaMunIsento,
-        Imune,
-        ForaMunImune,
-        Suspensa,
-        ForaMunSuspensa,
-        ExpServicos,
-        DepositoEmJuizo,
-        NaoIncide,
-        TributavelFixo
-    }
+    Tributavel,
+    NaoTributavel,
+    Isenta,
+    ForaMun,
+    ForaMunIsento,
+    Imune,
+    ForaMunImune,
+    Suspensa,
+    ForaMunSuspensa,
+    ExpServicos,
+    DepositoEmJuizo,
+    NaoIncide,
+    TributavelFixo
 }

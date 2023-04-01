@@ -35,130 +35,129 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+// ReSharper disable once InconsistentNaming
+internal sealed class NotaCariocaServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    // ReSharper disable once InconsistentNaming
-    internal sealed class NotaCariocaServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public NotaCariocaServiceClient(ProviderNotaCarioca provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public NotaCariocaServiceClient(ProviderNotaCarioca provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<not:RecepcionarLoteRpsRequest>");
-            message.Append("<not:inputXML>");
-            message.AppendCData(msg);
-            message.Append("</not:inputXML>");
-            message.Append("</not:RecepcionarLoteRpsRequest>");
-
-            return Execute("http://notacarioca.rio.gov.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<not:GerarNfseRequest>");
-            message.Append("<not:inputXML>");
-            message.AppendCData(msg);
-            message.Append("</not:inputXML>");
-            message.Append("</not:GerarNfseRequest>");
-
-            return Execute("http://notacarioca.rio.gov.br/GerarNfse", message.ToString(), "GerarNfseResponse");
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<not:ConsultarSituacaoLoteRpsRequest>");
-            message.Append("<not:inputXML>");
-            message.AppendCData(msg);
-            message.Append("</not:inputXML>");
-            message.Append("</not:ConsultarSituacaoLoteRpsRequest>");
-
-            return Execute("http://notacarioca.rio.gov.br/ConsultarSituacaoLoteRps", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<not:ConsultarLoteRpsRequest>");
-            message.Append("<not:inputXML>");
-            message.AppendCData(msg);
-            message.Append("</not:inputXML>");
-            message.Append("</not:ConsultarLoteRpsRequest>");
-
-            return Execute("http://notacarioca.rio.gov.br/ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResponse");
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<not:ConsultarNfsePorRpsRequest>");
-            message.Append("<not:inputXML>");
-            message.AppendCData(msg);
-            message.Append("</not:inputXML>");
-            message.Append("</not:ConsultarNfsePorRpsRequest>");
-
-            return Execute("http://notacarioca.rio.gov.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<not:ConsultarNfseRequest>");
-            message.Append("<not:inputXML>");
-            message.AppendCData(msg);
-            message.Append("</not:inputXML>");
-            message.Append("</not:ConsultarNfseRequest>");
-
-            return Execute("http://notacarioca.rio.gov.br/ConsultarNfse", message.ToString(), "ConsultarNfseResponse");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<not:CancelarNfseRequest>");
-            message.Append("<not:inputXML>");
-            message.AppendCData(msg);
-            message.Append("</not:inputXML>");
-            message.Append("</not:CancelarNfseRequest>");
-
-            return Execute("http://notacarioca.rio.gov.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        private string Execute(string soapAction, string message, string responseTag)
-        {
-            return Execute(soapAction, message, "", responseTag, "xmlns:not=\"http://notacarioca.rio.gov.br/\"");
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<not:RecepcionarLoteRpsRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:RecepcionarLoteRpsRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<not:GerarNfseRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:GerarNfseRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/GerarNfse", message.ToString(), "GerarNfseResponse");
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<not:ConsultarSituacaoLoteRpsRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:ConsultarSituacaoLoteRpsRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/ConsultarSituacaoLoteRps", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<not:ConsultarLoteRpsRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:ConsultarLoteRpsRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResponse");
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<not:ConsultarNfsePorRpsRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:ConsultarNfsePorRpsRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<not:ConsultarNfseRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:ConsultarNfseRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/ConsultarNfse", message.ToString(), "ConsultarNfseResponse");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<not:CancelarNfseRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:CancelarNfseRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    private string Execute(string soapAction, string message, string responseTag)
+    {
+        return Execute(soapAction, message, "", responseTag, "xmlns:not=\"http://notacarioca.rio.gov.br/\"");
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
+    }
+
+    #endregion Methods
 }

@@ -33,38 +33,37 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class IdeNFSe : GenericClone<IdeNFSe>, INotifyPropertyChanged
 {
-    public sealed class IdeNFSe : GenericClone<IdeNFSe>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IdeRps"/> class.
+    /// </summary>
+    internal IdeNFSe()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IdeRps"/> class.
-        /// </summary>
-        internal IdeNFSe()
-        {
-            Numero = string.Empty;
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        public string Numero { get; set; }
-
-        public string Chave { get; set; }
-
-        public DateTime DataEmissao { get; set; }
-
-        public string ModeloNfse { get; set; }
-
-        #endregion Propriedades
+        Numero = string.Empty;
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    public string Numero { get; set; }
+
+    public string Chave { get; set; }
+
+    public DateTime DataEmissao { get; set; }
+
+    public string ModeloNfse { get; set; }
+
+    #endregion Propriedades
 }

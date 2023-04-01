@@ -29,16 +29,15 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum ExigibilidadeIss
 {
-    public enum ExigibilidadeIss
-    {
-        Exigivel,
-        NaoIncidencia,
-        Isencao,
-        Exportacao,
-        Imunidade,
-        SuspensaDecisaoJudicial,
-        SuspensaProcessoAdministrativo
-    }
+    Exigivel,
+    NaoIncidencia,
+    Isencao,
+    Exportacao,
+    Imunidade,
+    SuspensaDecisaoJudicial,
+    SuspensaProcessoAdministrativo
 }

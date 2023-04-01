@@ -29,11 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public class DadosMateriais
 {
-    public class DadosMateriais
-    {
-        public NFSeSimNao Deducao { get; set; }
-        public int NumeroEncapsulamento { get; set; }
-    }
+    public NFSeSimNao Deducao { get; set; }
+    public int NumeroEncapsulamento { get; set; }
 }

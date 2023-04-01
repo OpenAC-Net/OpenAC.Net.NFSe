@@ -36,171 +36,170 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class FiorilliServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class FiorilliServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
-        {
-        }
-
-        public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:recepcionarLoteRps>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:recepcionarLoteRps>");
-
-            return Execute("recepcionarLoteRps", message.ToString(), "recepcionarLoteRpsResponse");
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:recepcionarLoteRpsSincrono>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:recepcionarLoteRpsSincrono>");
-
-            return Execute("recepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
-        }
-
-        public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:consultarLoteRps>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:consultarLoteRps>");
-
-            return Execute("consultarLoteRps", message.ToString(), "consultarLoteRpsResponse");
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:consultarNfsePorRps>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:consultarNfsePorRps>");
-
-            return Execute("consultarNfsePorRps", message.ToString(), "consultarNfsePorRpsResponse");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:consultarNfseServicoPrestado>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:consultarNfseServicoPrestado>");
-
-            return Execute("consultarNfseServicoPrestado", message.ToString(), "consultarNfseServicoPrestadoResponse");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            // Dados de homologação
-            // CNPJ=01001001000113, IM:15000, Login=01001001000113, Senha=123456;
-            var message = new StringBuilder();
-            message.Append("<ws:cancelarNfse>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:cancelarNfse>");
-
-            return Execute("cancelarNfse", message.ToString(), "cancelarNfseResponse");
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:substituirNfse>");
-            message.Append(msg);
-            message.Append("<username>");
-            message.Append(Provider.Configuracoes.WebServices.Usuario);
-            message.Append("</username>");
-            message.Append("<password>");
-            message.Append(Provider.Configuracoes.WebServices.Senha);
-            message.Append("</password>");
-            message.Append("</ws:substituirNfse>");
-
-            return Execute("substituirNfse", message.ToString(), "substituirNfseResponse");
-        }
-
-        private string Execute(string soapAction, string message, string responseTag)
-        {
-            var result = ValidarUsernamePassword();
-            if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
-
-            return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://ws.issweb.fiorilli.com.br/\"");
-        }
-
-        public bool ValidarUsernamePassword()
-        {
-            return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element != null)
-            {
-                var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-                throw new OpenDFeCommunicationException(exMessage);
-            }
-
-            var reader = xmlDocument.ElementAnyNs(responseTag[0]).CreateReader();
-            reader.MoveToContent();
-            return reader.ReadInnerXml().Replace("ns2:", string.Empty);
-        }
-
-        #endregion Methods
     }
+
+    public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    {
+    }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:recepcionarLoteRps>");
+        message.Append(msg);
+        message.Append("<username>");
+        message.Append(Provider.Configuracoes.WebServices.Usuario);
+        message.Append("</username>");
+        message.Append("<password>");
+        message.Append(Provider.Configuracoes.WebServices.Senha);
+        message.Append("</password>");
+        message.Append("</ws:recepcionarLoteRps>");
+
+        return Execute("recepcionarLoteRps", message.ToString(), "recepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:recepcionarLoteRpsSincrono>");
+        message.Append(msg);
+        message.Append("<username>");
+        message.Append(Provider.Configuracoes.WebServices.Usuario);
+        message.Append("</username>");
+        message.Append("<password>");
+        message.Append(Provider.Configuracoes.WebServices.Senha);
+        message.Append("</password>");
+        message.Append("</ws:recepcionarLoteRpsSincrono>");
+
+        return Execute("recepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
+    }
+
+    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:consultarLoteRps>");
+        message.Append(msg);
+        message.Append("<username>");
+        message.Append(Provider.Configuracoes.WebServices.Usuario);
+        message.Append("</username>");
+        message.Append("<password>");
+        message.Append(Provider.Configuracoes.WebServices.Senha);
+        message.Append("</password>");
+        message.Append("</ws:consultarLoteRps>");
+
+        return Execute("consultarLoteRps", message.ToString(), "consultarLoteRpsResponse");
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:consultarNfsePorRps>");
+        message.Append(msg);
+        message.Append("<username>");
+        message.Append(Provider.Configuracoes.WebServices.Usuario);
+        message.Append("</username>");
+        message.Append("<password>");
+        message.Append(Provider.Configuracoes.WebServices.Senha);
+        message.Append("</password>");
+        message.Append("</ws:consultarNfsePorRps>");
+
+        return Execute("consultarNfsePorRps", message.ToString(), "consultarNfsePorRpsResponse");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:consultarNfseServicoPrestado>");
+        message.Append(msg);
+        message.Append("<username>");
+        message.Append(Provider.Configuracoes.WebServices.Usuario);
+        message.Append("</username>");
+        message.Append("<password>");
+        message.Append(Provider.Configuracoes.WebServices.Senha);
+        message.Append("</password>");
+        message.Append("</ws:consultarNfseServicoPrestado>");
+
+        return Execute("consultarNfseServicoPrestado", message.ToString(), "consultarNfseServicoPrestadoResponse");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        // Dados de homologação
+        // CNPJ=01001001000113, IM:15000, Login=01001001000113, Senha=123456;
+        var message = new StringBuilder();
+        message.Append("<ws:cancelarNfse>");
+        message.Append(msg);
+        message.Append("<username>");
+        message.Append(Provider.Configuracoes.WebServices.Usuario);
+        message.Append("</username>");
+        message.Append("<password>");
+        message.Append(Provider.Configuracoes.WebServices.Senha);
+        message.Append("</password>");
+        message.Append("</ws:cancelarNfse>");
+
+        return Execute("cancelarNfse", message.ToString(), "cancelarNfseResponse");
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ws:substituirNfse>");
+        message.Append(msg);
+        message.Append("<username>");
+        message.Append(Provider.Configuracoes.WebServices.Usuario);
+        message.Append("</username>");
+        message.Append("<password>");
+        message.Append(Provider.Configuracoes.WebServices.Senha);
+        message.Append("</password>");
+        message.Append("</ws:substituirNfse>");
+
+        return Execute("substituirNfse", message.ToString(), "substituirNfseResponse");
+    }
+
+    private string Execute(string soapAction, string message, string responseTag)
+    {
+        var result = ValidarUsernamePassword();
+        if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
+
+        return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://ws.issweb.fiorilli.com.br/\"");
+    }
+
+    public bool ValidarUsernamePassword()
+    {
+        return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element != null)
+        {
+            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            throw new OpenDFeCommunicationException(exMessage);
+        }
+
+        var reader = xmlDocument.ElementAnyNs(responseTag[0]).CreateReader();
+        reader.MoveToContent();
+        return reader.ReadInnerXml().Replace("ns2:", string.Empty);
+    }
+
+    #endregion Methods
 }

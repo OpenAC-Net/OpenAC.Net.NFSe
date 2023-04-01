@@ -32,33 +32,32 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosPagamento : GenericClone<DadosPagamento>, INotifyPropertyChanged
 {
-    public sealed class DadosPagamento : GenericClone<DadosPagamento>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Contructors
+
+    internal DadosPagamento()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Contructors
-
-        internal DadosPagamento()
-        {
-            Parcelas = new ParcelasCollection();
-        }
-
-        #endregion Contructors
-
-        #region Propriedades
-
-        public FormaPagamento Forma { get; set; }
-
-        public int QtdParcela { get; set; }
-
-        public ParcelasCollection Parcelas { get; }
-
-        #endregion Propriedades
+        Parcelas = new ParcelasCollection();
     }
+
+    #endregion Contructors
+
+    #region Propriedades
+
+    public FormaPagamento Forma { get; set; }
+
+    public int QtdParcela { get; set; }
+
+    public ParcelasCollection Parcelas { get; }
+
+    #endregion Propriedades
 }

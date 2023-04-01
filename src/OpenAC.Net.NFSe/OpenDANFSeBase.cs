@@ -35,48 +35,47 @@ using OpenAC.Net.Core.Logging;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe
+namespace OpenAC.Net.NFSe;
+
+/// <summary>
+/// Classe base para impress√£o de DANFSe
+/// </summary>
+public abstract class OpenDANFSeBase<TOptions, TFiltro> : IOpenLog
+    where TFiltro : Enum
+    where TOptions : DANFSeOptions<TFiltro>
 {
+    #region Properties
+
+    public TOptions Configuracoes { get; protected set; }
+
+    #endregion Properties
+
+    #region Methods
+
     /// <summary>
-    /// Classe base para impress„o de DANFSe
+    /// Imprime as NFSe/RPS.
     /// </summary>
-    public abstract class OpenDANFSeBase<TOptions, TFiltro> : IOpenLog
-        where TFiltro : Enum
-        where TOptions : DANFSeOptions<TFiltro>
-    {
-        #region Properties
+    public abstract void Imprimir(NotaServico[] notas);
 
-        public TOptions Configuracoes { get; protected set; }
+    /// <summary>
+    /// Imprimirs the PDF.
+    /// </summary>
+    public abstract void ImprimirPDF(NotaServico[] notas);
 
-        #endregion Properties
+    /// <summary>
+    /// Imprimirs the PDF.
+    /// </summary>
+    public abstract void ImprimirPDF(NotaServico[] notas, Stream stream);
 
-        #region Methods
+    /// <summary>
+    /// Imprimirs the PDF.
+    /// </summary>
+    public abstract void ImprimirHTML(NotaServico[] notas);
 
-        /// <summary>
-        /// Imprime as NFSe/RPS.
-        /// </summary>
-        public abstract void Imprimir(NotaServico[] notas);
+    /// <summary>
+    /// Imprimirs the PDF.
+    /// </summary>
+    public abstract void ImprimirHTML(NotaServico[] notas, Stream stream);
 
-        /// <summary>
-        /// Imprimirs the PDF.
-        /// </summary>
-        public abstract void ImprimirPDF(NotaServico[] notas);
-
-        /// <summary>
-        /// Imprimirs the PDF.
-        /// </summary>
-        public abstract void ImprimirPDF(NotaServico[] notas, Stream stream);
-
-        /// <summary>
-        /// Imprimirs the PDF.
-        /// </summary>
-        public abstract void ImprimirHTML(NotaServico[] notas);
-
-        /// <summary>
-        /// Imprimirs the PDF.
-        /// </summary>
-        public abstract void ImprimirHTML(NotaServico[] notas, Stream stream);
-
-        #endregion Methods
-    }
+    #endregion Methods
 }

@@ -33,32 +33,31 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class Parcelas : GenericClone<Parcelas>, INotifyPropertyChanged
 {
-    public sealed class Parcelas : GenericClone<Parcelas>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Contructors
+
+    internal Parcelas()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Contructors
-
-        internal Parcelas()
-        {
-        }
-
-        #endregion Contructors
-
-        #region Propriedades
-
-        public int Parcela { get; set; }
-
-        public DateTime DataVencimento { get; set; }
-
-        public decimal Valor { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Contructors
+
+    #region Propriedades
+
+    public int Parcela { get; set; }
+
+    public DateTime DataVencimento { get; set; }
+
+    public decimal Valor { get; set; }
+
+    #endregion Propriedades
 }

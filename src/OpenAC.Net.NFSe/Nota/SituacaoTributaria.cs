@@ -29,12 +29,11 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum SituacaoTributaria
 {
-    public enum SituacaoTributaria
-    {
-        Retencao,
-        Normal,
-        Substituicao
-    }
+    Retencao,
+    Normal,
+    Substituicao
 }

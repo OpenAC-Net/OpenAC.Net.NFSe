@@ -32,33 +32,32 @@
 using System.ComponentModel;
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class ServicosCollection : DFeCollection<Servico>, INotifyPropertyChanged
 {
-    public sealed class ServicosCollection : DFeCollection<Servico>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal ServicosCollection()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal ServicosCollection()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public override Servico AddNew()
-        {
-            var ret = new Servico();
-            Add(ret);
-            return ret;
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public override Servico AddNew()
+    {
+        var ret = new Servico();
+        Add(ret);
+        return ret;
+    }
+
+    #endregion Methods
 }

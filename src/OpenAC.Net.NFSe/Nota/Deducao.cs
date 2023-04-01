@@ -32,68 +32,67 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class Deducao : GenericClone<Deducao>, INotifyPropertyChanged
 {
-    public sealed class Deducao : GenericClone<Deducao>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal Deducao()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal Deducao()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        /// <summary>
-        /// Gets or sets the deducao por.
-        /// </summary>
-        /// <value>The deducao por.</value>
-        public DeducaoPor DeducaoPor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tipo deducao.
-        /// </summary>
-        /// <value>The tipo deducao.</value>
-        public TipoDeducao TipoDeducao { get; set; }
-
-        /// <summary>
-        /// Gets or sets the CPFCNPJ referencia.
-        /// </summary>
-        /// <value>The CPFCNPJ referencia.</value>
-        public string CPFCNPJReferencia { get; set; }
-
-        /// <summary>
-        /// Gets or sets the numero nf referencia.
-        /// </summary>
-        /// <value>The numero nf referencia.</value>
-        public int? NumeroNFReferencia { get; set; }
-
-        /// <summary>
-        /// Gets or sets the valor total referencia.
-        /// </summary>
-        /// <value>The valor total referencia.</value>
-        public decimal ValorTotalReferencia { get; set; }
-
-        /// <summary>
-        /// Gets or sets the percentual deduzir.
-        /// </summary>
-        /// <value>The percentual deduzir.</value>
-        public decimal PercentualDeduzir { get; set; }
-
-        /// <summary>
-        /// Gets or sets the valor deduzir.
-        /// </summary>
-        /// <value>The valor deduzir.</value>
-        public decimal ValorDeduzir { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    /// <summary>
+    /// Gets or sets the deducao por.
+    /// </summary>
+    /// <value>The deducao por.</value>
+    public DeducaoPor DeducaoPor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the tipo deducao.
+    /// </summary>
+    /// <value>The tipo deducao.</value>
+    public TipoDeducao TipoDeducao { get; set; }
+
+    /// <summary>
+    /// Gets or sets the CPFCNPJ referencia.
+    /// </summary>
+    /// <value>The CPFCNPJ referencia.</value>
+    public string CPFCNPJReferencia { get; set; }
+
+    /// <summary>
+    /// Gets or sets the numero nf referencia.
+    /// </summary>
+    /// <value>The numero nf referencia.</value>
+    public int? NumeroNFReferencia { get; set; }
+
+    /// <summary>
+    /// Gets or sets the valor total referencia.
+    /// </summary>
+    /// <value>The valor total referencia.</value>
+    public decimal ValorTotalReferencia { get; set; }
+
+    /// <summary>
+    /// Gets or sets the percentual deduzir.
+    /// </summary>
+    /// <value>The percentual deduzir.</value>
+    public decimal PercentualDeduzir { get; set; }
+
+    /// <summary>
+    /// Gets or sets the valor deduzir.
+    /// </summary>
+    /// <value>The valor deduzir.</value>
+    public decimal ValorDeduzir { get; set; }
+
+    #endregion Propriedades
 }

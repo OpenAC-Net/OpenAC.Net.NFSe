@@ -36,134 +36,133 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class DBSellerServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class DBSellerServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<e:RecepcionarLoteRps>");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</e:RecepcionarLoteRps>");
-
-            return Execute("*", message.ToString(), "RecepcionarLoteRpsResponse");
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<e:ConsultarSituacaoLoteRps>");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</e:ConsultarSituacaoLoteRps>");
-
-            return Execute("*", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<e:ConsultarLoteRps>");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</e:ConsultarLoteRps>");
-
-            return Execute("*", message.ToString(), "ConsultarLoteRpsResponse");
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<e:ConsultarNfsePorRps>");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</e:ConsultarNfsePorRps>");
-
-            return Execute("*", message.ToString(), "ConsultarNfsePorRpsResponse");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<e:ConsultarNfse>");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</e:ConsultarNfse>");
-
-            return Execute("*", message.ToString(), "ConsultarNfseResponse");
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<e:CancelarNfse>");
-            message.Append("<xml>");
-            message.AppendCData(msg);
-            message.Append("</xml>");
-            message.Append("</e:CancelarNfse>");
-
-            return Execute("*", message.ToString(), "CancelarNfseResponse");
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
-        }
-
-        private string Execute(string soapAction, string message, string responseTag)
-        {
-            var baseUrl = new Uri(Url).GetLeftPart(UriPartial.Authority);
-            var soapNs = EhHomologacao ? $"xmlns:e=\"{baseUrl}/webservice/index/homologacao\"" :
-                                         $"xmlns:e=\"{baseUrl}/webservice/index/producao\"";
-
-            return Execute(soapAction, message, "", responseTag, soapNs);
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion Methods
     }
+
+    public DBSellerServiceClient(ProviderDBSeller provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    {
+    }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<e:RecepcionarLoteRps>");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</e:RecepcionarLoteRps>");
+
+        return Execute("*", message.ToString(), "RecepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<e:ConsultarSituacaoLoteRps>");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</e:ConsultarSituacaoLoteRps>");
+
+        return Execute("*", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<e:ConsultarLoteRps>");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</e:ConsultarLoteRps>");
+
+        return Execute("*", message.ToString(), "ConsultarLoteRpsResponse");
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<e:ConsultarNfsePorRps>");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</e:ConsultarNfsePorRps>");
+
+        return Execute("*", message.ToString(), "ConsultarNfsePorRpsResponse");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<e:ConsultarNfse>");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</e:ConsultarNfse>");
+
+        return Execute("*", message.ToString(), "ConsultarNfseResponse");
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<e:CancelarNfse>");
+        message.Append("<xml>");
+        message.AppendCData(msg);
+        message.Append("</xml>");
+        message.Append("</e:CancelarNfse>");
+
+        return Execute("*", message.ToString(), "CancelarNfseResponse");
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    private string Execute(string soapAction, string message, string responseTag)
+    {
+        var baseUrl = new Uri(Url).GetLeftPart(UriPartial.Authority);
+        var soapNs = EhHomologacao ? $"xmlns:e=\"{baseUrl}/webservice/index/homologacao\"" :
+            $"xmlns:e=\"{baseUrl}/webservice/index/producao\"";
+
+        return Execute(soapAction, message, "", responseTag, soapNs);
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
+
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion Methods
 }

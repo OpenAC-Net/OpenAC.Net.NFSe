@@ -29,19 +29,18 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum RegimeEspecialTributacao
 {
-    public enum RegimeEspecialTributacao
-    {
-        Nenhum,
-        MicroEmpresaMunicipal,
-        Estimativa,
-        SociedadeProfissionais,
-        Cooperativa,
-        MicroEmpresarioIndividual,
-        MicroEmpresarioEmpresaPP,
-        LucroReal,
-        LucroPresumido,
-        SimplesNacional
-    }
+    Nenhum,
+    MicroEmpresaMunicipal,
+    Estimativa,
+    SociedadeProfissionais,
+    Cooperativa,
+    MicroEmpresarioIndividual,
+    MicroEmpresarioEmpresaPP,
+    LucroReal,
+    LucroPresumido,
+    SimplesNacional
 }

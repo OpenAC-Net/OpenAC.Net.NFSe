@@ -32,43 +32,42 @@
 using System;
 using System.IO;
 
-namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource
+namespace OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource;
+
+public static class DANFSeFastExtensions
 {
-    public static class DANFSeFastExtensions
+    public static void Imprimir(this OpenNFSe nfse, Action<DANFSeFastOpenOptions> options = null)
     {
-        public static void Imprimir(this OpenNFSe nfse, Action<DANFSeFastOpenOptions> options = null)
-        {
-            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.Imprimir(nfse.NotasServico.ToArray());
-        }
+        var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.Imprimir(nfse.NotasServico.ToArray());
+    }
 
-        public static void ImprimirPDF(this OpenNFSe nfse, Action<DANFSeFastOpenOptions> options = null)
-        {
-            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirPDF(nfse.NotasServico.ToArray());
-        }
+    public static void ImprimirPDF(this OpenNFSe nfse, Action<DANFSeFastOpenOptions> options = null)
+    {
+        var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirPDF(nfse.NotasServico.ToArray());
+    }
 
-        public static void ImprimirPDF(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOpenOptions> options = null)
-        {
-            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirPDF(nfse.NotasServico.ToArray(), aStream);
-        }
+    public static void ImprimirPDF(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOpenOptions> options = null)
+    {
+        var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirPDF(nfse.NotasServico.ToArray(), aStream);
+    }
 
-        public static void ImprimirHTML(this OpenNFSe nfse, Action<DANFSeFastOpenOptions> options = null)
-        {
-            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirHTML(nfse.NotasServico.ToArray());
-        }
+    public static void ImprimirHTML(this OpenNFSe nfse, Action<DANFSeFastOpenOptions> options = null)
+    {
+        var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirHTML(nfse.NotasServico.ToArray());
+    }
 
-        public static void ImprimirHTML(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOpenOptions> options = null)
-        {
-            var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirHTML(nfse.NotasServico.ToArray(), aStream);
-        }
+    public static void ImprimirHTML(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOpenOptions> options = null)
+    {
+        var danfse = new DANFSeFastReportOpenSource(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirHTML(nfse.NotasServico.ToArray(), aStream);
     }
 }

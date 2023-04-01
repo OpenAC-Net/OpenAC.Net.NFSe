@@ -33,51 +33,50 @@ using System.Xml.Linq;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+// ReSharper disable once InconsistentNaming
+/// <summary>
+/// Classe base para trabalhar com provedores que usam o padrão ABRASF 2.04
+/// </summary>
+/// <seealso cref="ProviderBase" />
+public abstract class ProviderABRASF204 : ProviderABRASF203
 {
-    // ReSharper disable once InconsistentNaming
+    #region Constructors
+
     /// <summary>
-    /// Classe base para trabalhar com provedores que usam o padrão ABRASF 2.04
+    /// Initializes a new instance of the <see cref="ProviderABRASF204"/> class.
     /// </summary>
-    /// <seealso cref="ProviderBase" />
-    public abstract class ProviderABRASF204 : ProviderABRASF203
+    /// <param name="config">The configuration.</param>
+    /// <param name="municipio">The municipio.</param>
+    protected ProviderABRASF204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderABRASF204"/> class.
-        /// </summary>
-        /// <param name="config">The configuration.</param>
-        /// <param name="municipio">The municipio.</param>
-        protected ProviderABRASF204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "ABRASFv204";
-            Versao = "2.04";
-            UsaPrestadorEnvio = true;
-        }
-
-        #endregion Constructors
-
-        #region RPS
-
-        /// <inheritdoc />
-        protected override XElement WriteRps(NotaServico nota)
-        {
-            var rootRps = base.WriteRps(nota);
-
-            //ToDo: Implementar a tag evento, informações complementares e a lista de deduções.
-
-            return rootRps;
-        }
-
-        /// <inheritdoc />
-        protected override void LoadRps(NotaServico nota, XElement rpsRoot)
-        {
-            base.LoadRps(nota, rpsRoot);
-
-            //ToDo: Ler a tag evento, informações complementares e a lista de deduções.
-        }
-
-        #endregion RPS
+        Name = "ABRASFv204";
+        Versao = "2.04";
+        UsaPrestadorEnvio = true;
     }
+
+    #endregion Constructors
+
+    #region RPS
+
+    /// <inheritdoc />
+    protected override XElement WriteRps(NotaServico nota)
+    {
+        var rootRps = base.WriteRps(nota);
+
+        //ToDo: Implementar a tag evento, informações complementares e a lista de deduções.
+
+        return rootRps;
+    }
+
+    /// <inheritdoc />
+    protected override void LoadRps(NotaServico nota, XElement rpsRoot)
+    {
+        base.LoadRps(nota, rpsRoot);
+
+        //ToDo: Ler a tag evento, informações complementares e a lista de deduções.
+    }
+
+    #endregion RPS
 }

@@ -32,29 +32,28 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class EmailItem : GenericClone<EmailItem>, INotifyPropertyChanged
 {
-    public sealed class EmailItem : GenericClone<EmailItem>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal EmailItem()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal EmailItem()
-        {
-            EmailCC = string.Empty;
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public string EmailCC { get; set; }
-
-        #endregion Propriedades
+        EmailCC = string.Empty;
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public string EmailCC { get; set; }
+
+    #endregion Propriedades
 }

@@ -36,92 +36,91 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Providers;
 
-namespace OpenAC.Net.NFSe.Configuracao
+namespace OpenAC.Net.NFSe.Configuracao;
+
+public sealed class ConfigArquivosNFSe : DFeArquivosConfigBase
 {
-    public sealed class ConfigArquivosNFSe : DFeArquivosConfigBase
+    #region Constructor
+
+    /// <summary>
+    /// Inicializa uma nova instancia da classe <see cref="ConfigArquivosNFSe"/>.
+    /// </summary>
+    internal ConfigArquivosNFSe()
     {
-        #region Constructor
+        EmissaoPathNFSe = false;
 
-        /// <summary>
-        /// Inicializa uma nova instancia da classe <see cref="ConfigArquivosNFSe"/>.
-        /// </summary>
-        internal ConfigArquivosNFSe()
+        var path = Path.GetDirectoryName((Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).Location);
+        if (!path.IsEmpty())
         {
-            EmissaoPathNFSe = false;
-
-            var path = Path.GetDirectoryName((Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).Location);
-            if (!path.IsEmpty())
-            {
-                PathNFSe = Path.Combine(path, "NFSe");
-                PathLote = Path.Combine(path, "Lote");
-                PathRps = Path.Combine(path, "RPS");
-            }
-            else
-            {
-                PathNFSe = string.Empty;
-                PathLote = string.Empty;
-                PathRps = string.Empty;
-            }
+            PathNFSe = Path.Combine(path, "NFSe");
+            PathLote = Path.Combine(path, "Lote");
+            PathRps = Path.Combine(path, "RPS");
         }
-
-        #endregion Constructor
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [emissao path n fe].
-        /// </summary>
-        /// <value><c>true</c> if [emissao path n fe]; otherwise, <c>false</c>.</value>
-        public bool EmissaoPathNFSe { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path n fe.
-        /// </summary>
-        /// <value>The path n fe.</value>
-        public string PathNFSe { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path lote.
-        /// </summary>
-        /// <value>The path lote.</value>
-        public string PathLote { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path lote.
-        /// </summary>
-        /// <value>The path lote.</value>
-        public string PathRps { get; set; }
-
-        #endregion Properties
-
-        #region Methods
-
-        public string GetPathSoap(DateTime data, string cnpj = "")
+        else
         {
-            return GetPath(PathNFSe, "SOAP", cnpj, data);
+            PathNFSe = string.Empty;
+            PathLote = string.Empty;
+            PathRps = string.Empty;
         }
-
-        public string GetPathNFSe(DateTime data, string cnpj = "")
-        {
-            return GetPath(PathNFSe, "NFSe", cnpj, data, "NFSe");
-        }
-
-        public string GetPathLote(DateTime data, string cnpj = "")
-        {
-            return GetPath(PathLote, "Lote", cnpj, data);
-        }
-
-        public string GetPathRps(DateTime data, string cnpj = "")
-        {
-            return GetPath(PathRps, "Rps", cnpj, data, "Rps");
-        }
-
-        /// <inheritdoc />
-        protected override void ArquivoServicoChange()
-        {
-            ProviderManager.Load(ArquivoServicos);
-        }
-
-        #endregion Methods
     }
+
+    #endregion Constructor
+
+    #region Properties
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [emissao path n fe].
+    /// </summary>
+    /// <value><c>true</c> if [emissao path n fe]; otherwise, <c>false</c>.</value>
+    public bool EmissaoPathNFSe { get; set; }
+
+    /// <summary>
+    /// Gets or sets the path n fe.
+    /// </summary>
+    /// <value>The path n fe.</value>
+    public string PathNFSe { get; set; }
+
+    /// <summary>
+    /// Gets or sets the path lote.
+    /// </summary>
+    /// <value>The path lote.</value>
+    public string PathLote { get; set; }
+
+    /// <summary>
+    /// Gets or sets the path lote.
+    /// </summary>
+    /// <value>The path lote.</value>
+    public string PathRps { get; set; }
+
+    #endregion Properties
+
+    #region Methods
+
+    public string GetPathSoap(DateTime data, string cnpj = "")
+    {
+        return GetPath(PathNFSe, "SOAP", cnpj, data);
+    }
+
+    public string GetPathNFSe(DateTime data, string cnpj = "")
+    {
+        return GetPath(PathNFSe, "NFSe", cnpj, data, "NFSe");
+    }
+
+    public string GetPathLote(DateTime data, string cnpj = "")
+    {
+        return GetPath(PathLote, "Lote", cnpj, data);
+    }
+
+    public string GetPathRps(DateTime data, string cnpj = "")
+    {
+        return GetPath(PathRps, "Rps", cnpj, data, "Rps");
+    }
+
+    /// <inheritdoc />
+    protected override void ArquivoServicoChange()
+    {
+        ProviderManager.Load(ArquivoServicos);
+    }
+
+    #endregion Methods
 }

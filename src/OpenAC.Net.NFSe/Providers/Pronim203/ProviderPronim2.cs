@@ -38,65 +38,64 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderPronim203 : ProviderABRASF203
 {
-    internal sealed class ProviderPronim203 : ProviderABRASF203
+    #region Constructors
+
+    public ProviderPronim203(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderPronim203(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Pronim203";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new Pronim203ServiceClient(this, tipo, null);
-        }
-
-        protected override XElement WriteValoresRps(NotaServico nota)
-        {
-            var valores = new XElement("Valores");
-
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.OutrasRetencoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValTotTributos));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIss));
-
-            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
-                valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 5, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
-
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoIncondicionado));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoCondicionado));
-
-            return valores;
-        }
-        protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
-        {
-            //NAO PRECISA ASSINAR
-        }
-
-        protected override void ValidarSchema(RetornoWebservice retorno, string schema)
-        {
-            schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, "Pronim2", schema);
-            if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
-
-            foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
-                retorno.Erros.Add(erro);
-
-            foreach (var alerta in alertasSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
-                retorno.Alertas.Add(alerta);
-        }
-        #endregion Methods
+        Name = "Pronim203";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new Pronim203ServiceClient(this, tipo, null);
+    }
+
+    protected override XElement WriteValoresRps(NotaServico nota)
+    {
+        var valores = new XElement("Valores");
+
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.OutrasRetencoes));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValTotTributos));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIss));
+
+        if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 5, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
+
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoIncondicionado));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoCondicionado));
+
+        return valores;
+    }
+    protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
+    {
+        //NAO PRECISA ASSINAR
+    }
+
+    protected override void ValidarSchema(RetornoWebservice retorno, string schema)
+    {
+        schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, "Pronim2", schema);
+        if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
+
+        foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
+            retorno.Erros.Add(erro);
+
+        foreach (var alerta in alertasSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
+            retorno.Alertas.Add(alerta);
+    }
+    #endregion Methods
 }
