@@ -1,4 +1,4 @@
-﻿using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.DFe.Core.Common;
 
 namespace OpenAC.Net.NFSe.Test;
 
@@ -9,6 +9,7 @@ public class SetupOpenNFSe
     private static OpenNFSe ginfes;
     private static OpenNFSe sigiss;
     private static OpenNFSe abrasf;
+    private static OpenNFSe ipm;
 
     #endregion Fields
 
@@ -20,6 +21,7 @@ public class SetupOpenNFSe
 
     public static OpenNFSe Abrasf => abrasf ??= GetAbrasf();
 
+    public static OpenNFSe IPM => ipm ??= GetIPM();
     #endregion Properties
 
     #region Setup
@@ -64,6 +66,31 @@ public class SetupOpenNFSe
 
         openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "03514896000115";
         openNFSe.Configuracoes.PrestadorPadrao.InscricaoMunicipal = "85841";
+
+        return openNFSe;
+    }
+
+    private static OpenNFSe GetIPM()
+    {
+        var openNFSe = new OpenNFSe();
+
+        //Salvar os arquivos
+        openNFSe.Configuracoes.Geral.Salvar = true;
+        openNFSe.Configuracoes.Arquivos.Salvar = true;
+
+        //webservices
+        //Configure os dados da cidade e do Certificado aqui
+        openNFSe.Configuracoes.WebServices.Ambiente = DFeTipoAmbiente.Producao;
+        openNFSe.Configuracoes.WebServices.CodigoMunicipio = 4303103;
+
+        openNFSe.Configuracoes.Certificados.Certificado = "4E009FA5F9CABB8F";
+        openNFSe.Configuracoes.Certificados.Senha = "";
+
+        openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "03514896000115";
+        openNFSe.Configuracoes.PrestadorPadrao.InscricaoMunicipal = "85841";
+
+        openNFSe.Configuracoes.WebServices.Usuario = "111";
+        openNFSe.Configuracoes.WebServices.Senha = "123";
 
         return openNFSe;
     }
