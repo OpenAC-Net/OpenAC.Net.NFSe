@@ -32,11 +32,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
@@ -149,19 +150,20 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
     #region Methods
 
-    protected async void Execute(string contentType, HttpMethod method, Dictionary<string, string> headers = null)
+    protected async void Execute(HttpContent? content, HttpMethod method, Dictionary<string, string> headers = null)
     {
-        var protocolos = ServicePointManager.SecurityProtocol;
-        ServicePointManager.SecurityProtocol = Provider.Configuracoes.WebServices.Protocolos;
-
         try
         {
+            Guard.Against<ArgumentNullException>(content == null && method == HttpMethod.Post, nameof(content));
+
             if (!EnvelopeEnvio.IsEmpty())
                 GravarSoap(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
 
             var handler = new HttpClientHandler();
             if (!ValidarCertificadoServidor())
                 handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+
+            handler.SslProtocols = (SslProtocols)Provider.Configuracoes.WebServices.Protocolos;
 
             if (Certificado != null)
                 handler.ClientCertificates.Add(Certificado);
@@ -178,13 +180,15 @@ public abstract class NFSeHttpServiceClient : IDisposable
                     request.Headers.Add(header.Key, header.Value);
             }
 
-            var productValue = new ProductInfoHeaderValue(this.GetType().Assembly.GetName().Name, this.GetType().Assembly.GetName().Version.ToString());
+            var assemblyName = this.GetType().Assembly.GetName();
+            var productValue = new ProductInfoHeaderValue(assemblyName.Name, assemblyName.Version.ToString());
             var commentValue = new ProductInfoHeaderValue("(+https://github.com/OpenAC-Net/OpenAC.Net.NFSe)");
 
             request.Headers.UserAgent.Add(productValue);
             request.Headers.UserAgent.Add(commentValue);
 
-            request.Content = new StringContent(EnvelopeEnvio, Encoding.UTF8, contentType);
+            if (content != null)
+                request.Content = content;
 
             var response = await client.SendAsync(request);
             EnvelopeRetorno = await response.Content.ReadAsStringAsync();
@@ -194,10 +198,6 @@ public abstract class NFSeHttpServiceClient : IDisposable
         catch (Exception ex) when (ex is not OpenDFeCommunicationException)
         {
             throw new OpenDFeCommunicationException(ex.Message, ex);
-        }
-        finally
-        {
-            ServicePointManager.SecurityProtocol = protocolos;
         }
     }
 

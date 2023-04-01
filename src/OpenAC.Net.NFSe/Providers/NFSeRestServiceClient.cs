@@ -32,7 +32,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -67,11 +69,13 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
     public string AuthenticationHeader { get; protected set; } = "Authorization";
 
+    public Encoding Encoding { get; protected set; } = Encoding.UTF8;
+
     #endregion Properties
 
     #region Methods
 
-    protected string Get(string action, string contentyType)
+    protected string Get(string action)
     {
         var url = Url;
 
@@ -82,8 +86,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
             var auth = Authentication();
             var headers = !auth.IsEmpty() ? new Dictionary<string, string> { { AuthenticationHeader, auth } } : null;
-
-            Execute(contentyType, HttpMethod.Get, headers);
+            Execute(null, HttpMethod.Get, headers);
             return EnvelopeRetorno;
         }
         finally
@@ -92,7 +95,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         }
     }
 
-    protected string Post(string action, string message, string contentyType)
+    protected string Post(string action, string message, string contentyType = "application/json")
     {
         var url = Url;
 
@@ -104,8 +107,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
             var headers = !auth.IsEmpty() ? new Dictionary<string, string> { { AuthenticationHeader, auth } } : null;
 
             EnvelopeEnvio = message;
-
-            Execute(contentyType, HttpMethod.Post, headers);
+            Execute(new StringContent(message, Encoding, contentyType), HttpMethod.Post, headers);
             return EnvelopeRetorno;
         }
         finally
@@ -131,7 +133,13 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
             var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
             GravarSoap(EnvelopeEnvio, fileName);
 
-            Execute("", HttpMethod.Post, headers);
+            var requestContent = new MultipartFormDataContent();
+            var fileContent = new ByteArrayContent(Encoding.GetBytes(EnvelopeEnvio));
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/xml");
+
+            requestContent.Add(fileContent, "file", fileName);
+
+            Execute(requestContent, HttpMethod.Post, headers);
 
             GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
 
