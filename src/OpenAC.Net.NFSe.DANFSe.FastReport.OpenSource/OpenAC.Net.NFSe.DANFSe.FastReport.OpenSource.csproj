@@ -7,7 +7,7 @@
     <SignAssembly>true</SignAssembly>
 	<LangVersion>latest</LangVersion>
     <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2022</Copyright>
+    <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2023</Copyright>
     <Company>OpenAC .Net - Automação Comercial em .Net</Company>
     <Authors>Projeto OpenAC .Net</Authors>
     <PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>

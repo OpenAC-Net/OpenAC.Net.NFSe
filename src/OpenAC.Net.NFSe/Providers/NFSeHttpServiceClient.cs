@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
@@ -176,6 +177,12 @@ public abstract class NFSeHttpServiceClient : IDisposable
                 foreach (var header in headers)
                     request.Headers.Add(header.Key, header.Value);
             }
+
+            var productValue = new ProductInfoHeaderValue(this.GetType().Assembly.GetName().Name, this.GetType().Assembly.GetName().Version.ToString());
+            var commentValue = new ProductInfoHeaderValue("(+https://github.com/OpenAC-Net/OpenAC.Net.NFSe)");
+
+            request.Headers.UserAgent.Add(productValue);
+            request.Headers.UserAgent.Add(commentValue);
 
             request.Content = new StringContent(EnvelopeEnvio, Encoding.UTF8, contentType);
 
