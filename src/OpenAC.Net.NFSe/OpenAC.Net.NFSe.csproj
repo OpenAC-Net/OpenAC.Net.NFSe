@@ -164,9 +164,9 @@
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SimplISS</PackagePath>
 		</None>
-		<None Include="Schemas\SpeedGov\*.*">
+		<None Include="Schemas\SimplISSv2\*.*">
 			<Pack>True</Pack>
-			<PackagePath>content\Schemas\SpeedGov</PackagePath>
+			<PackagePath>content\Schemas\SimplISSv2</PackagePath>
 		</None>
 		<None Include="Schemas\SmarAPDABRASF\*.*">
 			<Pack>True</Pack>
@@ -191,10 +191,6 @@
 		<None Include="Schemas\WebISS2\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\WebISS2</PackagePath>
-		</None>
-		<None Include="Schemas\PVH\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\PVH</PackagePath>
 		</None>
 		<None Include="Schemas\PVH\*.*">
 			<Pack>True</Pack>
@@ -294,6 +290,9 @@
 		<None Update="Schemas\SimplISS\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Schemas\SimplISSv2\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Schemas\SmarAPDABRASF\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -315,21 +314,6 @@
 		<None Update="Schemas\WebISS\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>				
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <None Update="Schemas\SimplISSv2\nfse.xsd">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Schemas\SimplISSv2\xmldsig-core-schema20020212.xsd">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Schemas\Tiplan2\nfse.xsd">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Schemas\Tiplan2\xmldsig-core-schema20020212.xsd">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 </Project>

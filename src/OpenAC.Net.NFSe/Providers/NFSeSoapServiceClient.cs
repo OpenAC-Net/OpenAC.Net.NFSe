@@ -113,7 +113,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
     protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
     {
         string contentType;
-        Dictionary<string, string> headers;
+        Dictionary<string, string>? headers;
         switch (MessageVersion)
         {
             case SoapVersion.Soap11:

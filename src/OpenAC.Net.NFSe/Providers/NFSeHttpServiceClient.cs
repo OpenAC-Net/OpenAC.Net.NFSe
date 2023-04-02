@@ -150,7 +150,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
     #region Methods
 
-    protected async void Execute(HttpContent? content, HttpMethod method, Dictionary<string, string> headers = null)
+    protected async void Execute(HttpContent content, HttpMethod method, Dictionary<string, string> headers = null)
     {
         try
         {
@@ -259,12 +259,9 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
         // If disposing managed and unmanaged resources.
         if (disposing)
-        {
             DisposeManaged();
-        }
 
         DisposeUnmanaged();
-
         IsDisposed = true;
     }
 
