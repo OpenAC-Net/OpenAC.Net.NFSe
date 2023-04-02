@@ -153,7 +153,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
         envelope.Append("</soapenv:Envelope>");
         EnvelopeEnvio = envelope.ToString();
 
-        Execute(contentType, HttpMethod.Post, headers);
+        Execute(new StringContent(EnvelopeEnvio, Encoding.UTF8, contentType), HttpMethod.Post, headers);
 
         if (!EnvelopeRetorno.IsValidXml())
             throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);

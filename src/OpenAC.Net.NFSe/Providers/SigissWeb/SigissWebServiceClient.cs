@@ -54,7 +54,7 @@ public class SigissWebServiceClient : NFSeRestServiceClient, IServiceClient
         var xml = XDocument.Parse(msg);
         var numerorps = xml.Root?.ElementAnyNs("NumeroRPS")?.GetValue<string>();
         var serierps = xml.Root?.ElementAnyNs("SerieRPS")?.GetValue<string>();
-        return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}", "application/xml");
+        return Get($"/nfes/pegaxml/{numerorps}/serierps/{serierps}");
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -63,7 +63,7 @@ public class SigissWebServiceClient : NFSeRestServiceClient, IServiceClient
         var numeronf = xml.Root?.ElementAnyNs("NumeroNFSe")?.GetValue<string>();
         var serie = xml.Root?.ElementAnyNs("SerieNFSe")?.GetValue<string>();
         var motivo = xml.Root?.ElementAnyNs("Motivo")?.GetValue<string>();
-        return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}", "application/xml");
+        return Get($"/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}");
     }
 
     public string Enviar(string cabec, string msg) => throw new NotImplementedException();
@@ -90,7 +90,7 @@ public class SigissWebServiceClient : NFSeRestServiceClient, IServiceClient
             SetAction("/login");
 
             EnvelopeEnvio = "{ \"login\": \"" + Provider.Configuracoes.WebServices.Usuario + "\"  , \"senha\":\"" + Provider.Configuracoes.WebServices.Senha + "\"}";
-            Execute("application/json; charset=utf-8", HttpMethod.Post);
+            Execute(new StringContent(EnvelopeEnvio, Encoding, "application/json; charset=utf-8"), HttpMethod.Post);
             return EnvelopeRetorno;
         }
         finally

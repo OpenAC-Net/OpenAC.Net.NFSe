@@ -31,11 +31,8 @@
 
 using System;
 using System.Linq;
-using System.ServiceModel.Channels;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
-using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 

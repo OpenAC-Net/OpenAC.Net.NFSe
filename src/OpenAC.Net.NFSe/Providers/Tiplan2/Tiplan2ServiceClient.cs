@@ -125,7 +125,7 @@ internal sealed class Tiplan2ServiceClient : NFSeSoapServiceClient, IServiceClie
         envelope.Append("</soap:Envelope>");
         EnvelopeEnvio = envelope.ToString();
 
-        Execute(contentType, HttpMethod.Post, headers);
+        Execute(new StringContent(EnvelopeEnvio, Encoding.UTF8, contentType), HttpMethod.Post, headers);
 
         if (!EnvelopeRetorno.IsValidXml())
             throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
