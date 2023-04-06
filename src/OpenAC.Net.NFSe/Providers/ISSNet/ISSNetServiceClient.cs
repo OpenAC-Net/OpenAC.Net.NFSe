@@ -56,6 +56,7 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
     #region Methods
 
     private const string SoapNamespace = "xmlns:nfd=\"http://www.issnetonline.com.br/webservice/nfd\"";
+    private const string SoapAction = "http://www.issnetonline.com.br/webservice/nfd";
     public string Enviar(string cabec, string msg)
     {
         var message = new StringBuilder();
@@ -65,7 +66,7 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</nfd:xml>");
         message.Append("</nfd:RecepcionarLoteRps>");
 
-        return Execute($"{SoapNamespace}/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRps");
+        return Execute($"{SoapAction}/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRps");
     }
 
     public string EnviarSincrono(string cabec, string msg)
@@ -82,7 +83,7 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</nfd:xml>");
         message.Append("</nfd:ConsultaSituacaoLoteRPS>");
 
-        return Execute($"{SoapNamespace}/ConsultaSituacaoLoteRPS", message.ToString(), "ConsultaSituacaoLoteRPS");
+        return Execute($"{SoapAction}/ConsultaSituacaoLoteRPS", message.ToString(), "ConsultaSituacaoLoteRPS");
     }
 
     public string ConsultarLoteRps(string cabec, string msg)
@@ -94,7 +95,7 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</nfd:xml>");
         message.Append("</nfd:ConsultarLoteRps>");
 
-        return Execute($"{SoapNamespace}/ConsultarLoteRps", message.ToString(), "ConsultarLoteRps");
+        return Execute($"{SoapAction}/ConsultarLoteRps", message.ToString(), "ConsultarLoteRps");
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -111,7 +112,7 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</nfd:xml>");
         message.Append("</nfd:ConsultarNFSePorRPS>");
 
-        return Execute($"{SoapNamespace}/ConsultarNFSePorRPS", message.ToString(), "ConsultarNFSePorRPS");
+        return Execute($"{SoapAction}/ConsultarNFSePorRPS", message.ToString(), "ConsultarNFSePorRPS");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
@@ -123,7 +124,7 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</nfd:xml>");
         message.Append("</nfd:ConsultarNfse>");
 
-        return Execute($"{SoapNamespace}/ConsultarNfse", message.ToString(), "ConsultarNfse");
+        return Execute($"{SoapAction}/ConsultarNfse", message.ToString(), "ConsultarNfse");
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -135,7 +136,7 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</nfd:xml>");
         message.Append("</nfd:CancelarNfse>");
 
-        return Execute($"{SoapNamespace}/CancelarNfse", message.ToString(), "CancelarNfse");
+        return Execute($"{SoapAction}/CancelarNfse", message.ToString(), "CancelarNfse");
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
