@@ -163,7 +163,12 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
             throw new OpenDFeCommunicationException(exMessage);
         }
 
-        return xmlDocument.ElementAnyNs(responseTag[0] + "Response").ElementAnyNs(responseTag[0] + "Result").Value;
+        var reader = xmlDocument.ElementAnyNs(responseTag[0])?.CreateReader();
+        if (reader == null)
+            return xmlDocument.ToString();
+
+        reader.MoveToContent();
+        return reader.ReadInnerXml();
     }
 
     #endregion Methods
