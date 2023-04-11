@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -89,7 +90,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
     protected SoapVersion MessageVersion { get; }
 
-    protected string CharSet { get; set; } = "utf-8";
+    protected Encoding CharSet { get; set; } = Encoding.UTF8;
 
     #endregion Properties
 
@@ -112,24 +113,6 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
     protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
     {
-        string contentType;
-        Dictionary<string, string>? headers;
-        switch (MessageVersion)
-        {
-            case SoapVersion.Soap11:
-                contentType = $"text/xml; charset={CharSet}";
-                headers = new Dictionary<string, string> { { "SOAPAction", soapAction } };
-                break;
-
-            case SoapVersion.Soap12:
-                contentType = $"application/soap+xml; charset={CharSet};action={soapAction}";
-                headers = null;
-                break;
-
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
         var envelope = new StringBuilder();
         switch (MessageVersion)
         {
@@ -152,8 +135,25 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
         envelope.Append("</soapenv:Body>");
         envelope.Append("</soapenv:Envelope>");
         EnvelopeEnvio = envelope.ToString();
+        
+        StringContent content;
+        switch (MessageVersion)
+        {
+            case SoapVersion.Soap11:
+                content = new StringContent(EnvelopeEnvio, CharSet, "text/xml");
+                content.Headers.Add("SOAPAction", soapAction);
+                break;
 
-        Execute(new StringContent(EnvelopeEnvio, Encoding.UTF8, contentType), HttpMethod.Post, headers);
+            case SoapVersion.Soap12:
+                content = new StringContent(EnvelopeEnvio, CharSet, "application/soap+xml");
+                content.Headers.ContentType?.Parameters.Add(new NameValueHeaderValue("action", soapAction));
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        Execute(content, HttpMethod.Post);
 
         if (!EnvelopeRetorno.IsValidXml())
             throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
@@ -173,3 +173,4 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
     #endregion Methods
 }
+

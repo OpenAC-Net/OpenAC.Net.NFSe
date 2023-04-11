@@ -22,6 +22,7 @@ public class SetupOpenNFSe
     public static OpenNFSe Abrasf => abrasf ??= GetAbrasf();
 
     public static OpenNFSe IPM => ipm ??= GetIPM();
+
     #endregion Properties
 
     #region Setup
@@ -111,8 +112,8 @@ public class SetupOpenNFSe
         openNFSe.Configuracoes.WebServices.Ambiente = DFeTipoAmbiente.Producao;
         openNFSe.Configuracoes.WebServices.CodigoMunicipio = 3529005;
 
-        openNFSe.Configuracoes.WebServices.Usuario = "888888";//USUARIO
-        openNFSe.Configuracoes.WebServices.Senha = "123456";//SENHA
+        openNFSe.Configuracoes.WebServices.Usuario = "888888"; //USUARIO
+        openNFSe.Configuracoes.WebServices.Senha = "123456"; //SENHA
 
         return openNFSe;
     }

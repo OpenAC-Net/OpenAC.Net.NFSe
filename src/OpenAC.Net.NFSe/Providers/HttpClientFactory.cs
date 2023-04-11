@@ -1,12 +1,12 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : Felipe Silveira (Transis Software)
-// Created          : 18-04-2022
+// Author           : Rafael Dias
+// Created          : 10-04-2023
 //
-// Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 13-05-2022
+// Last Modified By : Rafael Dias
+// Last Modified On : 10-04-2023
 // ***********************************************************************
-// <copyright file="ProviderSIAPNet.cs" company="OpenAC .Net">
+// <copyright file="HttpClientFactory.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
@@ -29,30 +29,39 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
-using OpenAC.Net.DFe.Core.Serializer;
-using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Nota;
-using System.Xml.Linq;
+
+using System;
+using System.Net.Http;
+using System.Security.Authentication;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderSIAPNet : ProviderABRASF201
+internal static class HttpClientFactory
 {
+    #region Fields
+
+    private static HttpClientHandler handler;
+    private static HttpClient client;
+
+    #endregion Fields
+
     #region Constructors
 
-    public ProviderSIAPNet(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    static HttpClientFactory()
     {
-        Name = "SIAPNet";
-        Versao = "2.00";
+        handler = new HttpClientHandler();
+        client = new HttpClient(handler);
     }
 
     #endregion Constructors
 
-    #region Methods
-
-    protected override IServiceClient GetClient(TipoUrl tipo) => new SIAPNetServiceClient(this, tipo, Certificado);
-
-    #endregion Methods
+    public static HttpClient GetClient(Action<HttpClientHandler> config)
+    {
+        handler.SslProtocols = SslProtocols.None;
+        handler.ClientCertificates.Clear();
+        handler.ServerCertificateCustomValidationCallback = null;
+        handler.UseProxy = false;
+        config(handler);
+        return client;
+    }
 }

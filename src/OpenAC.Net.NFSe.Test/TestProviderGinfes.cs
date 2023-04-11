@@ -14,7 +14,7 @@ public class TestProviderGinfes
 
         openNFSe.NotasServico.Clear();
 
-        var dados = new MemoryStream(Properties.Resources.Exemplo_Rps_Ginfes);
+        var dados = new MemoryStream(Resources.Exemplo_Rps_Ginfes);
         openNFSe.NotasServico.Load(dados);
 
         Assert.True(openNFSe.NotasServico.Count == 1, "Erro ao carregar a Rps");
@@ -35,7 +35,7 @@ public class TestProviderGinfes
 
         openNFSe.NotasServico.Clear();
 
-        var dados = new MemoryStream(Properties.Resources.Exemplo_Rps_Ginfes);
+        var dados = new MemoryStream(Resources.Exemplo_Rps_Ginfes);
         openNFSe.NotasServico.Load(dados);
 
         Assert.True(openNFSe.NotasServico.Count == 1, "Erro ao carregar a NFSe");

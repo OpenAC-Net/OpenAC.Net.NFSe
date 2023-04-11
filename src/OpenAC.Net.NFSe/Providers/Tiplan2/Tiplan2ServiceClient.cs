@@ -110,37 +110,6 @@ internal sealed class Tiplan2ServiceClient : NFSeSoapServiceClient, IServiceClie
         return Execute(soapAction, message, "", responseTag, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
     }
 
-    protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
-    {
-        var contentType = $"text/xml; charset={CharSet}";
-        var headers = new Dictionary<string, string>() { { "SOAPAction", soapAction } };
-
-        var envelope = new StringBuilder();
-        envelope.Append("<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"");
-
-        envelope.Append(soapNamespaces.Aggregate("", (atual, next) => atual + $" {next}", namespaces => namespaces + ">"));
-        envelope.Append("<soap:Body>");
-        envelope.Append(message);
-        envelope.Append("</soap:Body>");
-        envelope.Append("</soap:Envelope>");
-        EnvelopeEnvio = envelope.ToString();
-
-        Execute(new StringContent(EnvelopeEnvio, Encoding.UTF8, contentType), HttpMethod.Post, headers);
-
-        if (!EnvelopeRetorno.IsValidXml())
-            throw new OpenDFeCommunicationException("Erro ao processar o xml do envelope SOAP => " + EnvelopeRetorno);
-
-        var xmlDocument = XDocument.Parse(EnvelopeRetorno);
-        var body = xmlDocument.ElementAnyNs("Envelope").ElementAnyNs("Body");
-        var retorno = TratarRetorno(body, responseTag);
-        if (retorno.IsValidXml()) return retorno;
-
-        if (retorno != null)
-            throw new OpenDFeCommunicationException(retorno);
-        else
-            throw new OpenDFeCommunicationException(EnvelopeRetorno);
-    }
-
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");

@@ -65,14 +65,6 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
     #endregion Constructors
 
-    #region Properties
-
-    public string AuthenticationHeader { get; protected set; } = "Authorization";
-
-    public Encoding Encoding { get; protected set; } = Encoding.UTF8;
-
-    #endregion Properties
-
     #region Methods
 
     protected string Get(string action)
@@ -83,10 +75,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         {
             SetAction(action);
             EnvelopeEnvio = string.Empty;
-
-            var auth = Authentication();
-            var headers = !auth.IsEmpty() ? new Dictionary<string, string> { { AuthenticationHeader, auth } } : null;
-            Execute(null, HttpMethod.Get, headers);
+            Execute(null, HttpMethod.Get);
             return EnvelopeRetorno;
         }
         finally
@@ -103,11 +92,8 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         {
             SetAction(action);
 
-            var auth = Authentication();
-            var headers = !auth.IsEmpty() ? new Dictionary<string, string> { { AuthenticationHeader, auth } } : null;
-
             EnvelopeEnvio = message;
-            Execute(new StringContent(message, Encoding, contentyType), HttpMethod.Post, headers);
+            Execute(new StringContent(message, Charset, contentyType), HttpMethod.Post);
             return EnvelopeRetorno;
         }
         finally
@@ -125,24 +111,18 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
             if (executeSetAction)
                 SetAction(action);
 
-            var auth = Authentication();
-            var headers = !auth.IsEmpty() ? new Dictionary<string, string> { { AuthenticationHeader, auth } } : null;
-
             EnvelopeEnvio = message;
 
             var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
-            GravarSoap(EnvelopeEnvio, fileName);
+            GravarEnvio(EnvelopeEnvio, fileName);
 
             var requestContent = new MultipartFormDataContent();
-            var fileContent = new ByteArrayContent(Encoding.GetBytes(EnvelopeEnvio));
+            var fileContent = new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio));
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/xml");
 
             requestContent.Add(fileContent, "file", fileName);
-
-            Execute(requestContent, HttpMethod.Post, headers);
-
-            GravarSoap(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
-
+            
+            Execute(requestContent, HttpMethod.Post);
             return EnvelopeRetorno;
         }
         finally
@@ -150,8 +130,6 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
             Url = url;
         }
     }
-
-    protected virtual string Authentication() => "";
 
     protected void SetAction(string action)
     {

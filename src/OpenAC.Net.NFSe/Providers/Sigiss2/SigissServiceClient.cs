@@ -33,6 +33,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
@@ -44,7 +45,7 @@ internal sealed class Sigiss2ServiceClient : NFSeSoapServiceClient, IServiceClie
 
     public Sigiss2ServiceClient(ProviderSigiss2 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
     {
-        CharSet = "iso-8859-1";
+        CharSet = OpenEncoding.ISO88591;
     }
 
     #endregion Constructors

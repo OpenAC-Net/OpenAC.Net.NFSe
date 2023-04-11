@@ -34,8 +34,6 @@ using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;

@@ -32,6 +32,7 @@
 using System;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 
@@ -43,7 +44,7 @@ internal sealed class SigissServiceClient : NFSeSoapServiceClient, IServiceClien
 
     public SigissServiceClient(ProviderSigiss provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
     {
-        CharSet = "iso-8859-1";
+        CharSet = OpenEncoding.ISO88591;
     }
 
     #endregion Constructors
@@ -57,7 +58,7 @@ internal sealed class SigissServiceClient : NFSeSoapServiceClient, IServiceClien
         request.Append(msg);
         request.Append("</urn:GerarNota>");
 
-        return Execute("urn:sigiss_ws#GerarNota", request.ToString(), new string[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+        return Execute("urn:sigiss_ws#GerarNota", request.ToString(), new[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
     }
 
     public string ConsultarSituacao(string cabec, string msg)

@@ -90,7 +90,7 @@ public class SigissWebServiceClient : NFSeRestServiceClient, IServiceClient
             SetAction("/login");
 
             EnvelopeEnvio = "{ \"login\": \"" + Provider.Configuracoes.WebServices.Usuario + "\"  , \"senha\":\"" + Provider.Configuracoes.WebServices.Senha + "\"}";
-            Execute(new StringContent(EnvelopeEnvio, Encoding, "application/json; charset=utf-8"), HttpMethod.Post);
+            Execute(new StringContent(EnvelopeEnvio, Charset, "application/json; charset=utf-8"), HttpMethod.Post);
             return EnvelopeRetorno;
         }
         finally
