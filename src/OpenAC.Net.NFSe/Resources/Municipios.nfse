@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <OpenNFSe xmlns="https://www.openac.net.br/">
   <Municipios>
     <Municipio>
@@ -8686,37 +8686,31 @@
       <IdEntidade>0</IdEntidade>
       <Nome>Novo Hamburgo</Nome>
       <UF>RS</UF>
-      <Provedor>ISSNet</Provedor>
+      <Provedor>IPM2</Provedor>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
@@ -8731,33 +8725,33 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/novohamburgo/servicos.asmx</Url>
+          <Url>https://ws-novohamburgo.atende.net:7443/?pg=services&amp;service=WNENotaFiscalEletronicaNfe</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/novohamburgo/servicos.asmx</Url>
+          <Url>https://ws-novohamburgo.atende.net:7443/?pg=services&amp;service=WNENotaFiscalEletronicaNfe</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/novohamburgo/servicos.asmx</Url>
+          <Url>https://ws-novohamburgo.atende.net:7443/?pg=services&amp;service=WNENotaFiscalEletronicaNfe</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/novohamburgo/servicos.asmx</Url>
+          <Url>https://ws-novohamburgo.atende.net:7443/?pg=services&amp;service=WNENotaFiscalEletronicaNfe</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/novohamburgo/servicos.asmx</Url>
+          <Url>https://ws-novohamburgo.atende.net:7443/?pg=services&amp;service=WNENotaFiscalEletronicaNfe</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/novohamburgo/servicos.asmx</Url>
+          <Url>https://ws-novohamburgo.atende.net:7443/?pg=services&amp;service=WNENotaFiscalEletronicaNfe</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
@@ -8767,6 +8761,7 @@
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://ws-novohamburgo.atende.net:7443/?pg=services&amp;service=WNENotaFiscalEletronicaNfe</Url>
         </Item>
       </UrlProducao>
     </Municipio>
