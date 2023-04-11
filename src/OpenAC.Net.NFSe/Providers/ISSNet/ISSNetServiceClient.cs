@@ -157,13 +157,14 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");
-        if (element != null)
+        if (element == null)
         {
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
+            element = responseTag.Aggregate(xmlDocument.Elements().First(), (current, tag) => current.ElementAnyNs(tag));
+            return element.ToString();
         }
 
-        return xmlDocument.ElementAnyNs(responseTag[0] + "Response").ElementAnyNs(responseTag[0] + "Result").Value;
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
     }
 
     #endregion Methods
