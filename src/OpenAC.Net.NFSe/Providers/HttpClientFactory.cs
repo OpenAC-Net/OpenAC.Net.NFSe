@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 10-04-2023
@@ -40,6 +40,7 @@ internal static class HttpClientFactory
 {
     #region Fields
 
+    private static bool _Initialized = false;
     private static HttpClientHandler handler;
     private static HttpClient client;
 
@@ -57,11 +58,15 @@ internal static class HttpClientFactory
 
     public static HttpClient GetClient(Action<HttpClientHandler> config)
     {
+        if (_Initialized)
+            return client;
+
         handler.SslProtocols = SslProtocols.None;
         handler.ClientCertificates.Clear();
         handler.ServerCertificateCustomValidationCallback = null;
         handler.UseProxy = false;
         config(handler);
+        _Initialized = true;
         return client;
     }
 }
