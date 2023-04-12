@@ -29,6 +29,9 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core;
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -52,22 +55,6 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 
     #region Methods
 
-    protected string Get()
-    {
-        var url = Url;
-
-        try
-        {
-            EnvelopeEnvio = string.Empty;
-            Execute(null, HttpMethod.Get);
-            return EnvelopeRetorno;
-        }
-        finally
-        {
-            Url = url;
-        }
-    }
-
     protected string Upload(string message)
     {
         var url = Url;
@@ -76,13 +63,17 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
         {
             EnvelopeEnvio = message;
 
-            var fileContent = new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio));
+            var UsuarioWeb = Provider.Configuracoes.WebServices.Usuario.Trim();
+            Guard.Against<OpenDFeException>(UsuarioWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Usuario seja informada.");
+
+            var SenhaWeb = Provider.Configuracoes.WebServices.Senha.Trim();
+            Guard.Against<OpenDFeException>(SenhaWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Senha seja informada.");
 
             var form = new MultipartFormDataContent
             {
-                { new StringContent(Provider.Configuracoes.WebServices.Usuario), "login" },
-                { new StringContent(Provider.Configuracoes.WebServices.Senha), "senha" },
-                { fileContent, "file", $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml" }
+                { new StringContent(UsuarioWeb), "login" },
+                { new StringContent(SenhaWeb), "senha" },
+                { new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio)), "file", $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml" }
             };
 
             form.Headers.ContentType = MediaTypeHeaderValue.Parse("text/xml;charset=" + Charset.WebName);
