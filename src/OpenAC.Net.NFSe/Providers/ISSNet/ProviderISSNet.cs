@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 05-22-2018
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 05-22-2018
+// Last Modified By : Felipe Silveira (Transis Software)
+// Last Modified On : 04-12-2023
 // ***********************************************************************
 // <copyright file="ProviderISSNet.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
