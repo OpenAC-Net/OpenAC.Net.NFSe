@@ -4,7 +4,7 @@
 // Created          : 05-22-2018
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 03-08-2023
+// Last Modified On : 04-12-2023
 // ***********************************************************************
 // <copyright file="ISSNetServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -29,13 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Permissions;
-using System.Text;
-using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -43,11 +42,11 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
 {
     #region Constructors
 
-    public ISSNetServiceClient(ProviderISSNet provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
+    public ISSNetServiceClient(ProviderISSNet provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
     }
 
-    public ISSNetServiceClient(ProviderISSNet provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap12)
+    public ISSNetServiceClient(ProviderISSNet provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
