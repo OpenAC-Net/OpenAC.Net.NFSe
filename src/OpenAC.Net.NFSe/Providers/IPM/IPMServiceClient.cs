@@ -36,7 +36,7 @@ using System.Text;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-public class IPMServiceClient : NFSeRestServiceClient, IServiceClient
+public class IPMServiceClient : NFSeMultiPartClient, IServiceClient
 {
     #region Constructors
 
@@ -48,9 +48,9 @@ public class IPMServiceClient : NFSeRestServiceClient, IServiceClient
 
     #region Methods
 
-    public string EnviarSincrono(string cabec, string msg) => Upload("", msg);
+    public string EnviarSincrono(string cabec, string msg) => Upload(msg);
 
-    public string ConsultarLoteRps(string cabec, string msg) => Upload("", msg);
+    public string ConsultarLoteRps(string cabec, string msg) => Upload(msg);
 
     public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
@@ -67,18 +67,6 @@ public class IPMServiceClient : NFSeRestServiceClient, IServiceClient
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
     public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
-
-    public bool ValidarUsernamePassword() => !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
-
-    protected override string Authentication()
-    {
-        var result = ValidarUsernamePassword();
-        if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
-
-        var authenticationString = string.Concat(Provider.Configuracoes.WebServices.Usuario, ":", Provider.Configuracoes.WebServices.Senha);
-        var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-        return "Basic " + base64EncodedAuthenticationString;
-    }
 
     #endregion Methods
 }

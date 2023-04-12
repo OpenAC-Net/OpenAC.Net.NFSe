@@ -33,6 +33,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -144,7 +145,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
     protected X509Certificate2 Certificado { get; set; }
 
     protected bool IsDisposed { get; private set; }
-    
+
     protected string AuthenticationHeader { get; set; } = "Authorization";
 
     protected Encoding Charset { get; set; } = Encoding.UTF8;
@@ -162,16 +163,17 @@ public abstract class NFSeHttpServiceClient : IDisposable
             if (!EnvelopeEnvio.IsEmpty())
                 GravarEnvio(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
 
-            var client = HttpClientFactory.GetClient(handler =>
-            {
-                if (!ValidarCertificadoServidor())
-                    handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            var handler = new HttpClientHandler();
 
-                handler.SslProtocols = (SslProtocols) Provider.Configuracoes.WebServices.Protocolos;
+            if (!ValidarCertificadoServidor())
+                handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
 
-                if (Certificado != null)
-                    handler.ClientCertificates.Add(Certificado);
-            });
+            handler.SslProtocols = (SslProtocols)Provider.Configuracoes.WebServices.Protocolos;
+
+            if (Certificado != null)
+                handler.ClientCertificates.Add(Certificado);
+
+            var client = new HttpClient(handler);
 
             if (Provider.TimeOut.HasValue)
                 client.Timeout = Provider.TimeOut.Value;
@@ -196,6 +198,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
             EnvelopeRetorno = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             GravarEnvio(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
+            client.Dispose();
         }
         catch (Exception ex) when (ex is not OpenDFeCommunicationException)
         {

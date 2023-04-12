@@ -30,36 +30,21 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
+public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 {
     #region Constructors
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="provider"></param>
-    /// <param name="tipoUrl"></param>
-    protected NFSeRestServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl, provider.Certificado)
+    protected NFSeMultiPartClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="provider"></param>
-    /// <param name="tipoUrl"></param>
-    /// <param name="certificado"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    protected NFSeRestServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
+    protected NFSeMultiPartClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
     {
     }
 
@@ -67,13 +52,12 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
     #region Methods
 
-    protected string Get(string action)
+    protected string Get()
     {
         var url = Url;
 
         try
         {
-            SetAction(action);
             EnvelopeEnvio = string.Empty;
             Execute(null, HttpMethod.Get);
             return EnvelopeRetorno;
@@ -84,56 +68,32 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         }
     }
 
-    protected string Post(string action, string message, string contentyType = "application/json")
+    protected string Upload(string message)
     {
         var url = Url;
 
         try
         {
-            SetAction(action);
-
-            EnvelopeEnvio = message;
-            Execute(new StringContent(message, Charset, contentyType), HttpMethod.Post);
-            return EnvelopeRetorno;
-        }
-        finally
-        {
-            Url = url;
-        }
-    }
-
-    protected string Upload(string action, string message)
-    {
-        var url = Url;
-
-        try
-        {
-            SetAction(action);
-
             EnvelopeEnvio = message;
 
-            var fileName = $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml";
-            GravarEnvio(EnvelopeEnvio, fileName);
-
-            var requestContent = new MultipartFormDataContent();
             var fileContent = new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio));
-            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/xml");
 
-            requestContent.Add(fileContent, "file", fileName);
+            var form = new MultipartFormDataContent
+            {
+                { new StringContent(Provider.Configuracoes.WebServices.Usuario), "login" },
+                { new StringContent(Provider.Configuracoes.WebServices.Senha), "senha" },
+                { fileContent, "file", $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml" }
+            };
 
-            Execute(requestContent, HttpMethod.Post);
+            form.Headers.ContentType = MediaTypeHeaderValue.Parse("text/xml;charset=" + Charset.WebName);
+
+            Execute(form, HttpMethod.Post);
             return EnvelopeRetorno;
         }
         finally
         {
             Url = url;
         }
-    }
-
-    protected void SetAction(string action)
-    {
-        Url ??= "";
-        Url = !Url.EndsWith("/") ? $"{Url}/{action}" : $"{Url}{action}";
     }
 
     #endregion Methods
