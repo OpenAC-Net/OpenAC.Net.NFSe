@@ -3,8 +3,8 @@
 // Author           : Rafael Dias
 // Created          : 07-27-2014
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 09-28-2014
+// Last Modified By : Felipe (Transis Software)
+// Last Modified On : 04-12-2023
 // ***********************************************************************
 // <copyright file="ProviderBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -630,7 +630,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em ConsultaNFSeRps: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -703,7 +703,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em ConsultaNFSe: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -763,7 +763,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em CancelarNFSe: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -817,7 +817,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em CancelarNFSeLote: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -876,7 +876,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em SubstituirNFSe: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -1490,7 +1490,10 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
 
         foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
+        {
+            retorno.Alertas.Add(new Evento { Codigo = "0", Descricao = "Erro gerado ao validar o schema do xml => " + erro.Descricao });
             retorno.Erros.Add(erro);
+        }
 
         foreach (var alerta in alertasSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
             retorno.Alertas.Add(alerta);
