@@ -202,7 +202,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
         }
         catch (Exception ex) when (ex is not OpenDFeCommunicationException)
         {
-            throw new OpenDFeCommunicationException(ex.Message, ex);
+            throw new OpenDFeCommunicationException("Erro no Execute HttpContent => " + ex.Message, ex);
         }
     }
 
