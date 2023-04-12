@@ -4,7 +4,7 @@
 // Created          : 07-27-2014
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 09-28-2014
+// Last Modified On : 04-12-2023
 // ***********************************************************************
 // <copyright file="ProviderBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -630,7 +630,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em ConsultaNFSeRps: " + ex.Message });
             return retornoWebservice;
         }
     }
