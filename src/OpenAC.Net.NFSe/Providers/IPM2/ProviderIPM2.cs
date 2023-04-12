@@ -615,6 +615,24 @@ internal sealed class ProviderIPM2 : ProviderBase
     }
     protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) { }
 
+    protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice, NotaServicoCollection notas)
+    {
+        try
+        {
+            var xmlDoc = new XmlDocument();
+            //verifica se a mensagem eh xml para exibicao correta do erro
+            xmlDoc.LoadXml(retornoWebservice.XmlRetorno);
+        }
+        catch
+        {
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
+            //LIMPA O XML RETORNO PARA NAO DAR ERRO DE PARSE MAIS ADIANTE
+            retornoWebservice.XmlRetorno = null;
+        }
+
+        return;
+    }
+
     #region Não implementados
 
     public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true) => throw new NotImplementedException();
@@ -644,8 +662,6 @@ internal sealed class ProviderIPM2 : ProviderBase
     protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
 
     protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
-
-    protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
 
     protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
 
