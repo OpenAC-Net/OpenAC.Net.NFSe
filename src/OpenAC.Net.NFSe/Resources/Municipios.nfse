@@ -11000,33 +11000,33 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
