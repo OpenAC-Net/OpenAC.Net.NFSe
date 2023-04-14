@@ -8,6 +8,7 @@
       <Nome>Água Boa</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2170,6 +2171,7 @@
       <Nome>Campo Novo do Parecis</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2266,6 +2268,7 @@
       <Nome>Campo Verde</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3324,6 +3327,7 @@
       <Nome>Colider</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4080,6 +4084,7 @@
       <Nome>Diamantino</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4273,6 +4278,7 @@
       <Nome>Dois Corregos</Nome>
       <UF>SP</UF>
       <Provedor>SimplISS</Provedor>
+	  <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5215,6 +5221,7 @@
       <Nome>Guarantã Do Norte</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5602,6 +5609,7 @@
       <Nome>Guaxupé</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5884,6 +5892,7 @@
       <Nome>Igarapé</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5980,6 +5989,7 @@
       <Nome>Iguatama</Nome>
       <UF>MG</UF>
       <Provedor>SimplISS</Provedor>
+	  <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6373,6 +6383,7 @@
       <Nome>Itajubá</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6760,6 +6771,7 @@
       <Nome>Jaguariúna</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7329,6 +7341,7 @@
       <Nome>Lavras</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8095,6 +8108,7 @@
       <Nome>Matupá</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8377,6 +8391,7 @@
       <Nome>Nobres</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8473,6 +8488,7 @@
       <Nome>Nova Brasilândia</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8666,6 +8682,7 @@
       <Nome>Nova Mutum</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9042,6 +9059,7 @@
       <Nome>Ouro Preto</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9235,6 +9253,7 @@
       <Nome>Paracatu</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9331,6 +9350,7 @@
       <Nome>Pedro Leopoldo</Nome>
       <UF>AC</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9427,6 +9447,7 @@
       <Nome>Pelotas</Nome>
       <UF>RS</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9523,6 +9544,7 @@
       <Nome>Piracicaba</Nome>
       <UF>SP</UF>
       <Provedor>SimplISS</Provedor>
+	  <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9623,6 +9645,7 @@
       <Nome>Planalto da Serra</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9719,6 +9742,7 @@
       <Nome>Poços de Caldas</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10009,6 +10033,7 @@
       <Nome>Prata</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10105,6 +10130,7 @@
       <Nome>Primavera do Leste</Nome>
       <UF>MT</UF>
       <Provedor>AssessorPublico</Provedor>
+	  <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10203,6 +10229,7 @@
       <Nome>Querencia</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10675,6 +10702,7 @@
       <Nome>Rondonopolis</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12300,6 +12328,7 @@
       <Nome>Sinop</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12493,6 +12522,7 @@
       <Nome>Tapurah</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
+	  <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
