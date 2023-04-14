@@ -12,6 +12,7 @@ using NLog.Windows.Forms;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;
@@ -34,6 +35,7 @@ public partial class FormMain : Form, IOpenLog
         InitializeComponent();
         openNFSe = new OpenNFSe();
         config = OpenConfig.CreateOrLoad(Path.Combine(Application.StartupPath, "nfse.config"));
+        dgvCidades.AutoGenerateColumns = false;
     }
 
     #endregion Constructors
@@ -207,11 +209,11 @@ public partial class FormMain : Form, IOpenLog
     {
         ExecuteSafe(() =>
         {
-            if (lstMunicipios.SelectedItems.Count < 1) return;
+            if (dgvCidades.SelectedRows.Count < 1) return;
 
             if (MessageBox.Show(@"Você tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
 
-            var municipio = ((OpenMunicipioNFSe)lstMunicipios.SelectedItems[0].Tag).Clone();
+            var municipio = ((OpenMunicipioNFSe)dgvCidades.SelectedRows[0].DataBoundItem).Clone();
             if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
 
             AddMunicipio(municipio);
@@ -222,12 +224,14 @@ public partial class FormMain : Form, IOpenLog
     {
         ExecuteSafe(() =>
         {
-            if (lstMunicipios.SelectedItems.Count < 1) return;
+            if (dgvCidades.SelectedRows.Count < 1) return;
 
             if (MessageBox.Show(@"Você tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
 
-            var municipio = lstMunicipios.SelectedItems[0];
-            lstMunicipios.Items.Remove(municipio);
+            var cidade = (OpenMunicipioNFSe)dgvCidades.SelectedRows[0].DataBoundItem;
+            ProviderManager.Municipios.Remove(cidade);
+
+            dgvCidades.Rows.Remove(dgvCidades.SelectedRows[0]);
             UpdateCidades();
         });
     }
@@ -241,12 +245,12 @@ public partial class FormMain : Form, IOpenLog
     {
         ExecuteSafe(() =>
         {
-            if (lstMunicipios.Items.Count < 1) return;
+            if (dgvCidades.Rows.Count < 1) return;
 
             var path = Helpers.SelectFolder();
             if (path.IsEmpty()) return;
 
-            var municipios = lstMunicipios.Items.Cast<ListViewItem>().Select(x => (OpenMunicipioNFSe)x.Tag);
+            var municipios = dgvCidades.Rows.Cast<DataGridViewRow>().Select(x => (OpenMunicipioNFSe)x.DataBoundItem);
 
             ProviderManager.Municipios.Clear();
             ProviderManager.Municipios.AddRange(municipios);
@@ -298,17 +302,55 @@ public partial class FormMain : Form, IOpenLog
         openNFSe.ImprimirPDF(o => o.NomeArquivo = "NFSe.html");
     }
 
-    private void lstMunicipios_MouseDoubleClick(object sender, MouseEventArgs e)
+    private void dgvCidades_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
         ExecuteSafe(() =>
         {
-            if (lstMunicipios.SelectedItems.Count < 1) return;
+            if (e.RowIndex < 0) return;
 
-            var municipio = lstMunicipios.SelectedItems[0].Tag as OpenMunicipioNFSe;
+            var municipio = dgvCidades.Rows[e.RowIndex].DataBoundItem as OpenMunicipioNFSe;
             if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
 
             LoadData();
         });
+    }
+
+    private void dgvCidades_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+    {
+        if (dgvCidades.RowCount <= 0 || e.RowIndex <= -1 || e.ColumnIndex <= -1)
+            return;
+
+        var municipio = (OpenMunicipioNFSe)dgvCidades.Rows[e.RowIndex].DataBoundItem;
+        switch (dgvCidades.Columns[e.ColumnIndex].Name)
+        {
+            case "dgcCidade":
+                e.Value = municipio.Nome;
+                return;
+
+            case "dgcUF":
+                e.Value = municipio.UF.GetDFeValue();
+                break;
+
+            case "dgcCodigoIBGE":
+                e.Value = municipio.Codigo.ToString();
+                return;
+
+            case "dgcCodigoSiafi":
+                e.Value = municipio.CodigoSiafi.ToString();
+                return;
+
+            case "dgcProvedor":
+                e.Value = municipio.Provedor.GetDescription();
+                return;
+
+            case "dgcLayout":
+                e.Value = municipio.Provedor.GetDescription();
+                return;
+
+            case "dgcVersao":
+                e.Value = municipio.Versao.GetDFeValue();
+                return;
+        }
     }
 
     #endregion EventHandlers
@@ -481,11 +523,11 @@ public partial class FormMain : Form, IOpenLog
         // Setar a serie de acordo com o provedor.
         switch (municipio.Provedor)
         {
-            case NFSeProvider.Curitiba:
+            case NFSeProvider.ISSCuritiba:
                 nfSe.IdentificacaoRps.Serie = "F";
                 break;
 
-            case NFSeProvider.DSF:
+            case NFSeProvider.ISSDSF:
                 nfSe.IdentificacaoRps.Serie = "NF";
                 nfSe.IdentificacaoRps.SeriePrestacao = "99";
                 break;
@@ -502,7 +544,7 @@ public partial class FormMain : Form, IOpenLog
         // Setar a natureza de operação de acordo com o provedor.
         switch (municipio.Provedor)
         {
-            case NFSeProvider.DSF:
+            case NFSeProvider.ISSDSF:
                 nfSe.NaturezaOperacao = NaturezaOperacao.DSF.SemDeducao;
                 break;
 
@@ -514,7 +556,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.RegimeEspecialTributacao = RegimeEspecialTributacao.SimplesNacional;
         nfSe.IncentivadorCultural = NFSeSimNao.Nao;
 
-        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.Curitiba) ? "0107" : "01.07";
+        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba) ? "0107" : "01.07";
         if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
         // Setar o cnae de acordo com o schema aceito pelo provedor.
@@ -522,14 +564,14 @@ public partial class FormMain : Form, IOpenLog
         if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
         nfSe.Servico.CodigoCnae = cnae;
 
-        var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.ABase) ? "5211701" : "01.07.00 / 00010700";
+        var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SiapNet, NFSeProvider.ABase) ? "5211701" : "01.07.00 / 00010700";
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
         nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
-        nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.DSF ? municipio.CodigoSiafi : municipio.Codigo;
+        nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.ISSDSF ? municipio.CodigoSiafi : municipio.Codigo;
         nfSe.Servico.Municipio = municipio.Nome;
-        if (municipio.Provedor.IsIn(NFSeProvider.SIAPNet))
+        if (municipio.Provedor.IsIn(NFSeProvider.SiapNet))
         {
             nfSe.Servico.ResponsavelRetencao = ResponsavelRetencao.Prestador;
             nfSe.Servico.MunicipioIncidencia = nfSe.Servico.CodigoMunicipio;
@@ -543,7 +585,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.Valores.ValorIr = 0;
         nfSe.Servico.Valores.ValorCsll = 0;
         nfSe.Servico.Valores.IssRetido = SituacaoTributaria.Normal;
-        nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SIAPNet ? 2 : 0;
+        nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SiapNet ? 2 : 0;
         nfSe.Servico.Valores.ValorOutrasRetencoes = 0;
         nfSe.Servico.Valores.BaseCalculo = 100;
         nfSe.Servico.Valores.Aliquota = 2;
@@ -553,7 +595,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.Valores.DescontoIncondicionado = 0;
         nfSe.ValorCredito = 0;
 
-        if (municipio.Provedor == NFSeProvider.DSF)
+        if (municipio.Provedor == NFSeProvider.ISSDSF)
         {
             var servico = nfSe.Servico.ItensServico.AddNew();
             servico.Descricao = "Teste";
@@ -585,15 +627,17 @@ public partial class FormMain : Form, IOpenLog
 
     private string GetCnae(OpenMunicipioNFSe municipio)
     {
-        return municipio.Provedor.IsIn(
-            NFSeProvider.SIAPNet, 
-            NFSeProvider.Sintese, 
-            NFSeProvider.ABase, 
-            NFSeProvider.Pronim203, 
-            NFSeProvider.Sigiss2, 
-            NFSeProvider.Ginfes, 
-            NFSeProvider.Tiplanv2
-        ) ? "5211701" : "861010101";
+        return municipio.Provedor switch
+        {
+            NFSeProvider.SiapNet => "5211701",
+            NFSeProvider.Sintese => "5211701",
+            NFSeProvider.ABase => "5211701",
+            NFSeProvider.Pronim when municipio.Versao == VersaoNFSe.ve203 => "5211701",
+            NFSeProvider.SigISS when municipio.Versao == VersaoNFSe.ve103 => "5211701",
+            NFSeProvider.Ginfes => "5211701",
+            NFSeProvider.Tiplan => "5211701",
+            _ => "861010101"
+        };
     }
 
     private void ProcessarRetorno(RetornoWebservice retorno)
@@ -759,26 +803,8 @@ public partial class FormMain : Form, IOpenLog
 
     private void LoadData()
     {
-        var itens = new List<ListViewItem>();
-
-        foreach (var municipio in ProviderManager.Municipios)
-        {
-            var item = new ListViewItem(municipio.Nome);
-            item.SubItems.Add(municipio.UF.ToString());
-            item.SubItems.Add(municipio.Codigo.ToString());
-            item.SubItems.Add(municipio.CodigoSiafi.ToString());
-            item.SubItems.Add(municipio.Provedor.GetDescription());
-            item.Tag = municipio;
-
-            itens.Add(item);
-        }
-
-        lstMunicipios.BeginUpdate();
-
-        lstMunicipios.Items.Clear();
-        lstMunicipios.Items.AddRange(itens.ToArray());
-
-        lstMunicipios.EndUpdate();
+        dgvCidades.DataSource = null;
+        dgvCidades.DataSource = ProviderManager.Municipios;
 
         UpdateCidades();
     }
@@ -939,5 +965,4 @@ public partial class FormMain : Form, IOpenLog
     }
 
     #endregion Methods
-
 }

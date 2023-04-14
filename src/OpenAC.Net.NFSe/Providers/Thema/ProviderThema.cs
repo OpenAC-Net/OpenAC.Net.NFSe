@@ -35,8 +35,9 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using OpenAC.Net.NFSe.Providers.Thema;
 
-namespace OpenAC.Net.NFSe.Providers.Thema;
+namespace OpenAC.Net.NFSe.Providers;
 
 internal sealed class ProviderThema : ProviderABRASF
 {

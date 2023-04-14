@@ -39,5 +39,11 @@ public enum TipoDeducao
     Mercadorias,
     VeiculacaoeDivulgacao,
     MapadeConstCivil,
-    Servicos
+    Servicos,
+    ProducaoExterna,
+    AlimentacaoBebidaFrigobar,
+    ReembolsoDespesas,
+    RepasseConsorciado,
+    PlanoSaude,
+    Outras
 }

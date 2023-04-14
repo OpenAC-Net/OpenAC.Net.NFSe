@@ -40,12 +40,26 @@ using System.Text;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.DFe.Core.Attributes;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.DFe.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers;
 
 public abstract class NFSeHttpServiceClient : IDisposable
 {
+    #region Inner Types
+
+    public enum AuthScheme
+    {
+        [DFeEnum("Basic")]
+        Basic,
+        [DFeEnum("Bearer")]
+        Bearer,
+    }
+
+    #endregion Inner Types
+    
     #region Constructors
 
     /// <summary>
@@ -146,7 +160,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
     protected bool IsDisposed { get; private set; }
 
-    protected string AuthenticationHeader { get; set; } = "Authorization";
+    protected AuthScheme AuthenticationScheme { get; set; } = AuthScheme.Basic;
 
     protected Encoding Charset { get; set; } = Encoding.UTF8;
 
@@ -189,7 +203,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
             var auth = Authentication();
             if (!auth.IsEmpty())
-                request.Headers.Add(AuthenticationHeader, auth);
+                request.Headers.Authorization = new AuthenticationHeaderValue(AuthenticationScheme.GetDFeValue(), auth);
 
             if (content != null)
                 request.Content = content;

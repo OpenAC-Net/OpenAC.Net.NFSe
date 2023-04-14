@@ -48,22 +48,19 @@ public enum NFSeProvider : sbyte
 
     Betha = 1,
 
-    [Description("Betha v2")]
-    Betha2 = 2,
-
     BHISS = 8,
 
-    CITTA = 28,
+    Citta = 28,
 
     Coplan = 3,
 
-    Curitiba = 26,
+    ISSCuritiba = 26,
 
     DBSeller = 19,
 
-    DSF = 4,
+    ISSDSF = 4,
 
-    DSFSJC = 38,
+    DSF = 38,
 
     Equiplano = 15,
 
@@ -77,8 +74,6 @@ public enum NFSeProvider : sbyte
 
     IPM = 36,
 
-    IPM2 = 47,
-
     ISSe = 23,
 
     ISSNet = 18,
@@ -89,29 +84,20 @@ public enum NFSeProvider : sbyte
     NFeCidades = 6,
 
     [Description("Nota Carioca")]
-    NotaCarioca = 7,
+    ISSRio = 7,
 
-    [Description("Pronim v2")]
-    Pronim2 = 17,
-
-    [Description("Pronim v2.03")]
-    Pronim203 = 43,
+    Pronim = 17,
 
     [Description("São Paulo")]
-    SaoPaulo = 9,
+    ISSSaoPaulo = 9,
 
-    [Description("SmarAPD ABRASF")]
-    SmarAPDABRASF = 14,
+    SmarAPD = 14,
 
-    SIAPNet = 35,
+    SiapNet = 35,
 
-    Sigiss = 20,
-
-    Sigiss2 = 44,
+    SigISS = 20,
 
     SimplISS = 24,
-
-    SimplISSv2 = 45,
 
     Sintese = 37,
 
@@ -119,29 +105,25 @@ public enum NFSeProvider : sbyte
 
     SystemPro = 27,
 
-    [Description("CONAM")]
     Conam = 21,
 
     [Description("Goiania")]
-    Goiania = 22,
+    IISGoiania = 22,
 
-    SigissWeb = 30,
+    SigISSWeb = 30,
 
     [Description("RLZ Informática")]
     RLZ = 31,
 
-    Tiplanv2 = 46,
+    Tiplan = 46,
 
     [Description("Vitoria")]
-    Vitoria = 13,
+    ISSVitoria = 13,
 
     WebIss = 10,
 
-    [Description("WebIss v2")]
-    WebIss2 = 11,
-
     [Description("Porto Velho")]
-    PVH = 32,
+    IISPortoVelho = 32,
 
     [Description("Metro Web")]
     MetropolisWeb = 40,

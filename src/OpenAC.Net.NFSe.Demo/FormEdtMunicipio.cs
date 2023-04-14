@@ -59,6 +59,7 @@ public partial class FormEdtMunicipio : Form
         nudCodSiafi.Value = target.CodigoSiafi;
         nudIdEntidade.Value = target.IdEntidade;
         cmbProvedor.EnumDataSourceSorted(target.Provedor);
+        cmbVersao.EnumDataSource(target.Versao);
 
         txtPEnviar.Text = target.UrlProducao[TipoUrl.Enviar];
         txtPEnviarSincrono.Text = target.UrlProducao[TipoUrl.EnviarSincrono];
@@ -93,6 +94,8 @@ public partial class FormEdtMunicipio : Form
         target.CodigoSiafi = (int)nudCodSiafi.Value;
 
         target.Provedor = cmbProvedor.GetSelectedValue<NFSeProvider>();
+        target.Versao = cmbVersao.GetSelectedValue<VersaoNFSe>();
+        target.IdEntidade = (int)nudIdEntidade.Value;
 
         target.UrlProducao[TipoUrl.Enviar] = txtPEnviar.Text;
         target.UrlProducao[TipoUrl.EnviarSincrono] = txtPEnviarSincrono.Text;
@@ -119,8 +122,6 @@ public partial class FormEdtMunicipio : Form
         target.UrlHomologacao[TipoUrl.Autenticacao] = txtHAutenticacao.Text;
     }
 
-    #endregion Methods
-        
     private void btnAtualizar_Click(object sender, EventArgs e)
     {
         string novoLink = "";
@@ -138,4 +139,6 @@ public partial class FormEdtMunicipio : Form
         if (!string.IsNullOrWhiteSpace(txtPSubstituirNFSe.Text)) txtPSubstituirNFSe.Text = novoLink;
         if (!string.IsNullOrWhiteSpace(txtPAutenticacao.Text)) txtPAutenticacao.Text = novoLink;
     }
+
+    #endregion Methods
 }

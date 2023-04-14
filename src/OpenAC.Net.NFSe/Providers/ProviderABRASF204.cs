@@ -30,6 +30,8 @@
 // ***********************************************************************
 
 using System.Xml.Linq;
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -51,8 +53,8 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
     /// <param name="municipio">The municipio.</param>
     protected ProviderABRASF204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "ABRASFv204";
-        Versao = "2.04";
+        Name = "ABRASF";
+        Versao = VersaoNFSe.ve204;
         UsaPrestadorEnvio = true;
     }
 
@@ -61,21 +63,77 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
     #region RPS
 
     /// <inheritdoc />
+    //ToDo: Implementar a tag evento, informações complementares e a lista de deduções.
     protected override XElement WriteRps(NotaServico nota)
     {
         var rootRps = base.WriteRps(nota);
-
-        //ToDo: Implementar a tag evento, informações complementares e a lista de deduções.
+        //var info = rootRps.ElementAnyNs("InfDeclaracaoPrestacaoServico");
+        
+        //info.AddChild(AdicionarTag(TipoCampo.Int, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
 
         return rootRps;
     }
 
     /// <inheritdoc />
+    //ToDo: Ler a tag evento, informações complementares e a lista de deduções.
     protected override void LoadRps(NotaServico nota, XElement rpsRoot)
     {
         base.LoadRps(nota, rpsRoot);
+    }
 
-        //ToDo: Ler a tag evento, informações complementares e a lista de deduções.
+    //ToDo: Ler novas informações do Xml.
+    protected override XElement WriteTomadorRps(NotaServico nota)
+    {
+        var tomador = new XElement("TomadorServico");
+
+        var ideTomador = new XElement("IdentificacaoTomador");
+        tomador.Add(ideTomador);
+
+        var cpfCnpjTomador = new XElement("CpfCnpj");
+        ideTomador.Add(cpfCnpjTomador);
+
+        cpfCnpjTomador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Tomador.CpfCnpj));
+
+        ideTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
+
+        tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
+
+        if (!nota.Tomador.Endereco.Logradouro.IsEmpty() || !nota.Tomador.Endereco.Numero.IsEmpty() ||
+            !nota.Tomador.Endereco.Complemento.IsEmpty() || !nota.Tomador.Endereco.Bairro.IsEmpty() ||
+            nota.Tomador.Endereco.CodigoMunicipio > 0 || !nota.Tomador.Endereco.Uf.IsEmpty() ||
+            !nota.Tomador.Endereco.Cep.IsEmpty())
+        {
+            var endereco = new XElement("Endereco");
+            tomador.Add(endereco);
+
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Endereco", 1, 125, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Logradouro));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Numero));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Complemento", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
+            endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
+            endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
+        } 
+        else if (!nota.Tomador.EnderecoExterior.EnderecoCompleto.IsEmpty())
+        {
+            var endereco = new XElement("EnderecoExterior");
+            tomador.Add(endereco);
+            
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoPais", 4, 4, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 1, 255, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
+        }
+
+        if (!nota.Tomador.DadosContato.DDD.IsEmpty() || !nota.Tomador.DadosContato.Telefone.IsEmpty() ||
+            !nota.Tomador.DadosContato.Email.IsEmpty())
+        {
+            var contato = new XElement("Contato");
+            tomador.Add(contato);
+
+            contato.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Telefone", 1, 11, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.DDD + nota.Tomador.DadosContato.Telefone));
+            contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Email", 1, 80, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
+        }
+
+        return tomador;
     }
 
     #endregion RPS

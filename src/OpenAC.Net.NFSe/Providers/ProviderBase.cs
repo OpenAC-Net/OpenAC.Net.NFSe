@@ -43,6 +43,7 @@ using OpenAC.Net.Core.Logging;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Document;
+using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -155,6 +156,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         FormatoAlerta = "TAG:%TAG% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.";
         Configuracoes = config;
         Municipio = municipio;
+        Versao = VersaoNFSe.ve100;
     }
 
     /// <inheritdoc />
@@ -173,6 +175,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <value>The name.</value>
     public string Name { get; protected set; }
+    
+    public VersaoNFSe Versao { get; protected set; }
 
     /// <summary>
     /// Gets the lista de alertas.
@@ -1486,7 +1490,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <returns>Se estiver tudo OK retorna null, caso contrário as mensagens de alertas e erros.</returns>
     protected virtual void ValidarSchema(RetornoWebservice retorno, string schema)
     {
-        schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, Name, schema);
+        schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, Name, Versao.GetDFeValue(), schema);
         if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
 
         foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))

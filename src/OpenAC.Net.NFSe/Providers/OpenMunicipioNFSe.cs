@@ -127,6 +127,13 @@ public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
     public NFSeProvider Provedor { get; set; }
 
     /// <summary>
+    /// Define ou retorna a versão do provedor de NFSe.
+    /// </summary>
+    /// <value>The provedor.</value>
+    [DFeElement(TipoCampo.Enum, "Versao")]
+    public VersaoNFSe Versao { get; set; }
+
+    /// <summary>
     /// Lista de url de homologação dos serviços.
     /// </summary>
     /// <value>The URL homologacao.</value>

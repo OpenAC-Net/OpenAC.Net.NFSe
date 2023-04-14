@@ -53,8 +53,8 @@ public abstract class ProviderABRASF203 : ProviderABRASF202
     /// <param name="municipio">The municipio.</param>
     protected ProviderABRASF203(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "ABRASFv203";
-        Versao = "2.03";
+        Name = "ABRASF";
+        Versao = VersaoNFSe.ve203;
     }
 
     #endregion Constructors

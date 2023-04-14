@@ -38,8 +38,6 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Providers.Pvh;
-using OpenAC.Net.NFSe.Providers.Thema;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -53,56 +51,49 @@ public static class ProviderManager
     static ProviderManager()
     {
         Municipios = new List<OpenMunicipioNFSe>();
-        Providers = new Dictionary<NFSeProvider, Type>
+        Providers = new Dictionary<NFSeProvider, Dictionary<VersaoNFSe, Type>>
         {
-            {NFSeProvider.Abaco, typeof(ProviderAbaco)},
-            {NFSeProvider.ABase, typeof(ProviderABase)},
-            {NFSeProvider.Americana, typeof(ProviderAmericana)},
-            {NFSeProvider.AssessorPublico, typeof(ProviderAssessorPublico)},
-            {NFSeProvider.BHISS, typeof(ProviderBHISS)},
-            {NFSeProvider.Betha, typeof(ProviderBetha)},
-            {NFSeProvider.Betha2, typeof(ProviderBetha2)},
-            {NFSeProvider.CITTA, typeof(ProviderCITTA)},
-            {NFSeProvider.Conam, typeof(ProviderCONAM)},
-            {NFSeProvider.Coplan, typeof(ProviderCoplan)},
-            {NFSeProvider.Curitiba, typeof(ProviderCuritiba)},
-            {NFSeProvider.DBSeller, typeof(ProviderDBSeller)},
-            {NFSeProvider.DSF, typeof(ProviderDSF)},
-            {NFSeProvider.DSFSJC, typeof(ProviderDSFSJC)},
-            {NFSeProvider.Equiplano, typeof(ProviderEquiplano)},
-            {NFSeProvider.Fiorilli, typeof(ProviderFiorilli)},
-            {NFSeProvider.Fisco, typeof(ProviderFisco)},
-            {NFSeProvider.FissLex, typeof(ProviderFissLex)},
-            {NFSeProvider.Ginfes, typeof(ProviderGinfes)},
-            {NFSeProvider.Goiania, typeof(ProviderGoiania)},
-            {NFSeProvider.IPM, typeof(ProviderIPM)},
-            {NFSeProvider.IPM2, typeof(ProviderIPM2)},
-            {NFSeProvider.ISSe, typeof(ProviderISSe)},
-            {NFSeProvider.ISSNet, typeof(ProviderISSNet)},
-            {NFSeProvider.Mitra, typeof(ProviderMitra)},
-            {NFSeProvider.NFeCidades, typeof(ProviderNFeCidades)},
-            {NFSeProvider.NotaCarioca, typeof(ProviderNotaCarioca)},
-            {NFSeProvider.Pronim2, typeof(ProviderPronim2)},
-            {NFSeProvider.Pronim203, typeof(ProviderPronim203)},
-            {NFSeProvider.PVH, typeof(ProviderPvh)},
-            {NFSeProvider.RLZ, typeof(ProviderRLZ)},
-            {NFSeProvider.SIAPNet, typeof(ProviderSIAPNet)},
-            {NFSeProvider.Sigiss, typeof(ProviderSigiss)},
-            {NFSeProvider.Sigiss2, typeof(ProviderSigiss2)},
-            {NFSeProvider.SigissWeb, typeof(ProviderSigissWeb)},
-            {NFSeProvider.SimplISS, typeof(ProviderSimplISS)},
-            {NFSeProvider.SimplISSv2, typeof(ProviderSimplISSv2)},
-            {NFSeProvider.Sintese, typeof(ProviderSintese)},
-            {NFSeProvider.SpeedGov, typeof(ProviderSpeedGov)},
-            {NFSeProvider.SystemPro, typeof(ProviderSystemPro)},
-            {NFSeProvider.SaoPaulo, typeof(ProviderSaoPaulo)},
-            {NFSeProvider.SmarAPDABRASF, typeof(ProviderSmarAPDABRASF)},
-            {NFSeProvider.Tiplanv2, typeof(ProviderTiplan2)},
-            {NFSeProvider.Vitoria, typeof(ProviderVitoria)},
-            {NFSeProvider.WebIss, typeof(ProviderWebIss)},
-            {NFSeProvider.WebIss2, typeof(ProviderWebIss2)},
-            {NFSeProvider.MetropolisWeb, typeof(ProviderMetropolisWeb)},
-            {NFSeProvider.Thema, typeof(ProviderThema)}
+            {NFSeProvider.Abaco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAbaco)}}},
+            {NFSeProvider.ABase, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderABase)}}},
+            {NFSeProvider.AssessorPublico, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAssessorPublico)}}},
+            {NFSeProvider.Betha, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderBetha)}, {VersaoNFSe.ve202, typeof(ProviderBetha2)}}},
+            {NFSeProvider.BHISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderBHISS)}}},
+            {NFSeProvider.Citta, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderCitta)}}},
+            {NFSeProvider.Conam, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderConam)}}},
+            {NFSeProvider.Coplan, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderCoplan)}}},
+            {NFSeProvider.DBSeller, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDBSeller)}}},
+            {NFSeProvider.DSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDSF100)}}},
+            {NFSeProvider.Equiplano, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderEquiplano)}}},
+            {NFSeProvider.Fiorilli, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderFiorilli)}}},
+            {NFSeProvider.Fisco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderFisco)}}},
+            {NFSeProvider.FissLex, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderFissLex)}}},
+            {NFSeProvider.Ginfes, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderGinfes)}}},
+            {NFSeProvider.IPM, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderIPM100)}, {VersaoNFSe.ve101, typeof(ProviderIPM101)}}},
+            {NFSeProvider.ISSCuritiba, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSCuritiba)}}},
+            {NFSeProvider.ISSDSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSDSF)}}},
+            {NFSeProvider.ISSe, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderISSe)}}},
+            {NFSeProvider.IISGoiania, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderISSGoiania)}}},
+            {NFSeProvider.ISSNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSNet)}}},
+            {NFSeProvider.ISSRio, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSRio)}}},
+            {NFSeProvider.ISSSaoPaulo, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSSaoPaulo)}}},
+            {NFSeProvider.ISSVitoria, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderISSVitoria)}}},
+            {NFSeProvider.MetropolisWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderMetropolisWeb)}}},
+            {NFSeProvider.Mitra, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderMitra)}}},
+            {NFSeProvider.NFeCidades, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderNFeCidades)}}},
+            {NFSeProvider.Pronim, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve202, typeof(ProviderPronim202)}, {VersaoNFSe.ve203, typeof(ProviderPronim203)}}},
+            {NFSeProvider.IISPortoVelho, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderISSPortoVelho)}}},
+            {NFSeProvider.RLZ, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderRLZ)}}},
+            {NFSeProvider.SiapNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderSiapNet)}}},
+            {NFSeProvider.SigISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISS100)}, {VersaoNFSe.ve103, typeof(ProviderSigISS103)}}},
+            {NFSeProvider.SigISSWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISSWeb)}}},
+            {NFSeProvider.SimplISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSimplISS100)}, {VersaoNFSe.ve203, typeof(ProviderSimplISS203)}}},
+            {NFSeProvider.Sintese, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderSintese204)}}},
+            {NFSeProvider.SmarAPD, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderSmarAPD204)}}},
+            {NFSeProvider.SpeedGov, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSpeedGov)}}},
+            {NFSeProvider.SystemPro, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderSystemPro)}}},
+            {NFSeProvider.Thema, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderThema)}}},
+            {NFSeProvider.Tiplan, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderTiplan203)}}},
+            {NFSeProvider.WebIss, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderWebIss)}, {VersaoNFSe.ve202, typeof(ProviderWebIss2)}}},
         };
 
         Load();
@@ -122,7 +113,7 @@ public static class ProviderManager
     /// Provedores cadastrados no OpenNFSe
     /// </summary>
     /// <value>Os provedores</value>
-    public static Dictionary<NFSeProvider, Type> Providers { get; }
+    public static Dictionary<NFSeProvider, Dictionary<VersaoNFSe, Type>> Providers { get; }
 
     #endregion Propriedades
 
@@ -217,7 +208,7 @@ public static class ProviderManager
         Guard.Against<OpenException>(municipio == null, "Provedor para esta cidade não implementado ou não especificado!");
 
         // ReSharper disable once PossibleNullReferenceException
-        var providerType = Providers[municipio.Provedor];
+        var providerType = Providers[municipio.Provedor][municipio.Versao];
         Guard.Against<OpenException>(providerType == null, "Provedor não encontrado!");
         Guard.Against<OpenException>(!CheckBaseType(providerType), "Classe base do provedor incorreta!");
 

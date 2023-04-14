@@ -62,7 +62,7 @@
     <None Remove="Report\DANFSe.frx" />
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 

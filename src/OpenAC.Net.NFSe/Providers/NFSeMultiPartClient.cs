@@ -53,6 +53,14 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 
     #endregion Constructors
 
+    protected string FileNameForm { get; set; } = "file";
+    
+    protected string UsuarioForm { get; set; } = "login";
+    
+    protected string SenhaForm { get; set; } = "senha";
+
+    protected bool UseFormAuth { get; set; } = true;
+
     #region Methods
 
     protected string Upload(string message)
@@ -63,18 +71,24 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
         {
             EnvelopeEnvio = message;
 
-            var UsuarioWeb = Provider.Configuracoes.WebServices.Usuario.Trim();
-            Guard.Against<OpenDFeException>(UsuarioWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Usuario seja informada.");
-
-            var SenhaWeb = Provider.Configuracoes.WebServices.Senha.Trim();
-            Guard.Against<OpenDFeException>(SenhaWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Senha seja informada.");
-
+            
             var form = new MultipartFormDataContent
             {
-                { new StringContent(UsuarioWeb), "login" },
-                { new StringContent(SenhaWeb), "senha" },
-                { new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio)), "file", $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml" }
+                { new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio)), FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml" }
             };
+
+            if (UseFormAuth)
+            {
+                var usuarioWeb = Provider.Configuracoes.WebServices.Usuario.Trim();
+                Guard.Against<OpenDFeException>(usuarioWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Usuario seja informada.");
+
+                var senhaWeb = Provider.Configuracoes.WebServices.Senha.Trim();
+                Guard.Against<OpenDFeException>(senhaWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Senha seja informada.");
+
+                
+                form.Add(new StringContent(usuarioWeb), UsuarioForm);
+                form.Add(new StringContent(senhaWeb), SenhaForm);
+            }
 
             form.Headers.ContentType = MediaTypeHeaderValue.Parse("text/xml;charset=" + Charset.WebName);
 

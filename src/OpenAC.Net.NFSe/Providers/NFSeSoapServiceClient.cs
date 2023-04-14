@@ -135,7 +135,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
         envelope.Append("</soapenv:Body>");
         envelope.Append("</soapenv:Envelope>");
         EnvelopeEnvio = envelope.ToString();
-        
+
         StringContent content;
         switch (MessageVersion)
         {
@@ -146,7 +146,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
             case SoapVersion.Soap12:
                 content = new StringContent(EnvelopeEnvio, CharSet, "application/soap+xml");
-                content.Headers.ContentType?.Parameters.Add(new NameValueHeaderValue("action", soapAction));
+                content.Headers.ContentType?.Parameters.Add(new NameValueHeaderValue("action", $"\"{soapAction}\""));
                 break;
 
             default:
@@ -173,4 +173,3 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
     #endregion Methods
 }
-

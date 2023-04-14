@@ -39,6 +39,7 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Document;
+using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -60,16 +61,14 @@ public abstract class ProviderABRASF200 : ProviderBase
     /// <param name="municipio">The municipio.</param>
     protected ProviderABRASF200(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "ABRASFv201";
-        Versao = "2.00";
+        Name = "ABRASF";
+        Versao = VersaoNFSe.ve200;
         UsaPrestadorEnvio = false;
     }
 
     #endregion Constructors
 
     #region Properties
-
-    public string Versao { get; protected set; }
 
     public bool UsaPrestadorEnvio { get; protected set; }
 
@@ -116,7 +115,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         {
             LoadNFSe(ret, rootNFSe);
             if (rootSub != null) LoadNFSeSub(ret, rootSub);
-            if (rootCanc != null) LoadNFSeCancel(ret, rootCanc);
+            if (rootCanc != null) LoadNFSeCancelada(ret, rootCanc);
         }
 
         return ret;
@@ -359,7 +358,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         nota.RpsSubstituido.Signature = LoadSignature(rootSub.ElementAnyNs("Signature"));
     }
 
-    protected virtual void LoadNFSeCancel(NotaServico nota, XElement rootCanc)
+    protected virtual void LoadNFSeCancelada(NotaServico nota, XElement rootCanc)
     {
         nota.Situacao = SituacaoNFSeRps.Cancelado;
         nota.Cancelamento.DataHora = rootCanc.ElementAnyNs("Confirmacao").ElementAnyNs("DataHora")?.GetValue<DateTime>() ?? DateTime.MinValue;
@@ -1454,7 +1453,7 @@ public abstract class ProviderABRASF200 : ProviderBase
     ///
     /// </summary>
     /// <returns></returns>
-    protected virtual string GetVersao() => $"versao=\"{Versao}\"";
+    protected virtual string GetVersao() => $"versao=\"{Versao.GetDFeValue()}\"";
 
     /// <summary>
     ///
@@ -1463,7 +1462,7 @@ public abstract class ProviderABRASF200 : ProviderBase
     protected virtual string GetNamespace() => "xmlns=\"http://www.abrasf.org.br/nfse.xsd\"";
 
     /// <inheritdoc />
-    protected override string GerarCabecalho() => $"<cabecalho {GetVersao()} {GetNamespace()}><versaoDados>{Versao}</versaoDados></cabecalho>";
+    protected override string GerarCabecalho() => $"<cabecalho {GetVersao()} {GetNamespace()}><versaoDados>{Versao.GetDFeValue()}</versaoDados></cabecalho>";
 
     /// <summary>
     ///

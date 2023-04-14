@@ -1,789 +1,858 @@
 namespace OpenAC.Net.NFSe.Demo
 {
-	partial class FormEdtMunicipio
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+    partial class FormEdtMunicipio
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEdtMunicipio));
-            this.btnSalvar = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtMunicipio = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label28 = new System.Windows.Forms.Label();
-            this.txtHAutenticacao = new System.Windows.Forms.TextBox();
-            this.label26 = new System.Windows.Forms.Label();
-            this.txtHCancelaNFSeLote = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.txtHConsultarSequencialRps = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtHSubstituirNFSe = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtHConsultarSituacao = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtHConsultrLoteRps = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtHConsultaNFSe = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtHEnviarSincrono = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtHConsultaNFSeRps = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtHCancelaNFSe = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtHEnviar = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.label29 = new System.Windows.Forms.Label();
-            this.txtPAutenticacao = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.txtPCancelaNFSeLote = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.txtPConsultarSequencialRps = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtPSubstituirNFSe = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtPConsultarSituacao = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtPConsultrLoteRps = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.txtPConsultaNFSe = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.txtPEnviarSincrono = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.txtPConsultaNFSeRps = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.txtPCancelaNFSe = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.txtPEnviar = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.nudCodSiafi = new System.Windows.Forms.NumericUpDown();
-            this.nudCodIBGE = new System.Windows.Forms.NumericUpDown();
-            this.cmbProvedor = new System.Windows.Forms.ComboBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.cmbUf = new System.Windows.Forms.ComboBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.nudIdEntidade = new System.Windows.Forms.NumericUpDown();
-            this.btnAtualizar = new System.Windows.Forms.Button();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCodSiafi)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCodIBGE)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudIdEntidade)).BeginInit();
-            this.SuspendLayout();
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            btnSalvar = new System.Windows.Forms.Button();
+            btnCancelar = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            txtMunicipio = new System.Windows.Forms.TextBox();
+            label2 = new System.Windows.Forms.Label();
+            tabControl1 = new System.Windows.Forms.TabControl();
+            tabPage1 = new System.Windows.Forms.TabPage();
+            label28 = new System.Windows.Forms.Label();
+            txtHAutenticacao = new System.Windows.Forms.TextBox();
+            label26 = new System.Windows.Forms.Label();
+            txtHCancelaNFSeLote = new System.Windows.Forms.TextBox();
+            label11 = new System.Windows.Forms.Label();
+            txtHConsultarSequencialRps = new System.Windows.Forms.TextBox();
+            label9 = new System.Windows.Forms.Label();
+            txtHSubstituirNFSe = new System.Windows.Forms.TextBox();
+            label10 = new System.Windows.Forms.Label();
+            txtHConsultarSituacao = new System.Windows.Forms.TextBox();
+            label6 = new System.Windows.Forms.Label();
+            txtHConsultrLoteRps = new System.Windows.Forms.TextBox();
+            label7 = new System.Windows.Forms.Label();
+            txtHConsultaNFSe = new System.Windows.Forms.TextBox();
+            label8 = new System.Windows.Forms.Label();
+            txtHEnviarSincrono = new System.Windows.Forms.TextBox();
+            label5 = new System.Windows.Forms.Label();
+            txtHConsultaNFSeRps = new System.Windows.Forms.TextBox();
+            label4 = new System.Windows.Forms.Label();
+            txtHCancelaNFSe = new System.Windows.Forms.TextBox();
+            label3 = new System.Windows.Forms.Label();
+            txtHEnviar = new System.Windows.Forms.TextBox();
+            tabPage2 = new System.Windows.Forms.TabPage();
+            btnAtualizar = new System.Windows.Forms.Button();
+            label29 = new System.Windows.Forms.Label();
+            txtPAutenticacao = new System.Windows.Forms.TextBox();
+            label27 = new System.Windows.Forms.Label();
+            txtPCancelaNFSeLote = new System.Windows.Forms.TextBox();
+            label12 = new System.Windows.Forms.Label();
+            txtPConsultarSequencialRps = new System.Windows.Forms.TextBox();
+            label13 = new System.Windows.Forms.Label();
+            txtPSubstituirNFSe = new System.Windows.Forms.TextBox();
+            label14 = new System.Windows.Forms.Label();
+            txtPConsultarSituacao = new System.Windows.Forms.TextBox();
+            label15 = new System.Windows.Forms.Label();
+            txtPConsultrLoteRps = new System.Windows.Forms.TextBox();
+            label16 = new System.Windows.Forms.Label();
+            txtPConsultaNFSe = new System.Windows.Forms.TextBox();
+            label17 = new System.Windows.Forms.Label();
+            txtPEnviarSincrono = new System.Windows.Forms.TextBox();
+            label18 = new System.Windows.Forms.Label();
+            txtPConsultaNFSeRps = new System.Windows.Forms.TextBox();
+            label19 = new System.Windows.Forms.Label();
+            txtPCancelaNFSe = new System.Windows.Forms.TextBox();
+            label20 = new System.Windows.Forms.Label();
+            txtPEnviar = new System.Windows.Forms.TextBox();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            nudCodSiafi = new System.Windows.Forms.NumericUpDown();
+            nudCodIBGE = new System.Windows.Forms.NumericUpDown();
+            cmbProvedor = new System.Windows.Forms.ComboBox();
+            label22 = new System.Windows.Forms.Label();
+            label23 = new System.Windows.Forms.Label();
+            label24 = new System.Windows.Forms.Label();
+            cmbUf = new System.Windows.Forms.ComboBox();
+            label25 = new System.Windows.Forms.Label();
+            nudIdEntidade = new System.Windows.Forms.NumericUpDown();
+            label21 = new System.Windows.Forms.Label();
+            cmbVersao = new System.Windows.Forms.ComboBox();
+            tabControl1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
+            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudCodSiafi).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudCodIBGE).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudIdEntidade).BeginInit();
+            SuspendLayout();
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Location = new System.Drawing.Point(627, 355);
-            this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(75, 23);
-            this.btnSalvar.TabIndex = 0;
-            this.btnSalvar.Text = "Salvar";
-            this.btnSalvar.UseVisualStyleBackColor = true;
-            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
+            btnSalvar.Location = new System.Drawing.Point(1045, 751);
+            btnSalvar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            btnSalvar.Name = "btnSalvar";
+            btnSalvar.Size = new System.Drawing.Size(125, 44);
+            btnSalvar.TabIndex = 0;
+            btnSalvar.Text = "Salvar";
+            btnSalvar.UseVisualStyleBackColor = true;
+            btnSalvar.Click += btnSalvar_Click;
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(546, 355);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 1;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            btnCancelar.Location = new System.Drawing.Point(901, 751);
+            btnCancelar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new System.Drawing.Size(125, 44);
+            btnCancelar.TabIndex = 1;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Nome";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(20, 17);
+            label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(61, 25);
+            label1.TabIndex = 2;
+            label1.Text = "Nome";
             // 
             // txtMunicipio
             // 
-            this.txtMunicipio.Location = new System.Drawing.Point(12, 25);
-            this.txtMunicipio.Name = "txtMunicipio";
-            this.txtMunicipio.Size = new System.Drawing.Size(255, 20);
-            this.txtMunicipio.TabIndex = 3;
+            txtMunicipio.Location = new System.Drawing.Point(20, 48);
+            txtMunicipio.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtMunicipio.Name = "txtMunicipio";
+            txtMunicipio.Size = new System.Drawing.Size(806, 31);
+            txtMunicipio.TabIndex = 3;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(267, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(21, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "UF";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(829, 18);
+            label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(33, 25);
+            label2.TabIndex = 5;
+            label2.Text = "UF";
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(3, 16);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(684, 278);
-            this.tabControl1.TabIndex = 0;
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabControl1.Location = new System.Drawing.Point(5, 30);
+            tabControl1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new System.Drawing.Size(1140, 523);
+            tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.label28);
-            this.tabPage1.Controls.Add(this.txtHAutenticacao);
-            this.tabPage1.Controls.Add(this.label26);
-            this.tabPage1.Controls.Add(this.txtHCancelaNFSeLote);
-            this.tabPage1.Controls.Add(this.label11);
-            this.tabPage1.Controls.Add(this.txtHConsultarSequencialRps);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.txtHSubstituirNFSe);
-            this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.txtHConsultarSituacao);
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.txtHConsultrLoteRps);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.txtHConsultaNFSe);
-            this.tabPage1.Controls.Add(this.label8);
-            this.tabPage1.Controls.Add(this.txtHEnviarSincrono);
-            this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.txtHConsultaNFSeRps);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.txtHCancelaNFSe);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.txtHEnviar);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage1.Size = new System.Drawing.Size(676, 252);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Homologação";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.Controls.Add(label28);
+            tabPage1.Controls.Add(txtHAutenticacao);
+            tabPage1.Controls.Add(label26);
+            tabPage1.Controls.Add(txtHCancelaNFSeLote);
+            tabPage1.Controls.Add(label11);
+            tabPage1.Controls.Add(txtHConsultarSequencialRps);
+            tabPage1.Controls.Add(label9);
+            tabPage1.Controls.Add(txtHSubstituirNFSe);
+            tabPage1.Controls.Add(label10);
+            tabPage1.Controls.Add(txtHConsultarSituacao);
+            tabPage1.Controls.Add(label6);
+            tabPage1.Controls.Add(txtHConsultrLoteRps);
+            tabPage1.Controls.Add(label7);
+            tabPage1.Controls.Add(txtHConsultaNFSe);
+            tabPage1.Controls.Add(label8);
+            tabPage1.Controls.Add(txtHEnviarSincrono);
+            tabPage1.Controls.Add(label5);
+            tabPage1.Controls.Add(txtHConsultaNFSeRps);
+            tabPage1.Controls.Add(label4);
+            tabPage1.Controls.Add(txtHCancelaNFSe);
+            tabPage1.Controls.Add(label3);
+            tabPage1.Controls.Add(txtHEnviar);
+            tabPage1.Location = new System.Drawing.Point(4, 34);
+            tabPage1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            tabPage1.Size = new System.Drawing.Size(1132, 485);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Homologação";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
             // label28
             // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(3, 198);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(108, 13);
-            this.label28.TabIndex = 20;
-            this.label28.Text = "Autenticacao (REST)";
+            label28.AutoSize = true;
+            label28.Location = new System.Drawing.Point(5, 381);
+            label28.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label28.Name = "label28";
+            label28.Size = new System.Drawing.Size(168, 25);
+            label28.TabIndex = 20;
+            label28.Text = "Autenticacao (REST)";
             // 
             // txtHAutenticacao
             // 
-            this.txtHAutenticacao.Location = new System.Drawing.Point(6, 214);
-            this.txtHAutenticacao.Name = "txtHAutenticacao";
-            this.txtHAutenticacao.Size = new System.Drawing.Size(328, 20);
-            this.txtHAutenticacao.TabIndex = 21;
+            txtHAutenticacao.Location = new System.Drawing.Point(10, 412);
+            txtHAutenticacao.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHAutenticacao.Name = "txtHAutenticacao";
+            txtHAutenticacao.Size = new System.Drawing.Size(544, 31);
+            txtHAutenticacao.TabIndex = 21;
             // 
             // label26
             // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(3, 81);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(100, 13);
-            this.label26.TabIndex = 8;
-            this.label26.Text = "Cancela NFSe Lote";
+            label26.AutoSize = true;
+            label26.Location = new System.Drawing.Point(5, 156);
+            label26.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label26.Name = "label26";
+            label26.Size = new System.Drawing.Size(157, 25);
+            label26.TabIndex = 8;
+            label26.Text = "Cancela NFSe Lote";
             // 
             // txtHCancelaNFSeLote
             // 
-            this.txtHCancelaNFSeLote.Location = new System.Drawing.Point(6, 97);
-            this.txtHCancelaNFSeLote.Name = "txtHCancelaNFSeLote";
-            this.txtHCancelaNFSeLote.Size = new System.Drawing.Size(328, 20);
-            this.txtHCancelaNFSeLote.TabIndex = 9;
+            txtHCancelaNFSeLote.Location = new System.Drawing.Point(10, 187);
+            txtHCancelaNFSeLote.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHCancelaNFSeLote.Name = "txtHCancelaNFSeLote";
+            txtHCancelaNFSeLote.Size = new System.Drawing.Size(544, 31);
+            txtHCancelaNFSeLote.TabIndex = 9;
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(337, 120);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(129, 13);
-            this.label11.TabIndex = 14;
-            this.label11.Text = "Consultar Sequencial Rps";
+            label11.AutoSize = true;
+            label11.Location = new System.Drawing.Point(562, 231);
+            label11.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(211, 25);
+            label11.TabIndex = 14;
+            label11.Text = "Consultar Sequencial Rps";
             // 
             // txtHConsultarSequencialRps
             // 
-            this.txtHConsultarSequencialRps.Location = new System.Drawing.Point(340, 136);
-            this.txtHConsultarSequencialRps.Name = "txtHConsultarSequencialRps";
-            this.txtHConsultarSequencialRps.Size = new System.Drawing.Size(328, 20);
-            this.txtHConsultarSequencialRps.TabIndex = 15;
+            txtHConsultarSequencialRps.Location = new System.Drawing.Point(567, 262);
+            txtHConsultarSequencialRps.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHConsultarSequencialRps.Name = "txtHConsultarSequencialRps";
+            txtHConsultarSequencialRps.Size = new System.Drawing.Size(544, 31);
+            txtHConsultarSequencialRps.TabIndex = 15;
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(337, 159);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(80, 13);
-            this.label9.TabIndex = 18;
-            this.label9.Text = "Substituir NFSe";
+            label9.AutoSize = true;
+            label9.Location = new System.Drawing.Point(562, 306);
+            label9.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(133, 25);
+            label9.TabIndex = 18;
+            label9.Text = "Substituir NFSe";
             // 
             // txtHSubstituirNFSe
             // 
-            this.txtHSubstituirNFSe.Location = new System.Drawing.Point(340, 175);
-            this.txtHSubstituirNFSe.Name = "txtHSubstituirNFSe";
-            this.txtHSubstituirNFSe.Size = new System.Drawing.Size(328, 20);
-            this.txtHSubstituirNFSe.TabIndex = 19;
+            txtHSubstituirNFSe.Location = new System.Drawing.Point(567, 337);
+            txtHSubstituirNFSe.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHSubstituirNFSe.Name = "txtHSubstituirNFSe";
+            txtHSubstituirNFSe.Size = new System.Drawing.Size(544, 31);
+            txtHSubstituirNFSe.TabIndex = 19;
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 159);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(96, 13);
-            this.label10.TabIndex = 16;
-            this.label10.Text = "Consultar Situacao";
+            label10.AutoSize = true;
+            label10.Location = new System.Drawing.Point(5, 306);
+            label10.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(159, 25);
+            label10.TabIndex = 16;
+            label10.Text = "Consultar Situacao";
             // 
             // txtHConsultarSituacao
             // 
-            this.txtHConsultarSituacao.Location = new System.Drawing.Point(6, 175);
-            this.txtHConsultarSituacao.Name = "txtHConsultarSituacao";
-            this.txtHConsultarSituacao.Size = new System.Drawing.Size(328, 20);
-            this.txtHConsultarSituacao.TabIndex = 17;
+            txtHConsultarSituacao.Location = new System.Drawing.Point(10, 337);
+            txtHConsultarSituacao.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHConsultarSituacao.Name = "txtHConsultarSituacao";
+            txtHConsultarSituacao.Size = new System.Drawing.Size(544, 31);
+            txtHConsultarSituacao.TabIndex = 17;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(337, 81);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(97, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Consultar Lote Rps";
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(562, 156);
+            label6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(161, 25);
+            label6.TabIndex = 10;
+            label6.Text = "Consultar Lote Rps";
             // 
             // txtHConsultrLoteRps
             // 
-            this.txtHConsultrLoteRps.Location = new System.Drawing.Point(340, 97);
-            this.txtHConsultrLoteRps.Name = "txtHConsultrLoteRps";
-            this.txtHConsultrLoteRps.Size = new System.Drawing.Size(328, 20);
-            this.txtHConsultrLoteRps.TabIndex = 11;
+            txtHConsultrLoteRps.Location = new System.Drawing.Point(567, 187);
+            txtHConsultrLoteRps.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHConsultrLoteRps.Name = "txtHConsultrLoteRps";
+            txtHConsultrLoteRps.Size = new System.Drawing.Size(544, 31);
+            txtHConsultrLoteRps.TabIndex = 11;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(337, 42);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Consulta NFSe";
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(562, 81);
+            label7.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(127, 25);
+            label7.TabIndex = 6;
+            label7.Text = "Consulta NFSe";
             // 
             // txtHConsultaNFSe
             // 
-            this.txtHConsultaNFSe.Location = new System.Drawing.Point(340, 58);
-            this.txtHConsultaNFSe.Name = "txtHConsultaNFSe";
-            this.txtHConsultaNFSe.Size = new System.Drawing.Size(328, 20);
-            this.txtHConsultaNFSe.TabIndex = 7;
+            txtHConsultaNFSe.Location = new System.Drawing.Point(567, 112);
+            txtHConsultaNFSe.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHConsultaNFSe.Name = "txtHConsultaNFSe";
+            txtHConsultaNFSe.Size = new System.Drawing.Size(544, 31);
+            txtHConsultaNFSe.TabIndex = 7;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(337, 3);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(82, 13);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "Enviar Sincrono";
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(562, 6);
+            label8.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(134, 25);
+            label8.TabIndex = 2;
+            label8.Text = "Enviar Sincrono";
             // 
             // txtHEnviarSincrono
             // 
-            this.txtHEnviarSincrono.Location = new System.Drawing.Point(340, 19);
-            this.txtHEnviarSincrono.Name = "txtHEnviarSincrono";
-            this.txtHEnviarSincrono.Size = new System.Drawing.Size(328, 20);
-            this.txtHEnviarSincrono.TabIndex = 3;
+            txtHEnviarSincrono.Location = new System.Drawing.Point(567, 37);
+            txtHEnviarSincrono.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHEnviarSincrono.Name = "txtHEnviarSincrono";
+            txtHEnviarSincrono.Size = new System.Drawing.Size(544, 31);
+            txtHEnviarSincrono.TabIndex = 3;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 120);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(100, 13);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "Consulta NFSe Rps";
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(5, 231);
+            label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(162, 25);
+            label5.TabIndex = 12;
+            label5.Text = "Consulta NFSe Rps";
             // 
             // txtHConsultaNFSeRps
             // 
-            this.txtHConsultaNFSeRps.Location = new System.Drawing.Point(6, 136);
-            this.txtHConsultaNFSeRps.Name = "txtHConsultaNFSeRps";
-            this.txtHConsultaNFSeRps.Size = new System.Drawing.Size(328, 20);
-            this.txtHConsultaNFSeRps.TabIndex = 13;
+            txtHConsultaNFSeRps.Location = new System.Drawing.Point(10, 262);
+            txtHConsultaNFSeRps.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHConsultaNFSeRps.Name = "txtHConsultaNFSeRps";
+            txtHConsultaNFSeRps.Size = new System.Drawing.Size(544, 31);
+            txtHConsultaNFSeRps.TabIndex = 13;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 42);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(76, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Cancela NFSe";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(5, 81);
+            label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(118, 25);
+            label4.TabIndex = 4;
+            label4.Text = "Cancela NFSe";
             // 
             // txtHCancelaNFSe
             // 
-            this.txtHCancelaNFSe.Location = new System.Drawing.Point(6, 58);
-            this.txtHCancelaNFSe.Name = "txtHCancelaNFSe";
-            this.txtHCancelaNFSe.Size = new System.Drawing.Size(328, 20);
-            this.txtHCancelaNFSe.TabIndex = 5;
+            txtHCancelaNFSe.Location = new System.Drawing.Point(10, 112);
+            txtHCancelaNFSe.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHCancelaNFSe.Name = "txtHCancelaNFSe";
+            txtHCancelaNFSe.Size = new System.Drawing.Size(544, 31);
+            txtHCancelaNFSe.TabIndex = 5;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(37, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Enviar";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(5, 6);
+            label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(59, 25);
+            label3.TabIndex = 0;
+            label3.Text = "Enviar";
             // 
             // txtHEnviar
             // 
-            this.txtHEnviar.Location = new System.Drawing.Point(6, 19);
-            this.txtHEnviar.Name = "txtHEnviar";
-            this.txtHEnviar.Size = new System.Drawing.Size(328, 20);
-            this.txtHEnviar.TabIndex = 1;
+            txtHEnviar.Location = new System.Drawing.Point(10, 37);
+            txtHEnviar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtHEnviar.Name = "txtHEnviar";
+            txtHEnviar.Size = new System.Drawing.Size(544, 31);
+            txtHEnviar.TabIndex = 1;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.btnAtualizar);
-            this.tabPage2.Controls.Add(this.label29);
-            this.tabPage2.Controls.Add(this.txtPAutenticacao);
-            this.tabPage2.Controls.Add(this.label27);
-            this.tabPage2.Controls.Add(this.txtPCancelaNFSeLote);
-            this.tabPage2.Controls.Add(this.label12);
-            this.tabPage2.Controls.Add(this.txtPConsultarSequencialRps);
-            this.tabPage2.Controls.Add(this.label13);
-            this.tabPage2.Controls.Add(this.txtPSubstituirNFSe);
-            this.tabPage2.Controls.Add(this.label14);
-            this.tabPage2.Controls.Add(this.txtPConsultarSituacao);
-            this.tabPage2.Controls.Add(this.label15);
-            this.tabPage2.Controls.Add(this.txtPConsultrLoteRps);
-            this.tabPage2.Controls.Add(this.label16);
-            this.tabPage2.Controls.Add(this.txtPConsultaNFSe);
-            this.tabPage2.Controls.Add(this.label17);
-            this.tabPage2.Controls.Add(this.txtPEnviarSincrono);
-            this.tabPage2.Controls.Add(this.label18);
-            this.tabPage2.Controls.Add(this.txtPConsultaNFSeRps);
-            this.tabPage2.Controls.Add(this.label19);
-            this.tabPage2.Controls.Add(this.txtPCancelaNFSe);
-            this.tabPage2.Controls.Add(this.label20);
-            this.tabPage2.Controls.Add(this.txtPEnviar);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage2.Size = new System.Drawing.Size(676, 252);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Produção";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(3, 198);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(108, 13);
-            this.label29.TabIndex = 20;
-            this.label29.Text = "Autenticacao (REST)";
-            // 
-            // txtPAutenticacao
-            // 
-            this.txtPAutenticacao.Location = new System.Drawing.Point(6, 214);
-            this.txtPAutenticacao.Name = "txtPAutenticacao";
-            this.txtPAutenticacao.Size = new System.Drawing.Size(328, 20);
-            this.txtPAutenticacao.TabIndex = 21;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(3, 81);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(100, 13);
-            this.label27.TabIndex = 8;
-            this.label27.Text = "Cancela NFSe Lote";
-            // 
-            // txtPCancelaNFSeLote
-            // 
-            this.txtPCancelaNFSeLote.Location = new System.Drawing.Point(6, 97);
-            this.txtPCancelaNFSeLote.Name = "txtPCancelaNFSeLote";
-            this.txtPCancelaNFSeLote.Size = new System.Drawing.Size(328, 20);
-            this.txtPCancelaNFSeLote.TabIndex = 9;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(337, 120);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(129, 13);
-            this.label12.TabIndex = 14;
-            this.label12.Text = "Consultar Sequencial Rps";
-            // 
-            // txtPConsultarSequencialRps
-            // 
-            this.txtPConsultarSequencialRps.Location = new System.Drawing.Point(340, 136);
-            this.txtPConsultarSequencialRps.Name = "txtPConsultarSequencialRps";
-            this.txtPConsultarSequencialRps.Size = new System.Drawing.Size(328, 20);
-            this.txtPConsultarSequencialRps.TabIndex = 15;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(337, 159);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(80, 13);
-            this.label13.TabIndex = 18;
-            this.label13.Text = "Substituir NFSe";
-            // 
-            // txtPSubstituirNFSe
-            // 
-            this.txtPSubstituirNFSe.Location = new System.Drawing.Point(340, 175);
-            this.txtPSubstituirNFSe.Name = "txtPSubstituirNFSe";
-            this.txtPSubstituirNFSe.Size = new System.Drawing.Size(328, 20);
-            this.txtPSubstituirNFSe.TabIndex = 19;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 159);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(96, 13);
-            this.label14.TabIndex = 16;
-            this.label14.Text = "Consultar Situacao";
-            // 
-            // txtPConsultarSituacao
-            // 
-            this.txtPConsultarSituacao.Location = new System.Drawing.Point(6, 175);
-            this.txtPConsultarSituacao.Name = "txtPConsultarSituacao";
-            this.txtPConsultarSituacao.Size = new System.Drawing.Size(328, 20);
-            this.txtPConsultarSituacao.TabIndex = 17;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(337, 81);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(97, 13);
-            this.label15.TabIndex = 10;
-            this.label15.Text = "Consultar Lote Rps";
-            // 
-            // txtPConsultrLoteRps
-            // 
-            this.txtPConsultrLoteRps.Location = new System.Drawing.Point(340, 97);
-            this.txtPConsultrLoteRps.Name = "txtPConsultrLoteRps";
-            this.txtPConsultrLoteRps.Size = new System.Drawing.Size(328, 20);
-            this.txtPConsultrLoteRps.TabIndex = 11;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(337, 42);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(78, 13);
-            this.label16.TabIndex = 6;
-            this.label16.Text = "Consulta NFSe";
-            // 
-            // txtPConsultaNFSe
-            // 
-            this.txtPConsultaNFSe.Location = new System.Drawing.Point(340, 58);
-            this.txtPConsultaNFSe.Name = "txtPConsultaNFSe";
-            this.txtPConsultaNFSe.Size = new System.Drawing.Size(328, 20);
-            this.txtPConsultaNFSe.TabIndex = 7;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(337, 3);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(82, 13);
-            this.label17.TabIndex = 2;
-            this.label17.Text = "Enviar Sincrono";
-            // 
-            // txtPEnviarSincrono
-            // 
-            this.txtPEnviarSincrono.Location = new System.Drawing.Point(340, 19);
-            this.txtPEnviarSincrono.Name = "txtPEnviarSincrono";
-            this.txtPEnviarSincrono.Size = new System.Drawing.Size(328, 20);
-            this.txtPEnviarSincrono.TabIndex = 3;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(3, 120);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(100, 13);
-            this.label18.TabIndex = 12;
-            this.label18.Text = "Consulta NFSe Rps";
-            // 
-            // txtPConsultaNFSeRps
-            // 
-            this.txtPConsultaNFSeRps.Location = new System.Drawing.Point(6, 136);
-            this.txtPConsultaNFSeRps.Name = "txtPConsultaNFSeRps";
-            this.txtPConsultaNFSeRps.Size = new System.Drawing.Size(328, 20);
-            this.txtPConsultaNFSeRps.TabIndex = 13;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(3, 42);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(76, 13);
-            this.label19.TabIndex = 4;
-            this.label19.Text = "Cancela NFSe";
-            // 
-            // txtPCancelaNFSe
-            // 
-            this.txtPCancelaNFSe.Location = new System.Drawing.Point(6, 58);
-            this.txtPCancelaNFSe.Name = "txtPCancelaNFSe";
-            this.txtPCancelaNFSe.Size = new System.Drawing.Size(328, 20);
-            this.txtPCancelaNFSe.TabIndex = 5;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(3, 3);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(37, 13);
-            this.label20.TabIndex = 0;
-            this.label20.Text = "Enviar";
-            // 
-            // txtPEnviar
-            // 
-            this.txtPEnviar.Location = new System.Drawing.Point(6, 19);
-            this.txtPEnviar.Name = "txtPEnviar";
-            this.txtPEnviar.Size = new System.Drawing.Size(328, 20);
-            this.txtPEnviar.TabIndex = 1;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.tabControl1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 52);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(690, 297);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "URL";
-            // 
-            // nudCodSiafi
-            // 
-            this.nudCodSiafi.Location = new System.Drawing.Point(412, 25);
-            this.nudCodSiafi.Maximum = new decimal(new int[] {
-            9999999,
-            0,
-            0,
-            0});
-            this.nudCodSiafi.Name = "nudCodSiafi";
-            this.nudCodSiafi.Size = new System.Drawing.Size(63, 20);
-            this.nudCodSiafi.TabIndex = 10;
-            // 
-            // nudCodIBGE
-            // 
-            this.nudCodIBGE.Location = new System.Drawing.Point(331, 25);
-            this.nudCodIBGE.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.nudCodIBGE.Name = "nudCodIBGE";
-            this.nudCodIBGE.Size = new System.Drawing.Size(76, 20);
-            this.nudCodIBGE.TabIndex = 11;
-            // 
-            // cmbProvedor
-            // 
-            this.cmbProvedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProvedor.FormattingEnabled = true;
-            this.cmbProvedor.Location = new System.Drawing.Point(549, 25);
-            this.cmbProvedor.Name = "cmbProvedor";
-            this.cmbProvedor.Size = new System.Drawing.Size(153, 21);
-            this.cmbProvedor.TabIndex = 12;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(331, 8);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(57, 13);
-            this.label22.TabIndex = 14;
-            this.label22.Text = "Cod. IBGE";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(409, 8);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(52, 13);
-            this.label23.TabIndex = 15;
-            this.label23.Text = "Cod. Siafi";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(547, 9);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(50, 13);
-            this.label24.TabIndex = 16;
-            this.label24.Text = "Provedor";
-            // 
-            // cmbUf
-            // 
-            this.cmbUf.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUf.FormattingEnabled = true;
-            this.cmbUf.Items.AddRange(new object[] {
-            "DSF",
-            "Ginfes",
-            "Porto Alegre",
-            "São Paulo",
-            "WebISS"});
-            this.cmbUf.Location = new System.Drawing.Point(271, 25);
-            this.cmbUf.Name = "cmbUf";
-            this.cmbUf.Size = new System.Drawing.Size(56, 21);
-            this.cmbUf.TabIndex = 17;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(477, 8);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(58, 13);
-            this.label25.TabIndex = 19;
-            this.label25.Text = "IdEntidade";
-            // 
-            // nudIdEntidade
-            // 
-            this.nudIdEntidade.Location = new System.Drawing.Point(480, 25);
-            this.nudIdEntidade.Maximum = new decimal(new int[] {
-            9999999,
-            0,
-            0,
-            0});
-            this.nudIdEntidade.Name = "nudIdEntidade";
-            this.nudIdEntidade.Size = new System.Drawing.Size(64, 20);
-            this.nudIdEntidade.TabIndex = 18;
+            tabPage2.Controls.Add(btnAtualizar);
+            tabPage2.Controls.Add(label29);
+            tabPage2.Controls.Add(txtPAutenticacao);
+            tabPage2.Controls.Add(label27);
+            tabPage2.Controls.Add(txtPCancelaNFSeLote);
+            tabPage2.Controls.Add(label12);
+            tabPage2.Controls.Add(txtPConsultarSequencialRps);
+            tabPage2.Controls.Add(label13);
+            tabPage2.Controls.Add(txtPSubstituirNFSe);
+            tabPage2.Controls.Add(label14);
+            tabPage2.Controls.Add(txtPConsultarSituacao);
+            tabPage2.Controls.Add(label15);
+            tabPage2.Controls.Add(txtPConsultrLoteRps);
+            tabPage2.Controls.Add(label16);
+            tabPage2.Controls.Add(txtPConsultaNFSe);
+            tabPage2.Controls.Add(label17);
+            tabPage2.Controls.Add(txtPEnviarSincrono);
+            tabPage2.Controls.Add(label18);
+            tabPage2.Controls.Add(txtPConsultaNFSeRps);
+            tabPage2.Controls.Add(label19);
+            tabPage2.Controls.Add(txtPCancelaNFSe);
+            tabPage2.Controls.Add(label20);
+            tabPage2.Controls.Add(txtPEnviar);
+            tabPage2.Location = new System.Drawing.Point(4, 34);
+            tabPage2.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            tabPage2.Size = new System.Drawing.Size(1132, 462);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "Produção";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // btnAtualizar
             // 
-            this.btnAtualizar.Location = new System.Drawing.Point(547, 211);
-            this.btnAtualizar.Name = "btnAtualizar";
-            this.btnAtualizar.Size = new System.Drawing.Size(121, 23);
-            this.btnAtualizar.TabIndex = 20;
-            this.btnAtualizar.Text = "Atualizar Endereços";
-            this.btnAtualizar.UseVisualStyleBackColor = true;
-            this.btnAtualizar.Click += new System.EventHandler(this.btnAtualizar_Click);
+            btnAtualizar.Location = new System.Drawing.Point(912, 406);
+            btnAtualizar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            btnAtualizar.Name = "btnAtualizar";
+            btnAtualizar.Size = new System.Drawing.Size(202, 44);
+            btnAtualizar.TabIndex = 20;
+            btnAtualizar.Text = "Atualizar Endereços";
+            btnAtualizar.UseVisualStyleBackColor = true;
+            btnAtualizar.Click += btnAtualizar_Click;
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Location = new System.Drawing.Point(5, 381);
+            label29.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label29.Name = "label29";
+            label29.Size = new System.Drawing.Size(168, 25);
+            label29.TabIndex = 20;
+            label29.Text = "Autenticacao (REST)";
+            // 
+            // txtPAutenticacao
+            // 
+            txtPAutenticacao.Location = new System.Drawing.Point(10, 412);
+            txtPAutenticacao.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPAutenticacao.Name = "txtPAutenticacao";
+            txtPAutenticacao.Size = new System.Drawing.Size(544, 31);
+            txtPAutenticacao.TabIndex = 21;
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new System.Drawing.Point(5, 156);
+            label27.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label27.Name = "label27";
+            label27.Size = new System.Drawing.Size(157, 25);
+            label27.TabIndex = 8;
+            label27.Text = "Cancela NFSe Lote";
+            // 
+            // txtPCancelaNFSeLote
+            // 
+            txtPCancelaNFSeLote.Location = new System.Drawing.Point(10, 187);
+            txtPCancelaNFSeLote.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPCancelaNFSeLote.Name = "txtPCancelaNFSeLote";
+            txtPCancelaNFSeLote.Size = new System.Drawing.Size(544, 31);
+            txtPCancelaNFSeLote.TabIndex = 9;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new System.Drawing.Point(562, 231);
+            label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(211, 25);
+            label12.TabIndex = 14;
+            label12.Text = "Consultar Sequencial Rps";
+            // 
+            // txtPConsultarSequencialRps
+            // 
+            txtPConsultarSequencialRps.Location = new System.Drawing.Point(567, 262);
+            txtPConsultarSequencialRps.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPConsultarSequencialRps.Name = "txtPConsultarSequencialRps";
+            txtPConsultarSequencialRps.Size = new System.Drawing.Size(544, 31);
+            txtPConsultarSequencialRps.TabIndex = 15;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(562, 306);
+            label13.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(133, 25);
+            label13.TabIndex = 18;
+            label13.Text = "Substituir NFSe";
+            // 
+            // txtPSubstituirNFSe
+            // 
+            txtPSubstituirNFSe.Location = new System.Drawing.Point(567, 337);
+            txtPSubstituirNFSe.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPSubstituirNFSe.Name = "txtPSubstituirNFSe";
+            txtPSubstituirNFSe.Size = new System.Drawing.Size(544, 31);
+            txtPSubstituirNFSe.TabIndex = 19;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new System.Drawing.Point(5, 306);
+            label14.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label14.Name = "label14";
+            label14.Size = new System.Drawing.Size(159, 25);
+            label14.TabIndex = 16;
+            label14.Text = "Consultar Situacao";
+            // 
+            // txtPConsultarSituacao
+            // 
+            txtPConsultarSituacao.Location = new System.Drawing.Point(10, 337);
+            txtPConsultarSituacao.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPConsultarSituacao.Name = "txtPConsultarSituacao";
+            txtPConsultarSituacao.Size = new System.Drawing.Size(544, 31);
+            txtPConsultarSituacao.TabIndex = 17;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new System.Drawing.Point(562, 156);
+            label15.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label15.Name = "label15";
+            label15.Size = new System.Drawing.Size(161, 25);
+            label15.TabIndex = 10;
+            label15.Text = "Consultar Lote Rps";
+            // 
+            // txtPConsultrLoteRps
+            // 
+            txtPConsultrLoteRps.Location = new System.Drawing.Point(567, 187);
+            txtPConsultrLoteRps.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPConsultrLoteRps.Name = "txtPConsultrLoteRps";
+            txtPConsultrLoteRps.Size = new System.Drawing.Size(544, 31);
+            txtPConsultrLoteRps.TabIndex = 11;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new System.Drawing.Point(562, 81);
+            label16.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label16.Name = "label16";
+            label16.Size = new System.Drawing.Size(127, 25);
+            label16.TabIndex = 6;
+            label16.Text = "Consulta NFSe";
+            // 
+            // txtPConsultaNFSe
+            // 
+            txtPConsultaNFSe.Location = new System.Drawing.Point(567, 112);
+            txtPConsultaNFSe.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPConsultaNFSe.Name = "txtPConsultaNFSe";
+            txtPConsultaNFSe.Size = new System.Drawing.Size(544, 31);
+            txtPConsultaNFSe.TabIndex = 7;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new System.Drawing.Point(562, 6);
+            label17.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label17.Name = "label17";
+            label17.Size = new System.Drawing.Size(134, 25);
+            label17.TabIndex = 2;
+            label17.Text = "Enviar Sincrono";
+            // 
+            // txtPEnviarSincrono
+            // 
+            txtPEnviarSincrono.Location = new System.Drawing.Point(567, 37);
+            txtPEnviarSincrono.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPEnviarSincrono.Name = "txtPEnviarSincrono";
+            txtPEnviarSincrono.Size = new System.Drawing.Size(544, 31);
+            txtPEnviarSincrono.TabIndex = 3;
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Location = new System.Drawing.Point(5, 231);
+            label18.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label18.Name = "label18";
+            label18.Size = new System.Drawing.Size(162, 25);
+            label18.TabIndex = 12;
+            label18.Text = "Consulta NFSe Rps";
+            // 
+            // txtPConsultaNFSeRps
+            // 
+            txtPConsultaNFSeRps.Location = new System.Drawing.Point(10, 262);
+            txtPConsultaNFSeRps.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPConsultaNFSeRps.Name = "txtPConsultaNFSeRps";
+            txtPConsultaNFSeRps.Size = new System.Drawing.Size(544, 31);
+            txtPConsultaNFSeRps.TabIndex = 13;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Location = new System.Drawing.Point(5, 81);
+            label19.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label19.Name = "label19";
+            label19.Size = new System.Drawing.Size(118, 25);
+            label19.TabIndex = 4;
+            label19.Text = "Cancela NFSe";
+            // 
+            // txtPCancelaNFSe
+            // 
+            txtPCancelaNFSe.Location = new System.Drawing.Point(10, 112);
+            txtPCancelaNFSe.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPCancelaNFSe.Name = "txtPCancelaNFSe";
+            txtPCancelaNFSe.Size = new System.Drawing.Size(544, 31);
+            txtPCancelaNFSe.TabIndex = 5;
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Location = new System.Drawing.Point(5, 6);
+            label20.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label20.Name = "label20";
+            label20.Size = new System.Drawing.Size(59, 25);
+            label20.TabIndex = 0;
+            label20.Text = "Enviar";
+            // 
+            // txtPEnviar
+            // 
+            txtPEnviar.Location = new System.Drawing.Point(10, 37);
+            txtPEnviar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            txtPEnviar.Name = "txtPEnviar";
+            txtPEnviar.Size = new System.Drawing.Size(544, 31);
+            txtPEnviar.TabIndex = 1;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(tabControl1);
+            groupBox1.Location = new System.Drawing.Point(20, 180);
+            groupBox1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            groupBox1.Size = new System.Drawing.Size(1150, 559);
+            groupBox1.TabIndex = 7;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "URL";
+            // 
+            // nudCodSiafi
+            // 
+            nudCodSiafi.Location = new System.Drawing.Point(1071, 49);
+            nudCodSiafi.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            nudCodSiafi.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            nudCodSiafi.Name = "nudCodSiafi";
+            nudCodSiafi.Size = new System.Drawing.Size(105, 31);
+            nudCodSiafi.TabIndex = 10;
+            // 
+            // nudCodIBGE
+            // 
+            nudCodIBGE.Location = new System.Drawing.Point(936, 49);
+            nudCodIBGE.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            nudCodIBGE.Maximum = new decimal(new int[] { 99999999, 0, 0, 0 });
+            nudCodIBGE.Name = "nudCodIBGE";
+            nudCodIBGE.Size = new System.Drawing.Size(127, 31);
+            nudCodIBGE.TabIndex = 11;
+            // 
+            // cmbProvedor
+            // 
+            cmbProvedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbProvedor.FormattingEnabled = true;
+            cmbProvedor.Location = new System.Drawing.Point(20, 135);
+            cmbProvedor.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            cmbProvedor.Name = "cmbProvedor";
+            cmbProvedor.Size = new System.Drawing.Size(252, 33);
+            cmbProvedor.TabIndex = 12;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new System.Drawing.Point(936, 16);
+            label22.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label22.Name = "label22";
+            label22.Size = new System.Drawing.Size(90, 25);
+            label22.TabIndex = 14;
+            label22.Text = "Cod. IBGE";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new System.Drawing.Point(1066, 16);
+            label23.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label23.Name = "label23";
+            label23.Size = new System.Drawing.Size(87, 25);
+            label23.TabIndex = 15;
+            label23.Text = "Cod. Siafi";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Location = new System.Drawing.Point(17, 104);
+            label24.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label24.Name = "label24";
+            label24.Size = new System.Drawing.Size(85, 25);
+            label24.TabIndex = 16;
+            label24.Text = "Provedor";
+            // 
+            // cmbUf
+            // 
+            cmbUf.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbUf.FormattingEnabled = true;
+            cmbUf.Items.AddRange(new object[] { "DSF", "Ginfes", "Porto Alegre", "São Paulo", "WebISS" });
+            cmbUf.Location = new System.Drawing.Point(836, 49);
+            cmbUf.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            cmbUf.Name = "cmbUf";
+            cmbUf.Size = new System.Drawing.Size(91, 33);
+            cmbUf.TabIndex = 17;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Location = new System.Drawing.Point(539, 104);
+            label25.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label25.Name = "label25";
+            label25.Size = new System.Drawing.Size(97, 25);
+            label25.TabIndex = 19;
+            label25.Text = "IdEntidade";
+            // 
+            // nudIdEntidade
+            // 
+            nudIdEntidade.Location = new System.Drawing.Point(544, 137);
+            nudIdEntidade.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            nudIdEntidade.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            nudIdEntidade.Name = "nudIdEntidade";
+            nudIdEntidade.Size = new System.Drawing.Size(107, 31);
+            nudIdEntidade.TabIndex = 18;
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Location = new System.Drawing.Point(279, 104);
+            label21.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            label21.Name = "label21";
+            label21.Size = new System.Drawing.Size(65, 25);
+            label21.TabIndex = 21;
+            label21.Text = "Versão";
+            // 
+            // cmbVersao
+            // 
+            cmbVersao.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbVersao.FormattingEnabled = true;
+            cmbVersao.Location = new System.Drawing.Point(282, 135);
+            cmbVersao.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            cmbVersao.Name = "cmbVersao";
+            cmbVersao.Size = new System.Drawing.Size(252, 33);
+            cmbVersao.TabIndex = 20;
             // 
             // FormEdtMunicipio
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(714, 390);
-            this.Controls.Add(this.label25);
-            this.Controls.Add(this.nudIdEntidade);
-            this.Controls.Add(this.cmbUf);
-            this.Controls.Add(this.label24);
-            this.Controls.Add(this.label23);
-            this.Controls.Add(this.label22);
-            this.Controls.Add(this.cmbProvedor);
-            this.Controls.Add(this.nudCodIBGE);
-            this.Controls.Add(this.nudCodSiafi);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtMunicipio);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnSalvar);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "FormEdtMunicipio";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Adicionar Municipio";
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudCodSiafi)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCodIBGE)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudIdEntidade)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1190, 813);
+            Controls.Add(label21);
+            Controls.Add(cmbVersao);
+            Controls.Add(label25);
+            Controls.Add(nudIdEntidade);
+            Controls.Add(cmbUf);
+            Controls.Add(label24);
+            Controls.Add(label23);
+            Controls.Add(label22);
+            Controls.Add(cmbProvedor);
+            Controls.Add(nudCodIBGE);
+            Controls.Add(nudCodSiafi);
+            Controls.Add(groupBox1);
+            Controls.Add(label2);
+            Controls.Add(txtMunicipio);
+            Controls.Add(label1);
+            Controls.Add(btnCancelar);
+            Controls.Add(btnSalvar);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "FormEdtMunicipio";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "Adicionar Municipio";
+            tabControl1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)nudCodSiafi).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudCodIBGE).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudIdEntidade).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
 
-		}
+        #endregion
 
-		#endregion
-
-		private System.Windows.Forms.Button btnSalvar;
-		private System.Windows.Forms.Button btnCancelar;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox txtMunicipio;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.TextBox txtHConsultarSequencialRps;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.TextBox txtHSubstituirNFSe;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.TextBox txtHConsultarSituacao;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.TextBox txtHConsultrLoteRps;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.TextBox txtHConsultaNFSe;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.TextBox txtHEnviarSincrono;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.TextBox txtHConsultaNFSeRps;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TextBox txtHCancelaNFSe;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.TextBox txtHEnviar;
-		private System.Windows.Forms.Label label12;
-		private System.Windows.Forms.TextBox txtPConsultarSequencialRps;
-		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.TextBox txtPSubstituirNFSe;
-		private System.Windows.Forms.Label label14;
-		private System.Windows.Forms.TextBox txtPConsultarSituacao;
-		private System.Windows.Forms.Label label15;
-		private System.Windows.Forms.TextBox txtPConsultrLoteRps;
-		private System.Windows.Forms.Label label16;
-		private System.Windows.Forms.TextBox txtPConsultaNFSe;
-		private System.Windows.Forms.Label label17;
-		private System.Windows.Forms.TextBox txtPEnviarSincrono;
-		private System.Windows.Forms.Label label18;
-		private System.Windows.Forms.TextBox txtPConsultaNFSeRps;
-		private System.Windows.Forms.Label label19;
-		private System.Windows.Forms.TextBox txtPCancelaNFSe;
-		private System.Windows.Forms.Label label20;
-		private System.Windows.Forms.TextBox txtPEnviar;
-		private System.Windows.Forms.NumericUpDown nudCodSiafi;
-		private System.Windows.Forms.NumericUpDown nudCodIBGE;
-		private System.Windows.Forms.ComboBox cmbProvedor;
-		private System.Windows.Forms.Label label22;
-		private System.Windows.Forms.Label label23;
-		private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button btnSalvar;
+        private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtMunicipio;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtHConsultarSequencialRps;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtHSubstituirNFSe;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtHConsultarSituacao;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtHConsultrLoteRps;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtHConsultaNFSe;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtHEnviarSincrono;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtHConsultaNFSeRps;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtHCancelaNFSe;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtHEnviar;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtPConsultarSequencialRps;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtPSubstituirNFSe;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtPConsultarSituacao;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtPConsultrLoteRps;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox txtPConsultaNFSe;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox txtPEnviarSincrono;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox txtPConsultaNFSeRps;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtPCancelaNFSe;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtPEnviar;
+        private System.Windows.Forms.NumericUpDown nudCodSiafi;
+        private System.Windows.Forms.NumericUpDown nudCodIBGE;
+        private System.Windows.Forms.ComboBox cmbProvedor;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ComboBox cmbUf;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.NumericUpDown nudIdEntidade;
@@ -796,5 +865,7 @@ namespace OpenAC.Net.NFSe.Demo
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox txtPAutenticacao;
         private System.Windows.Forms.Button btnAtualizar;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ComboBox cmbVersao;
     }
 }

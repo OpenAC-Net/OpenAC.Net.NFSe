@@ -151,6 +151,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public string OutrasInformacoes { get; set; }
 
     public string DiscriminacaoImpostos { get; set; }
+    
+    public string InformacoesComplementares { get; set; }
 
     public string DescricaoCodigoTributacaoMunicipio { get; set; }
 

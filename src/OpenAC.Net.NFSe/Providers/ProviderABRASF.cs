@@ -38,6 +38,7 @@ using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -58,7 +59,8 @@ public abstract class ProviderABRASF : ProviderBase
     /// <param name="municipio">The municipio.</param>
     protected ProviderABRASF(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "ABRASFv1";
+        Name = "ABRASF";
+        Versao = VersaoNFSe.ve100;
     }
 
     #endregion Constructors
@@ -1474,7 +1476,7 @@ public abstract class ProviderABRASF : ProviderBase
     /// <inheritdoc />
     protected override string GerarCabecalho()
     {
-        return $"<cabecalho versao=\"1.00\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"><versaoDados>1.00</versaoDados></cabecalho>";
+        return $"<cabecalho versao=\"{Versao.GetDFeValue()}\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"><versaoDados>{Versao.GetDFeValue()}</versaoDados></cabecalho>";
     }
 
     /// <summary>
@@ -1482,7 +1484,6 @@ public abstract class ProviderABRASF : ProviderBase
     /// </summary>
     /// <param name="retornoWs"></param>
     /// <param name="xmlRet"></param>
-    /// <param name="xmlTag"></param>
     /// <param name="elementName"></param>
     /// <param name="messageElement"></param>
     protected virtual void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet,

@@ -56,7 +56,7 @@ internal sealed class ProviderMitra : ProviderABRASF201
 
     protected override string GerarCabecalho()
     {
-        var cabecalho = new System.Text.StringBuilder();
+        var cabecalho = new StringBuilder();
         cabecalho.Append("<cabecalho versao=\"2.01\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
         cabecalho.Append("<versaoDados>2.01</versaoDados>");
         cabecalho.Append("</cabecalho>");

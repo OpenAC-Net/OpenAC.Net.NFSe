@@ -41,7 +41,6 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-// ReSharper disable once InconsistentNaming
 internal sealed class ProviderFissLex : ProviderABRASF
 {
     #region Fields
