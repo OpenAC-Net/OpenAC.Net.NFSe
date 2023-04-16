@@ -53,8 +53,8 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
     /// <param name="municipio">The municipio.</param>
     protected ProviderABRASF204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "ABRASF";
-        Versao = VersaoNFSe.ve204;
+        Name = "ABRASFv204";
+        Versao = "2.04";
         UsaPrestadorEnvio = true;
     }
 
@@ -63,25 +63,23 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
     #region RPS
 
     /// <inheritdoc />
-    //ToDo: Implementar a tag evento, informações complementares e a lista de deduções.
     protected override XElement WriteRps(NotaServico nota)
     {
         var rootRps = base.WriteRps(nota);
-        //var info = rootRps.ElementAnyNs("InfDeclaracaoPrestacaoServico");
-        
-        //info.AddChild(AdicionarTag(TipoCampo.Int, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
+
+        //ToDo: Implementar a tag evento, informações complementares e a lista de deduções.
 
         return rootRps;
     }
 
     /// <inheritdoc />
-    //ToDo: Ler a tag evento, informações complementares e a lista de deduções.
     protected override void LoadRps(NotaServico nota, XElement rpsRoot)
     {
         base.LoadRps(nota, rpsRoot);
+
+        //ToDo: Ler a tag evento, informações complementares e a lista de deduções.
     }
 
-    //ToDo: Ler novas informações do Xml.
     protected override XElement WriteTomadorRps(NotaServico nota)
     {
         var tomador = new XElement("TomadorServico");
@@ -113,14 +111,6 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
             endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
             endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
             endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
-        } 
-        else if (!nota.Tomador.EnderecoExterior.EnderecoCompleto.IsEmpty())
-        {
-            var endereco = new XElement("EnderecoExterior");
-            tomador.Add(endereco);
-            
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoPais", 4, 4, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 1, 255, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
         }
 
         if (!nota.Tomador.DadosContato.DDD.IsEmpty() || !nota.Tomador.DadosContato.Telefone.IsEmpty() ||
@@ -137,4 +127,6 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
     }
 
     #endregion RPS
+
+
 }
