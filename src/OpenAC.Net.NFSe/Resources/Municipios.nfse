@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <OpenNFSe xmlns="https://www.openac.net.br/">
   <Municipios>
     <Municipio>
@@ -8,7 +8,7 @@
       <Nome>Água Boa</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -105,7 +105,7 @@
       <Nome>Alvorada</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.01</Versao>
+      <Versao>1.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -287,7 +287,7 @@
       <Nome>Ananindeua</Nome>
       <UF>PA</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -384,7 +384,7 @@
       <Nome>Andradas</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -481,7 +481,7 @@
       <Nome>Araguaína</Nome>
       <UF>TO</UF>
       <Provedor>Betha</Provedor>
-	  <Versao>2.02</Versao>
+      <Versao>2.02</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -578,7 +578,7 @@
       <Nome>Araguari</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -675,7 +675,7 @@
       <Nome>Araraquara</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -772,7 +772,7 @@
       <Nome>Araucaria</Nome>
       <UF>PR</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -862,7 +862,7 @@
       <Nome>Arroio do Sal</Nome>
       <UF>RS</UF>
       <Provedor>Pronim</Provedor>
-	  <Versao>2.03</Versao>
+      <Versao>2.03</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -951,7 +951,7 @@
       <Nome>Belém</Nome>
       <UF>MT</UF>
       <Provedor>ISSDSF</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1039,7 +1039,7 @@
       <Nome>Belo Horizonte</Nome>
       <UF>MG</UF>
       <Provedor>BHISS</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1136,7 +1136,7 @@
       <Nome>Belo Oriente</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1233,7 +1233,7 @@
       <Nome>Bertioga</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1330,7 +1330,7 @@
       <Nome>Betim</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1427,7 +1427,7 @@
       <Nome>Blumenau</Nome>
       <UF>SC</UF>
       <Provedor>SimplISS</Provedor>
-	  <Versao>2.03</Versao>
+      <Versao>2.03</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1526,7 +1526,7 @@
       <Nome>Bom Jesus</Nome>
       <UF>PI</UF>
       <Provedor>Fisco</Provedor>
-	  <Versao>2.03</Versao>
+      <Versao>2.03</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1615,7 +1615,7 @@
       <Nome>Bragança Paulista</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1712,7 +1712,7 @@
       <Nome>Brusque</Nome>
       <UF>SC</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.01</Versao>
+      <Versao>1.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1802,7 +1802,7 @@
       <Nome>Cachoeirinha</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.01</Versao>
+      <Versao>1.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1892,7 +1892,7 @@
       <Nome>Cacoal</Nome>
       <UF>RO</UF>
       <Provedor>WebIss</Provedor>
-	  <Versao>2.02</Versao>
+      <Versao>2.02</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -1991,7 +1991,7 @@
       <Nome>Campinas</Nome>
       <UF>SP</UF>
       <Provedor>ISSDSF</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2081,7 +2081,7 @@
       <Nome>Campo Grande</Nome>
       <UF>MS</UF>
       <Provedor>ISSDSF</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2171,7 +2171,7 @@
       <Nome>Campo Novo do Parecis</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2268,7 +2268,7 @@
       <Nome>Campo Verde</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2365,7 +2365,7 @@
       <Nome>Campos dos Goytacazes</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2462,7 +2462,7 @@
       <Nome>Canela</Nome>
       <UF>RS</UF>
       <Provedor>SystemPro</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2561,7 +2561,7 @@
       <Nome>Canoas</Nome>
       <UF>RS</UF>
       <Provedor>Abaco</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2652,7 +2652,7 @@
       <Nome>Capinópolis</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2749,7 +2749,7 @@
       <Nome>Capivari</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2846,7 +2846,7 @@
       <Nome>Carazinho</Nome>
       <UF>RS</UF>
       <Provedor>DBSeller</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -2945,7 +2945,7 @@
       <Nome>Caruaru</Nome>
       <UF>PE</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3042,7 +3042,7 @@
       <Nome>Casca</Nome>
       <UF>RS</UF>
       <Provedor>Citta</Provedor>
-	  <Versao>2.03</Versao>
+      <Versao>2.03</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3141,7 +3141,7 @@
       <Nome>Cataguases</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3238,7 +3238,7 @@
       <Nome>Chapeco</Nome>
       <UF>SC</UF>
       <Provedor>SigISS</Provedor>
-	  <Versao>1.03</Versao>
+      <Versao>1.03</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3327,7 +3327,7 @@
       <Nome>Colider</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3424,7 +3424,7 @@
       <Nome>Colina</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3521,7 +3521,7 @@
       <Nome>Conceicao do Mato Dentro</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3618,7 +3618,7 @@
       <Nome>Coronel Fabriciano</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3715,7 +3715,7 @@
       <Nome>Cruzeiro</Nome>
       <UF>SP</UF>
       <Provedor>SiapNet</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3803,7 +3803,7 @@
       <Nome>Cruzeiro do Sul</Nome>
       <UF>AC</UF>
       <Provedor>Betha</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3894,7 +3894,7 @@
       <Nome>Curitiba</Nome>
       <UF>PR</UF>
       <Provedor>ISSCuritiba</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -3987,7 +3987,7 @@
       <Nome>Diadema</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4084,7 +4084,7 @@
       <Nome>Diamantino</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4181,7 +4181,7 @@
       <Nome>Divinópolis</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4278,7 +4278,7 @@
       <Nome>Dois Corregos</Nome>
       <UF>SP</UF>
       <Provedor>SimplISS</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4379,7 +4379,7 @@
       <Nome>Dom Pedrito</Nome>
       <UF>RS</UF>
       <Provedor>Pronim</Provedor>
-	  <Versao>2.02</Versao>
+      <Versao>2.02</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4476,7 +4476,7 @@
       <Nome>Dores do Indaiá</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4573,7 +4573,7 @@
       <Nome>Epitaciolândia</Nome>
       <UF>AC</UF>
       <Provedor>Betha</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4664,7 +4664,7 @@
       <Nome>Estreito</Nome>
       <UF>MA</UF>
       <Provedor>Fiorilli</Provedor>
-	  <Versao>2.00</Versao>
+      <Versao>2.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4761,7 +4761,7 @@
       <Nome>Estrela</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.01</Versao>
+      <Versao>1.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4850,7 +4850,7 @@
       <Nome>Franca</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -4947,7 +4947,7 @@
       <Nome>Goiânia</Nome>
       <UF>GO</UF>
       <Provedor>IISGoiania</Provedor>
-	  <Versao>2.00</Versao>
+      <Versao>2.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5030,7 +5030,7 @@
       <Nome>Gravatai</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.01</Versao>
+      <Versao>1.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5131,7 +5131,7 @@
       <Nome>Guaiba</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.01</Versao>
+      <Versao>1.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5221,7 +5221,7 @@
       <Nome>Guarantã Do Norte</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5318,7 +5318,7 @@
       <Nome>Guararema</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5415,7 +5415,7 @@
       <Nome>Guaruja</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5512,7 +5512,7 @@
       <Nome>Guarulhos</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5609,7 +5609,7 @@
       <Nome>Guaxupé</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5706,7 +5706,7 @@
       <Nome>Horizontina</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.01</Versao>
+      <Versao>1.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5795,7 +5795,7 @@
       <Nome>Hortolandia</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5892,7 +5892,7 @@
       <Nome>Igarapé</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -5989,7 +5989,7 @@
       <Nome>Iguatama</Nome>
       <UF>MG</UF>
       <Provedor>SimplISS</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6088,7 +6088,7 @@
       <Nome>Ilheus</Nome>
       <UF>BA</UF>
       <Provedor>MetropolisWeb</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6187,7 +6187,7 @@
       <Nome>Itaborai</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6284,7 +6284,7 @@
       <Nome>Itaitinga</Nome>
       <UF>CE</UF>
       <Provedor>SpeedGov</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6383,7 +6383,7 @@
       <Nome>Itajubá</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6480,7 +6480,7 @@
       <Nome>Itanhangá</Nome>
       <UF>MT</UF>
       <Provedor>WebIss</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6577,7 +6577,7 @@
       <Nome>Itapeva</Nome>
       <UF>MG</UF>
       <Provedor>Betha</Provedor>
-	  <Versao>2.02</Versao>
+      <Versao>2.02</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6674,7 +6674,7 @@
       <Nome>Itu</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6771,7 +6771,7 @@
       <Nome>Jaguariúna</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6868,7 +6868,7 @@
       <Nome>Jardinopolis</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -6965,7 +6965,7 @@
       <Nome>Jaú</Nome>
       <UF>SP</UF>
       <Provedor>Fiorilli</Provedor>
-	  <Versao>2.00</Versao>
+      <Versao>2.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7064,7 +7064,7 @@
       <Nome>Juazeiro do Norte</Nome>
       <UF>CE</UF>
       <Provedor>SpeedGov</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7153,7 +7153,7 @@
       <Nome>Lagoa Santa</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7250,7 +7250,7 @@
       <Nome>Lajeado</Nome>
       <UF>RS</UF>
       <Provedor>Thema</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7341,7 +7341,7 @@
       <Nome>Lavras</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7438,7 +7438,7 @@
       <Nome>Maceió</Nome>
       <UF>AL</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7535,7 +7535,7 @@
       <Nome>Machadinho do Oeste</Nome>
       <UF>RO</UF>
       <Provedor>Fiorilli</Provedor>
-	  <Versao>2.00</Versao>
+      <Versao>2.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7634,7 +7634,7 @@
       <Nome>Maquine</Nome>
       <UF>RS</UF>
       <Provedor>DBSeller</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7733,7 +7733,7 @@
       <Nome>Marechal Deodoro</Nome>
       <UF>AL</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7830,7 +7830,7 @@
       <Nome>Marica</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -7927,7 +7927,7 @@
       <Nome>Marília</Nome>
       <UF>SP</UF>
       <Provedor>SigISS</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8009,7 +8009,7 @@
       <Nome>Maringá</Nome>
       <UF>PR</UF>
       <Provedor>ISSe</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8108,7 +8108,7 @@
       <Nome>Matupá</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8205,7 +8205,7 @@
       <Nome>Muriae</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8391,7 +8391,7 @@
       <Nome>Nobres</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8488,7 +8488,7 @@
       <Nome>Nova Brasilândia</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8585,7 +8585,7 @@
       <Nome>Nova Iguaçu</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8682,7 +8682,7 @@
       <Nome>Nova Mutum</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8779,7 +8779,7 @@
       <Nome>Novo Hamburgo</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8865,7 +8865,7 @@
       <Nome>Olimpia</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8962,7 +8962,7 @@
       <Nome>Oliveira</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9059,7 +9059,7 @@
       <Nome>Ouro Preto</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9156,7 +9156,7 @@
       <Nome>Para de Minas</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9253,7 +9253,7 @@
       <Nome>Paracatu</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9350,7 +9350,7 @@
       <Nome>Pedro Leopoldo</Nome>
       <UF>AC</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9447,7 +9447,7 @@
       <Nome>Pelotas</Nome>
       <UF>RS</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9544,7 +9544,7 @@
       <Nome>Piracicaba</Nome>
       <UF>SP</UF>
       <Provedor>SimplISS</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9645,7 +9645,7 @@
       <Nome>Planalto da Serra</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9742,7 +9742,7 @@
       <Nome>Poços de Caldas</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9839,7 +9839,7 @@
       <Nome>Porto Alegre</Nome>
       <UF>RS</UF>
       <Provedor>BHISS</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -9936,7 +9936,7 @@
       <Nome>Pouso Alegre</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10033,7 +10033,7 @@
       <Nome>Prata</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10130,7 +10130,7 @@
       <Nome>Primavera do Leste</Nome>
       <UF>MT</UF>
       <Provedor>AssessorPublico</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10229,7 +10229,7 @@
       <Nome>Querencia</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10326,7 +10326,7 @@
       <Nome>Ribeirão Preto</Nome>
       <UF>SP</UF>
       <Provedor>ISSNet</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10417,7 +10417,7 @@
       <Nome>Rio Bonito</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10514,7 +10514,7 @@
       <Nome>Rio Branco</Nome>
       <UF>AC</UF>
       <Provedor>Abaco</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10605,7 +10605,7 @@
       <Nome>Rio de Janeiro</Nome>
       <UF>RJ</UF>
       <Provedor>ISSRio</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10702,7 +10702,7 @@
       <Nome>Rondonopolis</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10799,7 +10799,7 @@
       <Nome>Sacramento</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10896,7 +10896,7 @@
       <Nome>Santa Bárbara D'Oeste</Nome>
       <UF>SP</UF>
       <Provedor>SigISSWeb</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -10983,37 +10983,37 @@
       <Nome>Santa Maria</Nome>
       <UF>RS</UF>
       <Provedor>ISSNet</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>2.04</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
@@ -11074,7 +11074,7 @@
       <Nome>Santa Vitória</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11171,7 +11171,7 @@
       <Nome>Santarem</Nome>
       <UF>PA</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11268,7 +11268,7 @@
       <Nome>Santarem</Nome>
       <UF>PB</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11365,7 +11365,7 @@
       <Nome>São Carlos</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11462,7 +11462,7 @@
       <Nome>São Joaquim de Bicas</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11559,7 +11559,7 @@
       <Nome>São José da Lapa</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11656,7 +11656,7 @@
       <Nome>São José do Rio Preto</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11753,7 +11753,7 @@
       <Nome>Sao Jose dos Campos</Nome>
       <UF>SP</UF>
       <Provedor>DSF</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11852,7 +11852,7 @@
       <Nome>Sao Nicolau</Nome>
       <UF>RS</UF>
       <Provedor>ABase</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -11951,7 +11951,7 @@
       <Nome>São Paulo</Nome>
       <UF>SP</UF>
       <Provedor>ISSSaoPaulo</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12037,7 +12037,7 @@
       <Nome>São Roque</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12134,7 +12134,7 @@
       <Nome>Serafina Correa</Nome>
       <UF>RS</UF>
       <Provedor>Fiorilli</Provedor>
-	  <Versao>2.00</Versao>
+      <Versao>2.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12231,7 +12231,7 @@
       <Nome>Sertaozinho</Nome>
       <UF>SP</UF>
       <Provedor>SmarAPD</Provedor>
-	  <Versao>2.04</Versao>
+      <Versao>2.04</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12328,7 +12328,7 @@
       <Nome>Sinop</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12425,7 +12425,7 @@
       <Nome>Tangará da Serra</Nome>
       <UF>MT</UF>
       <Provedor>RLZ</Provedor>
-	  <Versao>2.03</Versao>
+      <Versao>2.03</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12522,7 +12522,7 @@
       <Nome>Tapurah</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12619,7 +12619,7 @@
       <Nome>Teixeira de Freitas</Nome>
       <UF>BA</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12716,7 +12716,7 @@
       <Nome>Teófilo Otoni</Nome>
       <UF>AC</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12813,7 +12813,7 @@
       <Nome>Teresina</Nome>
       <UF>PI</UF>
       <Provedor>ISSDSF</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12901,7 +12901,7 @@
       <Nome>Toledo</Nome>
       <UF>PR</UF>
       <Provedor>Equiplano</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -12998,7 +12998,7 @@
       <Nome>Tramandai</Nome>
       <UF>RS</UF>
       <Provedor>DBSeller</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13097,7 +13097,7 @@
       <Nome>Tuparendi</Nome>
       <UF>RS</UF>
       <Provedor>ABase</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13186,7 +13186,7 @@
       <Nome>Uberlândia</Nome>
       <UF>MG</UF>
       <Provedor>ISSDSF</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13274,7 +13274,7 @@
       <Nome>Unaí</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13371,7 +13371,7 @@
       <Nome>Vargem Grande Paulista</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13468,7 +13468,7 @@
       <Nome>Varginha</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13565,7 +13565,7 @@
       <Nome>Várzea Paulista</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
-	  <Versao>2.01</Versao>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13662,7 +13662,7 @@
       <Nome>Vila Velha</Nome>
       <UF>ES</UF>
       <Provedor>ISSVitoria</Provedor>
-	  <Versao>2.00</Versao>
+      <Versao>2.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13759,7 +13759,7 @@
       <Nome>Vilhena</Nome>
       <UF>RO</UF>
       <Provedor>WebIss</Provedor>
-	  <Versao>2.02</Versao>
+      <Versao>2.02</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13856,7 +13856,7 @@
       <Nome>Vitória</Nome>
       <UF>ES</UF>
       <Provedor>ISSVitoria</Provedor>
-	  <Versao>2.00</Versao>
+      <Versao>2.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13953,7 +13953,7 @@
       <Nome>Vitoria da Conquista</Nome>
       <UF>BA</UF>
       <Provedor>WebIss</Provedor>
-	  <Versao>1.00</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>

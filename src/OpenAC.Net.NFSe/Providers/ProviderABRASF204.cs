@@ -60,78 +60,127 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
 
     #endregion Constructors
 
+    #region LoadXml
+
+    /// <inheritdoc />
+    //ToDo: Ler a tag evento e a lista de deduções.
+    protected override void LoadRps(NotaServico nota, XElement rpsRoot)
+    {
+        base.LoadRps(nota, rpsRoot);
+        
+        nota.InformacoesComplementares = rpsRoot.ElementAnyNs("InformacoesComplementares").GetValue<string>() ?? string.Empty;
+    }
+
+    /// <inheritdoc />
+    protected override void LoadTomador(NotaServico nota, XElement rpsRoot)
+    {
+        // Tomador
+        var rootTomador = rpsRoot.ElementAnyNs("TomadorServico");
+        if (rootTomador == null) return;
+
+        var tomadorIdentificacao = rootTomador.ElementAnyNs("IdentificacaoTomador");
+        if (tomadorIdentificacao != null)
+        {
+            nota.Tomador.CpfCnpj = tomadorIdentificacao.ElementAnyNs("CpfCnpj")?.GetCPF_CNPJ();
+            nota.Tomador.InscricaoMunicipal = tomadorIdentificacao.ElementAnyNs("InscricaoMunicipal")?.GetValue<string>() ?? string.Empty;
+        }
+
+        nota.Tomador.DocTomadorEstrangeiro = rootTomador.ElementAnyNs("NifTomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.RazaoSocial = rootTomador.ElementAnyNs("RazaoSocial")?.GetValue<string>() ?? string.Empty;
+
+        var endereco = rootTomador.ElementAnyNs("Endereco");
+        if (endereco != null)
+        {
+            nota.Tomador.Endereco.Logradouro = endereco.ElementAnyNs("Endereco")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.Numero = endereco.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.Complemento = endereco.ElementAnyNs("Complemento")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.Bairro = endereco.ElementAnyNs("Bairro")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.CodigoMunicipio = endereco.ElementAnyNs("CodigoMunicipio")?.GetValue<int>() ?? 0;
+            nota.Tomador.Endereco.Uf = endereco.ElementAnyNs("Uf")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.CodigoPais = endereco.ElementAnyNs("CodigoPais")?.GetValue<int>() ?? 0;
+            nota.Tomador.Endereco.Cep = endereco.ElementAnyNs("Cep")?.GetValue<string>() ?? string.Empty;
+        }
+
+        var enderecoExterior = rootTomador.ElementAnyNs("EnderecoExterior");
+        if (enderecoExterior != null)
+        {
+            nota.Tomador.EnderecoExterior.CodigoPais = enderecoExterior.ElementAnyNs("CodigoPais")?.GetValue<int>() ?? 0;
+            nota.Tomador.EnderecoExterior.EnderecoCompleto = enderecoExterior.ElementAnyNs("EnderecoCompletoExterior")?.GetValue<string>() ?? string.Empty;
+        }
+
+        var rootTomadorContato = rootTomador.ElementAnyNs("Contato");
+        if (rootTomadorContato == null) return;
+
+        nota.Tomador.DadosContato.DDD = "";
+        nota.Tomador.DadosContato.Telefone = rootTomadorContato.ElementAnyNs("Telefone")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.DadosContato.Email = rootTomadorContato.ElementAnyNs("Email")?.GetValue<string>() ?? string.Empty;
+    }
+
+    #endregion LoadXml
+
     #region RPS
 
     /// <inheritdoc />
-    //ToDo: Implementar a tag evento, informações complementares e a lista de deduções.
+    //ToDo: Implementar a tag evento e a lista de deduções.
     protected override XElement WriteRps(NotaServico nota)
     {
         var rootRps = base.WriteRps(nota);
-        //var info = rootRps.ElementAnyNs("InfDeclaracaoPrestacaoServico");
-        
-        //info.AddChild(AdicionarTag(TipoCampo.Int, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
+        var info = rootRps.ElementAnyNs("InfDeclaracaoPrestacaoServico");
+
+        info.AddChild(AdicionarTag(TipoCampo.Int, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
 
         return rootRps;
     }
 
     /// <inheritdoc />
-    //ToDo: Ler a tag evento, informações complementares e a lista de deduções.
-    protected override void LoadRps(NotaServico nota, XElement rpsRoot)
-    {
-        base.LoadRps(nota, rpsRoot);
-    }
-
-    //ToDo: Ler novas informações do Xml.
     protected override XElement WriteTomadorRps(NotaServico nota)
     {
+        if (nota.Tomador.CpfCnpj.IsEmpty()) return null;
+
         var tomador = new XElement("TomadorServico");
 
-        var ideTomador = new XElement("IdentificacaoTomador");
-        tomador.Add(ideTomador);
+        var idTomador = new XElement("IdentificacaoTomador");
+        tomador.Add(idTomador);
 
         var cpfCnpjTomador = new XElement("CpfCnpj");
-        ideTomador.Add(cpfCnpjTomador);
+        idTomador.Add(cpfCnpjTomador);
 
         cpfCnpjTomador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Tomador.CpfCnpj));
 
-        ideTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
+        idTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 150, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
 
-        tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
+        tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "NifTomador", 1, 150, Ocorrencia.NaoObrigatoria, nota.Tomador.DocTomadorEstrangeiro));
+        tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 150, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
 
-        if (!nota.Tomador.Endereco.Logradouro.IsEmpty() || !nota.Tomador.Endereco.Numero.IsEmpty() ||
-            !nota.Tomador.Endereco.Complemento.IsEmpty() || !nota.Tomador.Endereco.Bairro.IsEmpty() ||
-            nota.Tomador.Endereco.CodigoMunicipio > 0 || !nota.Tomador.Endereco.Uf.IsEmpty() ||
-            !nota.Tomador.Endereco.Cep.IsEmpty())
+        if (nota.Tomador.EnderecoExterior.CodigoPais > 0)
+        {
+            var enderecoExt = new XElement("EnderecoExterior");
+            tomador.Add(enderecoExt);
+
+            enderecoExt.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
+            enderecoExt.AddChild(AdicionarTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
+        }
+        else
         {
             var endereco = new XElement("Endereco");
             tomador.Add(endereco);
 
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Endereco", 1, 125, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Logradouro));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Numero));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Endereco", 1, 125, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Logradouro));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
             endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Complemento", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
-            endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
-            endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
-        } 
-        else if (!nota.Tomador.EnderecoExterior.EnderecoCompleto.IsEmpty())
-        {
-            var endereco = new XElement("EnderecoExterior");
-            tomador.Add(endereco);
-            
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoPais", 4, 4, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 1, 255, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Bairro));
+            endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.CodigoMunicipio));
+            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Uf));
+            endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Cep));
         }
 
-        if (!nota.Tomador.DadosContato.DDD.IsEmpty() || !nota.Tomador.DadosContato.Telefone.IsEmpty() ||
-            !nota.Tomador.DadosContato.Email.IsEmpty())
-        {
-            var contato = new XElement("Contato");
-            tomador.Add(contato);
+        if (nota.Tomador.DadosContato.Email.IsEmpty() && nota.Tomador.DadosContato.Telefone.IsEmpty()) return tomador;
 
-            contato.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Telefone", 1, 11, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.DDD + nota.Tomador.DadosContato.Telefone));
-            contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Email", 1, 80, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
-        }
+        var contato = new XElement("Contato");
+        tomador.Add(contato);
+
+        contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Telefone", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Telefone));
+        contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Email", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
 
         return tomador;
     }

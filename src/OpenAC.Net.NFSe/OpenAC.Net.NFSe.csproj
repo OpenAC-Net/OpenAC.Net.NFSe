@@ -72,163 +72,163 @@
 			<Pack>True</Pack>
 			<PackagePath>/</PackagePath>
 		</None>
-		<None Include="Schemas\Abaco\*.*">
+		<None Include="Schemas\Abaco\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Abaco</PackagePath>
 		</None>
-		<None Include="Schemas\ABase\*.*">
+		<None Include="Schemas\ABase\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ABase</PackagePath>
 		</None>
-		<None Include="Schemas\AssessorPublico\*.*">
+		<None Include="Schemas\AssessorPublico\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\AssessorPublico</PackagePath>
 		</None>
-		<None Include="Schemas\Betha\*.*">
+		<None Include="Schemas\Betha\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Betha</PackagePath>
 		</None>
-		<None Include="Schemas\BHISS\*.*">
+		<None Include="Schemas\BHISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\BHISS</PackagePath>
 		</None>
-		<None Include="Schemas\Citta\*.*">
+		<None Include="Schemas\Citta\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Citta</PackagePath>
 		</None>
-		<None Include="Schemas\Conam\*.*">
+		<None Include="Schemas\Conam\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Conam</PackagePath>
 		</None>
-		<None Include="Schemas\Coplan\*.*">
+		<None Include="Schemas\Coplan\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Coplan</PackagePath>
 		</None>
-		<None Include="Schemas\DBSeller\*.*">
+		<None Include="Schemas\DBSeller\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\DBSeller</PackagePath>
 		</None>
-		<None Include="Schemas\DSF\*.*">
+		<None Include="Schemas\DSF\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\DSF</PackagePath>
 		</None>
-		<None Include="Schemas\Equiplano\*.*">
+		<None Include="Schemas\Equiplano\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Equiplano</PackagePath>
 		</None>
-		<None Include="Schemas\Fiorilli\*.*">
+		<None Include="Schemas\Fiorilli\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Fiorilli</PackagePath>
 		</None>
-		<None Include="Schemas\FissLex\*.*">
+		<None Include="Schemas\FissLex\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\FissLex</PackagePath>
 		</None>
-		<None Include="Schemas\Ginfes\*.*">
+		<None Include="Schemas\Ginfes\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Ginfes</PackagePath>
 		</None>
-		<None Include="Schemas\IPM\*.*">
+		<None Include="Schemas\IPM\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\IPM</PackagePath>
 		</None>
-		<None Include="Schemas\ISSCuritiba\*.*">
+		<None Include="Schemas\ISSCuritiba\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSCuritiba</PackagePath>
 		</None>
-		<None Include="Schemas\ISSDSF\*.*">
+		<None Include="Schemas\ISSDSF\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSDSF</PackagePath>
 		</None>
-		<None Include="Schemas\ISSe\*.*">
+		<None Include="Schemas\ISSe\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSe</PackagePath>
 		</None>
-		<None Include="Schemas\ISSGoiania\*.*">
+		<None Include="Schemas\ISSGoiania\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSGoiania</PackagePath>
 		</None>
-		<None Include="Schemas\ISSNet\*.*">
+		<None Include="Schemas\ISSNet\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSNet</PackagePath>
 		</None>
-		<None Include="Schemas\ISSPortoVelho\*.*">
+		<None Include="Schemas\ISSPortoVelho\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSPortoVelho</PackagePath>
 		</None>
-		<None Include="Schemas\ISSRio\*.*">
+		<None Include="Schemas\ISSRio\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSRio</PackagePath>
 		</None>
-		<None Include="Schemas\ISSSaoPaulo\*.*">
+		<None Include="Schemas\ISSSaoPaulo\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSSaoPaulo</PackagePath>
 		</None>
-		<None Include="Schemas\ISSVitoria\*.*">
+		<None Include="Schemas\ISSVitoria\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSVitoria</PackagePath>
 		</None>		
-		<None Include="Schemas\MetropolisWeb\*.*">
+		<None Include="Schemas\MetropolisWeb\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\MetropolisWeb</PackagePath>
 		</None>		
-		<None Include="Schemas\Mitra\*.*">
+		<None Include="Schemas\Mitra\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Mitra</PackagePath>
 		</None>
-		<None Include="Schemas\NFeCidades\*.*">
+		<None Include="Schemas\NFeCidades\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\NFeCidades</PackagePath>
 		</None>		
-		<None Include="Schemas\Pronim\*.*">
+		<None Include="Schemas\Pronim\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Pronim</PackagePath>
 		</None>
-		<None Include="Schemas\RLZ\*.*">
+		<None Include="Schemas\RLZ\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\RLZ</PackagePath>
 		</None>
-		<None Include="Schemas\SIAPNet\*.*">
+		<None Include="Schemas\SIAPNet\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SIAPNet</PackagePath>
 		</None>
-		<None Include="Schemas\SigISS\*.*">
+		<None Include="Schemas\SigISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SigISS</PackagePath>
 		</None>
-		<None Include="Schemas\SigISSWeb\*.*">
+		<None Include="Schemas\SigISSWeb\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SigISSWeb</PackagePath>
 		</None>		
-		<None Include="Schemas\SimplISS\*.*">
+		<None Include="Schemas\SimplISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SimplISS</PackagePath>
 		</None>
-		<None Include="Schemas\Sintese\*.*">
+		<None Include="Schemas\Sintese\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Sintese</PackagePath>
 		</None>		
-		<None Include="Schemas\SmarAPD\*.*">
+		<None Include="Schemas\SmarAPD\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SmarAPD</PackagePath>
 		</None>
-		<None Include="Schemas\SpeedGov\*.*">
+		<None Include="Schemas\SpeedGov\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SpeedGov</PackagePath>
 		</None>
-		<None Include="Schemas\SystemPro\*.*">
+		<None Include="Schemas\SystemPro\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SystemPro</PackagePath>
 		</None>
-		<None Include="Schemas\Thema\*.*">
+		<None Include="Schemas\Thema\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Thema</PackagePath>
 		</None>
-		<None Include="Schemas\Tiplan\*.*">
+		<None Include="Schemas\Tiplan\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Tiplan</PackagePath>
 		</None>		
-		<None Include="Schemas\WebISS\*.*">
+		<None Include="Schemas\WebISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\WebISS</PackagePath>
 		</None>				
@@ -238,130 +238,130 @@
 		<None Remove="Resources\Municipios.nfse" />
 		<EmbeddedResource Include="Resources\Municipios.nfse" />
 		
-		<None Update="Schemas\Abaco\*.*">
+		<None Update="Schemas\Abaco\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ABase\*.*">
+		<None Update="Schemas\ABase\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ABRASF\*.*">
+		<None Update="Schemas\ABRASF\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\AssessorPublico\*.*">
+		<None Update="Schemas\AssessorPublico\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Betha\*.*">
+		<None Update="Schemas\Betha\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\BHISS\*.*">
+		<None Update="Schemas\BHISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Citta\*.*">
+		<None Update="Schemas\Citta\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Conam\*.*">
+		<None Update="Schemas\Conam\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Coplan\*.*">
+		<None Update="Schemas\Coplan\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\DBSeller\*.*">
+		<None Update="Schemas\DBSeller\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\DSF\*.*">
+		<None Update="Schemas\DSF\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Equiplano\*.*">
+		<None Update="Schemas\Equiplano\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Fiorilli\*.*">
+		<None Update="Schemas\Fiorilli\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\FissLex\*.*">
+		<None Update="Schemas\FissLex\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Ginfes\*.*">
+		<None Update="Schemas\Ginfes\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\IPM\*.*">
+		<None Update="Schemas\IPM\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSCuritiba\*.*">
+		<None Update="Schemas\ISSCuritiba\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSDSF\*.*">
+		<None Update="Schemas\ISSDSF\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>		
-		<None Update="Schemas\ISSe\*.*">
+		<None Update="Schemas\ISSe\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSNet\*.*">
+		<None Update="Schemas\ISSNet\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSGoiania\*.*">
+		<None Update="Schemas\ISSGoiania\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSNet\*.*">
+		<None Update="Schemas\ISSNet\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSPortoVelho\*.*">
+		<None Update="Schemas\ISSPortoVelho\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSRio\*.*">
+		<None Update="Schemas\ISSRio\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSSaoPaulo\*.*">
+		<None Update="Schemas\ISSSaoPaulo\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSVitoria\*.*">
+		<None Update="Schemas\ISSVitoria\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>		
-		<None Update="Schemas\MetropolisWeb\*.*">
+		<None Update="Schemas\MetropolisWeb\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Mitra\*.*">
+		<None Update="Schemas\Mitra\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\NFeCidades\*.*">
+		<None Update="Schemas\NFeCidades\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>		
-		<None Update="Schemas\Pronim\*.*">
+		<None Update="Schemas\Pronim\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\RLZ\*.*">
+		<None Update="Schemas\RLZ\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>	
-		<None Update="Schemas\SIAPNet\*.*">
+		<None Update="Schemas\SIAPNet\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SigISS\*.*">
+		<None Update="Schemas\SigISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SigISSWeb\*.*">
+		<None Update="Schemas\SigISSWeb\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SimplISS\*.*">
+		<None Update="Schemas\SimplISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Sintese\*.*">
+		<None Update="Schemas\Sintese\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SmarAPD\*.*">
+		<None Update="Schemas\SmarAPD\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SpeedGov\*.*">
+		<None Update="Schemas\SpeedGov\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SystemPro\*.*">
+		<None Update="Schemas\SystemPro\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Thema\*.*">
+		<None Update="Schemas\Thema\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>	
-		<None Update="Schemas\Tiplan\*.*">
+		<None Update="Schemas\Tiplan\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\WebISS\*.*">
+		<None Update="Schemas\WebISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>				
 	</ItemGroup>

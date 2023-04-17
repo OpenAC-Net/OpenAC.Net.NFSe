@@ -111,12 +111,11 @@ public abstract class ProviderABRASF200 : ProviderBase
         if (rootRps != null) //Goiania não retorna o RPS, somente a NFSe
             LoadRps(ret, rootRps);
 
-        if (rootNFSe != null)
-        {
-            LoadNFSe(ret, rootNFSe);
-            if (rootSub != null) LoadNFSeSub(ret, rootSub);
-            if (rootCanc != null) LoadNFSeCancelada(ret, rootCanc);
-        }
+        if (rootNFSe == null) return ret;
+        
+        LoadNFSe(ret, rootNFSe);
+        if (rootSub != null) LoadNFSeSub(ret, rootSub);
+        if (rootCanc != null) LoadNFSeCancelada(ret, rootCanc);
 
         return ret;
     }

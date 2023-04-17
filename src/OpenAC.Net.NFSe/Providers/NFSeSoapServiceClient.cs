@@ -139,7 +139,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
         {
             case SoapVersion.Soap11:
                 content = new StringContent(EnvelopeEnvio, CharSet, "text/xml");
-                content.Headers.Add("SOAPAction", soapAction);
+                content.Headers.Add("SOAPAction", $"\"{soapAction}\"");
                 break;
 
             case SoapVersion.Soap12:
@@ -163,8 +163,8 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
         if (retorno != null)
             throw new OpenDFeCommunicationException("Erro ao processar o retorno(1) => " + retorno);
-        else
-            throw new OpenDFeCommunicationException("Erro ao processar o retorno(2) => " + EnvelopeRetorno);
+        
+        throw new OpenDFeCommunicationException("Erro ao processar o retorno(2) => " + EnvelopeRetorno);
     }
 
     protected abstract string TratarRetorno(XElement xmlDocument, string[] responseTag);

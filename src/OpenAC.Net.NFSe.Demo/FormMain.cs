@@ -44,6 +44,19 @@ public partial class FormMain : Form, IOpenLog
 
     #region EventHandlers
 
+    private void btnEditCidade_Click(object sender, EventArgs e)
+    {
+        ExecuteSafe(() =>
+        {
+            var municipio = cmbCidades.GetSelectedValue<OpenMunicipioNFSe>();
+            if (municipio == null) return;
+
+            if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
+
+            LoadData();
+        });
+    }
+    
     private void btnSalvarConfig_Click(object sender, EventArgs e)
     {
         SaveConfig();
@@ -249,11 +262,7 @@ public partial class FormMain : Form, IOpenLog
 
             var path = Helpers.SelectFolder();
             if (path.IsEmpty()) return;
-
-            var municipios = dgvCidades.Rows.Cast<DataGridViewRow>().Select(x => (OpenMunicipioNFSe)x.DataBoundItem);
-
-            ProviderManager.Municipios.Clear();
-            ProviderManager.Municipios.AddRange(municipios);
+            
             ProviderManager.Save(Path.Combine(path, "Municipios.nfse"));
         });
     }
@@ -317,7 +326,7 @@ public partial class FormMain : Form, IOpenLog
 
     private void dgvCidades_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
     {
-        if (dgvCidades.RowCount <= 0 || e.RowIndex <= -1 || e.ColumnIndex <= -1)
+        if (dgvCidades.RowCount <= 0 || e.RowIndex <= -1 || e.RowIndex > dgvCidades.Rows.Count - 1 || e.ColumnIndex <= -1)
             return;
 
         var municipio = (OpenMunicipioNFSe)dgvCidades.Rows[e.RowIndex].DataBoundItem;
@@ -625,7 +634,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Tomador.DadosContato.Email = "NOME@EMPRESA.COM.BR";
     }
 
-    private string GetCnae(OpenMunicipioNFSe municipio)
+    private static string GetCnae(OpenMunicipioNFSe municipio)
     {
         return municipio.Provedor switch
         {
@@ -804,7 +813,7 @@ public partial class FormMain : Form, IOpenLog
     private void LoadData()
     {
         dgvCidades.DataSource = null;
-        dgvCidades.DataSource = ProviderManager.Municipios;
+        dgvCidades.DataSource = ProviderManager.Municipios.ToArray();
 
         UpdateCidades();
     }
@@ -949,19 +958,6 @@ public partial class FormMain : Form, IOpenLog
             rtLogResposta.Clear();
             rtLogResposta.AppendLine($"Erro : {exception.Message}");
         }
-    }
-
-    private void btnEditCidade_Click(object sender, EventArgs e)
-    {
-        ExecuteSafe(() =>
-        {
-            var municipio = cmbCidades.GetSelectedValue<OpenMunicipioNFSe>();
-            if (municipio == null) return;
-
-            if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
-
-            LoadData();
-        });
     }
 
     #endregion Methods

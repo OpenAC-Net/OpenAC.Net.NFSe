@@ -3,8 +3,8 @@
 // Author           : Rafael Dias
 // Created          : 05-22-2018
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 05-22-2018
+// Last Modified By : Leandro Rossi (rossism.com.br)
+// Last Modified On : 14-04-2023
 // ***********************************************************************
 // <copyright file="ProviderISSNet.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -29,16 +29,16 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderISSNet : ProviderABRASF204
+internal sealed class ProviderISSNet204 : ProviderABRASF204
 {
-
     #region Constructors
 
-    public ProviderISSNet(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public ProviderISSNet204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "ISSNet";
     }
@@ -46,17 +46,12 @@ internal sealed class ProviderISSNet : ProviderABRASF204
     #endregion Constructors
 
     #region Methods
-
-
+    
+    protected override IServiceClient GetClient(TipoUrl tipo) => new ISSNet204ServiceClient(this, tipo, Certificado);
+    
+    protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
+    
+    protected override string GerarCabecalho() => $"<cabecalho versao=\"1.00\" {GetNamespace()}><versaoDados>{Versao.GetDFeValue()}</versaoDados></cabecalho>";
+    
     #endregion Methods
-
-    #region Protected Methods
-    protected override IServiceClient GetClient(TipoUrl tipo)
-    {
-        return new ISSNetServiceClient(this, tipo, Certificado);
-    }
-    protected override string GetSchema(TipoUrl tipo) => "nfse_v204.xsd";
-    protected override string GerarCabecalho() => $"<cabecalho versao=\"1.00\" {GetNamespace()}><versaoDados>{Versao}</versaoDados></cabecalho>";
-    #endregion
-
 }

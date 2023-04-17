@@ -3,8 +3,8 @@
 // Author           : Rafael Dias
 // Created          : 05-22-2018
 //
-// Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 03-08-2023
+// Last Modified By : Leandro Rossi (rossism.com.br)
+// Last Modified On : 14-04-2023
 // ***********************************************************************
 // <copyright file="ISSNetServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -29,6 +29,7 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -37,15 +38,15 @@ using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClient
+internal sealed class ISSNet204ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public ISSNetServiceClient(ProviderISSNet provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
+    public ISSNet204ServiceClient(ProviderISSNet204 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
     }
 
-    public ISSNetServiceClient(ProviderISSNet provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap12)
+    public ISSNet204ServiceClient(ProviderISSNet204 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
@@ -56,14 +57,14 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
     public string Enviar(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<RecepcionarLoteRpsRequest>");
+        message.Append("<nfse:RecepcionarLoteRps>");
         message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
+        message.Append(cabec);
         message.Append("</nfseCabecMsg>");
         message.Append("<nfseDadosMsg>");
-        message.AppendCData("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + msg);
+        message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</RecepcionarLoteRpsRequest>");
+        message.Append("</nfse:RecepcionarLoteRps>");
 
         return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
     }
@@ -71,14 +72,14 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
     public string EnviarSincrono(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:RecepcionarLoteRpsSincronoRequest>");
+        message.Append("<nfse:RecepcionarLoteRpsSincrono>");
         message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
+        message.Append(cabec);
         message.Append("</nfseCabecMsg>");
         message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
+        message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</e:RecepcionarLoteRpsSincronoRequest>");
+        message.Append("</nfse:RecepcionarLoteRpsSincrono>");
 
         return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse");
     }
@@ -91,34 +92,31 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
     public string ConsultarLoteRps(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:ConsultarLoteRpsRequest>");
+        message.Append("<nfse:ConsultarLoteRps>");
         message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
+        message.Append(cabec);
         message.Append("</nfseCabecMsg>");
         message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
+        message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</e:ConsultarLoteRpsRequest>");
+        message.Append("</nfse:ConsultarLoteRps>");
 
         return Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResponse");
     }
 
-    public string ConsultarSequencialRps(string cabec, string msg)
-    {
-        throw new System.NotImplementedException();
-    }
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new System.NotImplementedException();
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<ConsultarNfsePorRpsRequest>");
+        message.Append("<nfse:ConsultarNfsePorRps>");
         message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
+        message.Append(cabec);
         message.Append("</nfseCabecMsg>");
         message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
+        message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</ConsultarNfsePorRpsRequest>");
+        message.Append("</nfse:ConsultarNfsePorRps>");
 
         return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
     }
@@ -126,14 +124,14 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
     public string ConsultarNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<ConsultarNfseServicoPrestadoRequest>");
+        message.Append("<nfse:ConsultarNfseServicoPrestado>");
         message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
+        message.Append(cabec);
         message.Append("</nfseCabecMsg>");
         message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
+        message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</ConsultarNfseServicoPrestadoRequest>");
+        message.Append("</nfse:ConsultarNfseServicoPrestado>");
 
         return Execute("http://nfse.abrasf.org.br/ConsultarNfseServicoPrestado", message.ToString(), "ConsultarNfseServicoPrestadoResponse");
     }
@@ -141,41 +139,38 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
     public string CancelarNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<CancelarNfseRequest>");
+        message.Append("<nfse:CancelarNfse>");
         message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
+        message.Append(cabec);
         message.Append("</nfseCabecMsg>");
         message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
+        message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</CancelarNfseRequest>");
+        message.Append("</nfse:CancelarNfse>");
 
         return Execute("http://nfse.abrasf.org.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
     }
 
-    public string CancelarNFSeLote(string cabec, string msg)
-    {
-        throw new System.NotImplementedException();
-    }
+    public string CancelarNFSeLote(string cabec, string msg) => throw new System.NotImplementedException();
 
     public string SubstituirNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<SubstituirNfseRequest>");
+        message.Append("<nfse:SubstituirNfse>");
         message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
+        message.Append(cabec);
         message.Append("</nfseCabecMsg>");
         message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
+        message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</SubstituirNfseRequest>");
+        message.Append("</nfse:SubstituirNfseRequest>");
 
         return Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), "SubstituirNfseResponse");
     }
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
     }
 
     protected override bool ValidarCertificadoServidor()
@@ -192,7 +187,9 @@ internal sealed class ISSNetServiceClient : NFSeSoapServiceClient, IServiceClien
             throw new OpenDFeCommunicationException(exMessage);
         }
 
-        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
+        var reader = xmlDocument.ElementAnyNs(responseTag[0]).CreateReader();
+        reader.MoveToContent();
+        return reader.ReadInnerXml();
     }
 
     #endregion Methods
