@@ -10326,37 +10326,37 @@
       <Nome>Ribeirão Preto</Nome>
       <UF>SP</UF>
       <Provedor>ISSNet</Provedor>
-      <Versao>1.00</Versao>
+      <Versao>2.04</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://abrasf.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx?wsdl</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://abrasf.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx?wsdl</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://abrasf.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx?wsdl</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://abrasf.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx?wsdl</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://abrasf.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx?wsdl</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://abrasf.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx?wsdl</Url>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
@@ -10371,33 +10371,34 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/ribeiraopreto/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/ribeiraopreto/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/ribeiraopreto/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/ribeiraopreto/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/ribeiraopreto/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/ribeiraopreto/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
