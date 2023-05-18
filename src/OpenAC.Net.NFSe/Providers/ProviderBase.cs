@@ -338,7 +338,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
             using (var cliente = GetClient(TipoUrl.Enviar))
             {
-                retornoWebservice.XmlRetorno = cliente.Enviar(GerarCabecalho(), retornoWebservice.XmlEnvio);
+                string cabec = GerarCabecalho();
+                retornoWebservice.XmlRetorno = cliente.Enviar(cabec, retornoWebservice.XmlEnvio);
                 retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
                 retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
             }
