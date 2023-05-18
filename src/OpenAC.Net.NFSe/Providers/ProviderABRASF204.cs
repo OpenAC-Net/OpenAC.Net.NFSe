@@ -29,6 +29,7 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
@@ -130,6 +131,14 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
         info.AddChild(AdicionarTag(TipoCampo.Int, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
 
         return rootRps;
+    }
+
+    protected override XElement WriteServicosRps(NotaServico nota)
+    {
+        if (nota.Servico.ItemListaServico?.Split('.').Length != 2)
+            throw new Exception("O item de serviço deve estar no formato NN.NN!");
+
+        return base.WriteServicosRps(nota);
     }
 
     /// <inheritdoc />
