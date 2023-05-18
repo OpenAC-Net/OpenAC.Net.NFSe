@@ -64,7 +64,7 @@ public static class ProviderManager
             {NFSeProvider.DBSeller, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDBSeller)}}},
             {NFSeProvider.DSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDSF100)}}},
             {NFSeProvider.Equiplano, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderEquiplano)}}},
-            {NFSeProvider.Fiorilli, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderFiorilli)}}},
+            {NFSeProvider.Fiorilli, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderFiorilli)}, {VersaoNFSe.ve201, typeof(ProviderFiorilli201)}}},
             {NFSeProvider.Fisco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderFisco)}}},
             {NFSeProvider.FissLex, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderFissLex)}}},
             {NFSeProvider.Ginfes, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderGinfes)}}},
