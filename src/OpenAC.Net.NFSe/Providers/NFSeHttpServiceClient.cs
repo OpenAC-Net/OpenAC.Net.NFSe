@@ -209,7 +209,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
             var response = client.SendAsync(request).GetAwaiter().GetResult();
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
                 
             EnvelopeRetorno = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
