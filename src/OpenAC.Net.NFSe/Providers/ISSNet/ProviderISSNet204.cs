@@ -51,7 +51,7 @@ internal sealed class ProviderISSNet204 : ProviderABRASF204
     
     protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
     
-    protected override string GerarCabecalho() => $"<cabecalho versao=\"1.00\" {GetNamespace()}><versaoDados>{Versao.GetDFeValue()}</versaoDados></cabecalho>";
+    protected override string GerarCabecalho() => $"<cabecalho versao=\"2.04\" {GetNamespace()}><versaoDados>{Versao.GetDFeValue()}</versaoDados></cabecalho>";
     
     #endregion Methods
 }
