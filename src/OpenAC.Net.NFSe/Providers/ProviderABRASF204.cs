@@ -133,14 +133,6 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
         return rootRps;
     }
 
-    protected override XElement WriteServicosRps(NotaServico nota)
-    {
-        if (nota.Servico.ItemListaServico?.Split('.').Length != 2)
-            throw new Exception("O item de serviço deve estar no formato NN.NN!");
-
-        return base.WriteServicosRps(nota);
-    }
-
     /// <inheritdoc />
     protected override XElement WriteTomadorRps(NotaServico nota)
     {

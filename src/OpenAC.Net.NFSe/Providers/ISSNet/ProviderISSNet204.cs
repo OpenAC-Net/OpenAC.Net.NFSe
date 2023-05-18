@@ -29,8 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
+using System.Text;
+using OpenAC.Net.NFSe.Nota;
+using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -46,12 +50,50 @@ internal sealed class ProviderISSNet204 : ProviderABRASF204
     #endregion Constructors
 
     #region Methods
-    
+
     protected override IServiceClient GetClient(TipoUrl tipo) => new ISSNet204ServiceClient(this, tipo, Certificado);
-    
+
     protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
-    
+
     protected override string GerarCabecalho() => $"<cabecalho versao=\"2.04\" {GetNamespace()}><versaoDados>{Versao.GetDFeValue()}</versaoDados></cabecalho>";
-    
+
     #endregion Methods
+
+    #region Services 
+
+    protected override void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice)
+    {
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "ConsultarNfseRpsEnvio", "", Certificado);
+    }
+
+    protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
+    {
+        if (retornoWebservice.NumeroRps < 1)
+        {
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
+            return;
+        }
+
+        var loteBuilder = new StringBuilder();
+        loteBuilder.Append($"<ConsultarNfseRpsEnvio {GetNamespace()}>");
+        loteBuilder.Append("<Pedido>");
+        loteBuilder.Append("<IdentificacaoRps>");
+        loteBuilder.Append($"<Numero>{retornoWebservice.NumeroRps}</Numero>");
+        loteBuilder.Append($"<Serie>{retornoWebservice.Serie}</Serie>");
+        loteBuilder.Append($"<Tipo>{(int)retornoWebservice.Tipo + 1}</Tipo>");
+        loteBuilder.Append("</IdentificacaoRps>");
+        loteBuilder.Append("<Prestador>");
+        loteBuilder.Append("<CpfCnpj>");
+        loteBuilder.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
+            ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
+            : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+        loteBuilder.Append("</CpfCnpj>");
+        if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+        loteBuilder.Append("</Prestador>");
+        loteBuilder.Append("</Pedido>");
+        loteBuilder.Append("</ConsultarNfseRpsEnvio>");
+        retornoWebservice.XmlEnvio = loteBuilder.ToString();
+    }
+
+    #endregion
 }
