@@ -72,7 +72,7 @@ public static class ProviderManager
             {NFSeProvider.ISSCuritiba, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSCuritiba)}}},
             {NFSeProvider.ISSDSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSDSF)}}},
             {NFSeProvider.ISSe, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderISSe)}}},
-            {NFSeProvider.IISGoiania, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderISSGoiania)}}},
+            {NFSeProvider.IISGoiania, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderISSGoiania)}}},
             {NFSeProvider.ISSNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderISSNet204)}}},
             {NFSeProvider.ISSRio, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSRio)}}},
             {NFSeProvider.ISSSaoPaulo, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSSaoPaulo)}}},
