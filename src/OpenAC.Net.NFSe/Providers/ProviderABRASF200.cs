@@ -1233,6 +1233,37 @@ public abstract class ProviderABRASF200 : ProviderBase
             nota.IdentificacaoNFSe.Chave = chaveNFSe;
             nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
             nota.XmlOriginal = compNfse.ToString();
+
+            var nfseCancelamento = compNfse.ElementAnyNs("NfseCancelamento");
+
+            if (nfseCancelamento != null)
+            {
+                nota.Situacao = SituacaoNFSeRps.Cancelado;
+
+                var confirmacaoCancelamento = nfseCancelamento
+                    .ElementAnyNs("Confirmacao");
+
+                if (confirmacaoCancelamento != null)
+                {
+                    var pedido = confirmacaoCancelamento.ElementAnyNs("Pedido");
+
+                    if (pedido != null)
+                    {
+                        var codigoCancelamento = pedido
+                            .ElementAnyNs("InfPedidoCancelamento")
+                            .ElementAnyNs("CodigoCancelamento")
+                            .GetValue<string>();
+
+                        nota.Cancelamento.Pedido.CodigoCancelamento = codigoCancelamento;
+
+                        nota.Cancelamento.Signature = DFeSignature.Load(pedido.ElementAnyNs("Signature").ToString());
+                    }
+                }
+
+                nota.Cancelamento.DataHora = confirmacaoCancelamento
+                    .ElementAnyNs("DataHora")
+                    .GetValue<DateTime>();
+            }
         }
 
         retornoWebservice.Nota = nota;

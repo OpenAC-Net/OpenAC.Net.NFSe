@@ -867,7 +867,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
             // Recebe mensagem de retorno
 
-            using (var cliente = GetClient(TipoUrl.CancelarNFSeLote))
+            using (var cliente = GetClient(TipoUrl.SubstituirNFSe))
             {
                 retornoWebservice.XmlRetorno = cliente.SubstituirNFSe(GerarCabecalho(), retornoWebservice.XmlEnvio);
                 retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
