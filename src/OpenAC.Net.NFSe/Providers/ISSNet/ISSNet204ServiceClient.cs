@@ -163,7 +163,7 @@ internal sealed class ISSNet204ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("<nfseDadosMsg>");
         message.Append(msg);
         message.Append("</nfseDadosMsg>");
-        message.Append("</nfse:SubstituirNfseRequest>");
+        message.Append("</nfse:SubstituirNfse>");
 
         return Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), "SubstituirNfseResponse");
     }

@@ -10363,6 +10363,7 @@
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -10405,6 +10406,7 @@
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/ribeiraopreto/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
