@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
-// Created          : 07-30-2017
+// Created          : 29-01-2020
 //
-// Last Modified By : Fabio Dias
-// Last Modified On : 12-11-2021
+// Last Modified By : Rafael Dias
+// Last Modified On : 29-01-2020
 // ***********************************************************************
-// <copyright file="NFSeProvider.cs" company="OpenAC .Net">
+// <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
@@ -29,104 +29,34 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
-using OpenAC.Net.DFe.Core.Attributes;
+using OpenAC.Net.NFSe.Configuracao;
+using System.Xml.Linq;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-public enum NFSeProvider : sbyte
+internal sealed class ProviderFiorilli200 : ProviderABRASF200
 {
-    Nenhum = -1,
+    #region Constructors
 
-    Americana = 29,
+    public ProviderFiorilli200(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    {
+        Name = "Fiorilli";
+    }
 
-    Abaco = 0,
+    #endregion Constructors
 
-    ABase = 39,
+    #region Methods
 
-    AssessorPublico = 33,
+    protected override XElement WriteTomadorRps(NotaServico nota)
+    {
+        if (nota.Tomador.Endereco.CodigoMunicipio != 9999999)
+            nota.Tomador.Endereco.CodigoPais = 0;
 
-    Betha = 1,
+        return base.WriteTomadorRps(nota);
+    }
 
-    BHISS = 8,
+    protected override IServiceClient GetClient(TipoUrl tipo) => new Fiorilli200ServiceClient(this, tipo);
 
-    Citta = 28,
-
-    Coplan = 3,
-
-    ISSCuritiba = 26,
-
-    DBSeller = 19,
-
-    ISSDSF = 4,
-
-    DSF = 38,
-
-    Equiplano = 15,
-
-    Fiorilli = 16,
-
-    Fisco = 42,
-
-    FissLex = 12,
-
-    Ginfes = 5,
-
-    IPM = 36,
-
-    ISSe = 23,
-
-    ISSNet = 18,
-
-    Mitra = 34,
-
-    [Description("NFe Cidades")]
-    NFeCidades = 6,
-
-    [Description("Nota Carioca")]
-    ISSRio = 7,
-
-    Pronim = 17,
-
-    [Description("São Paulo")]
-    ISSSaoPaulo = 9,
-
-    SmarAPD = 14,
-
-    SiapNet = 35,
-
-    SigISS = 20,
-
-    SimplISS = 24,
-
-    Sintese = 37,
-
-    SpeedGov = 25,
-
-    SystemPro = 27,
-
-    Conam = 21,
-
-    [Description("Goiania")]
-    ISSGoiania = 22,
-
-    SigISSWeb = 30,
-
-    [Description("RLZ Informática")]
-    RLZ = 31,
-
-    Tiplan = 46,
-
-    [Description("Vitoria")]
-    ISSVitoria = 13,
-
-    WebIss = 10,
-
-    [Description("Porto Velho")]
-    IISPortoVelho = 32,
-
-    [Description("Metro Web")]
-    MetropolisWeb = 40,
-
-    Thema = 41
+    #endregion Methods
 }

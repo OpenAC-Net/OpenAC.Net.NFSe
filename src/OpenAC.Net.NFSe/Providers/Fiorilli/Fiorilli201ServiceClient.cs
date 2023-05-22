@@ -38,15 +38,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class FiorilliServiceClient : NFSeSoapServiceClient, IServiceClient
+internal sealed class Fiorilli201ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public Fiorilli201ServiceClient(ProviderFiorilli201 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
-    public FiorilliServiceClient(ProviderFiorilli provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    public Fiorilli201ServiceClient(ProviderFiorilli201 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
     }
 
