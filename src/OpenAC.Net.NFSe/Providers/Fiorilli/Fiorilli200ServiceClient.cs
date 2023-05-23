@@ -50,14 +50,6 @@ internal sealed class Fiorilli200ServiceClient : NFSeSoapServiceClient, IService
     {
     }
 
-    public FiorilliServiceClient(ProviderFiorilli201 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
-    {
-    }
-
-    public FiorilliServiceClient(ProviderFiorilli201 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-    {
-    }
-
     #endregion Constructors
 
     #region Methods
