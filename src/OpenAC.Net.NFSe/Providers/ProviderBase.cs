@@ -4,7 +4,7 @@
 // Created          : 07-27-2014
 //
 // Last Modified By : Felipe (Transis Software)
-// Last Modified On : 04-12-2023
+// Last Modified On : 04-15-2023
 // ***********************************************************************
 // <copyright file="ProviderBase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -338,7 +338,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
             using (var cliente = GetClient(TipoUrl.Enviar))
             {
-                retornoWebservice.XmlRetorno = cliente.Enviar(GerarCabecalho(), retornoWebservice.XmlEnvio);
+                string cabec = GerarCabecalho();
+                retornoWebservice.XmlRetorno = cliente.Enviar(cabec, retornoWebservice.XmlEnvio);
                 retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
                 retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
             }
@@ -1491,6 +1492,9 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     protected virtual void ValidarSchema(RetornoWebservice retorno, string schema)
     {
         schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, Name, Versao.GetDFeValue(), schema);
+        if (!System.IO.File.Exists(schema))
+            retorno.Erros.Add(new Evento { Codigo = "0", Descricao = "Nao encontrou o arquivo schema do xml => " + schema });
+            
         if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
 
         foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))

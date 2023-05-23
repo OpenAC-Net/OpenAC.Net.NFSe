@@ -1,6 +1,7 @@
-﻿using System.IO;
+using System.IO;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Test.Properties;
 using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;

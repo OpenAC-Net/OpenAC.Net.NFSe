@@ -548,6 +548,7 @@ public partial class FormMain : Form, IOpenLog
 
         nfSe.IdentificacaoRps.Tipo = TipoRps.RPS;
         nfSe.IdentificacaoRps.DataEmissao = DateTime.Now;
+        nfSe.Competencia = DateTime.Now;
         nfSe.Situacao = SituacaoNFSeRps.Normal;
 
         // Setar a natureza de operação de acordo com o provedor.
