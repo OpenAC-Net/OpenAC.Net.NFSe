@@ -108,7 +108,7 @@ public enum NFSeProvider : sbyte
     Conam = 21,
 
     [Description("Goiania")]
-    IISGoiania = 22,
+    ISSGoiania = 22,
 
     SigISSWeb = 30,
 

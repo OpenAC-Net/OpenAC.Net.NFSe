@@ -35,11 +35,11 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderFiorilli : ProviderABRASF200
+internal sealed class ProviderFiorilli200 : ProviderABRASF200
 {
     #region Constructors
 
-    public ProviderFiorilli(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public ProviderFiorilli200(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "Fiorilli";
     }
@@ -56,7 +56,7 @@ internal sealed class ProviderFiorilli : ProviderABRASF200
         return base.WriteTomadorRps(nota);
     }
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new FiorilliServiceClient(this, tipo);
+    protected override IServiceClient GetClient(TipoUrl tipo) => new Fiorilli200ServiceClient(this, tipo);
 
     #endregion Methods
 }

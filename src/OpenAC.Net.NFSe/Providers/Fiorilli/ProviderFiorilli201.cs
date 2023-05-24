@@ -32,6 +32,10 @@
 using OpenAC.Net.NFSe.Configuracao;
 using System.Xml.Linq;
 using OpenAC.Net.NFSe.Nota;
+using OpenAC.Net.DFe.Core.Extensions;
+using OpenAC.Net.DFe.Core;
+using System.IO;
+using System.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -56,7 +60,7 @@ internal sealed class ProviderFiorilli201 : ProviderABRASF201
         return base.WriteTomadorRps(nota);
     }
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new FiorilliServiceClient(this, tipo);
+    protected override IServiceClient GetClient(TipoUrl tipo) => new Fiorilli201ServiceClient(this, tipo);
 
     #endregion Methods
 }

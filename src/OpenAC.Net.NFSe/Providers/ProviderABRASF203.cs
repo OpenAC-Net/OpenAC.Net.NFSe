@@ -212,7 +212,14 @@ public abstract class ProviderABRASF203 : ProviderABRASF202
         valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorCsll));
         valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.OutrasRetencoes));
         valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValTotTributos));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
+
+        var valorISS = nota.Servico.Valores.ValorIss;
+
+        if (valorISS <= 0 && nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao && nota.Servico.Valores.ValorIssRetido > 0)
+            valorISS = nota.Servico.Valores.ValorIssRetido;
+
+        if (nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, valorISS));
 
         if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional || nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 5, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
