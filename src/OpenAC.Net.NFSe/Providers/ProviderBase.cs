@@ -1592,7 +1592,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             //
         }
 
-#if NETFULL
+#if NETFRAMEWORK
         certificado?.ForceUnload();
 #else
             certificado?.Dispose();

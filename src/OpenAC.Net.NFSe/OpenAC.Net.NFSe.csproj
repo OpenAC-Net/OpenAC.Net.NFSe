@@ -29,15 +29,7 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>OpenAC.Net.NFSe</PackageId>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-		<DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' and '$(TargetFramework)' != 'net6.0' and '$(TargetFramework)' != 'net7.0'">
-		<DefineConstants>NETFULL</DefineConstants>
-	</PropertyGroup>
+	</PropertyGroup>	
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
