@@ -6,10 +6,10 @@ public class SetupOpenNFSe
 {
     #region Fields
 
-    private static OpenNFSe ginfes;
-    private static OpenNFSe sigiss;
-    private static OpenNFSe abrasf;
-    private static OpenNFSe ipm;
+    private static OpenNFSe? ginfes;
+    private static OpenNFSe? sigiss;
+    private static OpenNFSe? abrasf;
+    private static OpenNFSe? ipm;
 
     #endregion Fields
 

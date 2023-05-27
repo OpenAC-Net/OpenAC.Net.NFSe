@@ -1,29 +1,34 @@
-using System.IO;
+using System.Reflection;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.NFSe.Test.Properties;
 using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
-public class TestProviderGinfes
+public class TestProviderGinfes : IDisposable
 {
+    private readonly Stream rps;
+    
+    public TestProviderGinfes()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        rps = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Test.Resources.RpsGinfes.xml") ?? new MemoryStream();
+    }
+
     [Fact]
     public void TestarGeracaoLeituraRps()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
 
         openNFSe.NotasServico.Clear();
-
-        var dados = new MemoryStream(Resources.Exemplo_Rps_Ginfes);
-        openNFSe.NotasServico.Load(dados);
+        openNFSe.NotasServico.Load(rps);
 
         Assert.True(openNFSe.NotasServico.Count == 1, "Erro ao carregar a Rps");
 
         var rpsGerada = openNFSe.NotasServico[0].GetXml();
 
-        dados.Position = 0;
-        var xml = XDocument.Load(dados);
+        rps.Position = 0;
+        var xml = XDocument.Load(rps);
         var rpsOriginal = xml.AsString(true);
 
         Assert.True(rpsGerada == rpsOriginal, "Erro na Geração do Xml da Rps");
@@ -35,18 +40,21 @@ public class TestProviderGinfes
         var openNFSe = SetupOpenNFSe.Ginfes;
 
         openNFSe.NotasServico.Clear();
-
-        var dados = new MemoryStream(Resources.Exemplo_Rps_Ginfes);
-        openNFSe.NotasServico.Load(dados);
+        openNFSe.NotasServico.Load(rps);
 
         Assert.True(openNFSe.NotasServico.Count == 1, "Erro ao carregar a NFSe");
 
         var nfseGerada = openNFSe.NotasServico[0].GetXml();
 
-        dados.Position = 0;
-        var xml = XDocument.Load(dados);
+        rps.Position = 0;
+        var xml = XDocument.Load(rps);
         var nfseOriginal = xml.AsString(true);
 
         Assert.True(nfseGerada == nfseOriginal, "Erro na Geração do Xml da NFSe");
+    }
+
+    public void Dispose()
+    {
+        rps.Dispose();
     }
 }

@@ -40,8 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.OpenSource" Version="2023.2.7" />
-    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2023.2.7" />
+    <PackageReference Include="FastReport.OpenSource" Version="2023.2.15" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2023.2.15" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
