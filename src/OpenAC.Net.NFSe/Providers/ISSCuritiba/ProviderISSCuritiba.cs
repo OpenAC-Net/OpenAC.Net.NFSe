@@ -3,8 +3,8 @@
 // Author           : Diego Martins
 // Created          : 08-29-2021
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 07-11-2018
+// Last Modified By : Dheizon Gonçalves
+// Last Modified On : 29-05-2023
 // ***********************************************************************
 // <copyright file="ProviderISSCuritiba.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -992,7 +992,7 @@ internal sealed class ProviderISSCuritiba : ProviderBase
     {
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-        loteBuilder.Append("<ConsultarSituacaoLoteRps xmlns=\"http://www.e-governeapps2.com.br/\">");
+        loteBuilder.Append("<ConsultarSituacaoLoteRps xmlns=\"https://www.e-governeapps2.com.br/\">");
         loteBuilder.Append("<ConsultarSituacaoLoteRpsEnvio>");
         loteBuilder.Append("<Prestador>");
         loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
@@ -1009,7 +1009,7 @@ internal sealed class ProviderISSCuritiba : ProviderBase
     {
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-        loteBuilder.Append("<ConsultarLoteRps xmlns=\"http://www.e-governeapps2.com.br/\">");
+        loteBuilder.Append("<ConsultarLoteRps xmlns=\"https://www.e-governeapps2.com.br/\">");
         loteBuilder.Append("<ConsultarLoteRpsEnvio>");
         loteBuilder.Append("<Prestador>");
         loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
@@ -1032,7 +1032,7 @@ internal sealed class ProviderISSCuritiba : ProviderBase
 
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-        loteBuilder.Append("<ConsultarNfseRps xmlns=\"http://www.e-governeapps2.com.br/\">");
+        loteBuilder.Append("<ConsultarNfseRps xmlns=\"https://www.e-governeapps2.com.br/\">");
         loteBuilder.Append("<ConsultarNfseRpsEnvio>");
         loteBuilder.Append("<IdentificacaoRps>");
         loteBuilder.Append($"<Numero>{retornoWebservice.NumeroRps}</Numero>");
@@ -1054,7 +1054,7 @@ internal sealed class ProviderISSCuritiba : ProviderBase
         var loteBuilder = new StringBuilder();
 
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-        loteBuilder.Append("<ConsultarNfse xmlns=\"http://www.e-governeapps2.com.br/\">");
+        loteBuilder.Append("<ConsultarNfse xmlns=\"https://www.e-governeapps2.com.br/\">");
         loteBuilder.Append("<ConsultarNfseEnvio>");
         loteBuilder.Append("<Prestador>");
         loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
@@ -1115,7 +1115,7 @@ internal sealed class ProviderISSCuritiba : ProviderBase
 
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-        loteBuilder.Append("<CancelarNfse xmlns=\"http://www.e-governeapps2.com.br/\">");
+        loteBuilder.Append("<CancelarNfse xmlns=\"https://www.e-governeapps2.com.br/\">");
         loteBuilder.Append("<CancelarNfseEnvio>");
         loteBuilder.Append("<Pedido>");
         loteBuilder.Append("<InfPedidoCancelamento>");
@@ -1157,7 +1157,7 @@ internal sealed class ProviderISSCuritiba : ProviderBase
 
     private string GetNamespace()
     {
-        return "xmlns=\"http://www.e-governeapps2.com.br/\"";
+        return "xmlns=\"https://www.e-governeapps2.com.br/\"";
     }
 
     private void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet,

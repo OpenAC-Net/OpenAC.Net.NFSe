@@ -3,8 +3,8 @@
 // Author           : Diego Martins
 // Created          : 08-29-2021
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 07-11-2018
+// Last Modified By : Dheizon Gonçalves
+// Last Modified On : 29-05-2023
 // ***********************************************************************
 // <copyright file="ISSCuritibaServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
@@ -56,7 +56,7 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
 
     public string CancelarNFSe(string cabec, string msg)
     {
-        return Execute("http://www.e-governeapps2.com.br/CancelarNfse", msg.ToString(), "CancelarNfseResponse");
+        return Execute("https://www.e-governeapps2.com.br/CancelarNfse", msg.ToString(), "CancelarNfseResponse");
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -66,17 +66,17 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
 
     public string ConsultarLoteRps(string cabec, string msg)
     {
-        return Execute("http://www.e-governeapps2.com.br/ConsultarLoteRps", msg.ToString(), "ConsultarLoteRpsResponse");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarLoteRps", msg.ToString(), "ConsultarLoteRpsResponse");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
     {
-        return Execute("http://www.e-governeapps2.com.br/ConsultarNfse", msg.ToString(), "ConsultarNfseResponse");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarNfse", msg.ToString(), "ConsultarNfseResponse");
     }
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {
-        return Execute("http://www.e-governeapps2.com.br/ConsultarNfsePorRps", msg.ToString(), "ConsultarNfsePorRpsResponse");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarNfsePorRps", msg.ToString(), "ConsultarNfsePorRpsResponse");
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -86,12 +86,12 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
 
     public string ConsultarSituacao(string cabec, string msg)
     {
-        return Execute("http://www.e-governeapps2.com.br/ConsultarSituacaoLoteRps", msg.ToString(), "ConsultarSituacaoLoteRpsResult");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarSituacaoLoteRps", msg.ToString(), "ConsultarSituacaoLoteRpsResult");
     }
 
     public string Enviar(string cabec, string msg)
     {
-        return Execute("http://www.e-governeapps2.com.br/RecepcionarLoteRps", msg.ToString(), "RecepcionarLoteRpsResponse");
+        return Execute("https://www.e-governeapps2.com.br/RecepcionarLoteRps", msg.ToString(), "RecepcionarLoteRpsResponse");
     }
 
     public string EnviarSincrono(string cabec, string msg)
