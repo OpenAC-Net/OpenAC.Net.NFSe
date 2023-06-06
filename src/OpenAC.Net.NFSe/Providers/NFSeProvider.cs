@@ -78,6 +78,8 @@ public enum NFSeProvider : sbyte
 
     ISSNet = 18,
 
+    ISSSJP = 43,
+
     Mitra = 34,
 
     [Description("NFe Cidades")]
