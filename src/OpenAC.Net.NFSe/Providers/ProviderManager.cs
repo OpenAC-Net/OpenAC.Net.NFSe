@@ -38,6 +38,7 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Providers.ISSSJP;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -74,6 +75,7 @@ public static class ProviderManager
             {NFSeProvider.ISSe, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderISSe)}}},
             {NFSeProvider.ISSGoiania, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderISSGoiania)}}},
             {NFSeProvider.ISSNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderISSNet204)}}},
+            {NFSeProvider.ISSSJP, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSSJP)}}},
             {NFSeProvider.ISSRio, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSRio)}}},
             {NFSeProvider.ISSSaoPaulo, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSSaoPaulo)}}},
             {NFSeProvider.ISSVitoria, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderISSVitoria)}}},
