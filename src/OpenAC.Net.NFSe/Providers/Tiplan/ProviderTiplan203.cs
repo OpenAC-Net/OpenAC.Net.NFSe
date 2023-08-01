@@ -46,7 +46,7 @@ internal sealed class ProviderTiplan203 : ProviderABRASF203
 
     public ProviderTiplan203(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "Americana";
+        Name = "Tiplan";
     }
 
     #endregion Constructors
@@ -67,11 +67,7 @@ internal sealed class ProviderTiplan203 : ProviderABRASF203
         if (nota.Servico.ResponsavelRetencao.HasValue)
             servico.AddChild(AdicionarTag(TipoCampo.Int, "", "ResponsavelRetencao", 1, 1, Ocorrencia.NaoObrigatoria, (int)nota.Servico.ResponsavelRetencao + 1));
 
-        /*
-         * Americana mudou a lista de serviços municipais, agora deve-se informar o código NBS no ItemListaServico
-         * e informar o CNAE no CodigoTributacaoMunicipio ou no CodigoCnae (não precisa informar os dois)
-         */
-        servico.AddChild(AdicionarTag(TipoCampo.Str, "", "ItemListaServico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.CodigoNbs));
+        servico.AddChild(AdicionarTag(TipoCampo.Str, "", "ItemListaServico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
         servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoCnae", 1, 7, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoCnae));
         servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoTributacaoMunicipio", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoTributacaoMunicipio));
 

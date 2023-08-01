@@ -257,7 +257,7 @@ public abstract class ProviderABRASF203 : ProviderABRASF202
             enderecoExt.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
             enderecoExt.AddChild(AdicionarTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
         }
-        else
+        else if (nota.Tomador.Endereco.CodigoMunicipio > 0)
         {
             var endereco = new XElement("Endereco");
             tomador.Add(endereco);
