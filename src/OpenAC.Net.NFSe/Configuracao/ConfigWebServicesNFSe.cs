@@ -86,7 +86,7 @@ namespace OpenAC.Net.NFSe.Configuracao
         public string FraseSecreta { get; set; }
 
         public string ChaveAcesso { get; set; }
-        public string ChavePrivada { get => "98209ce73938f19f"; }
+        public string ChavePrivada { get; set; }
         public string Proxy { get; set; }
 
         /// <summary>
