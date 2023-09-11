@@ -39,6 +39,7 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Providers.Pvh;
+using OpenAC.Net.NFSe.Providers.Sigep;
 using OpenAC.Net.NFSe.Providers.Thema;
 
 namespace OpenAC.Net.NFSe.Providers
@@ -99,7 +100,8 @@ namespace OpenAC.Net.NFSe.Providers
                 {NFSeProvider.WebIss, typeof(ProviderWebIss)},
                 {NFSeProvider.WebIss2, typeof(ProviderWebIss2)},
                 {NFSeProvider.MetropolisWeb, typeof(ProviderMetropolisWeb)},
-                {NFSeProvider.Thema, typeof(ProviderThema)}
+                {NFSeProvider.Thema, typeof(ProviderThema)},
+                {NFSeProvider.Sigep, typeof(ProviderSigep)}
             };
 
             Load();

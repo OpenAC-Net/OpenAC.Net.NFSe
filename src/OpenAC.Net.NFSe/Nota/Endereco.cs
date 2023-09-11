@@ -73,6 +73,8 @@ namespace OpenAC.Net.NFSe.Nota
         public string Municipio { get; set; }
 
         public int CodigoPais { get; set; }
+        public int EstadoPaisEstrangeiro { get; set; }
+        public int CidadePaisEstrangeiro { get; set; }
 
         public string Pais { get; set; }
 
