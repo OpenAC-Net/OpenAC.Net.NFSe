@@ -51,6 +51,20 @@
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="tsUrlNfse">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="255" />
+			<xsd:minLength value="1" />
+			<xsd:whiteSpace value="collapse" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCodigoPaisEstrangeiro">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="5" />
+			<xsd:minLength value="5" />
+			<xsd:whiteSpace value="collapse" />
+		</xsd:restriction>
+	</xsd:simpleType>	
 	<xsd:simpleType name="tsValor">
 		<xsd:restriction base="xsd:decimal">
 			<xsd:totalDigits value="15" />
@@ -86,11 +100,18 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="tsDiscriminacao">
 		<xsd:restriction base="xsd:string">
-			<xsd:maxLength value="2000" />
+			<xsd:maxLength value="5000" />
 			<xsd:minLength value="1" />
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="tsInformacoesImportantes">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="400" />
+			<xsd:minLength value="1" />
+			<xsd:whiteSpace value="collapse" />
+		</xsd:restriction>
+	</xsd:simpleType>	
 	<xsd:simpleType name="tsDescricaoCancelamento">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="200" />
@@ -110,6 +131,13 @@
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="tsInscricaoEstadual">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="15" />
+			<xsd:minLength value="1" />
+			<xsd:whiteSpace value="collapse" />
+		</xsd:restriction>
+	</xsd:simpleType>	
 	<xsd:simpleType name="tsRazaoSocial">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="150" />
@@ -142,7 +170,7 @@
 			<xsd:maxLength value="50" />
 			<xsd:minLength value="1" />
 			<xsd:pattern
-				value="ALAMEDA|ÁREA|ÁREA ESPECIAL|AVENIDA|BLOCO|CHÁCARA|COLÔNIA|CONDOMÍNIO|CONDOMÍNIO RESIDENCIAL|CONJUNTO|ENTRE QUADRA|ESTAÇÃO|ESTRADA|MÓDULO|NÚCLEO|NÚCLEO RURAL|PRAÇA|QUADRA|RESIDENCIAL|RODOVIA|RUA|SETOR|TRECHO|VIA|VILA" />
+				value="ALAMEDA|AREA|AREA ESPECIAL|AVENIDA|BLOCO|CHACARA|COLONIA|CONDOMINIO|CONDOMINIO RESIDENCIAL|CONJUNTO|ENTRE QUADRA|ESTACAO|ESTRADA|MODULO|NUCLEO|NUCLEO RURAL|PRACA|QUADRA|RESIDENCIAL|RODOVIA|RUA|SETOR|TRECHO|VIA|VILA" />
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
@@ -154,6 +182,20 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsComplementoEndereco">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="60" />
+			<xsd:minLength value="1" />
+			<xsd:whiteSpace value="collapse" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsEstadoPaisEstrangeiro">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="60" />
+			<xsd:minLength value="1" />
+			<xsd:whiteSpace value="collapse" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCidadePaisEstrangeiro">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="60" />
 			<xsd:minLength value="1" />
@@ -246,13 +288,13 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="tsCodigoCancelamentoNfse">
 		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="EE|ED|OU|SB" />
+			<xsd:pattern value="EE|ED|OU|SB|SS|DU" />
 		</xsd:restriction>
 	</xsd:simpleType>
 
 	<xsd:simpleType name="tsCodigoCancelamentoRps">
 		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="EE|ED|OU|SB" />
+			<xsd:pattern value="EE|ED|OU|SB|SS|DU" />
 		</xsd:restriction>
 	</xsd:simpleType>
 
@@ -286,6 +328,12 @@
 				maxOccurs="1" />
 			<xsd:element name="CodigoMunicipio" type="tsCodigoMunicipioIbge"
 				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CodigoPaisEstrangeiro" type="tsCodigoPaisEstrangeiro"
+				minOccurs="0" maxOccurs="1" />	
+			<xsd:element name="EstadoPaisEstrangeiro" type="tsEstadoPaisEstrangeiro"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CidadePaisEstrangeiro" type="tsCidadePaisEstrangeiro"
+				minOccurs="0" maxOccurs="1" />			
 			<xsd:element name="Uf" type="tsUf" minOccurs="0"
 				maxOccurs="1" />
 			<xsd:element name="Cep" type="tsCep" minOccurs="0"
@@ -330,6 +378,8 @@
 				maxOccurs="1" />
 			<xsd:element name="InscricaoMunicipal" type="tsInscricaoMunicipal"
 				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="tsInscricaoEstadual" type="tsInscricaoEstadual"
+				minOccurs="0" maxOccurs="1" />
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -359,6 +409,8 @@
 		<xsd:sequence>
 			<xsd:element name="ValorServicos" type="tsValor"
 				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="ValorIssRetido" type="tsValor"
+				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ValorDeducoes" type="tsValor"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ValorPis" type="tsValor" minOccurs="0"
@@ -407,6 +459,8 @@
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Discriminacao" type="tsDiscriminacao"
 				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="InformacoesImportantes" type="tsInformacoesImportantes"
+				minOccurs="0" maxOccurs="1" />				
 			<xsd:element name="CodigoMunicipio" type="tsCodigoMunicipioIbge"
 				minOccurs="1" maxOccurs="1" />
 			<xsd:element name="ExigibilidadeISS" type="tsExigibilidadeISS"
@@ -490,6 +544,8 @@
 			<xsd:element name="NfseSubstituida" type="tsNumeroNfse"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="OutrasInformacoes" type="tsOutrasInformacoes"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="UrlNfse" type="tsUrlNfse"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ValoresNfse" type="tcValoresNfse"
 				minOccurs="1" maxOccurs="1" />
