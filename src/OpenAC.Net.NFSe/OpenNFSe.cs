@@ -86,7 +86,7 @@ namespace OpenAC.Net.NFSe
 
             try
             {
-                ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //Configuracoes.WebServices.Protocolos;
 
                 var ret = sincrono
                     ? provider.EnviarSincrono(lote, NotasServico)

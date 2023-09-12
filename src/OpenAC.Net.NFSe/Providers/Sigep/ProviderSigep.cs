@@ -45,13 +45,63 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             infServico.AddChild(WriteIntermediarioRps(nota));
             infServico.AddChild(WriteConstrucaoCivilRps(nota));
 
-            var regimeEspecialTributacao = nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional ? "6" :
-                                           ((int)nota.RegimeEspecialTributacao).ToString();
-
-            if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
-                infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
-
             return rootRps;
+        }
+
+        protected override XElement WriteRpsRps(NotaServico nota)
+        {
+            var rps = new XElement("Rps");
+
+            rps.Add(WriteIdentificacaoRps(nota));
+
+            string status = null;
+            //Algumas prefeituras não permitem controle de série de RPS
+            switch (nota.Situacao)
+            {
+                case SituacaoNFSeRps.Normal:
+                    status = "CO";
+                    break;
+
+                case SituacaoNFSeRps.Cancelado:
+                    status = "CA";
+                    break;
+            }
+
+            rps.AddChild(AdicionarTag(TipoCampo.DatHor, "", "DataEmissao", 10, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+            rps.AddChild(AdicionarTag(TipoCampo.Str, "", "Status", 1, 1, Ocorrencia.Obrigatoria, status));
+
+            rps.AddChild(WriteSubstituidoRps(nota));
+
+            return rps;
+        }
+
+        protected override XElement WriteIdentificacaoRps(NotaServico nota)
+        {
+            var indRps = new XElement("IdentificacaoRps");
+
+            indRps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Numero", 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
+
+            var serie = nota.IdentificacaoRps.Serie;
+
+            string tipo = null;
+            //Algumas prefeituras não permitem controle de série de RPS
+            switch (nota.IdentificacaoRps.Tipo)
+            {
+                case TipoRps.RPS:
+                    tipo = "R1";
+                    break;
+
+                case TipoRps.NFConjugada:
+                    tipo = "R2";
+                    break;
+                case TipoRps.Cupom:
+                    tipo = "R3";
+                    break;
+            }
+
+            indRps.AddChild(AdicionarTag(TipoCampo.Str, "", "Tipo", 1, 1, Ocorrencia.Obrigatoria, tipo));
+
+            return indRps;
         }
 
         protected override XElement WriteServicosRps(NotaServico nota)
@@ -65,7 +115,9 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoTributacaoMunicipio", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoTributacaoMunicipio));
             servico.AddChild(AdicionarTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
             servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoMunicipio", 1, 20, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
-            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "ExigibilidadeISS", 1, 1, Ocorrencia.Obrigatoria, (int)nota.Servico.ExigibilidadeIss + 1));
+
+            var exigibilidadeISS = (int)nota.Servico.ExigibilidadeIss + 1;
+            servico.AddChild(AdicionarTag(TipoCampo.Str, "", "ExigibilidadeISS", 1, 1, Ocorrencia.Obrigatoria, "0"+ exigibilidadeISS));
 
             return servico;
         }
@@ -145,7 +197,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
                     nota.Tomador.DadosContato.Telefone = nota.Tomador.DadosContato.Telefone.Substring(0, 8);
 
                 contato.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Telefone", 1, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Telefone));
-                contato.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Ddd", 3, 3, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.DDD));
+                contato.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Ddd", 3, 3, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.DDD.PadLeft(3, '0')));
                 contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Email", 1, 80, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
             }
 
@@ -164,6 +216,13 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
 
             var xmlLoteRps = new StringBuilder();
 
+            foreach (var nota in notas)
+            {
+                var xmlRps = WriteXmlRps(nota, false, false);
+                xmlLoteRps.Append(xmlRps);
+                GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
+            }
+
             var xmlLote = new StringBuilder();
             xmlLote.Append($"<GerarNfseEnvio {GetNamespace()}>");
             xmlLote.Append($"<credenciais>");
@@ -172,7 +231,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             xmlLote.Append($"<chavePrivada>{Configuracoes.WebServices.ChavePrivada}</chavePrivada>");
             xmlLote.Append($"</credenciais>");
             xmlLote.Append(xmlLoteRps);
-            xmlLote.Append("</EnviarLoteRpsEnvio>");
+            xmlLote.Append("</GerarNfseEnvio>");
 
             retornoWebservice.XmlEnvio = xmlLote.ToString();
         }
@@ -181,7 +240,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
+            //retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "GerarNfseEnvio", "Rps", Certificado);
         }
 
         protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
@@ -334,7 +393,6 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             loteBuilder.Append($"</credenciais>");
             loteBuilder.Append("<IdentificacaoRps>");
             loteBuilder.Append($"<Numero>{retornoWebservice.NumeroRps}</Numero>");
-            loteBuilder.Append($"<Serie>{retornoWebservice.Serie}</Serie>");
             loteBuilder.Append($"<Tipo>{(int)retornoWebservice.Tipo + 1}</Tipo>");
             loteBuilder.Append("</IdentificacaoRps>");
             loteBuilder.Append("<Prestador>");
