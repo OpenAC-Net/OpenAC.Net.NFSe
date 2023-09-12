@@ -20,6 +20,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
         public ProviderSigep(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
         {
             Name = "Sigep";
+            Versao = "1.01";
         }
 
         #endregion Constructors
@@ -265,7 +266,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             xmlLote.Append($"<senha>{Configuracoes.WebServices.Senha}</senha>");
             xmlLote.Append($"<chavePrivada>{Configuracoes.WebServices.ChavePrivada}</chavePrivada>");
             xmlLote.Append($"</credenciais>");
-            xmlLote.Append($"<LoteRps Id=\"L{retornoWebservice.Lote}\" {GetVersao()}>");
+            xmlLote.Append($"<LoteRps {GetVersao()}>");
             xmlLote.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
             if (UsaPrestadorEnvio) xmlLote.Append("<Prestador>");
             xmlLote.Append("<CpfCnpj>");
