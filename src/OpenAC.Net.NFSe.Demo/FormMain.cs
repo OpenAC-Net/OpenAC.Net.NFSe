@@ -510,7 +510,8 @@ namespace OpenAC.Net.NFSe.Demo
             if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
             nfSe.Servico.CodigoCnae = cnae;
 
-            var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.ABase) ? "5211701" : "01.07.00 / 00010700";
+            var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SIAPNet, NFSeProvider.ABase) ? "5211701" :
+                municipio.Provedor.IsIn(NFSeProvider.Sigep) ? "1" : "01.07.00 / 00010700";
 
             nfSe.Servico.ItemListaServico = itemListaServico;
             nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;

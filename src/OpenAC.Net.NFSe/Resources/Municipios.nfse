@@ -1449,43 +1449,43 @@
 		<UrlProducao>
 			<Item>
 				<TipoUrl>Enviar</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>EnviarSincrono</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>CancelarNFSe</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>CancelarNFSeLote</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarNFSe</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarNFSeRps</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarLoteRps</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarSituacao</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarSequencialRps</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>SubstituirNFSe</TipoUrl>
-				<Url>http://gestaopublica.botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
+				<Url>https://botucatu.bsit-br.com.br/integracao/services/nfseWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>Autenticacao</TipoUrl>

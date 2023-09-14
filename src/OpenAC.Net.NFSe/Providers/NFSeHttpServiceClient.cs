@@ -168,7 +168,7 @@ namespace OpenAC.Net.NFSe.Providers
                 if (Provider.TimeOut.HasValue)
                     request.Timeout = Provider.TimeOut.Value.Milliseconds;
 
-                if (headers?.Count > 0)
+                if (headers?.Count > 0 && Provider.Name != NFSeProvider.Sigep.ToString())
                     request.Headers.Add(headers);
 
                 if (!string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.Proxy))
