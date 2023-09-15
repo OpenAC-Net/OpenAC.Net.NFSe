@@ -6,6 +6,7 @@ using OpenAC.Net.NFSe.Nota;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -209,7 +210,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
 
         #region Services
 
-        protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
             if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
@@ -238,13 +239,13 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
         }
 
         /// <inheritdoc />
-        protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
+        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
         {
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
             //retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "GerarNfseEnvio", "Rps", Certificado);
         }
 
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+        protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
             if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
@@ -286,7 +287,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             retornoWebservice.XmlEnvio = xmlLote.ToString();
         }
 
-        protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+        protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
         }
@@ -294,7 +295,17 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
         protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
         {
             // Analisa mensagem de retorno
-            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+            var xmlDocument = XElement.Parse(retornoWebservice.XmlRetorno);
+            var reader = xmlDocument.ElementAnyNs("gerarNfseResponse").CreateReader();
+            reader.MoveToContent();
+            var xml = reader.ReadInnerXml().Replace("ns2:", string.Empty);
+
+            XmlDocument XmlRetorno = new XmlDocument();
+            XmlRetorno.LoadXml(xml);
+
+            XmlDocument xmlMensagem = new XmlDocument();
+            var xmlRet = XDocument.Parse(XmlRetorno.LastChild.InnerText);
+
             MensagemErro(retornoWebservice, xmlRet, "GerarNfseResposta");
             if (retornoWebservice.Erros.Any()) return;
 

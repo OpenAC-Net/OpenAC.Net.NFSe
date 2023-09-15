@@ -4,6 +4,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
 using System.Xml.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Xml;
+using System.ServiceModel.Channels;
 
 namespace OpenAC.Net.NFSe.Providers.Sigep
 {
@@ -26,6 +30,19 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
         public string Enviar(string cabec, string msg)
         {
             var message = new StringBuilder();
+            message.Append("<ws:enviarLoteRpsSincrono>");
+            message.Append("<EnviarLoteRpsSincronoEnvio>");
+            message.AppendCData(msg);
+            message.Append("</EnviarLoteRpsSincronoEnvio>");
+
+            message.Append("</ws:enviarLoteRpsSincrono>");
+
+            return Execute("enviarLoteRpsSincrono", message.ToString(), "enviarLoteRpsSincronoResponse");
+        }
+
+        public string EnviarSincrono(string cabec, string msg)
+        {
+            var message = new StringBuilder();
             message.Append("<ws:gerarNfse>");
             message.Append("<GerarNfseEnvio>");
             message.AppendCData(msg);
@@ -33,19 +50,6 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             message.Append("</ws:gerarNfse>");
 
             return Execute("gerarNfse", message.ToString(), "gerarNfseResponse");
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-            message.Append("<ws:enviarLoteRpsSincrono>");
-            message.Append("<EnviarLoteRpsSincronoEnvio>");
-            message.AppendCData(msg);
-            message.Append("</EnviarLoteRpsSincronoEnvio>");
-            
-            message.Append("</ws:enviarLoteRpsSincrono>");
-
-            return Execute("enviarLoteRpsSincrono", message.ToString(), "enviarLoteRpsSincronoResponse");
         }
 
         public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
@@ -107,18 +111,22 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
         }
 
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+        protected override string TratarRetorno(XElement xElement, string[] responseTag)
         {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element != null)
-            {
-                var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-                throw new OpenDFeCommunicationException(exMessage);
-            }
-
-            var reader = xmlDocument.ElementAnyNs(responseTag[0]).CreateReader();
+            var reader = xElement.ElementAnyNs(responseTag[0]).CreateReader();
             reader.MoveToContent();
-            return reader.ReadInnerXml().Replace("ns2:", string.Empty);
+            var xml = reader.ReadInnerXml().Replace("ns2:", string.Empty);
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xml);
+
+            XmlDocument xmlMensagem = new XmlDocument();
+            xmlMensagem.LoadXml(xmlDoc.LastChild.InnerText);
+            var mensagem = xmlMensagem.GetElementsByTagName("Mensagem");
+            if (mensagem.Count == 0)
+                return xElement.ToString();
+            else
+                return mensagem[0].InnerText;
         }
 
         #endregion Methods

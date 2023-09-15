@@ -553,7 +553,7 @@ namespace OpenAC.Net.NFSe.Demo
 
             nfSe.Tomador.CpfCnpj = "44854962283";
             nfSe.Tomador.InscricaoMunicipal = "";
-            nfSe.Tomador.RazaoSocial = "Nome";
+            nfSe.Tomador.RazaoSocial = "DINAMCORP CORPORACAO EMPRESARIAL E CONTABIL LTDA";
 
             nfSe.Tomador.Endereco.TipoLogradouro = "";
             nfSe.Tomador.Endereco.Logradouro = "INDEPENDENCIA";
