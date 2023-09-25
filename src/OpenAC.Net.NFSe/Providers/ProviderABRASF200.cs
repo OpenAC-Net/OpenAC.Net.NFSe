@@ -1126,7 +1126,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
         nota.Cancelamento.DataHora = retornoWebservice.Data;
         nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
-        nota.Cancelamento.Signature = DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature").ToString());
+        nota.Cancelamento.Signature = DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature")?.ToString());
     }
 
     /// <inheritdoc />

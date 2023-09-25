@@ -53,31 +53,25 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
     public string Enviar(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:RecepcionarLoteRpsRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
+        message.Append("<e:recepcionarLoteRps>");
+        message.Append("<xml>");
         message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</e:RecepcionarLoteRpsRequest>");
+        message.Append("</xml>");
+        message.Append("</e:recepcionarLoteRps>");
 
-        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
+        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", message.ToString(), "recepcionarLoteRpsResponse");
     }
 
     public string EnviarSincrono(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:RecepcionarLoteRpsSincronoRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
+        message.Append("<e:recepcionarLoteRpsSincrono>");
+        message.Append("<xml>");
         message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</e:RecepcionarLoteRpsSincronoRequest>");
+        message.Append("</xml>");
+        message.Append("</e:recepcionarLoteRpsSincrono>");
 
-        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse");
+        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -88,16 +82,13 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
     public string ConsultarLoteRps(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:ConsultarLoteRpsRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
+        message.Append("<e:consultarLoteRps>");
+        message.Append("<xml>");
         message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</e:ConsultarLoteRpsRequest>");
+        message.Append("</xml>");
+        message.Append("</e:consultarLoteRps>");
 
-        return Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResponse");
+        return Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", message.ToString(), "consultarLoteRpsResponse");
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -108,46 +99,37 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
     public string ConsultarNFSeRps(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:ConsultarNfsePorRpsRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
+        message.Append("<e:consultarNfsePorRps>");
+        message.Append("<xml>");
         message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</e:ConsultarNfsePorRpsRequest>");
+        message.Append("</xml>");
+        message.Append("</e:consultarNfsePorRps>");
 
-        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
+        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(), "consultarNfsePorRpsResponse");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:ConsultarNfseServicoPrestadoRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
+        message.Append("<e:consultarNfseServicoPrestado>");
+        message.Append("<xml>");
         message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</e:ConsultarNfseServicoPrestadoRequest>");
+        message.Append("</xml>");
+        message.Append("</e:consultarNfseServicoPrestado>");
 
-        return Execute("http://nfse.abrasf.org.br/ConsultarNfseServicoPrestado", message.ToString(), "ConsultarNfseServicoPrestadoResponse");
+        return Execute("http://nfse.abrasf.org.br/ConsultarNfseServicoPrestado", message.ToString(), "consultarNfseServicoPrestadoResponse");
     }
 
     public string CancelarNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:CancelarNfseRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
+        message.Append("<e:cancelarNfse>");
+        message.Append("<xml>");
         message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</e:CancelarNfseRequest>");
+        message.Append("</xml>");
+        message.Append("</e:cancelarNfse>");
 
-        return Execute("http://nfse.abrasf.org.br/CancelarNfse", message.ToString(), "CancelarNfseResponse");
+        return Execute("http://nfse.abrasf.org.br/CancelarNfse", message.ToString(), "cancelarNfseResponse");
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -158,16 +140,13 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
     public string SubstituirNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<e:SubstituirNfseRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
+        message.Append("<e:substituirNfse>");
+        message.Append("<xml>");
         message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</e:SubstituirNfseRequest>");
+        message.Append("</xml>");
+        message.Append("</e:substituirNfse>");
 
-        return Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), "SubstituirNfseResponse");
+        return Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), "substituirNfseResponse");
     }
 
     private string Execute(string soapAction, string message, string responseTag)
@@ -189,7 +168,7 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
             throw new OpenDFeCommunicationException(exMessage);
         }
 
-        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
+        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
     }
 
     #endregion Methods
