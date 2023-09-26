@@ -815,7 +815,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
                    issRetidoIntermediario;
         }
 
-        var rsa = (RSA)Certificado.GetRSAPublicKey();
+        var rsa = Certificado.GetRSAPrivateKey();
         var hashBytes = Encoding.ASCII.GetBytes(hash);
         var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
         return Convert.ToBase64String(signData);
