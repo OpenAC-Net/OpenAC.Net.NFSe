@@ -12586,42 +12586,42 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdlhttps://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://suporte.sertaozinho.sp.gov.br:8443/tbw/services/nfseSOAP?wsdl</Url>
+          <Url>https://pmsertaozinho.smarapd.com.br/tb/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
