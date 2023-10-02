@@ -127,13 +127,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         {
             nota.IdentificacaoRps.DataEmissao = rps.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
 
-            var situacao = rps.ElementAnyNs("Status")?.GetValue<string>();
-
-            //SmarAPD, a situação para cancelamento é 2
-            if (string.IsNullOrEmpty(situacao) || situacao == "0")
-                nota.Situacao = SituacaoNFSeRps.Normal;
-            else
-                nota.Situacao = SituacaoNFSeRps.Cancelado;
+            nota.Situacao = rps.ElementAnyNs("Status")?.GetValue<SituacaoNFSeRps>() ?? SituacaoNFSeRps.Normal;
 
             var ideRps = rps.ElementAnyNs("IdentificacaoRps");
             if (ideRps != null)
@@ -1133,7 +1127,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
         nota.Cancelamento.DataHora = retornoWebservice.Data;
         nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
-        nota.Cancelamento.Signature = DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature")?.ToString());
+        nota.Cancelamento.Signature = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature") != null ? DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature")?.ToString()) : null;
     }
 
     /// <inheritdoc />

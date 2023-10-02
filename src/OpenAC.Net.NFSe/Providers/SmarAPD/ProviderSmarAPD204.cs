@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.Xml.Linq;
+using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -51,6 +54,23 @@ internal sealed class ProviderSmarAPD204 : ProviderABRASF204
     protected override IServiceClient GetClient(TipoUrl tipo)
     {
         return new SmarAPD204ServiceClient(this, tipo, Certificado);
+    }
+
+    protected override void LoadRps(NotaServico nota, XElement rpsRoot)
+    {
+        base.LoadRps(nota, rpsRoot);
+
+        var rps = rpsRoot.ElementAnyNs("Rps");
+        if (rps != null)
+        {
+            var situacao = rps.ElementAnyNs("Status")?.GetValue<string>();
+
+            //SmarAPD, a situação para cancelamento é 2
+            if (situacao == "1")
+                nota.Situacao = SituacaoNFSeRps.Normal;
+            else
+                nota.Situacao = SituacaoNFSeRps.Cancelado;
+        }
     }
 
     #endregion Protected Methods
