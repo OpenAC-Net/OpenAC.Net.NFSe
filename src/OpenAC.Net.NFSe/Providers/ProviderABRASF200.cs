@@ -126,6 +126,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         if (rps != null)
         {
             nota.IdentificacaoRps.DataEmissao = rps.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
+
             nota.Situacao = rps.ElementAnyNs("Status")?.GetValue<SituacaoNFSeRps>() ?? SituacaoNFSeRps.Normal;
 
             var ideRps = rps.ElementAnyNs("IdentificacaoRps");
@@ -1126,7 +1127,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
         nota.Cancelamento.DataHora = retornoWebservice.Data;
         nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
-        nota.Cancelamento.Signature = DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature")?.ToString());
+        nota.Cancelamento.Signature = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature") != null ? DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature")?.ToString()) : null;
     }
 
     /// <inheritdoc />
