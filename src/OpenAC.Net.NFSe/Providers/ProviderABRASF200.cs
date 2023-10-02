@@ -126,7 +126,14 @@ public abstract class ProviderABRASF200 : ProviderBase
         if (rps != null)
         {
             nota.IdentificacaoRps.DataEmissao = rps.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
-            nota.Situacao = rps.ElementAnyNs("Status")?.GetValue<SituacaoNFSeRps>() ?? SituacaoNFSeRps.Normal;
+
+            var situacao = rps.ElementAnyNs("Status")?.GetValue<string>();
+
+            //SmarAPD, a situação para cancelamento é 2
+            if (string.IsNullOrEmpty(situacao) || situacao == "0")
+                nota.Situacao = SituacaoNFSeRps.Normal;
+            else
+                nota.Situacao = SituacaoNFSeRps.Cancelado;
 
             var ideRps = rps.ElementAnyNs("IdentificacaoRps");
             if (ideRps != null)
