@@ -1,5 +1,6 @@
 ﻿using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -370,7 +371,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             loteBuilder.Append($"<chavePrivada>{Configuracoes.WebServices.ChavePrivada}</chavePrivada>");
             loteBuilder.Append($"</credenciais>");
             loteBuilder.Append("<Pedido>");
-            loteBuilder.Append($"<InfPedidoCancelamento Id=\"N{retornoWebservice.NumeroNFSe}\">");
+            loteBuilder.Append($"<InfPedidoCancelamento>");
             loteBuilder.Append("<IdentificacaoNfse>");
             loteBuilder.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");
             loteBuilder.Append("<CpfCnpj>");
@@ -379,13 +380,59 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
                 : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
             loteBuilder.Append("</CpfCnpj>");
             if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
-            loteBuilder.Append($"<CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</CodigoMunicipio>");
+            loteBuilder.Append($"<CodigoVerificacao>{retornoWebservice.CodigoVerificacao}</CodigoVerificacao>");
             loteBuilder.Append("</IdentificacaoNfse>");
             loteBuilder.Append($"<CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</CodigoCancelamento>");
+            loteBuilder.Append($"<DescricaoCancelamento>{retornoWebservice.Motivo}</DescricaoCancelamento>");
             loteBuilder.Append("</InfPedidoCancelamento>");
             loteBuilder.Append("</Pedido>");
             loteBuilder.Append("</CancelarNfseEnvio>");
             retornoWebservice.XmlEnvio = loteBuilder.ToString();
+        }
+
+        protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
+        {
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Pedido", "", Certificado);
+        }
+
+        protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
+        {
+            // Analisa mensagem de retorno
+            var xmlDocument = XElement.Parse(retornoWebservice.XmlRetorno);
+            var reader = xmlDocument.ElementAnyNs("cancelarNfseResponse").CreateReader();
+            reader.MoveToContent();
+            var xml = reader.ReadInnerXml().Replace("ns2:", string.Empty);
+
+            XmlDocument XmlRetorno = new XmlDocument();
+            XmlRetorno.LoadXml(xml);
+
+            XmlDocument xmlMensagem = new XmlDocument();
+            var xmlRet = XDocument.Parse(XmlRetorno.LastChild.InnerText);
+            MensagemErro(retornoWebservice, xmlRet, "CancelarNfseResposta");
+            if (retornoWebservice.Erros.Any()) return;
+
+            var confirmacaoCancelamento = xmlRet.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
+            if (confirmacaoCancelamento == null)
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
+                return;
+            }
+
+            retornoWebservice.Data = confirmacaoCancelamento.ElementAnyNs("DataHora")?.GetValue<DateTime>() ?? DateTime.MinValue;
+            retornoWebservice.Sucesso = retornoWebservice.Data != DateTime.MinValue;
+
+            var numeroNFSe = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("InfPedidoCancelamento")?
+                                 .ElementAnyNs("IdentificacaoNfse")?.ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
+
+            // Se a nota fiscal cancelada existir na coleção de Notas Fiscais, atualiza seu status:
+            var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == retornoWebservice.NumeroNFSe);
+            if (nota == null) return;
+
+            nota.Situacao = SituacaoNFSeRps.Cancelado;
+            nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
+            nota.Cancelamento.DataHora = retornoWebservice.Data;
+            nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
+            nota.Cancelamento.Signature = DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature").ToString());
         }
 
         protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)

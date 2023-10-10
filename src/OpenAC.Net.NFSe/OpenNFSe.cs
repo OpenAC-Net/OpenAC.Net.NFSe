@@ -450,7 +450,7 @@ namespace OpenAC.Net.NFSe
             try
             {
                 ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, "", 0, motivo, NotasServico);
+                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, "", 0, motivo, "", NotasServico);
             }
             catch (Exception exception)
             {
@@ -473,7 +473,7 @@ namespace OpenAC.Net.NFSe
         /// <param name="numeroNFSe">O numero da NFSe.</param>
         /// <param name="motivo">O motivo.</param>
         /// <returns>RetornoWebservice.</returns>
-        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serie, decimal valor, string motivo)
+        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serie, decimal valor, string motivo, string codigoVerificacao = null)
         {
             var provider = ProviderManager.GetProvider(Configuracoes);
             var oldProtocol = ServicePointManager.SecurityProtocol;
@@ -481,7 +481,7 @@ namespace OpenAC.Net.NFSe
             try
             {
                 ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, serie, valor, motivo, NotasServico);
+                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, serie, valor, motivo, codigoVerificacao, NotasServico);
             }
             catch (Exception exception)
             {

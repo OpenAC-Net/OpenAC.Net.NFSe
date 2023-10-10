@@ -87,7 +87,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             var message = new StringBuilder();
             message.Append("<ws:cancelarNfse>");
             message.Append("<CancelarNfseEnvio>");
-            message.Append(msg);
+            message.AppendCData(msg);
             message.Append("</CancelarNfseEnvio>");
             message.Append("</ws:cancelarNfse>");
 

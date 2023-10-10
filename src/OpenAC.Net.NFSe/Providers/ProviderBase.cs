@@ -718,7 +718,7 @@ namespace OpenAC.Net.NFSe.Providers
         /// <param name="motivo"></param>
         /// <param name="notas"></param>
         /// <returns></returns>
-        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serieNFSe, decimal valorNFSe, string motivo, NotaServicoCollection notas)
+        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serieNFSe, decimal valorNFSe, string motivo, string codigoVerificacao, NotaServicoCollection notas)
         {
             var retornoWebservice = new RetornoCancelar()
             {
@@ -726,7 +726,8 @@ namespace OpenAC.Net.NFSe.Providers
                 NumeroNFSe = numeroNFSe,
                 SerieNFSe = serieNFSe,
                 ValorNFSe = valorNFSe,
-                Motivo = motivo
+                Motivo = motivo,
+                CodigoVerificacao = codigoVerificacao
             };
 
             try

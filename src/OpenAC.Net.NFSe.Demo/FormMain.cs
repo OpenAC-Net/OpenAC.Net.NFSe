@@ -141,7 +141,10 @@ namespace OpenAC.Net.NFSe.Demo
                 var motivo = "";
                 if (InputBox.Show("Motivo Cancelamento", "Digite o motivo do cancelamento.", ref motivo).Equals(DialogResult.Cancel)) return;
 
-                var ret = openNFSe.CancelarNFSe(codigo, numeroNFSe, serieNFSe, 0, motivo);
+                var codigoVerificacao = "";
+                if (InputBox.Show("Código Verificação", "Digite o Código Verificação.", ref codigoVerificacao).Equals(DialogResult.Cancel)) return;
+
+                var ret = openNFSe.CancelarNFSe(codigo, numeroNFSe, serieNFSe, 0, motivo, codigoVerificacao);
                 ProcessarRetorno(ret);
             });
         }
@@ -432,6 +435,11 @@ namespace OpenAC.Net.NFSe.Demo
             openNFSe.Configuracoes.WebServices.Senha = txtWebserviceSenha.Text;
         }
 
+        private void txtWebserviceChavePrivada_TextChanged(object sender, EventArgs e)
+        {
+            openNFSe.Configuracoes.WebServices.ChavePrivada = txtWebserviceChavePrivada.Text;
+        }
+
         #endregion ValueChanged
 
         #region Overrides
@@ -524,7 +532,7 @@ namespace OpenAC.Net.NFSe.Demo
                 nfSe.Servico.MunicipioIncidencia = nfSe.Servico.CodigoMunicipio;
             }
 
-            nfSe.Servico.Valores.ValorServicos = 100;
+            nfSe.Servico.Valores.ValorServicos = .1m;
             nfSe.Servico.Valores.ValorDeducoes = 0;
             nfSe.Servico.Valores.ValorPis = 0;
             nfSe.Servico.Valores.ValorCofins = 0;
@@ -534,9 +542,9 @@ namespace OpenAC.Net.NFSe.Demo
             nfSe.Servico.Valores.IssRetido = SituacaoTributaria.Normal;
             nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SIAPNet ? 2 : 0;
             nfSe.Servico.Valores.ValorOutrasRetencoes = 0;
-            nfSe.Servico.Valores.BaseCalculo = 100;
+            nfSe.Servico.Valores.BaseCalculo = .1m;
             nfSe.Servico.Valores.Aliquota = 2;
-            nfSe.Servico.Valores.ValorLiquidoNfse = 100;
+            nfSe.Servico.Valores.ValorLiquidoNfse = .1m;
             nfSe.Servico.Valores.ValorIssRetido = 0;
             nfSe.Servico.Valores.DescontoCondicionado = 0;
             nfSe.Servico.Valores.DescontoIncondicionado = 0;
@@ -831,6 +839,7 @@ namespace OpenAC.Net.NFSe.Demo
 
             txtWebserviceUsuario.Text = config.Get("UsuarioWebservice", string.Empty);
             txtWebserviceSenha.Text = config.Get("SenhaWebservice", string.Empty);
+            txtWebserviceChavePrivada.Text = config.Get("ChavePrivadaWebservice", string.Empty);
 
             var codMunicipio = config.Get("Municipio", 0);
             if (codMunicipio > 0)
@@ -877,6 +886,7 @@ namespace OpenAC.Net.NFSe.Demo
 
             config.Set("UsuarioWebservice", txtWebserviceUsuario.Text);
             config.Set("SenhaWebservice", txtWebserviceSenha.Text);
+            config.Set("ChavePrivadaWebservice", txtWebserviceChavePrivada.Text);
 
             config.Set("PastaSchemas", txtSchemas.Text);
             config.Set("ArquivoCidades", txtArquivoCidades.Text);
