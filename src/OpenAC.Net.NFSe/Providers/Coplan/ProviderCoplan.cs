@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderCoplan.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -36,51 +36,50 @@ using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System.Xml.Linq;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderCoplan : ProviderABRASF201
 {
-    internal sealed class ProviderCoplan : ProviderABRASF201
+    #region Constructors
+
+    public ProviderCoplan(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderCoplan(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Coplan";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        #region Protected Methods
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return Municipio.Codigo.IsIn(5107602) && Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao ?
-                   new CoplanServiceClient(this, tipo, null) : new CoplanServiceClient(this, tipo);
-        }
-
-        protected override XElement WriteValoresRps(NotaServico nota)
-        {
-            var valores = new XElement("Valores");
-
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorDeducoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorPis));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCofins));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorInss));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorIr));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCsll));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.OutrasRetencoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 6, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.DescontoIncondicionado));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.DescontoCondicionado));
-
-            return valores;
-        }
-
-        #endregion Protected Methods
-
-        #endregion Methods
+        Name = "Coplan";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    #region Protected Methods
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return Municipio.Codigo.IsIn(5107602) && Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao ?
+            new CoplanServiceClient(this, tipo, null) : new CoplanServiceClient(this, tipo);
+    }
+
+    protected override XElement WriteValoresRps(NotaServico nota)
+    {
+        var valores = new XElement("Valores");
+
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorDeducoes));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorPis));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCofins));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorInss));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorIr));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCsll));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.OutrasRetencoes));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 6, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.DescontoIncondicionado));
+        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.DescontoCondicionado));
+
+        return valores;
+    }
+
+    #endregion Protected Methods
+
+    #endregion Methods
 }

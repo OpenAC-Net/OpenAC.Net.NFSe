@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="IdeRps.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,62 +33,61 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class IdeRps : GenericClone<IdeRps>, INotifyPropertyChanged
 {
-    public sealed class IdeRps : GenericClone<IdeRps>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IdeRps"/> class.
+    /// </summary>
+    internal IdeRps()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IdeRps"/> class.
-        /// </summary>
-        internal IdeRps()
-        {
-            Numero = string.Empty;
-            Serie = string.Empty;
-            Tipo = TipoRps.RPS;
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        /// <summary>
-        /// Gets or sets the numero.
-        /// </summary>
-        /// <value>The numero.</value>
-        public string Numero { get; set; }
-
-        /// <summary>
-        /// Gets or sets the serie.
-        /// </summary>
-        /// <value>The serie.</value>
-        public string Serie { get; set; }
-
-        /// <summary>
-        /// Gets or sets the serie prestacao.
-        /// </summary>
-        /// <value>The serie prestacao.</value>
-        public string SeriePrestacao { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tipo.
-        /// </summary>
-        /// <value>The tipo.</value>
-        public TipoRps Tipo { get; set; }
-
-        /// <summary>
-        /// Gets or sets the data emissao RPS.
-        /// </summary>
-        /// <value>The data emissao RPS.</value>
-        public DateTime DataEmissao { get; set; }
-
-        #endregion Propriedades
+        Numero = string.Empty;
+        Serie = string.Empty;
+        Tipo = TipoRps.RPS;
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    /// <summary>
+    /// Gets or sets the numero.
+    /// </summary>
+    /// <value>The numero.</value>
+    public string Numero { get; set; }
+
+    /// <summary>
+    /// Gets or sets the serie.
+    /// </summary>
+    /// <value>The serie.</value>
+    public string Serie { get; set; }
+
+    /// <summary>
+    /// Gets or sets the serie prestacao.
+    /// </summary>
+    /// <value>The serie prestacao.</value>
+    public string SeriePrestacao { get; set; }
+
+    /// <summary>
+    /// Gets or sets the tipo.
+    /// </summary>
+    /// <value>The tipo.</value>
+    public TipoRps Tipo { get; set; }
+
+    /// <summary>
+    /// Gets or sets the data emissao RPS.
+    /// </summary>
+    /// <value>The data emissao RPS.</value>
+    public DateTime DataEmissao { get; set; }
+
+    #endregion Propriedades
 }

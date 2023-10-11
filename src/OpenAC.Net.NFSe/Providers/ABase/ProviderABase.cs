@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderABase.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -35,36 +35,35 @@ using OpenAC.Net.NFSe.Nota;
 using System.Linq;
 using System.Text;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderABase : ProviderABRASF201
 {
-    internal sealed class ProviderABase : ProviderABRASF201
+    #region Constructors
+
+    public ProviderABase(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderABase(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "ABase";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new ABaseServiceClient(this, tipo);
-        }
-
-        #endregion Methods
-
-        #region Protected Methods
-
-        protected override string GetNamespace()
-        {
-            return "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance/\" xmlns=\"http://nfse.abase.com.br/nfse.xsd\"";
-        }
-
-        #endregion Protected Methods
-
+        Name = "ABase";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new ABaseServiceClient(this, tipo);
+    }
+
+    #endregion Methods
+
+    #region Protected Methods
+
+    protected override string GetNamespace()
+    {
+        return "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance/\" xmlns=\"http://nfse.abase.com.br/nfse.xsd\"";
+    }
+
+    #endregion Protected Methods
+
 }

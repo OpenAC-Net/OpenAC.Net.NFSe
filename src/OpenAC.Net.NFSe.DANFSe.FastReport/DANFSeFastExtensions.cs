@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DANFSeFastReportOpenSource.cs" company="OpenAC.Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -32,43 +32,42 @@
 using System;
 using System.IO;
 
-namespace OpenAC.Net.NFSe.DANFSe.FastReport
+namespace OpenAC.Net.NFSe.DANFSe.FastReport;
+
+public static class DANFSeFastExtensions
 {
-    public static class DANFSeFastExtensions
+    public static void Imprimir(this OpenNFSe nfse, Action<DANFSeFastOptions> options = null)
     {
-        public static void Imprimir(this OpenNFSe nfse, Action<DANFSeFastOptions> options = null)
-        {
-            var danfse = new DANFSeFastReport(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.Imprimir(nfse.NotasServico.ToArray());
-        }
+        var danfse = new DANFSeFastReport(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.Imprimir(nfse.NotasServico.ToArray());
+    }
 
-        public static void ImprimirPDF(this OpenNFSe nfse, Action<DANFSeFastOptions> options = null)
-        {
-            var danfse = new DANFSeFastReport(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirPDF(nfse.NotasServico.ToArray());
-        }
+    public static void ImprimirPDF(this OpenNFSe nfse, Action<DANFSeFastOptions> options = null)
+    {
+        var danfse = new DANFSeFastReport(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirPDF(nfse.NotasServico.ToArray());
+    }
 
-        public static void ImprimirPDF(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOptions> options = null)
-        {
-            var danfse = new DANFSeFastReport(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirPDF(nfse.NotasServico.ToArray(), aStream);
-        }
+    public static void ImprimirPDF(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOptions> options = null)
+    {
+        var danfse = new DANFSeFastReport(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirPDF(nfse.NotasServico.ToArray(), aStream);
+    }
 
-        public static void ImprimirHTML(this OpenNFSe nfse, Action<DANFSeFastOptions> options = null)
-        {
-            var danfse = new DANFSeFastReport(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirHTML(nfse.NotasServico.ToArray());
-        }
+    public static void ImprimirHTML(this OpenNFSe nfse, Action<DANFSeFastOptions> options = null)
+    {
+        var danfse = new DANFSeFastReport(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirHTML(nfse.NotasServico.ToArray());
+    }
 
-        public static void ImprimirHTML(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOptions> options = null)
-        {
-            var danfse = new DANFSeFastReport(nfse.Configuracoes);
-            options?.Invoke(danfse.Configuracoes);
-            danfse.ImprimirHTML(nfse.NotasServico.ToArray(), aStream);
-        }
+    public static void ImprimirHTML(this OpenNFSe nfse, Stream aStream, Action<DANFSeFastOptions> options = null)
+    {
+        var danfse = new DANFSeFastReport(nfse.Configuracoes);
+        options?.Invoke(danfse.Configuracoes);
+        danfse.ImprimirHTML(nfse.NotasServico.ToArray(), aStream);
     }
 }

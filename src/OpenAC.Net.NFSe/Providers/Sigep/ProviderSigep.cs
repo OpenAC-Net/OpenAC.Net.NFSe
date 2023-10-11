@@ -22,7 +22,6 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
         public ProviderSigep(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
         {
             Name = "Sigep";
-            Versao = "1.01";
         }
 
         #endregion Constructors
@@ -432,7 +431,6 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
             nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
             nota.Cancelamento.DataHora = retornoWebservice.Data;
             nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
-            nota.Cancelamento.Signature = DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature").ToString());
         }
 
         protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="Parcelas.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,32 +33,31 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class Parcelas : GenericClone<Parcelas>, INotifyPropertyChanged
 {
-    public sealed class Parcelas : GenericClone<Parcelas>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Contructors
+
+    internal Parcelas()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Contructors
-
-        internal Parcelas()
-        {
-        }
-
-        #endregion Contructors
-
-        #region Propriedades
-
-        public int Parcela { get; set; }
-
-        public DateTime DataVencimento { get; set; }
-
-        public decimal Valor { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Contructors
+
+    #region Propriedades
+
+    public int Parcela { get; set; }
+
+    public DateTime DataVencimento { get; set; }
+
+    public decimal Valor { get; set; }
+
+    #endregion Propriedades
 }

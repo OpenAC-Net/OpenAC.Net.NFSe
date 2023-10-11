@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net470;net48;net6.0-windows;net7.0-windows</TargetFrameworks>
     <AssemblyName>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</AssemblyName>
     <RootNamespace>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</RootNamespace>
     <SignAssembly>true</SignAssembly>
+	<LangVersion>latest</LangVersion>
     <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2022</Copyright>
+    <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2023</Copyright>
     <Company>OpenAC .Net - Automação Comercial em .Net</Company>
     <Authors>Projeto OpenAC .Net</Authors>
     <PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>
@@ -30,8 +31,8 @@
     <PackageId>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</PackageId>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <DefineConstants>NET45;NETFULL</DefineConstants>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
+    <DefineConstants>NETFULL</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,8 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.OpenSource" Version="2023.1.12" />
-    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2023.1.12" />
+    <PackageReference Include="FastReport.OpenSource" Version="2023.2.15" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2023.2.15" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -49,11 +50,11 @@
     <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.3" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
     <Reference Include="System.Drawing" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' != 'net452'">
+	
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows' or '$(TargetFramework)' == 'net7.0-windows'">
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
@@ -61,7 +62,7 @@
     <None Remove="Report\DANFSe.frx" />
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 

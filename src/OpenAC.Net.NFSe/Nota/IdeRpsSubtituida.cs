@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="IdeRpsSubtituida.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,80 +34,79 @@ using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core.Document;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class IdeRpsSubtituida : GenericClone<IdeRpsSubtituida>, INotifyPropertyChanged
 {
-    public sealed class IdeRpsSubtituida : GenericClone<IdeRpsSubtituida>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IdeRps"/> class.
+    /// </summary>
+    internal IdeRpsSubtituida()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IdeRps"/> class.
-        /// </summary>
-        internal IdeRpsSubtituida()
-        {
-            NumeroRps = string.Empty;
-            NumeroNfse = string.Empty;
-            Serie = string.Empty;
-            NFSeSubstituidora = string.Empty;
-            Tipo = TipoRps.RPS;
-            DataEmissaoNfseSubstituida = null;
-            Signature = new DFeSignature();
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the numero.
-        /// </summary>
-        /// <value>The numero.</value>
-        public string NumeroRps { get; set; }
-
-        /// <summary>
-        /// Gets or sets the numero.
-        /// </summary>
-        /// <value>The numero.</value>
-        public string NumeroNfse { get; set; }
-
-        /// <summary>
-        /// Gets or sets the serie.
-        /// </summary>
-        /// <value>The serie.</value>
-        public string Serie { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tipo.
-        /// </summary>
-        /// <value>The tipo.</value>
-        public TipoRps Tipo { get; set; }
-
-        /// <summary>
-        /// Gets or sets the data emissao nf se substituida.
-        /// </summary>
-        /// <value>The data emissao nf se substituida.</value>
-        public DateTime? DataEmissaoNfseSubstituida { get; set; }
-
-        /// <summary>
-        /// Gets or sets the nf se substituidora.
-        /// </summary>
-        /// <value>The nf se substituidora.</value>
-        public string NFSeSubstituidora { get; set; }
-
-        /// <summary>
-        /// Gets the signature.
-        /// </summary>
-        /// <value>The signature.</value>
-        public DFeSignature Signature { get; internal set; }
-
-        #endregion Propriedades
+        NumeroRps = string.Empty;
+        NumeroNfse = string.Empty;
+        Serie = string.Empty;
+        NFSeSubstituidora = string.Empty;
+        Tipo = TipoRps.RPS;
+        DataEmissaoNfseSubstituida = null;
+        Signature = new DFeSignature();
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    public int Id { get; set; }
+
+    /// <summary>
+    /// Gets or sets the numero.
+    /// </summary>
+    /// <value>The numero.</value>
+    public string NumeroRps { get; set; }
+
+    /// <summary>
+    /// Gets or sets the numero.
+    /// </summary>
+    /// <value>The numero.</value>
+    public string NumeroNfse { get; set; }
+
+    /// <summary>
+    /// Gets or sets the serie.
+    /// </summary>
+    /// <value>The serie.</value>
+    public string Serie { get; set; }
+
+    /// <summary>
+    /// Gets or sets the tipo.
+    /// </summary>
+    /// <value>The tipo.</value>
+    public TipoRps Tipo { get; set; }
+
+    /// <summary>
+    /// Gets or sets the data emissao nf se substituida.
+    /// </summary>
+    /// <value>The data emissao nf se substituida.</value>
+    public DateTime? DataEmissaoNfseSubstituida { get; set; }
+
+    /// <summary>
+    /// Gets or sets the nf se substituidora.
+    /// </summary>
+    /// <value>The nf se substituidora.</value>
+    public string NFSeSubstituidora { get; set; }
+
+    /// <summary>
+    /// Gets the signature.
+    /// </summary>
+    /// <value>The signature.</value>
+    public DFeSignature Signature { get; internal set; }
+
+    #endregion Propriedades
 }

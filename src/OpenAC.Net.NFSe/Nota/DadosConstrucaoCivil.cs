@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DadosConstrucaoCivil.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -32,54 +32,53 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosConstrucaoCivil : GenericClone<DadosConstrucaoCivil>, INotifyPropertyChanged
 {
-    public sealed class DadosConstrucaoCivil : GenericClone<DadosConstrucaoCivil>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal DadosConstrucaoCivil()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal DadosConstrucaoCivil()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public string CodigoObra { get; set; }
-
-        public string ArtObra { get; set; }
-
-        public string LogradouroObra { get; set; }
-
-        public string ComplementoObra { get; set; }
-
-        public string NumeroObra { get; set; }
-
-        public string BairroObra { get; set; }
-
-        public string CepObra { get; set; }
-
-        public int CodigoMunicipioObra { get; set; }
-
-        public string UFObra { get; set; }
-
-        public int CodigoPaisObra { get; set; }
-
-        public string XPaisObra { get; set; }
-
-        public string CodigoCEI { get; set; }
-
-        public string Projeto { get; set; }
-
-        public string Matricula { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public string CodigoObra { get; set; }
+
+    public string ArtObra { get; set; }
+
+    public string LogradouroObra { get; set; }
+
+    public string ComplementoObra { get; set; }
+
+    public string NumeroObra { get; set; }
+
+    public string BairroObra { get; set; }
+
+    public string CepObra { get; set; }
+
+    public int CodigoMunicipioObra { get; set; }
+
+    public string UFObra { get; set; }
+
+    public int CodigoPaisObra { get; set; }
+
+    public string XPaisObra { get; set; }
+
+    public string CodigoCEI { get; set; }
+
+    public string Projeto { get; set; }
+
+    public string Matricula { get; set; }
+
+    #endregion Propriedades
 }

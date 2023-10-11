@@ -4,7 +4,7 @@
 // Created          : 01-11-2023
 //
 // Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 01-11-2023
+// Last Modified On : 02-27-2023
 // ***********************************************************************
 // <copyright file="FiscoServiceClient.cs" company="OpenAC .Net">
 //		        	   The MIT License (MIT)
@@ -32,82 +32,114 @@
 using System;
 using System.Linq;
 using System.ServiceModel.Channels;
+using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class FiscoServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class FiscoServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public FiscoServiceClient(ProviderFisco provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Constructors
+    }
 
-        public FiscoServiceClient(ProviderFisco provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ser:recepcionarLoteRpsSincrono>");
+        message.Append("<ser:xml>");
+        message.AppendCData(msg);
+        message.Append("</ser:xml>");
+        message.Append("</ser:recepcionarLoteRpsSincrono>");
+
+        string SoapAction = GetUrlWsProvedor + "/recepcionarLoteRpsSincrono";
+        return Execute(SoapAction, message.ToString(), "RecepcionarLoteRpsSincronoResponse", GetNamespaceSer);
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada");
+    }
+
+    private string GetUrlWsProvedor { get { return Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", ""); } }
+
+    private string[] GetNamespaceSer { get { return new[] { "xmlns:ser=\"" + GetUrlWsProvedor + "\"" }; } }
+        
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<ser:consultarLoteRps>");
+        message.Append("<ser:xml>");
+        message.AppendCData(msg);
+        message.Append("</ser:xml>");
+        message.Append("</ser:consultarLoteRps>");
+
+        string SoapAction = GetUrlWsProvedor + "/consultarLoteRps";
+        return Execute(SoapAction, message.ToString(), "consultarLoteRpsResult", GetNamespaceSer);
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada");
+        //return Execute("Execute", msg, new string[0]);
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada");
+        //return Execute("Execute", msg, new string[0]);
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException("Função não implementada");
+        //return Execute("Execute", msg, new[] { "WS_CancelarNfse.ExecuteResponse", "Cancelarnfseresposta" });
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null)
         {
-        }
+            element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
+            if (element == null)
+                return xmlDocument.ToString();
 
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabec, string msg)
-        {
-            return Execute("FISS-LEXaction/AWS_RECEPCIONARLOTERPS.Execute", msg,
-                   new[] { "WS_RecepcionarLoteRps.ExecuteResponse", "Enviarloterpsresposta" });
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", msg, "RecepcionarLoteRpsSincronoResponse");
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            return Execute("FISS-LEXaction/AWS_CONSULTARSITUACAOLOTERPS.Execute", msg,
-                   new[] { "WS_ConsultarSituacaoLoteRps.ExecuteResponse" });
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            return Execute("FISS-LEXaction/AWS_CONSULTALOTERPS.Execute", msg, new string[0]);
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            return Execute("FISS-LEXaction/AWS_CONSULTANFSEPORRPS.Execute", msg, new string[0]);
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            return Execute("FISS-LEXaction/AWS_CONSULTANFSE.Execute", msg, new string[0]);
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            return Execute("FISS-LEXaction/AWS_CANCELARNFSE.Execute", msg,
-                   new[] { "WS_CancelarNfse.ExecuteResponse", "Cancelarnfseresposta" });
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
             return element.ToString();
         }
 
-        #endregion Methods
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
     }
+
+
+    #endregion Methods
 }

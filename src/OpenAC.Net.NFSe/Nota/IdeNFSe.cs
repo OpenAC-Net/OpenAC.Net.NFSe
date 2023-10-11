@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="IdeNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,38 +33,37 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class IdeNFSe : GenericClone<IdeNFSe>, INotifyPropertyChanged
 {
-    public sealed class IdeNFSe : GenericClone<IdeNFSe>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IdeRps"/> class.
+    /// </summary>
+    internal IdeNFSe()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IdeRps"/> class.
-        /// </summary>
-        internal IdeNFSe()
-        {
-            Numero = string.Empty;
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        public string Numero { get; set; }
-
-        public string Chave { get; set; }
-
-        public DateTime DataEmissao { get; set; }
-
-        public string ModeloNfse { get; set; }
-
-        #endregion Propriedades
+        Numero = string.Empty;
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    public string Numero { get; set; }
+
+    public string Chave { get; set; }
+
+    public DateTime DataEmissao { get; set; }
+
+    public string ModeloNfse { get; set; }
+
+    #endregion Propriedades
 }

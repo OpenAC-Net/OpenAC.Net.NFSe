@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="TipoRPS.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,15 +31,14 @@
 
 using System.ComponentModel;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public enum TipoRps
 {
-    public enum TipoRps
-    {
-        RPS = 0,
+    RPS = 0,
 
-        [Description("NFSe Conjugada")]
-        NFConjugada = 1,
+    [Description("NFSe Conjugada")]
+    NFConjugada = 1,
 
-        Cupom = 2
-    }
+    Cupom = 2
 }

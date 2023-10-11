@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ParcelasCollection.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,43 +31,42 @@
 
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class ParcelasCollection : DFeCollection<Parcelas>
 {
-    public sealed class ParcelasCollection : DFeCollection<Parcelas>
+    #region Contructors
+
+    internal ParcelasCollection()
     {
-        #region Contructors
-
-        internal ParcelasCollection()
-        {
-        }
-
-        #endregion Contructors
-
-        #region Propriedades
-
-        public new Parcelas this[int index]
-        {
-            get
-            {
-                return base[index];
-            }
-            set
-            {
-                base[index] = value;
-            }
-        }
-
-        #endregion Propriedades
-
-        #region Methods
-
-        public override Parcelas AddNew()
-        {
-            var ret = new Parcelas();
-            Add(ret);
-            return ret;
-        }
-
-        #endregion Methods
     }
+
+    #endregion Contructors
+
+    #region Propriedades
+
+    public new Parcelas this[int index]
+    {
+        get
+        {
+            return base[index];
+        }
+        set
+        {
+            base[index] = value;
+        }
+    }
+
+    #endregion Propriedades
+
+    #region Methods
+
+    public override Parcelas AddNew()
+    {
+        var ret = new Parcelas();
+        Add(ret);
+        return ret;
+    }
+
+    #endregion Methods
 }

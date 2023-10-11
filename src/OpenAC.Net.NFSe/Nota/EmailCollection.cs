@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="EmailCollection.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,27 +31,26 @@
 
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class EmailCollection : DFeCollection<EmailItem>
 {
-    public sealed class EmailCollection : DFeCollection<EmailItem>
+    #region Contructors
+
+    internal EmailCollection()
     {
-        #region Contructors
-
-        internal EmailCollection()
-        {
-        }
-
-        #endregion Contructors
-
-        #region Methods
-
-        public override EmailItem AddNew()
-        {
-            var ret = new EmailItem();
-            Add(ret);
-            return ret;
-        }
-
-        #endregion Methods
     }
+
+    #endregion Contructors
+
+    #region Methods
+
+    public override EmailItem AddNew()
+    {
+        var ret = new EmailItem();
+        Add(ret);
+        return ret;
+    }
+
+    #endregion Methods
 }

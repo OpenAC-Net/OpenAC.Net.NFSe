@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DadosPrestador.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -32,47 +32,46 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosPrestador : GenericClone<DadosPrestador>, INotifyPropertyChanged
 {
-    public sealed class DadosPrestador : GenericClone<DadosPrestador>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    public DadosPrestador()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        public DadosPrestador()
-        {
-            CpfCnpj = string.Empty;
-            InscricaoMunicipal = string.Empty;
-            NumeroEmissorRps = string.Empty;
-            RazaoSocial = string.Empty;
-            NomeFantasia = string.Empty;
-            Endereco = new Endereco();
-            DadosContato = new DadosContato();
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public string CpfCnpj { get; set; }
-
-        public string InscricaoMunicipal { get; set; }
-
-        public string NumeroEmissorRps { get; set; }
-
-        public string RazaoSocial { get; set; }
-
-        public string NomeFantasia { get; set; }
-
-        public Endereco Endereco { get; }
-
-        public DadosContato DadosContato { get; }
-
-        #endregion Propriedades
+        CpfCnpj = string.Empty;
+        InscricaoMunicipal = string.Empty;
+        NumeroEmissorRps = string.Empty;
+        RazaoSocial = string.Empty;
+        NomeFantasia = string.Empty;
+        Endereco = new Endereco();
+        DadosContato = new DadosContato();
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public string CpfCnpj { get; set; }
+
+    public string InscricaoMunicipal { get; set; }
+
+    public string NumeroEmissorRps { get; set; }
+
+    public string RazaoSocial { get; set; }
+
+    public string NomeFantasia { get; set; }
+
+    public Endereco Endereco { get; }
+
+    public DadosContato DadosContato { get; }
+
+    #endregion Propriedades
 }

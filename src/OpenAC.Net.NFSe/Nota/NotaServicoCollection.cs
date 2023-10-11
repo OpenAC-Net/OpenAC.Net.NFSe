@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright path="NotaServicoCollection.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -39,115 +39,114 @@ using OpenAC.Net.DFe.Core.Collection;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Providers;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class NotaServicoCollection : DFeCollection<NotaServico>
 {
-    public sealed class NotaServicoCollection : DFeCollection<NotaServico>
+    #region Fields
+
+    private readonly ConfigNFSe config;
+
+    #endregion Fields
+
+    #region Constructor
+
+    /// <summary>
+    /// Inicializa uma nova instacia da classe <see cref="NotaServicoCollection" />.
+    /// </summary>
+    /// <param name="config">The configuration.</param>
+    public NotaServicoCollection(ConfigNFSe config)
     {
-        #region Fields
+        Guard.Against<OpenDFeException>(config == null, "ConfiguraÃ§Ãµes nÃ£o podem ser nulas");
 
-        private readonly ConfigNFSe config;
+        this.config = config;
+    }
 
-        #endregion Fields
+    #endregion Constructor
 
-        #region Constructor
+    #region Methods
 
-        /// <summary>
-        /// Inicializa uma nova instacia da classe <see cref="NotaServicoCollection" />.
-        /// </summary>
-        /// <param name="config">The configuration.</param>
-        public NotaServicoCollection(ConfigNFSe config)
+    /// <summary>
+    /// Adiciona uma nova nota fiscal na coleÃ§Ã£o.
+    /// </summary>
+    /// <returns>T.</returns>
+    public override NotaServico AddNew()
+    {
+        var nota = new NotaServico(config, config.PrestadorPadrao);
+        Add(nota);
+        return nota;
+    }
+
+    /// <summary>
+    /// Carrega a NFSe/RPS do arquivo.
+    /// </summary>
+    /// <param name="xml">caminho do arquivo XML ou string com o XML.</param>
+    /// <param name="encoding">encoding do XML.</param>
+    /// <returns>NotaServico carregada.</returns>
+    public NotaServico Load(string xml, Encoding encoding = null)
+    {
+        var provider = ProviderManager.GetProvider(config);
+
+        try
         {
-            Guard.Against<OpenDFeException>(config == null, "Configurações não podem ser nulas");
-
-            this.config = config;
-        }
-
-        #endregion Constructor
-
-        #region Methods
-
-        /// <summary>
-        /// Adiciona uma nova nota fiscal na coleção.
-        /// </summary>
-        /// <returns>T.</returns>
-        public override NotaServico AddNew()
-        {
-            var nota = new NotaServico(config, config.PrestadorPadrao);
+            var nota = provider.LoadXml(xml, encoding);
+            nota.XmlOriginal = xml;
             Add(nota);
             return nota;
         }
-
-        /// <summary>
-        /// Carrega a NFSe/RPS do arquivo.
-        /// </summary>
-        /// <param name="xml">caminho do arquivo XML ou string com o XML.</param>
-        /// <param name="encoding">encoding do XML.</param>
-        /// <returns>NotaServico carregada.</returns>
-        public NotaServico Load(string xml, Encoding encoding = null)
+        finally
         {
-            var provider = ProviderManager.GetProvider(config);
-
-            try
-            {
-                var nota = provider.LoadXml(xml, encoding);
-                nota.XmlOriginal = xml;
-                Add(nota);
-                return nota;
-            }
-            finally
-            {
-                provider.Dispose();
-            }
+            provider.Dispose();
         }
-
-        /// <summary>
-        /// Carrega a NFSe/RPS do xml.
-        /// </summary>
-        /// <param name="stream">Stream do XML.</param>
-        /// <returns>NotaServico carregada.</returns>
-        public NotaServico Load(Stream stream)
-        {
-            var provider = ProviderManager.GetProvider(config);
-
-            var nota = provider.LoadXml(stream);
-
-            try
-            {
-                stream.Position = 0;
-                using (var sr = new StreamReader(stream))
-                    nota.XmlOriginal = sr.ReadToEnd();
-
-                Add(nota);
-                return nota;
-            }
-            finally
-            {
-                provider.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Carrega a NFSe/RPS do XMLDocument.
-        /// </summary>
-        /// <param name="xml">XMLDocument da NFSe/RPS.</param>
-        /// <returns>NotaServico carregada.</returns>
-        public NotaServico Load(XDocument xml)
-        {
-            var provider = ProviderManager.GetProvider(config);
-
-            try
-            {
-                var nota = provider.LoadXml(xml);
-                nota.XmlOriginal = xml.AsString();
-                Add(nota);
-                return nota;
-            }
-            finally
-            {
-                provider.Dispose();
-            }
-        }
-
-        #endregion Methods
     }
+
+    /// <summary>
+    /// Carrega a NFSe/RPS do xml.
+    /// </summary>
+    /// <param name="stream">Stream do XML.</param>
+    /// <returns>NotaServico carregada.</returns>
+    public NotaServico Load(Stream stream)
+    {
+        var provider = ProviderManager.GetProvider(config);
+
+        var nota = provider.LoadXml(stream);
+
+        try
+        {
+            stream.Position = 0;
+            using (var sr = new StreamReader(stream))
+                nota.XmlOriginal = sr.ReadToEnd();
+
+            Add(nota);
+            return nota;
+        }
+        finally
+        {
+            provider.Dispose();
+        }
+    }
+
+    /// <summary>
+    /// Carrega a NFSe/RPS do XMLDocument.
+    /// </summary>
+    /// <param name="xml">XMLDocument da NFSe/RPS.</param>
+    /// <returns>NotaServico carregada.</returns>
+    public NotaServico Load(XDocument xml)
+    {
+        var provider = ProviderManager.GetProvider(config);
+
+        try
+        {
+            var nota = provider.LoadXml(xml);
+            nota.XmlOriginal = xml.AsString();
+            Add(nota);
+            return nota;
+        }
+        finally
+        {
+            provider.Dispose();
+        }
+    }
+
+    #endregion Methods
 }

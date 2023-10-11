@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ConfirmacaoCancelamento.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,40 +34,39 @@ using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core.Document;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class IdeCancelamento : GenericClone<IdeCancelamento>, INotifyPropertyChanged
 {
-    public sealed class IdeCancelamento : GenericClone<IdeCancelamento>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal IdeCancelamento()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal IdeCancelamento()
-        {
-            Id = 0;
-            Pedido = new PedidoCancelamento();
-            Signature = new DFeSignature();
-            DataHora = DateTime.Now;
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public int Id { get; set; }
-
-        public PedidoCancelamento Pedido { get; }
-
-        public string MotivoCancelamento { get; set; }
-
-        public DateTime DataHora { get; set; }
-
-        public DFeSignature Signature { get; internal set; }
-
-        #endregion Propriedades
+        Id = 0;
+        Pedido = new PedidoCancelamento();
+        Signature = new DFeSignature();
+        DataHora = DateTime.Now;
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public int Id { get; set; }
+
+    public PedidoCancelamento Pedido { get; }
+
+    public string MotivoCancelamento { get; set; }
+
+    public DateTime DataHora { get; set; }
+
+    public DFeSignature Signature { get; internal set; }
+
+    #endregion Propriedades
 }

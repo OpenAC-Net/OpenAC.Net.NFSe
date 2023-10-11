@@ -1,13 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net452;net48;netstandard2.0;net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net462;net470;net48;netstandard2.0;net6.0;net7.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<AssemblyName>OpenAC.Net.NFSe</AssemblyName>
 		<RootNamespace>OpenAC.Net.NFSe</RootNamespace>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
-		<Copyright>Copyright © Projeto OpenAC .Net 2014 - 2022</Copyright>
+		<Copyright>Copyright © Projeto OpenAC .Net 2014 - 2023</Copyright>
 		<Company>OpenAC .Net - Automação Comercial em .Net</Company>
 		<Authors>Projeto OpenAC .Net</Authors>
 		<PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>
@@ -19,9 +19,9 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
-		<AssemblyVersion>1.5.12.5</AssemblyVersion>
-		<FileVersion>1.5.12.5</FileVersion>
-		<Version>1.5.12.5</Version>
+		<AssemblyVersion>1.5.0.0</AssemblyVersion>
+		<FileVersion>1.5.0.0</FileVersion>
+		<Version>1.5.0.0</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
@@ -29,15 +29,7 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>OpenAC.Net.NFSe</PackageId>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-		<DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
-		<DefineConstants>NET45;NETFULL</DefineConstants>
-	</PropertyGroup>
+	</PropertyGroup>	
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
@@ -46,15 +38,19 @@
 		</PackageReference>
 		<PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
 		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.3" />
-		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
-		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
+		<PackageReference Include="System.ServiceModel.Http" Version="4.10.2" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.2" />		
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
 		<Reference Include="System.Drawing" />
 	</ItemGroup>
+	
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' != 'net452'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
 		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
 	</ItemGroup>
 
@@ -62,253 +58,302 @@
 	<ItemGroup>
 		<None Include="..\..\LICENSE">
 			<Pack>True</Pack>
-			<PackagePath></PackagePath>
+			<PackagePath>/</PackagePath>
 		</None>
 		<None Include="..\..\README.md">
 			<Pack>True</Pack>
-			<PackagePath></PackagePath>
+			<PackagePath>/</PackagePath>
 		</None>
-		<None Include="Schemas\Abaco\*.*">
+		<None Include="Schemas\Abaco\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Abaco</PackagePath>
 		</None>
-		<None Include="Schemas\Americana\*.*">
+		<None Include="Schemas\ABase\**\*.*">
 			<Pack>True</Pack>
-			<PackagePath>content\Schemas\Americana</PackagePath>
+			<PackagePath>content\Schemas\ABase</PackagePath>
 		</None>
-		<None Include="Schemas\Betha\*.*">
+		<None Include="Schemas\AssessorPublico\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\AssessorPublico</PackagePath>
+		</None>
+		<None Include="Schemas\Betha\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Betha</PackagePath>
 		</None>
-		<None Include="Schemas\Betha2\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\Betha2</PackagePath>
-		</None>
-		<None Include="Schemas\BHISS\*.*">
+		<None Include="Schemas\BHISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\BHISS</PackagePath>
 		</None>
-		<None Include="Schemas\CITTA\*.*">
+		<None Include="Schemas\Citta\**\*.*">
 			<Pack>True</Pack>
-			<PackagePath>content\Schemas\CITTA</PackagePath>
+			<PackagePath>content\Schemas\Citta</PackagePath>
 		</None>
-		<None Include="Schemas\Coplan\*.*">
+		<None Include="Schemas\Conam\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Conam</PackagePath>
+		</None>
+		<None Include="Schemas\Coplan\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Coplan</PackagePath>
 		</None>
-		<None Include="Schemas\DBSeller\*.*">
+		<None Include="Schemas\DBSeller\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\DBSeller</PackagePath>
 		</None>
-		<None Include="Schemas\DSF\*.*">
+		<None Include="Schemas\DSF\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\DSF</PackagePath>
 		</None>
-		<None Include="Schemas\Equiplano\*.*">
+		<None Include="Schemas\Equiplano\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Equiplano</PackagePath>
 		</None>
-		<None Include="Schemas\Fiorilli\*.*">
+		<None Include="Schemas\Fiorilli\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Fiorilli</PackagePath>
 		</None>
-		<None Include="Schemas\FissLex\*.*">
+		<None Include="Schemas\FissLex\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\FissLex</PackagePath>
 		</None>
-		<None Include="Schemas\Ginfes\*.*">
+		<None Include="Schemas\Ginfes\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Ginfes</PackagePath>
 		</None>
-		<None Include="Schemas\Goiania\*.*">
+		<None Include="Schemas\IPM\**\*.*">
 			<Pack>True</Pack>
-			<PackagePath>content\Schemas\Goiania</PackagePath>
+			<PackagePath>content\Schemas\IPM</PackagePath>
 		</None>
-		<None Include="Schemas\ISSe\*.*">
+		<None Include="Schemas\ISSCuritiba\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSCuritiba</PackagePath>
+		</None>
+		<None Include="Schemas\ISSDSF\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSDSF</PackagePath>
+		</None>
+		<None Include="Schemas\ISSe\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSe</PackagePath>
 		</None>
-		<None Include="Schemas\ISSNet\*.*">
+		<None Include="Schemas\ISSGoiania\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSGoiania</PackagePath>
+		</None>
+		<None Include="Schemas\ISSNet\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSNet</PackagePath>
 		</None>
-		<None Include="Schemas\MetropolisWeb\*.*">
+		<None Include="Schemas\ISSPortoVelho\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSPortoVelho</PackagePath>
+		</None>
+		<None Include="Schemas\ISSRio\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSRio</PackagePath>
+		</None>
+		<None Include="Schemas\ISSSaoPaulo\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSSaoPaulo</PackagePath>
+		</None>
+		<None Include="Schemas\ISSVitoria\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSVitoria</PackagePath>
+		</None>		
+		<None Include="Schemas\MetropolisWeb\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\MetropolisWeb</PackagePath>
-		</None>
-		<None Include="Schemas\Mitra\*.*">
+		</None>		
+		<None Include="Schemas\Mitra\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Mitra</PackagePath>
 		</None>
-		<None Include="Schemas\NFe Cidades\*.*">
+		<None Include="Schemas\NFeCidades\**\*.*">
 			<Pack>True</Pack>
-			<PackagePath>content\Schemas\NFe Cidades</PackagePath>
-		</None>
-		<None Include="Schemas\Nota Carioca\*.*">
+			<PackagePath>content\Schemas\NFeCidades</PackagePath>
+		</None>		
+		<None Include="Schemas\Pronim\**\*.*">
 			<Pack>True</Pack>
-			<PackagePath>content\Schemas\Nota Carioca</PackagePath>
+			<PackagePath>content\Schemas\Pronim</PackagePath>
 		</None>
-		<None Include="Schemas\Pronim2\*.*">
+		<None Include="Schemas\RLZ\**\*.*">
 			<Pack>True</Pack>
-			<PackagePath>content\Schemas\Pronim2</PackagePath>
+			<PackagePath>content\Schemas\RLZ</PackagePath>
 		</None>
-		<None Include="Schemas\São Paulo\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\São Paulo</PackagePath>
-		</None>
-		<None Include="Schemas\SimplISS\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\SimplISS</PackagePath>
-		</None>
-		<None Include="Schemas\SpeedGov\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\SpeedGov</PackagePath>
-		</None>
-		<None Include="Schemas\SmarAPDABRASF\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\SmarAPDABRASF</PackagePath>
-		</None>
-		<None Include="Schemas\SpeedGov\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\SpeedGov</PackagePath>
-		</None>
-		<None Include="Schemas\SystemPro\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\SystemPro</PackagePath>
-		</None>
-		<None Include="Schemas\Vitoria\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\Vitoria</PackagePath>
-		</None>
-		<None Include="Schemas\WebISS\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\WebISS</PackagePath>
-		</None>
-		<None Include="Schemas\WebISS2\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\WebISS2</PackagePath>
-		</None>
-		<None Include="Schemas\PVH\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\PVH</PackagePath>
-		</None>
-		<None Include="Schemas\PVH\*.*">
-			<Pack>True</Pack>
-			<PackagePath>content\Schemas\PVH</PackagePath>
-		</None>
-		<None Include="Schemas\SIAPNet\*.*">
+		<None Include="Schemas\SIAPNet\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SIAPNet</PackagePath>
 		</None>
+		<None Include="Schemas\SigISS\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\SigISS</PackagePath>
+		</None>
+		<None Include="Schemas\SigISSWeb\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\SigISSWeb</PackagePath>
+		</None>		
+		<None Include="Schemas\SimplISS\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\SimplISS</PackagePath>
+		</None>
+		<None Include="Schemas\Sintese\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Sintese</PackagePath>
+		</None>		
+		<None Include="Schemas\SmarAPD\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\SmarAPD</PackagePath>
+		</None>
+		<None Include="Schemas\SpeedGov\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\SpeedGov</PackagePath>
+		</None>
+		<None Include="Schemas\SystemPro\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\SystemPro</PackagePath>
+		</None>
+		<None Include="Schemas\Thema\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Thema</PackagePath>
+		</None>
+		<None Include="Schemas\Tiplan\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Tiplan</PackagePath>
+		</None>		
+		<None Include="Schemas\WebISS\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\WebISS</PackagePath>
+		</None>				
 	</ItemGroup>
 	
 	<ItemGroup>
 		<None Remove="Resources\Municipios.nfse" />
 		<EmbeddedResource Include="Resources\Municipios.nfse" />
 		
-		<None Update="Schemas\Abaco\*.*">
+		<None Update="Schemas\Abaco\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ABase\*.*">
+		<None Update="Schemas\ABase\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Americana\*.*">
+		<None Update="Schemas\ABRASF\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ABRASFv1\*.*">
+		<None Update="Schemas\AssessorPublico\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ABRASFv2\*.*">
+		<None Update="Schemas\Betha\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Betha\*.*">
+		<None Update="Schemas\BHISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Betha2\*.*">
+		<None Update="Schemas\Citta\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\BHISS\*.*">
+		<None Update="Schemas\Conam\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\CITTA\*.*">
+		<None Update="Schemas\Coplan\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Coplan\*.*">
+		<None Update="Schemas\DBSeller\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\DBSeller\*.*">
+		<None Update="Schemas\DSF\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\DSF\*.*">
+		<None Update="Schemas\Equiplano\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Equiplano\*.*">
+		<None Update="Schemas\Fiorilli\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Fiorilli\*.*">
+		<None Update="Schemas\FissLex\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\FissLex\*.*">
+		<None Update="Schemas\Ginfes\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Ginfes\*.*">
+		<None Update="Schemas\IPM\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Goiania\*.*">
+		<None Update="Schemas\ISSCuritiba\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\ISSe\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\ISSNet\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\MetropolisWeb\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\Mitra\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\NFe Cidades\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\Nota Carioca\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\Pronim2\*.*">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Schemas\PVH\*.*">
+		<None Update="Schemas\ISSDSF\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>		
-		<None Update="Schemas\São Paulo\*.*">
+		<None Update="Schemas\ISSe\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SIAPNet\*.*">
+		<None Update="Schemas\ISSNet\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SimplISS\*.*">
+		<None Update="Schemas\ISSGoiania\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SmarAPDABRASF\*.*">
+		<None Update="Schemas\ISSNet\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SpeedGov\*.*">
+		<None Update="Schemas\ISSPortoVelho\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\SystemPro\*.*">
+		<None Update="Schemas\ISSRio\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Thema\*.*">
+		<None Update="Schemas\ISSSaoPaulo\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\Vitoria\*.*">
+		<None Update="Schemas\ISSVitoria\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>		
+		<None Update="Schemas\MetropolisWeb\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\WebISS2\*.*">
+		<None Update="Schemas\Mitra\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Schemas\WebISS\*.*">
+		<None Update="Schemas\NFeCidades\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>		
+		<None Update="Schemas\Pronim\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\RLZ\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	
+		<None Update="Schemas\SIAPNet\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\SigISS\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\SigISSWeb\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\SimplISS\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\Sintese\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\SmarAPD\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\SpeedGov\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\SystemPro\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\Thema\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	
+		<None Update="Schemas\Tiplan\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\WebISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>				
 	</ItemGroup>

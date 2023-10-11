@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DadosTransportadora.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -32,48 +32,47 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosTransportadora : GenericClone<DadosTransportadora>, INotifyPropertyChanged
 {
-    public sealed class DadosTransportadora : GenericClone<DadosTransportadora>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal DadosTransportadora()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal DadosTransportadora()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public string xNomeTrans { get; set; }
-
-        public string xCpfCnpjTrans { get; set; }
-
-        public string xInscEstTrans { get; set; }
-
-        public string xPlacaTrans { get; set; }
-
-        public string xEndTrans { get; set; }
-
-        public int cMunTrans { get; set; }
-
-        public string xMunTrans { get; set; }
-
-        public string xUFTrans { get; set; }
-
-        public int cPaisTrans { get; set; }
-
-        public string xPaisTrans { get; set; }
-
-        public NfseFrete vTipoFreteTrans { get; set; }
-
-        #endregion Propriedades
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public string xNomeTrans { get; set; }
+
+    public string xCpfCnpjTrans { get; set; }
+
+    public string xInscEstTrans { get; set; }
+
+    public string xPlacaTrans { get; set; }
+
+    public string xEndTrans { get; set; }
+
+    public int cMunTrans { get; set; }
+
+    public string xMunTrans { get; set; }
+
+    public string xUFTrans { get; set; }
+
+    public int cPaisTrans { get; set; }
+
+    public string xPaisTrans { get; set; }
+
+    public NfseFrete vTipoFreteTrans { get; set; }
+
+    #endregion Propriedades
 }

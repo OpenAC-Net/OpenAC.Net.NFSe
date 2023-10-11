@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="Endereco.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -32,52 +32,51 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class Endereco : GenericClone<Endereco>, INotifyPropertyChanged
 {
-    public sealed class Endereco : GenericClone<Endereco>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    internal Endereco()
     {
-        #region Events
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    #endregion Constructor
 
-        #endregion Events
+    #region Propriedades
 
-        #region Constructor
+    public string TipoLogradouro { get; set; }
 
-        internal Endereco()
-        {
-        }
+    public string Logradouro { get; set; }
 
-        #endregion Constructor
+    public string Numero { get; set; }
 
-        #region Propriedades
+    public string Complemento { get; set; }
 
-        public string TipoLogradouro { get; set; }
+    public string TipoBairro { get; set; }
 
-        public string Logradouro { get; set; }
+    public string Bairro { get; set; }
 
-        public string Numero { get; set; }
+    public int CodigoMunicipio { get; set; }
 
-        public string Complemento { get; set; }
+    public string Uf { get; set; }
 
-        public string TipoBairro { get; set; }
+    public string Cep { get; set; }
 
-        public string Bairro { get; set; }
-
-        public int CodigoMunicipio { get; set; }
-
-        public string Uf { get; set; }
-
-        public string Cep { get; set; }
-
-        public string Municipio { get; set; }
+    public string Municipio { get; set; }
 
         public int CodigoPais { get; set; }
         public int EstadoPaisEstrangeiro { get; set; }
         public int CidadePaisEstrangeiro { get; set; }
 
-        public string Pais { get; set; }
+    public string Pais { get; set; }
 
-        #endregion Propriedades
-    }
+    #endregion Propriedades
 }

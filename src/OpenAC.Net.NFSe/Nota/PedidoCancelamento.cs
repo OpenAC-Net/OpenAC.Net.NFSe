@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="PedidoCancelamento.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,37 +33,36 @@ using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core.Document;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class PedidoCancelamento : GenericClone<PedidoCancelamento>, INotifyPropertyChanged
 {
-    public sealed class PedidoCancelamento : GenericClone<PedidoCancelamento>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructors
+
+    internal PedidoCancelamento()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructors
-
-        internal PedidoCancelamento()
-        {
-            Id = 0;
-            IdentificacaoNFSe = new IdeNFSe();
-            Signature = new DFeSignature();
-        }
-
-        #endregion Constructors
-
-        #region Propriedades
-
-        public int Id { get; }
-
-        public IdeNFSe IdentificacaoNFSe { get; }
-
-        public string CodigoCancelamento { get; set; }
-
-        public DFeSignature Signature { get; internal set; }
-
-        #endregion Propriedades
+        Id = 0;
+        IdentificacaoNFSe = new IdeNFSe();
+        Signature = new DFeSignature();
     }
+
+    #endregion Constructors
+
+    #region Propriedades
+
+    public int Id { get; }
+
+    public IdeNFSe IdentificacaoNFSe { get; }
+
+    public string CodigoCancelamento { get; set; }
+
+    public DFeSignature Signature { get; internal set; }
+
+    #endregion Propriedades
 }

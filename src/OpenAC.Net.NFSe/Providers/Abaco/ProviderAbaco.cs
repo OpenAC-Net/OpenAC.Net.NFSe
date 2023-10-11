@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderAbaco.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,41 +33,40 @@ using System;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderAbaco : ProviderABRASF
 {
-    internal sealed class ProviderAbaco : ProviderABRASF
+    #region Constructors
+
+    public ProviderAbaco(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderAbaco(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "Abaco";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
-        }
-
-        protected override string GetNamespace()
-        {
-            return string.Empty;
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new AbacoServiceClient(this, tipo);
-        }
-
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            return "nfse_v2010.xsd";
-        }
-
-        #endregion Methods
+        Name = "Abaco";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
+    }
+
+    protected override string GetNamespace()
+    {
+        return string.Empty;
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new AbacoServiceClient(this, tipo);
+    }
+
+    protected override string GetSchema(TipoUrl tipo)
+    {
+        return "nfse_v2010.xsd";
+    }
+
+    #endregion Methods
 }

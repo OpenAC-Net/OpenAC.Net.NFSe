@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ConfigWebServicesNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -36,79 +36,71 @@ using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Providers;
 
-namespace OpenAC.Net.NFSe.Configuracao
+namespace OpenAC.Net.NFSe.Configuracao;
+
+public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
 {
-    public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
+    #region Fields
+
+    private int codigoMunicipio;
+
+    #endregion Fields
+
+    #region Constructor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConfigWebServicesNFSe"/> class.
+    /// </summary>
+    internal ConfigWebServicesNFSe()
     {
-        #region Fields
+        Usuario = string.Empty;
+        Senha = string.Empty;
+        FraseSecreta = string.Empty;
+        ChaveAcesso = string.Empty;
+        Protocolos = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+    }
 
-        private int codigoMunicipio;
+    #endregion Constructor
 
-        #endregion Fields
+    #region Properties
 
-        #region Constructor
+    /// <summary>
+    /// Uf do webservice em uso
+    /// </summary>
+    /// <value>The uf.</value>
+    public string Municipio { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigWebServicesNFSe"/> class.
-        /// </summary>
-        internal ConfigWebServicesNFSe()
-        {
-            Usuario = string.Empty;
-            Senha = string.Empty;
-            FraseSecreta = string.Empty;
-            ChaveAcesso = string.Empty;
+    public NFSeProvider Provider { get; private set; } = NFSeProvider.Nenhum;
 
-#if NETCORE
-            Protocolos = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-#else
-            Protocolos = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls |
-                         SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+    public string Usuario { get; set; }
 
-#endif
-        }
+    public string Senha { get; set; }
 
-        #endregion Constructor
-
-        #region Properties
-
-        /// <summary>
-        /// Uf do webservice em uso
-        /// </summary>
-        /// <value>The uf.</value>
-        public string Municipio { get; private set; }
-
-        public NFSeProvider Provider { get; private set; } = NFSeProvider.Nenhum;
-
-        public string Usuario { get; set; }
-
-        public string Senha { get; set; }
-
-        public string FraseSecreta { get; set; }
+    public string FraseSecreta { get; set; }
 
         public string ChaveAcesso { get; set; }
         public string ChavePrivada { get; set; }
         public string Proxy { get; set; }
 
-        /// <summary>
-        /// Codigo do municipio do Webservices em uso
-        /// </summary>
-        /// <value>The uf codigo.</value>
-        public int CodigoMunicipio
+    /// <summary>
+    /// Codigo do municipio do Webservices em uso
+    /// </summary>
+    /// <value>The uf codigo.</value>
+    public int CodigoMunicipio
+    {
+        get => codigoMunicipio;
+        set
         {
-            get => codigoMunicipio;
-            set
-            {
-                if (codigoMunicipio == value) return;
+            if (codigoMunicipio == value) return;
 
-                var municipio = ProviderManager.Municipios.SingleOrDefault(x => x.Codigo == value);
-                Guard.Against<ArgumentException>(municipio == null, "MunicÌpio n„o cadastrado.");
+            var municipio = ProviderManager.Municipios.SingleOrDefault(x => x.Codigo == value);
+            Guard.Against<ArgumentException>(municipio == null, "Munic√≠pio n√£o cadastrado.");
 
-                codigoMunicipio = value;
-                Municipio = municipio.Nome;
-                Provider = municipio.Provedor;
-            }
+            codigoMunicipio = value;
+            Municipio = municipio?.Nome ?? string.Empty;
+            Provider = municipio?.Provedor ?? NFSeProvider.Nenhum;
         }
-
-        #endregion Properties
     }
+
+    #endregion Properties
 }

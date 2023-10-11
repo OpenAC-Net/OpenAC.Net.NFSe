@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DadosTomador.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -32,49 +32,48 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota
+namespace OpenAC.Net.NFSe.Nota;
+
+public sealed class DadosTomador : GenericClone<DadosTomador>, INotifyPropertyChanged
 {
-    public sealed class DadosTomador : GenericClone<DadosTomador>, INotifyPropertyChanged
+    #region Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
+
+    internal DadosTomador()
     {
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Constructor
-
-        internal DadosTomador()
-        {
-            Endereco = new Endereco();
-            EnderecoExterior = new EnderecoExterior();
-            DadosContato = new DadosContato();
-        }
-
-        #endregion Constructor
-
-        #region Propriedades
-
-        public string CpfCnpj { get; set; }
-
-        public string InscricaoMunicipal { get; set; }
-
-        public string InscricaoEstadual { get; set; }
-
-        public string DocTomadorEstrangeiro { get; set; }
-
-        public string RazaoSocial { get; set; }
-
-        public string NomeFantasia { get; set; }
-
-        public Endereco Endereco { get; }
-
-        public EnderecoExterior EnderecoExterior { get; }
-
-        public DadosContato DadosContato { get; }
-
-        public int Tipo { get; set; } //Utilize a classe TipoTomador
-
-        #endregion Propriedades
+        Endereco = new Endereco();
+        EnderecoExterior = new EnderecoExterior();
+        DadosContato = new DadosContato();
     }
+
+    #endregion Constructor
+
+    #region Propriedades
+
+    public string CpfCnpj { get; set; }
+
+    public string InscricaoMunicipal { get; set; }
+
+    public string InscricaoEstadual { get; set; }
+
+    public string DocTomadorEstrangeiro { get; set; }
+
+    public string RazaoSocial { get; set; }
+
+    public string NomeFantasia { get; set; }
+
+    public Endereco Endereco { get; }
+
+    public EnderecoExterior EnderecoExterior { get; }
+
+    public DadosContato DadosContato { get; }
+
+    public int Tipo { get; set; } //Utilize a classe TipoTomador
+
+    #endregion Propriedades
 }

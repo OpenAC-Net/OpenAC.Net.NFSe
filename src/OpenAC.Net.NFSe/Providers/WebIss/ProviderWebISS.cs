@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderWebIss.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2022 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,51 +33,50 @@ using System;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
-namespace OpenAC.Net.NFSe.Providers
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ProviderWebIss : ProviderABRASF
 {
-    internal sealed class ProviderWebIss : ProviderABRASF
+    #region Constructors
+
+    public ProviderWebIss(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        #region Constructors
-
-        public ProviderWebIss(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
-        {
-            Name = "WebISS";
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-        {
-            throw new NotImplementedException("FunÁ„o n„o implementada/suportada neste Provedor !");
-        }
-
-        protected override IServiceClient GetClient(TipoUrl tipo)
-        {
-            return new WebIssServiceClient(this, tipo);
-        }
-
-        protected override string GetNamespace()
-        {
-            return "xmlns=\"http://tempuri.org/\"";
-        }
-
-        protected override string GetSchema(TipoUrl tipo)
-        {
-            switch (tipo)
-            {
-                case TipoUrl.Enviar: return "servico_enviar_lote_rps_envio.xsd";
-                case TipoUrl.EnviarSincrono: return "servico_gerar_nfse_envio.xsd";
-                case TipoUrl.ConsultarSituacao: return "servico_consultar_situacao_lote_rps_envio.xsd";
-                case TipoUrl.ConsultarLoteRps: return "servico_consultar_lote_rps_envio.xsd";
-                case TipoUrl.ConsultarNFSeRps: return "servico_consultar_nfse_rps_envio.xsd";
-                case TipoUrl.ConsultarNFSe: return "servico_consultar_nfse_envio.xsd";
-                case TipoUrl.CancelarNFSe: return "servico_cancelar_nfse_envio.xsd";
-                default: throw new ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou serviÁo n„o suportado.");
-            }
-        }
-
-        #endregion Methods
+        Name = "WebISS";
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        throw new NotImplementedException("Fun√ß√£o n√£o implementada/suportada neste Provedor !");
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        return new WebIssServiceClient(this, tipo);
+    }
+
+    protected override string GetNamespace()
+    {
+        return "xmlns=\"http://tempuri.org/\"";
+    }
+
+    protected override string GetSchema(TipoUrl tipo)
+    {
+        switch (tipo)
+        {
+            case TipoUrl.Enviar: return "servico_enviar_lote_rps_envio.xsd";
+            case TipoUrl.EnviarSincrono: return "servico_gerar_nfse_envio.xsd";
+            case TipoUrl.ConsultarSituacao: return "servico_consultar_situacao_lote_rps_envio.xsd";
+            case TipoUrl.ConsultarLoteRps: return "servico_consultar_lote_rps_envio.xsd";
+            case TipoUrl.ConsultarNFSeRps: return "servico_consultar_nfse_rps_envio.xsd";
+            case TipoUrl.ConsultarNFSe: return "servico_consultar_nfse_envio.xsd";
+            case TipoUrl.CancelarNFSe: return "servico_cancelar_nfse_envio.xsd";
+            default: throw new ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou servi√ßo n√£o suportado.");
+        }
+    }
+
+    #endregion Methods
 }
