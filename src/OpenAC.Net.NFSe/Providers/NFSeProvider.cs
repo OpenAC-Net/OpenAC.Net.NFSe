@@ -125,7 +125,7 @@ public enum NFSeProvider : sbyte
     WebIss = 10,
 
     [Description("Porto Velho")]
-    IISPortoVelho = 32,
+    ISSPortoVelho = 32,
 
     [Description("Metro Web")]
     MetropolisWeb = 40,

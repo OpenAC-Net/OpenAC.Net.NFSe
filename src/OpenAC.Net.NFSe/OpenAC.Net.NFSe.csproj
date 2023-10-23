@@ -225,10 +225,14 @@
 			<PackagePath>content\Schemas\WebISS</PackagePath>
 		</None>				
 	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Resources\Municipios.nfse" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Municipios.nfse" />
+	</ItemGroup>
 	
 	<ItemGroup>
-		<None Remove="Resources\Municipios.nfse" />
-		<EmbeddedResource Include="Resources\Municipios.nfse" />
 		
 		<None Update="Schemas\Abaco\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
