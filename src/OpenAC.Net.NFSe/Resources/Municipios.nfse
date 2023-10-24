@@ -14357,7 +14357,7 @@
       <Nome>Cerejeiras</Nome>
       <UF>RO</UF>
       <Provedor>Fiorilli</Provedor>
-	    <Versao>2.00</Versao>
+	    <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -14502,42 +14502,42 @@
 		  <UrlProducao>
 			  <Item>
 				  <TipoUrl>Enviar</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>EnviarSincrono</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>CancelarNFSe</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>CancelarNFSeLote</TipoUrl>
 			  </Item>
 			  <Item>
 				  <TipoUrl>ConsultarNFSe</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>ConsultarNFSeRps</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>ConsultarLoteRps</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>ConsultarSituacao</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>ConsultarSequencialRps</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>SubstituirNFSe</TipoUrl>
-				  <Url>https://nfse-backend.portovelho.ro.gov.br:443/producao/NfseWSService?xsd=1</Url>
+				  <Url>https://nfse-backend.portovelho.ro.gov.br/producao/NfseWSService?wsdl</Url>
 			  </Item>
 			  <Item>
 				  <TipoUrl>Autenticacao</TipoUrl>
