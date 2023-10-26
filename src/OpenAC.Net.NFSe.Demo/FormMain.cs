@@ -56,7 +56,7 @@ public partial class FormMain : Form, IOpenLog
             LoadData();
         });
     }
-    
+
     private void btnSalvarConfig_Click(object sender, EventArgs e)
     {
         SaveConfig();
@@ -167,7 +167,10 @@ public partial class FormMain : Form, IOpenLog
             var motivo = "";
             if (InputBox.Show("Motivo Cancelamento", "Digite o motivo do cancelamento.", ref motivo).Equals(DialogResult.Cancel)) return;
 
-            var ret = openNFSe.CancelarNFSe(codigo, numeroNFSe, serieNFSe, 0, motivo);
+            var codigoVerificacao = "";
+            if (InputBox.Show("Código Verificação", "Digite o Código Verificação.", ref codigoVerificacao).Equals(DialogResult.Cancel)) return;
+
+            var ret = openNFSe.CancelarNFSe(codigo, numeroNFSe, serieNFSe, 0, motivo, codigoVerificacao);
             ProcessarRetorno(ret);
         });
     }
@@ -262,7 +265,7 @@ public partial class FormMain : Form, IOpenLog
 
             var path = Helpers.SelectFolder();
             if (path.IsEmpty()) return;
-            
+
             ProviderManager.Save(Path.Combine(path, "Municipios.nfse"));
         });
     }
@@ -495,6 +498,11 @@ public partial class FormMain : Form, IOpenLog
         openNFSe.Configuracoes.WebServices.Senha = txtWebserviceSenha.Text;
     }
 
+    private void txtWebserviceChavePrivada_TextChanged(object sender, EventArgs e)
+    {
+        openNFSe.Configuracoes.WebServices.ChavePrivada = txtWebserviceChavePrivada.Text;
+    }
+
     #endregion ValueChanged
 
     #region Overrides
@@ -574,7 +582,8 @@ public partial class FormMain : Form, IOpenLog
         if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
         nfSe.Servico.CodigoCnae = cnae;
 
-        var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SiapNet, NFSeProvider.ABase) ? "5211701" : "01.07.00 / 00010700";
+        var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SiapNet, NFSeProvider.ABase) ? "5211701" :
+            municipio.Provedor.IsIn(NFSeProvider.Sigep) ? "1" : "01.07.00 / 00010700";
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
@@ -891,6 +900,7 @@ public partial class FormMain : Form, IOpenLog
 
         txtWebserviceUsuario.Text = config.Get("UsuarioWebservice", string.Empty);
         txtWebserviceSenha.Text = config.Get("SenhaWebservice", string.Empty);
+        txtWebserviceChavePrivada.Text = config.Get("ChavePrivadaWebservice", string.Empty);
 
         var codMunicipio = config.Get("Municipio", 0);
         if (codMunicipio > 0)
@@ -937,6 +947,7 @@ public partial class FormMain : Form, IOpenLog
 
         config.Set("UsuarioWebservice", txtWebserviceUsuario.Text);
         config.Set("SenhaWebservice", txtWebserviceSenha.Text);
+        config.Set("ChavePrivadaWebservice", txtWebserviceChavePrivada.Text);
 
         config.Set("PastaSchemas", txtSchemas.Text);
         config.Set("ArquivoCidades", txtArquivoCidades.Text);

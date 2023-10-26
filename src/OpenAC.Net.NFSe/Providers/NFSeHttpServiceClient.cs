@@ -31,6 +31,7 @@
 
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
@@ -185,6 +186,12 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
             if (Certificado != null)
                 handler.ClientCertificates.Add(Certificado);
+
+            if (!string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.Proxy))
+            {
+                var webProxy = new WebProxy(Provider.Configuracoes.WebServices.Proxy, true);
+                handler.Proxy = webProxy;
+            }
 
             var client = new HttpClient(handler);
 

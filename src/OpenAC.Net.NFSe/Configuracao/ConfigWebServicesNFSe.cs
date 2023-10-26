@@ -78,7 +78,9 @@ public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
 
     public string FraseSecreta { get; set; }
 
-    public string ChaveAcesso { get; set; }
+        public string ChaveAcesso { get; set; }
+        public string ChavePrivada { get; set; }
+        public string Proxy { get; set; }
 
     /// <summary>
     /// Codigo do municipio do Webservices em uso

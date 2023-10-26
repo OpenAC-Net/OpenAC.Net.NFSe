@@ -38,6 +38,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -139,7 +140,8 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
         {
             case SoapVersion.Soap11:
                 content = new StringContent(EnvelopeEnvio, CharSet, "text/xml");
-                content.Headers.Add("SOAPAction", $"\"{soapAction}\"");
+                if (Provider.Name != NFSeProvider.Sigep.ToString())
+                    content.Headers.Add("SOAPAction", $"\"{soapAction}\"");
                 break;
 
             case SoapVersion.Soap12:

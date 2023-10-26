@@ -23,6 +23,7 @@ bld/
 
 # Visual Studio 2015 cache/options directory
 .vs/
+/src/.idea/*
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
@@ -239,3 +240,6 @@ _Pvt_Extensions
 /1-env-lot-soap.xml
 /1-con-lot-soap.xml
 /src/*.DotSettings
+
+#files
+nuget.config

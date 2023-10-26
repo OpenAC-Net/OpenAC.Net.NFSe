@@ -130,5 +130,7 @@ public enum NFSeProvider : sbyte
     [Description("Metro Web")]
     MetropolisWeb = 40,
 
-    Thema = 41
+    Thema = 41,
+
+    Sigep = 45
 }

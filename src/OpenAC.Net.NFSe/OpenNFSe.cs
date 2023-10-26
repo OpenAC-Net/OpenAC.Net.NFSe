@@ -447,53 +447,53 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         var provider = ProviderManager.GetProvider(Configuracoes);
         var oldProtocol = ServicePointManager.SecurityProtocol;
 
-        try
-        {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-            return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, "", 0, motivo, NotasServico);
+            try
+            {
+                ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, "", 0, motivo, "", NotasServico);
+            }
+            catch (Exception exception)
+            {
+                this.Log().Error("[CancelarNFSe]", exception);
+                throw;
+            }
+            finally
+            {
+                ServicePointManager.SecurityProtocol = oldProtocol;
+                provider.Dispose();
+            }
         }
-        catch (Exception exception)
-        {
-            this.Log().Error("[CancelarNFSe]", exception);
-            throw;
-        }
-        finally
-        {
-            ServicePointManager.SecurityProtocol = oldProtocol;
-            provider.Dispose();
-        }
-    }
 
-    /// <summary>
-    /// Cancela uma NFSe
-    ///
-    /// Obs.: Nem todos provedores suportam este metodo.
-    /// </summary>
-    /// <param name="codigoCancelamento">O codigo de cancelamento.</param>
-    /// <param name="numeroNFSe">O numero da NFSe.</param>
-    /// <param name="motivo">O motivo.</param>
-    /// <returns>RetornoWebservice.</returns>
-    public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serie, decimal valor, string motivo)
-    {
-        var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
+        /// <summary>
+        /// Cancela uma NFSe
+        ///
+        /// Obs.: Nem todos provedores suportam este metodo.
+        /// </summary>
+        /// <param name="codigoCancelamento">O codigo de cancelamento.</param>
+        /// <param name="numeroNFSe">O numero da NFSe.</param>
+        /// <param name="motivo">O motivo.</param>
+        /// <returns>RetornoWebservice.</returns>
+        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serie, decimal valor, string motivo, string codigoVerificacao = null)
+        {
+            var provider = ProviderManager.GetProvider(Configuracoes);
+            var oldProtocol = ServicePointManager.SecurityProtocol;
 
-        try
-        {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-            return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, serie, valor, motivo, NotasServico);
+            try
+            {
+                ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, serie, valor, motivo, codigoVerificacao, NotasServico);
+            }
+            catch (Exception exception)
+            {
+                this.Log().Error("[CancelarNFSe]", exception);
+                throw;
+            }
+            finally
+            {
+                ServicePointManager.SecurityProtocol = oldProtocol;
+                provider.Dispose();
+            }
         }
-        catch (Exception exception)
-        {
-            this.Log().Error("[CancelarNFSe]", exception);
-            throw;
-        }
-        finally
-        {
-            ServicePointManager.SecurityProtocol = oldProtocol;
-            provider.Dispose();
-        }
-    }
 
     /// <summary>
     /// Cancela as NFSe que estão carregadas na lista.

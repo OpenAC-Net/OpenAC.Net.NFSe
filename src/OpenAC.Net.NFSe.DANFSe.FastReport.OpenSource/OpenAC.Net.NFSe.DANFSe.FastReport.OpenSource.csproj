@@ -47,7 +47,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 	<PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.3" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
