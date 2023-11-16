@@ -218,7 +218,9 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
             //response.EnsureSuccessStatusCode();
                 
-            EnvelopeRetorno = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var byteArray = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+            EnvelopeRetorno = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
+            //EnvelopeRetorno = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             GravarEnvio(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
             client.Dispose();
