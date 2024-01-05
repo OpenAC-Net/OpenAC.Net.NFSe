@@ -19,9 +19,9 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
-		<AssemblyVersion>1.5.12.10</AssemblyVersion>
-		<FileVersion>1.5.12.10</FileVersion>
-		<Version>1.5.12.10</Version>
+		<AssemblyVersion>1.5.12.11</AssemblyVersion>
+		<FileVersion>1.5.12.11</FileVersion>
+		<Version>1.5.12.11</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
