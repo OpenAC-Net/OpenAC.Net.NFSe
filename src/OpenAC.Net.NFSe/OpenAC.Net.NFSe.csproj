@@ -37,7 +37,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.3" />
+		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.2" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.2" />		
 	</ItemGroup>
