@@ -58,7 +58,7 @@ public static class ProviderManager
             {NFSeProvider.Abaco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAbaco)}}},
             {NFSeProvider.ABase, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderABase)}}},
             {NFSeProvider.AssessorPublico, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAssessorPublico)}}},
-            {NFSeProvider.Betha, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderBetha)}, {VersaoNFSe.ve202, typeof(ProviderBetha2)}}},
+            {NFSeProvider.Betha, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSIntegra)}, {VersaoNFSe.ve202, typeof(ProviderBetha2)}}},
             {NFSeProvider.BHISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderBHISS)}}},
             {NFSeProvider.Citta, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderCitta)}}},
             {NFSeProvider.Conam, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderConam)}}},
@@ -98,6 +98,7 @@ public static class ProviderManager
             {NFSeProvider.Tiplan, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderTiplan203)}}},
             {NFSeProvider.WebIss, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderWebIss)}, {VersaoNFSe.ve202, typeof(ProviderWebIss2)}}},
             {NFSeProvider.Sigep, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigep) }, {VersaoNFSe.ve202, typeof(ProviderSigep) }}},
+            {NFSeProvider.ISSIntegra, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSIntegra)}}},
         };
 
         Load();
