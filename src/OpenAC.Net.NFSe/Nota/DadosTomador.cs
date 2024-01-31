@@ -73,7 +73,7 @@ public sealed class DadosTomador : GenericClone<DadosTomador>, INotifyPropertyCh
 
     public DadosContato DadosContato { get; }
 
-    public int Tipo { get; set; } //Utilize a classe TipoTomador
+    public TipoTomador Tipo { get; set; }
 
     #endregion Propriedades
 }

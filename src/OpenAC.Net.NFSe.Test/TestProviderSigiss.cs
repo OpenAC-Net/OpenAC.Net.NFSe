@@ -20,7 +20,7 @@ public class TestProviderSigiss
         nota.Servico.Valores.ValorServicos = 29.91M;
         nota.Servico.Valores.BaseCalculo = 29.91M;
         nota.Servico.Descricao = "serviço teste";
-        nota.Tomador.Tipo = TipoTomador.Sigiss.PFNI;
+        nota.Tomador.Tipo = TipoTomador.NaoIdentificado;
         nota.Tomador.DadosContato.Email = "a@a.com";
 
         //enviando
