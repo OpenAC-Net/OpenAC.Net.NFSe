@@ -357,5 +357,14 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>				
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="Schemas\ISSIntegra\1.00\nfse.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Schemas\ISSIntegra\1.00\xmldsig-core-schema20020212.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 </Project>
