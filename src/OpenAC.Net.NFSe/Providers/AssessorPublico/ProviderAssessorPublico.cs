@@ -94,7 +94,7 @@ internal sealed class ProviderAssessorPublico : ProviderABRASF201
 
     private string GetRetido(NotaServico nota) => !string.IsNullOrEmpty(nota.Servico.IdentifNaoExigibilidade) ? nota.Servico.IdentifNaoExigibilidade : "N";
 
-    private string GetDentroPais(NotaServico nota) => nota.Tomador.Tipo == TipoTomador.Sigiss.JuridicaForaPais ? "N" : "S";
+    private string GetDentroPais(NotaServico nota) => nota.Tomador.Endereco.CodigoPais == nota.Prestador.Endereco.CodigoPais ? "N" : "S";
 
     private string FormataValor(decimal valor)
     {
