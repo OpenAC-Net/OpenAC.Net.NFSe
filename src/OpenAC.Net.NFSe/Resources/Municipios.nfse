@@ -6960,47 +6960,48 @@
       <IdEntidade>0</IdEntidade>
       <Nome>Itapeva</Nome>
       <UF>MG</UF>
-      <Provedor>Betha</Provedor>
-      <Versao>2.02</Versao>
+      <Provedor>Fiorilli</Provedor>
+      <Versao>2.01</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS</Url>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -7009,42 +7010,43 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS</Url>
+          <Url>http://nfe.sgpcloud.net:9134/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
