@@ -96,5 +96,24 @@ internal sealed class ProviderISSIntegra : ProviderABRASF
         nota.Cancelamento.DataHora = retornoWebservice.Data;
     }
 
+    protected override void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet,
+        string elementName = "ListaMensagemRetorno", string messageElement = "MensagemRetorno")
+    {
+        var listaMenssagens = xmlRet?.ElementAnyNs(elementName);
+        if (listaMenssagens == null) return;
+
+        foreach (var mensagem in listaMenssagens.ElementsAnyNs(messageElement))
+        {
+            var evento = new Evento
+            {
+                Codigo = mensagem?.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty,
+                Descricao = mensagem?.ElementAnyNs("mensagem")?.GetValue<string>() ?? string.Empty,
+                Correcao = mensagem?.ElementAnyNs("correcao")?.GetValue<string>() ?? string.Empty
+            };
+
+            retornoWs.Erros.Add(evento);
+        }
+    }
+
     #endregion Methods
 }

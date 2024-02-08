@@ -33,6 +33,7 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
@@ -71,7 +72,6 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
         {
             EnvelopeEnvio = message;
 
-            
             var form = new MultipartFormDataContent
             {
                 { new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio)), FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml" }
@@ -89,8 +89,6 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
                 form.Add(new StringContent(usuarioWeb), UsuarioForm);
                 form.Add(new StringContent(senhaWeb), SenhaForm);
             }
-
-            form.Headers.ContentType = MediaTypeHeaderValue.Parse("text/xml;charset=" + Charset.WebName);
 
             Execute(form, HttpMethod.Post);
             return EnvelopeRetorno;

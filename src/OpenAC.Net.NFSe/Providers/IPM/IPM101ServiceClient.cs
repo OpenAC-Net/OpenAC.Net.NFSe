@@ -58,7 +58,7 @@ public sealed class IPM101ServiceClient : NFSeMultiPartClient, IServiceClient
 
     public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
-    public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
+    public string CancelarNFSe(string cabec, string msg) => Upload(msg);
 
     public string Enviar(string cabec, string msg) => throw new NotImplementedException();
 

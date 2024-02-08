@@ -31,7 +31,7 @@ public class TestAbrasfV1
         nota.Servico.CodigoCnae = "4763603";
 
 
-        nota.Tomador.Tipo = TipoTomador.Sigiss.PessoaFisica;
+        nota.Tomador.Tipo = TipoTomador.PessoaFisica;
         nota.Tomador.CpfCnpj = "94782024568";
         nota.Tomador.RazaoSocial = "Carlos";
         nota.Tomador.Endereco.Logradouro = "Rua principal";
