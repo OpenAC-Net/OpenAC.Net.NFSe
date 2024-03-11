@@ -11109,42 +11109,42 @@
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx</Url>
+          <Url>https://notacariocahom.rio.gov.br/WSNacional/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
