@@ -12,7 +12,7 @@
     <PackageReference Include="NLog.Windows.Forms" Version="5.2.3" />
     <PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
     <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
   
   <ItemGroup>
