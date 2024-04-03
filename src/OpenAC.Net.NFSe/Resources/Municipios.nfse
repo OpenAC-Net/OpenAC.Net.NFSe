@@ -7499,43 +7499,43 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://179.174.56.79:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://servicos.jau.sp.gov.br:8090/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
