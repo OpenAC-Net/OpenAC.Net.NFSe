@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FastReport.Net.Demo">
-      <Version>2024.1.5</Version>
+      <Version>2024.1.8</Version>
     </PackageReference>
     <PackageReference Include="OpenAC.Net.Core">
       <Version>1.5.0.1</Version>

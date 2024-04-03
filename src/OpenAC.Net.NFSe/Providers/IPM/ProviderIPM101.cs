@@ -228,7 +228,6 @@ internal class ProviderIPM101 : ProviderBase
         {
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
 
-            retornoWebservice.Data = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")?.GetValue<string>());
             retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("rps")?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
 
             if (string.IsNullOrEmpty(retornoWebservice.Protocolo))
@@ -257,6 +256,8 @@ internal class ProviderIPM101 : ProviderBase
 
                 return;
             }
+            
+            retornoWebservice.Data = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")?.GetValue<string>());
 
             var numeroNFSe = xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("numero_nfse")?.GetValue<string>() ?? string.Empty;
             var dataNFSe = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")?.GetValue<string>() + " " + xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("hora_nfse")?.GetValue<string>());
