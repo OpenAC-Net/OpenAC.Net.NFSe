@@ -134,7 +134,7 @@ internal class ProviderIPM101 : ProviderBase
         var itensTag = new XElement("itens");
         var listaTag = new XElement("lista");
         listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "codigo_local_prestacao_servico", 1, 7, Ocorrencia.Obrigatoria, nota.Servico.MunicipioIncidencia));
-        listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "codigo_item_lista_servico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.CodigoTributacaoMunicipio.OnlyNumbers()));
+        listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "codigo_item_lista_servico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico.OnlyNumbers()));
         listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "descritivo", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
         listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "aliquota_item_lista_servico", 1, 6, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.Aliquota)));
 
