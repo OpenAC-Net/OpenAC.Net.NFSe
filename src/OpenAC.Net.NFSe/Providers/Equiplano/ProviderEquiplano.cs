@@ -34,7 +34,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Linq;
+using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
@@ -61,7 +63,84 @@ internal sealed class ProviderEquiplano : ProviderBase
     //ToDo: Fazer a leitura do xml.
     public override NotaServico LoadXml(XDocument xml)
     {
-        throw new NotImplementedException();
+        Guard.Against<XmlException>(xml == null, "Xml invalido.");
+
+        var rootRps = xml.ElementAnyNs("rps");
+
+        var ret = new NotaServico(Configuracoes);
+        ret.IdentificacaoRps.Numero = rootRps.ElementAnyNs("nrRps")?.GetValue<string>();
+        ret.IdentificacaoRps.DataEmissao = rootRps.ElementAnyNs("dtEmissaoRps").GetValue<DateTime>();
+        ret.Prestador.NumeroEmissorRps = rootRps.ElementAnyNs("nrEmissorRps")?.GetValue<string>();
+        ret.Situacao = rootRps.ElementAnyNs("stRps")?.GetValue<string>() == "1" ? SituacaoNFSeRps.Normal : SituacaoNFSeRps.Cancelado;
+
+        switch (rootRps.ElementAnyNs("tpTributacao")?.GetValue<string>())
+        {
+            case "1":
+                {
+                    ret.TipoTributacao = TipoTributacao.Tributavel;
+                    break;
+                }
+            case "2":
+                {
+                    ret.TipoTributacao = TipoTributacao.ForaMun;
+                    break;
+                }
+            case "3":
+                {
+                    ret.TipoTributacao = TipoTributacao.Imune;
+                    break;
+                }
+            case "4":
+                {
+                    ret.TipoTributacao = TipoTributacao.Suspensa;
+                    break;
+                }
+        }
+
+        ret.Servico.ResponsavelRetencao = rootRps.ElementAnyNs("isIssRetido")?.GetValue<string>() == "1" ? ResponsavelRetencao.Prestador : ResponsavelRetencao.Tomador;
+
+        var tomador = rootRps.ElementAnyNs("tomador");
+        var documento = tomador?.ElementAnyNs("documento");
+
+        switch (documento.ElementAnyNs("tpDocumento")?.GetValue<string>())
+        {
+            case "1":
+            case "2":
+                {
+                    ret.Tomador.CpfCnpj = documento.ElementAnyNs("nrDocumento")?.GetValue<string>();
+                    break;
+                }
+            case "3":
+                {
+                    ret.Tomador.DocTomadorEstrangeiro = documento.ElementAnyNs("nrDocumento")?.GetValue<string>();
+                    break;
+                }
+        }
+
+        ret.Tomador.RazaoSocial = tomador?.ElementAnyNs("nmTomador")?.GetValue<string>();
+        ret.Tomador.Endereco.Logradouro = tomador?.ElementAnyNs("dsEndereco")?.GetValue<string>();
+        ret.Tomador.Endereco.Numero = tomador?.ElementAnyNs("nrEndereco")?.GetValue<string>();
+        ret.Tomador.Endereco.Complemento = tomador?.ElementAnyNs("dsComplemento")?.GetValue<string>();
+        ret.Tomador.Endereco.Bairro = tomador?.ElementAnyNs("nmBairro")?.GetValue<string>();
+        ret.Tomador.Endereco.CodigoMunicipio = tomador?.ElementAnyNs("nrCidadeIbge")?.GetValue<int>() ?? 0;
+        ret.Tomador.Endereco.Bairro = tomador?.ElementAnyNs("nmBairro")?.GetValue<string>();
+        ret.Tomador.Endereco.Uf = tomador?.ElementAnyNs("nmUf")?.GetValue<string>();
+        ret.Tomador.Endereco.Pais = tomador?.ElementAnyNs("nmPais")?.GetValue<string>();
+        ret.Tomador.Endereco.Cep = tomador?.ElementAnyNs("nrCep")?.GetValue<string>();
+
+        var servico = rootRps.ElementAnyNs("listaServicos")?.ElementAnyNs("servico");
+
+        ret.Servico.Discriminacao = servico?.ElementAnyNs("dsDiscriminacaoServico")?.GetValue<string>();
+        ret.Servico.Valores.ValorIss = servico?.ElementAnyNs("vlIssServico")?.GetValue<decimal>() ?? 0;
+        ret.Servico.Valores.BaseCalculo = servico?.ElementAnyNs("vlBaseCalculo")?.GetValue<decimal>() ?? 0;
+        ret.Servico.Valores.Aliquota = servico?.ElementAnyNs("vlAliquota")?.GetValue<decimal>() ?? 0;
+        ret.Servico.Valores.ValorServicos = servico?.ElementAnyNs("vlServico")?.GetValue<decimal>() ?? 0;
+        ret.Servico.ItemListaServico = servico?.ElementAnyNs("nrServicoItem")?.GetValue<int>().ToString("00") + "." + servico?.ElementAnyNs("nrServicoSubItem")?.GetValue<int>().ToString("00");
+
+        ret.Servico.Valores.ValorServicos = rootRps.ElementAnyNs("vlTotalRps")?.GetValue<decimal>() ?? 0;
+        ret.Servico.Valores.ValorLiquidoNfse = rootRps.ElementAnyNs("vlLiquidoRps")?.GetValue<decimal>() ?? 0;
+
+        return ret;
     }
 
     public override string WriteXmlRps(NotaServico nota, bool identado = true, bool showDeclaration = true)
@@ -74,7 +153,124 @@ internal sealed class ProviderEquiplano : ProviderBase
     //ToDo: Verificar o motivo de não ter geração do xml da NFSe
     public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true)
     {
-        throw new NotImplementedException();
+        var xmlDoc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
+        xmlDoc.Add(WriteNFSe(nota));
+        return xmlDoc.AsString(identado, showDeclaration);
+    }
+
+    private XElement WriteNFSe(NotaServico nota)
+    {
+        var nfs = new XElement("nfs");
+        //nfs.AddAttribute(new XAttribute("xmlns", "https://www.esnfs.com.br/xsd"));
+        nfs.AddChild(new XElement("nrNfs", nota.IdentificacaoNFSe.Numero));
+        nfs.AddChild(new XElement("cdAutenticacao", nota.IdentificacaoNFSe.Chave));
+        nfs.AddChild(AdicionarTag(TipoCampo.DatHor, "", "dtEmissaoNfs", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoNFSe.DataEmissao));
+        nfs.AddChild(new XElement("nrRps", nota.IdentificacaoRps.Numero));
+        nfs.AddChild(new XElement("nrEmissorRps", int.Parse(nota.Prestador.NumeroEmissorRps)));
+        nfs.AddChild(AdicionarTag(TipoCampo.Dat, "", "dtEmissaoRps", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+
+
+        var tpTributacao = string.Empty;
+        switch (nota.TipoTributacao)
+        {
+            case TipoTributacao.Tributavel:
+                tpTributacao = "Tributado no município";
+                break;
+
+            case TipoTributacao.ForaMun:
+                tpTributacao = "Tributado em outro município";
+                break;
+
+            case TipoTributacao.Imune:
+                tpTributacao = "Isento/Imune";
+                break;
+
+            case TipoTributacao.Isenta:
+                tpTributacao = "Isento/Imune";
+                break;
+
+            case TipoTributacao.Suspensa:
+                tpTributacao = "Suspenso/Decisão judicial";
+                break;
+        }
+
+        nfs.AddChild(new XElement("tpTributacao", tpTributacao));
+        nfs.AddChild(new XElement("isOptanteSimplesNacional", nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional ? "Optante" : "Não optante"));
+        nfs.AddChild(new XElement("isIssRetido", nota.Servico.ResponsavelRetencao == ResponsavelRetencao.Prestador ? "Sim" : "Não"));
+        nfs.AddChild(new XElement("isNfsCancelada", nota.Situacao == SituacaoNFSeRps.Cancelado ? "Sim" : "Não"));
+        nfs.AddChild(new XElement("isNfsCartaCorrecao", "Não"));
+
+        nfs.AddChild(WriteServicosNFSe(nota));
+
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlCofins", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlAliquotaCofins", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaCofins));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlCsll", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlAliquotaCsll", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaCsll));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlInss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlAliquotaInss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaInss));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlIrpj", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlAliquotaIrpj", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaIR));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlPis", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlAliquotaPis", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaPis));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlBaseCalculo", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.BaseCalculo));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlTotalNota", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlTotalDeducoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
+        nfs.AddChild(AdicionarTag(TipoCampo.De2, "", "vlImposto", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValTotTributos));
+
+        nfs.AddChild(WritePrestadorNFSe(nota));
+        nfs.AddChild(WriteTomadorNFSe(nota));
+
+        return nfs;
+    }
+
+    private XElement WritePrestadorNFSe(NotaServico nota)
+    {
+        var prestador = new XElement("prestadorServico");
+        prestador.AddChild(new XElement("nmPrestador", nota.Prestador.RazaoSocial));
+        prestador.AddChild(new XElement("nrDocumento", nota.Prestador.CpfCnpj));
+        prestador.AddChild(new XElement("nrInscricaoMunicipal", nota.Prestador.InscricaoMunicipal));
+        prestador.AddChild(new XElement("dsEndereco", nota.Prestador.Endereco.Logradouro));
+        prestador.AddChild(new XElement("nrEndereco", nota.Prestador.Endereco.Numero));
+        prestador.AddChild(new XElement("nmPais", nota.Prestador.Endereco.Pais));
+        prestador.AddChild(new XElement("nmCidade", nota.Prestador.Endereco.Municipio));
+        prestador.AddChild(new XElement("nmBairro", nota.Prestador.Endereco.Bairro));
+        prestador.AddChild(new XElement("nmUf", nota.Prestador.Endereco.Uf));
+        prestador.AddChild(new XElement("nrCep", nota.Prestador.Endereco.Cep));
+
+        return prestador;
+    }
+
+    private XElement WriteTomadorNFSe(NotaServico nota)
+    {
+        var tomador = new XElement("tomadorServico");
+        tomador.AddChild(new XElement("nmTomador", nota.Tomador.RazaoSocial));
+        tomador.AddChild(new XElement("nrDocumento", nota.Tomador.CpfCnpj));
+        tomador.AddChild(new XElement("dsEndereco", nota.Tomador.Endereco.Logradouro));
+        tomador.AddChild(new XElement("nrEndereco", nota.Tomador.Endereco.Numero));
+        tomador.AddChild(new XElement("nmPais", nota.Tomador.Endereco.Pais));
+        tomador.AddChild(new XElement("nmCidade", nota.Tomador.Endereco.Municipio));
+        tomador.AddChild(new XElement("nmBairro", nota.Tomador.Endereco.Bairro));
+        tomador.AddChild(new XElement("nmUf", nota.Tomador.Endereco.Uf));
+        tomador.AddChild(new XElement("cdIbge", nota.Tomador.Endereco.CodigoMunicipio));
+        tomador.AddChild(new XElement("nrCep", nota.Tomador.Endereco.Cep));
+
+        return tomador;
+    }
+
+    private XElement WriteServicosNFSe(NotaServico nota)
+    {
+        var listaServicos = new XElement("servicos");
+        var servico = new XElement("servico");
+
+        servico.AddChild(new XElement("nrServico", nota.Servico.ItemListaServico));
+        servico.AddChild(new XElement("dsDiscriminacaoServico", nota.Servico.Discriminacao));
+        servico.AddChild(AdicionarTag(TipoCampo.De2, "", "vlAliquota", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
+        servico.AddChild(AdicionarTag(TipoCampo.De2, "", "vlDeducao", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
+        servico.AddChild(AdicionarTag(TipoCampo.De2, "", "vlServico", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
+
+        listaServicos.Add(servico);
+
+        return listaServicos;
     }
 
     private XElement WriteRps(NotaServico nota)
