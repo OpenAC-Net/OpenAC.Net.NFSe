@@ -151,7 +151,7 @@ internal class ProviderIPM101 : ProviderBase
                 AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
         }
 
-        listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_tributavel", 1, 15, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.BaseCalculo)));
+        listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_tributavel", 1, 15, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorLiquidoNfse)));
         listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_deducao", 1, 15, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.ValorDeducoes)));
         listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria, FormataDecimal(nota.Servico.Valores.IssRetido != SituacaoTributaria.Normal ? nota.Servico.Valores.ValorIss : 0)));
         listaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "tributa_municipio_prestador", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.MunicipioIncidencia == nota.Prestador.Endereco.CodigoMunicipio ? "S" : "N"));
@@ -317,7 +317,7 @@ internal class ProviderIPM101 : ProviderBase
 
     protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
     {
-        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno.Replace("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>", ""));
 
         var mensagens = xmlRet.Root.ElementAnyNs("mensagem");
 
