@@ -247,6 +247,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         else
         {
+            var byteOrderMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            if (xml.StartsWith(byteOrderMarkUtf8))
+            {
+                xml = xml.Replace(byteOrderMarkUtf8, "");
+            }
+
             doc = XDocument.Parse(xml);
         }
 

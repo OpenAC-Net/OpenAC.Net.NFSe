@@ -152,7 +152,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
+        
         Execute(content, HttpMethod.Post);
 
         if (!EnvelopeRetorno.IsValidXml())
