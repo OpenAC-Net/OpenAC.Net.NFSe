@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Rps>
+  <InfDeclaracaoPrestacaoServico Id="R1">
+    <Rps>
+      <IdentificacaoRps>
+        <Numero>1</Numero>
+        <Serie>1</Serie>
+        <Tipo>1</Tipo>
+      </IdentificacaoRps>
+      <DataEmissao>2024-04-18</DataEmissao>
+      <Status>1</Status>
+    </Rps>
+    <Competencia>2024-04-18</Competencia>
+    <Servico>
+      <Valores>
+        <ValorServicos>100.00</ValorServicos>
+        <Aliquota>2.0000</Aliquota>
+      </Valores>
+      <IssRetido>2</IssRetido>
+      <ItemListaServico>01.07</ItemListaServico>
+      <CodigoCnae>861010101</CodigoCnae>
+      <CodigoTributacaoMunicipio>01.07.00 / 00010700</CodigoTributacaoMunicipio>
+      <Discriminacao>MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.</Discriminacao>
+      <CodigoMunicipio>2800308</CodigoMunicipio>
+      <ExigibilidadeISS>1</ExigibilidadeISS>
+    </Servico>
+    <Prestador>
+      <CpfCnpj>
+        <Cnpj>24248490000108</Cnpj>
+      </CpfCnpj>
+      <InscricaoMunicipal>1063565</InscricaoMunicipal>
+    </Prestador>
+    <Tomador>
+      <IdentificacaoTomador>
+        <CpfCnpj>
+          <Cpf>44854962283</Cpf>
+        </CpfCnpj>
+      </IdentificacaoTomador>
+      <RazaoSocial>Nome</RazaoSocial>
+      <Endereco>
+        <Endereco>INDEPENDENCIA</Endereco>
+        <Numero>123</Numero>
+        <Complemento>SL 10</Complemento>
+        <Bairro>VILA SEIXAS</Bairro>
+        <CodigoMunicipio>2800308</CodigoMunicipio>
+        <Uf>SE</Uf>
+        <CodigoPais>1058</CodigoPais>
+        <Cep>14020010</Cep>
+      </Endereco>
+      <Contato>
+        <Telefone>1630111234</Telefone>
+        <Email>NOME@EMPRESA.COM.BR</Email>
+      </Contato>
+    </Tomador>
+    <RegimeEspecialTributacao>6</RegimeEspecialTributacao>
+    <OptanteSimplesNacional>1</OptanteSimplesNacional>
+    <IncentivoFiscal>2</IncentivoFiscal>
+  </InfDeclaracaoPrestacaoServico>
+</Rps>

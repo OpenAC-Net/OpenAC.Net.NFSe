@@ -29,12 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Linq;
-using System.Text;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace OpenAC.Net.NFSe.Providers;
 

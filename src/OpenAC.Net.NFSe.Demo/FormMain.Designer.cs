@@ -155,6 +155,7 @@ namespace OpenAC.Net.NFSe.Demo
             btnCarregar = new System.Windows.Forms.Button();
             lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
+            btnLoadXML = new System.Windows.Forms.Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabControl2.SuspendLayout();
@@ -225,6 +226,7 @@ namespace OpenAC.Net.NFSe.Demo
             // 
             // tabPage14
             // 
+            tabPage14.Controls.Add(btnLoadXML);
             tabPage14.Controls.Add(btnGerarLoteRps);
             tabPage14.Controls.Add(btnSubstituirNFSe);
             tabPage14.Controls.Add(btnLinkNFSe);
@@ -1575,6 +1577,17 @@ namespace OpenAC.Net.NFSe.Demo
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
+            // btnLoadXML
+            // 
+            btnLoadXML.Location = new System.Drawing.Point(434, 74);
+            btnLoadXML.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            btnLoadXML.Name = "btnLoadXML";
+            btnLoadXML.Size = new System.Drawing.Size(207, 26);
+            btnLoadXML.TabIndex = 32;
+            btnLoadXML.Text = "LoadXml";
+            btnLoadXML.UseVisualStyleBackColor = true;
+            btnLoadXML.Click += btnLoadXML_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1755,6 +1768,7 @@ namespace OpenAC.Net.NFSe.Demo
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox txtWebserviceChavePrivada;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button btnLoadXML;
     }
 }
 

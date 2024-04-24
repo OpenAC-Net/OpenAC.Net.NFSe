@@ -83,7 +83,7 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
 
         var provider = ProviderManager.GetProvider(Configuracoes);
         var oldProtocol = ServicePointManager.SecurityProtocol;
-
+        
         try
         {
             ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
