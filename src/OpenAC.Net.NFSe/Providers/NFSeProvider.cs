@@ -139,5 +139,7 @@ public enum NFSeProvider : sbyte
 
     ISSRecife = 48,
 
-    Agili = 49
+    Agili = 49,
+
+    Megasoft = 50
 }

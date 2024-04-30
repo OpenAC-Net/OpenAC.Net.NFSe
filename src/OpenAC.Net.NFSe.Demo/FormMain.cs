@@ -606,11 +606,35 @@ public partial class FormMain : Form, IOpenLog
         if (InputBox.Show("CNAE", "Informe o codigo CNAE.", ref cnae).Equals(DialogResult.Cancel)) return;
         nfSe.Servico.CodigoCnae = cnae;
 
-        var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SiapNet, NFSeProvider.ABase) ? "5211701" :
-            municipio.Provedor.IsIn(NFSeProvider.Sigep) ? "1" : "01.07.00 / 00010700";
+
+        var codigoTributacaoMunicipio = string.Empty;
+        switch (municipio.Provedor)
+        {
+            case NFSeProvider.SiapNet:
+            case NFSeProvider.ABase:
+                {
+                    codigoTributacaoMunicipio = "5211701";
+                    break;
+                }
+            case NFSeProvider.Sigep:
+                {
+                    codigoTributacaoMunicipio = "1";
+                    break;
+                }
+            case NFSeProvider.Megasoft:
+                {
+                    codigoTributacaoMunicipio = "1.07";
+                    break;
+                }
+            default:
+                {
+                    codigoTributacaoMunicipio = "01.07.00 / 00010700";
+                    break;
+                }
+        }
 
         nfSe.Servico.ItemListaServico = itemListaServico;
-        nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
+        nfSe.Servico.CodigoTributacaoMunicipio = codigoTributacaoMunicipio;
         nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
         nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.ISSDSF ? municipio.CodigoSiafi : municipio.Codigo;
         nfSe.Servico.Municipio = municipio.Nome;
