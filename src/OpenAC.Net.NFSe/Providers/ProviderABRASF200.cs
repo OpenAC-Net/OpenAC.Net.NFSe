@@ -1404,11 +1404,11 @@ public abstract class ProviderABRASF200 : ProviderBase
         pedidoCancelamento.Append("<IdentificacaoNfse>");
         pedidoCancelamento.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");
         pedidoCancelamento.Append("<CpfCnpj>");
-        pedidoCancelamento.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
-            ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
-            : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
-        pedidoCancelamento.Append("</CpfCnpj>");
+        pedidoCancelamento.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ() ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>" : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+        pedidoCancelamento.Append("</CpfCnpj>"); 
+        
         if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) pedidoCancelamento.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+        
         pedidoCancelamento.Append($"<CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</CodigoMunicipio>");
         pedidoCancelamento.Append("</IdentificacaoNfse>");
         pedidoCancelamento.Append($"<CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</CodigoCancelamento>");
@@ -1441,11 +1441,12 @@ public abstract class ProviderABRASF200 : ProviderBase
     protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
     {
         // Analisa mensagem de retorno
+
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
         MensagemErro(retornoWebservice, xmlRet, "SubstituirNfseResposta");
         if (retornoWebservice.Erros.Any()) return;
 
-        var retornoLote = xmlRet.ElementAnyNs("RetSubstituicao");
+        var retornoLote = xmlRet.Root.ElementAnyNs("RetSubstituicao");
         var nfseSubstituida = retornoLote?.ElementAnyNs("NfseSubstituida");
         var nfseSubstituidora = retornoLote?.ElementAnyNs("NfseSubstituidora");
 
@@ -1453,26 +1454,52 @@ public abstract class ProviderABRASF200 : ProviderBase
         if (nfseSubstituidora == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe Substituidora não encontrada! (NfseSubstituidora)" });
         if (retornoWebservice.Erros.Any()) return;
 
-        var compNfse = nfseSubstituida.ElementAnyNs("CompNfse");
+        var compNfse = nfseSubstituidora.ElementAnyNs("CompNfse");
         if (compNfse == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
         if (retornoWebservice.Erros.Any()) return;
 
-        retornoWebservice.Sucesso = true;
         retornoWebservice.Nota = LoadXml(compNfse.ToString());
 
         var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == retornoWebservice.Nota.IdentificacaoRps.Numero);
+
         if (nota == null)
         {
             notas.Add(retornoWebservice.Nota);
         }
         else
         {
-            nota.RpsSubstituido.NFSeSubstituidora = notas.Last().IdentificacaoNFSe.Numero;
-            nota.RpsSubstituido.DataEmissaoNfseSubstituida = notas.Last().IdentificacaoNFSe.DataEmissao;
-            nota.RpsSubstituido.Id = notas.Last().Id;
-            nota.RpsSubstituido.NumeroRps = notas.Last().IdentificacaoRps.Numero;
-            nota.RpsSubstituido.Serie = notas.Last().IdentificacaoRps.Serie;
-            nota.RpsSubstituido.Signature = notas.Last().Signature;
+            var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
+            var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+            var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+            var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+
+            nota.IdentificacaoNFSe.Numero = numeroNFSe;
+            nota.IdentificacaoNFSe.Chave = chaveNFSe;
+            nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+            nota.XmlOriginal = compNfse.ToString();
+        }
+
+        compNfse = nfseSubstituida.ElementAnyNs("CompNfse");
+        if (compNfse == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
+        if (retornoWebservice.Erros.Any()) return;
+
+        retornoWebservice.Sucesso = true;
+        var notaSubistituida = LoadXml(compNfse.ToString());
+
+        nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == notaSubistituida.IdentificacaoRps.Numero);
+        
+        if (nota == null)
+        {
+            notas.Add(notaSubistituida);
+        }
+        else
+        {
+            retornoWebservice.Nota.RpsSubstituido.NFSeSubstituidora = retornoWebservice.Nota.IdentificacaoNFSe.Numero;
+            retornoWebservice.Nota.RpsSubstituido.DataEmissaoNfseSubstituida = nota.IdentificacaoNFSe.DataEmissao;
+            retornoWebservice.Nota.RpsSubstituido.Id = nota.Id;
+            retornoWebservice.Nota.RpsSubstituido.NumeroRps = nota.IdentificacaoRps.Numero;
+            retornoWebservice.Nota.RpsSubstituido.Serie = nota.IdentificacaoRps.Serie;
+            retornoWebservice.Nota.RpsSubstituido.Signature = nota.Signature;
         }
     }
 
