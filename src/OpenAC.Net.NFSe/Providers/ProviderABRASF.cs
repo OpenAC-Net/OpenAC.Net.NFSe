@@ -1422,8 +1422,8 @@ public abstract class ProviderABRASF : ProviderBase
         if (retornoWebservice.Erros.Any()) return;
 
         var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("RetCancelamento")?
-            .ElementAnyNs("NfseCancelamento")?
-            .ElementAnyNs("Confirmacao");
+        .ElementAnyNs("NfseCancelamento")?
+        .ElementAnyNs("Confirmacao");
 
         if (confirmacaoCancelamento == null)
         {

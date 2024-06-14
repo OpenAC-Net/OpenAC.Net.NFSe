@@ -36,6 +36,8 @@ using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using System.IO;
 using System.Linq;
+using OpenAC.Net.Core.Extensions;
+using System.Text;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -63,4 +65,52 @@ internal sealed class ProviderFiorilli201 : ProviderABRASF201
     protected override IServiceClient GetClient(TipoUrl tipo) => new Fiorilli201ServiceClient(this, tipo);
 
     #endregion Methods
+
+    #region  Services
+
+    protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
+    {
+        if (retornoWebservice.NumeroNFSe.IsEmpty())
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para substituição." });
+        if (retornoWebservice.CodigoCancelamento.IsEmpty())
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Codigo de cancelamento não informado para substituição." });
+        if (notas.Count < 1)
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota para subituição não informada." });
+
+        if (retornoWebservice.Erros.Any()) return;
+
+        var pedidoCancelamento = new StringBuilder();
+        pedidoCancelamento.Append("<Pedido>");
+        pedidoCancelamento.Append($"<InfPedidoCancelamento Id=\"N{retornoWebservice.NumeroNFSe}\">");
+        pedidoCancelamento.Append("<IdentificacaoNfse>");
+        pedidoCancelamento.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");
+        pedidoCancelamento.Append("<CpfCnpj>");
+        pedidoCancelamento.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ() ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>" : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+        pedidoCancelamento.Append("</CpfCnpj>");
+
+        if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) pedidoCancelamento.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+
+        pedidoCancelamento.Append($"<CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</CodigoMunicipio>");
+        pedidoCancelamento.Append("</IdentificacaoNfse>");
+        pedidoCancelamento.Append($"<CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</CodigoCancelamento>");
+        pedidoCancelamento.Append("</InfPedidoCancelamento>");
+        pedidoCancelamento.Append("</Pedido>");
+
+        var loteBuilder = new StringBuilder();
+        loteBuilder.Append($"<SubstituirNfseEnvio {GetNamespace()}>");
+        loteBuilder.Append($"<SubstituicaoNfse Id=\"SB{retornoWebservice.CodigoCancelamento}\">");
+
+        loteBuilder.Append(pedidoCancelamento.ToString().RemoverDeclaracaoXml());
+
+        var xmlRps = WriteXmlRps(notas[0], false, false);
+        loteBuilder.Append(xmlRps.RemoverDeclaracaoXml());
+        GravarRpsEmDisco(xmlRps, $"Rps-{notas[0].IdentificacaoRps.DataEmissao:yyyyMMdd}-{notas[0].IdentificacaoRps.Numero}.xml", notas[0].IdentificacaoRps.DataEmissao);
+
+        loteBuilder.Append("</SubstituicaoNfse>");
+        loteBuilder.Append("</SubstituirNfseEnvio>");
+
+        retornoWebservice.XmlEnvio = loteBuilder.ToString();
+    }
+
+    #endregion Services
 }

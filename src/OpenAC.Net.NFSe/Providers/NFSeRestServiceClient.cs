@@ -30,12 +30,9 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Providers;
 

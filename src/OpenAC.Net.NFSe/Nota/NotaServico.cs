@@ -132,6 +132,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
 
     public RegimeEspecialTributacao RegimeEspecialTributacao { get; set; }
 
+    public NFSeSimNao OptanteSimplesNacional { get; set; }
+
     public DateTime DataOptanteSimplesNacional { get; set; }
 
     public NFSeSimNao IncentivadorCultural { get; set; }
@@ -143,7 +145,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public TipoLocalServico LocalServico { get; set; }
 
     public int NumeroLote { get; set; }
-
+    
     public string Protocolo { get; set; }
 
     public DateTime Competencia { get; set; }

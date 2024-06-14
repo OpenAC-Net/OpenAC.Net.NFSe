@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net462;net470;net48;netstandard2.0;net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net462;net470;net48;netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<AssemblyName>OpenAC.Net.NFSe</AssemblyName>
 		<RootNamespace>OpenAC.Net.NFSe</RootNamespace>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
-		<Copyright>Copyright © Projeto OpenAC .Net 2014 - 2023</Copyright>
+		<Copyright>Copyright © Projeto OpenAC .Net 2014 - 2024</Copyright>
 		<Company>OpenAC .Net - Automação Comercial em .Net</Company>
 		<Authors>Projeto OpenAC .Net</Authors>
 		<PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>
@@ -19,9 +19,9 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
-		<AssemblyVersion>1.5.12.12</AssemblyVersion>
-		<FileVersion>1.5.12.12</FileVersion>
-		<Version>1.5.12.11</Version>
+		<AssemblyVersion>1.5.0.2</AssemblyVersion>
+		<FileVersion>1.5.0.2</FileVersion>
+		<Version>1.5.0.2</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
@@ -32,14 +32,12 @@
 	</PropertyGroup>	
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.3" />
-		<PackageReference Include="System.ServiceModel.Http" Version="4.10.2" />
-		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.2" />		
+		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />				
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
@@ -48,10 +46,20 @@
 	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.ServiceModel.Http" Version="4.10.3" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.3" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
-		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.3" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="6.2.0" />
+		<PackageReference Include="System.ServiceModel.Http" Version="6.2.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="System.Drawing.Common" Version="8.0.3" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
 	</ItemGroup>
 
 	<!-- Itens do pacote nuget -->
@@ -356,6 +364,19 @@
 		<None Update="Schemas\WebISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>				
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="Schemas\ISSIntegra\1.00\nfse.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Schemas\ISSIntegra\1.00\xmldsig-core-schema20020212.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Schemas\Sigep\" />
 	</ItemGroup>
 
 </Project>

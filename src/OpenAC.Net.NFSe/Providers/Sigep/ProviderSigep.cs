@@ -534,7 +534,7 @@ namespace OpenAC.Net.NFSe.Providers.Sigep
 
         protected override IServiceClient GetClient(TipoUrl tipo) => new SigepServiceClient(this, tipo, Certificado);
 
-        protected override string GetSchema(TipoUrl tipo) => "nfse-v2.xsd";
+        protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
 
         #endregion Protected Methods
 

@@ -132,5 +132,10 @@ public enum NFSeProvider : sbyte
 
     Thema = 41,
 
-    Sigep = 45
+    Sigep = 45,
+
+    [Description("ISS Integra - Nobe Sistemas")]
+    ISSIntegra = 47,
+
+    ISSRecife = 48
 }

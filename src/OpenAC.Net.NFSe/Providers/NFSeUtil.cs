@@ -42,52 +42,43 @@ internal static class NFSeUtil
 {
     #region Fields
 
-    private static readonly Dictionary<string, string> htmlChars;
+    private static readonly Dictionary<string, string> htmlChars = new()
+    {
+        {"&", "&amp;"},
+        {"<", "&lt;"},
+        {">", "&gt;"},
+        {"\"", "&quot;"},
+        {"'", "&apos;"},
+        {"#39", "&#39;"},
+        {"á", "&aacute;"},
+        {"Á", "&Aacute;"},
+        {"â", "&acirc;"},
+        {"Â", "&Acirc;"},
+        {"ã", "&atilde;"},
+        {"Ã", "&Atilde;"},
+        {"à", "&agrave;"},
+        {"À", "&Agrave;"},
+        {"é", "&eacute;"},
+        {"É", "&Eacute;"},
+        {"ê", "&ecirc;"},
+        {"Ê", "&Ecirc;"},
+        {"í", "&iacute;"},
+        {"Í", "&Iacute;"},
+        {"ó", "&oacute;"},
+        {"Ó", "&Oacute;"},
+        {"õ", "&otilde;"},
+        {"Õ", "&Otilde;"},
+        {"ô", "&ocirc;"},
+        {"Ô", "&Ocirc;"},
+        {"ú", "&uacute;"},
+        {"Ú", "&Uacute;"},
+        {"ü", "&uuml;"},
+        {"Ü", "&Uuml;"},
+        {"ç", "&ccedil;"},
+        {"Ç", "&Ccedil;"}
+    };
 
     #endregion Fields
-
-    #region Constructors
-
-    static NFSeUtil()
-    {
-        htmlChars = new Dictionary<string, string>()
-        {
-            {"&", "&amp;"},
-            {"<", "&lt;"},
-            {">", "&gt;"},
-            {"\"", "&quot;"},
-            {"'", "&apos;"},
-            {"#39", "&#39;"},
-            {"á", "&aacute;"},
-            {"Á", "&Aacute;"},
-            {"â", "&acirc;"},
-            {"Â", "&Acirc;"},
-            {"ã", "&atilde;"},
-            {"Ã", "&Atilde;"},
-            {"à", "&agrave;"},
-            {"À", "&Agrave;"},
-            {"é", "&eacute;"},
-            {"É", "&Eacute;"},
-            {"ê", "&ecirc;"},
-            {"Ê", "&Ecirc;"},
-            {"í", "&iacute;"},
-            {"Í", "&Iacute;"},
-            {"ó", "&oacute;"},
-            {"Ó", "&Oacute;"},
-            {"õ", "&otilde;"},
-            {"Õ", "&Otilde;"},
-            {"ô", "&ocirc;"},
-            {"Ô", "&Ocirc;"},
-            {"ú", "&uacute;"},
-            {"Ú", "&Uacute;"},
-            {"ü", "&uuml;"},
-            {"Ü", "&Uuml;"},
-            {"ç", "&ccedil;"},
-            {"Ç", "&Ccedil;"}
-        };
-    }
-
-    #endregion Constructors
 
     #region Methods
 

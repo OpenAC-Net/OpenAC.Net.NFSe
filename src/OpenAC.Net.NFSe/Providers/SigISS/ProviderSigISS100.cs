@@ -84,9 +84,17 @@ internal sealed class ProviderSigISS100 : ProviderBase
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "valor", 1, 15, Ocorrencia.Obrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorServicos)));
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "base", 1, 15, Ocorrencia.Obrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.BaseCalculo)));
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "descricaoNF", 0, 2000, Ocorrencia.NaoObrigatoria, nota.Servico.Descricao.RemoveAccent()));
-        notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "tomador_tipo", 14, 14, Ocorrencia.NaoObrigatoria, nota.Tomador.Tipo)); //TipoTomador
+        notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "tomador_tipo", 14, 14, Ocorrencia.NaoObrigatoria, 
+            nota.Tomador.Tipo == TipoTomador.NaoIdentificado ? 1 :
+                nota.Tomador.Tipo == TipoTomador.PessoaFisica ? 2 :
+                nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoMunicipio == nota.Prestador.Endereco.CodigoMunicipio ? 3 :
+                nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoMunicipio != nota.Prestador.Endereco.CodigoMunicipio && nota.Tomador.Endereco.CodigoPais == nota.Prestador.Endereco.CodigoPais ? 4 :
+                nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoPais != nota.Prestador.Endereco.CodigoPais ? 5 :
+                nota.Tomador.Tipo == TipoTomador.ProdutorRural ? 6 :
+                1
+            )); //TipoTomador
 
-        if (nota.Tomador.Tipo != TipoTomador.Sigiss.PFNI)
+        if (nota.Tomador.Tipo != TipoTomador.NaoIdentificado)
             notaTag.AddChild(AdicionarTagCNPJCPF("", "tomador_cnpj", "tomador_cnpj", nota.Tomador.CpfCnpj ?? string.Empty));
 
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "tomador_email", 1, 120, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
@@ -110,9 +118,10 @@ internal sealed class ProviderSigISS100 : ProviderBase
             notaTag.AddChild(AdicionarTag(TipoCampo.Int, "", "rps_ano", 1, 4, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.Year));
         }
 
-        if (nota.Tomador.Tipo == TipoTomador.Sigiss.JuridicaForaMunicipio)
+        if (nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoMunicipio != nota.Prestador.Endereco.CodigoMunicipio)
         {
             notaTag.AddChild(AdicionarTag(TipoCampo.Int, "", "outro_municipio", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.MunicipioIncidencia));
+
             if (nota.Servico.MunicipioIncidencia == 1)
             {
                 notaTag.AddChild(AdicionarTag(TipoCampo.Int, "", "cod_outro_municipio", 1, 10, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));

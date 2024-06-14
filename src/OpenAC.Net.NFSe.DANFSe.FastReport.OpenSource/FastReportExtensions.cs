@@ -76,14 +76,12 @@ internal static class FastReportExtensions
         var doc = report.PrepareDoc(settings);
         if (doc == null) return;
 
-        using (var preview = new PrintPreviewDialog
-               {
-                   Document = doc,
-                   StartPosition = FormStartPosition.CenterScreen,
-                   WindowState = FormWindowState.Maximized
-               })
-            preview.ShowDialog();
-
+        using var preview = new PrintPreviewDialog();
+        
+        preview.Document = doc;
+        preview.StartPosition = FormStartPosition.CenterScreen;
+        preview.WindowState = FormWindowState.Maximized;
+        preview.ShowDialog();
         doc.Dispose();
     }
 
@@ -119,15 +117,13 @@ internal static class FastReportExtensions
 
         doc.PrintPage += (_, args) =>
         {
-            using (var ms = new MemoryStream())
-            {
-                exp.PageRange = PageRange.PageNumbers;
-                exp.PageNumbers = $"{page + 1}";
-                exp.Export(report, ms);
-
-                args.Graphics?.DrawImage(Image.FromStream(ms), args.PageBounds);
-            }
-
+            using var ms = new MemoryStream();
+            
+            exp.PageRange = PageRange.PageNumbers;
+            exp.PageNumbers = $"{page + 1}";
+            exp.Export(report, ms);
+            
+            args.Graphics?.DrawImage(Image.FromStream(ms), args.PageBounds);
             page++;
 
             args.HasMorePages = page < report.PreparedPages.Count;
