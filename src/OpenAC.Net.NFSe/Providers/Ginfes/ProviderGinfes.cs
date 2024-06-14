@@ -1159,7 +1159,8 @@ internal sealed class ProviderGinfes : ProviderBase
         //Algumas prefeituras não permitem estas TAGs
         if (!Municipio.Codigo.IsIn(2704302,  // Maceió/AL
                 3503208,  // Araraquara/SP
-                3510401   // Capivari/SP
+                3510401,  // Capivari/SP
+                3524303   // Jaboticabal/SP 
             ))
         {
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", ns, 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoIncondicionado));
