@@ -1615,7 +1615,7 @@
 		<Nome>Botucatu</Nome>
 		<UF>SP</UF>
 		<Provedor>Fiorilli</Provedor>
-		<Versao>2.02</Versao>
+		<Versao>2.01</Versao>
 		<UrlHomologacao>
 			<Item>
 				<TipoUrl>Enviar</TipoUrl>
@@ -1665,43 +1665,43 @@
 		<UrlProducao>
 			<Item>
 				<TipoUrl>Enviar</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>EnviarSincrono</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>CancelarNFSe</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>CancelarNFSeLote</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarNFSe</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarNFSeRps</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarLoteRps</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarSituacao</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>ConsultarSequencialRps</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>SubstituirNFSe</TipoUrl>
-				<Url>http://143.137.254.12:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+				<Url>http://siabotucatu.dcfiorilli.com.br:8089/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>Autenticacao</TipoUrl>
