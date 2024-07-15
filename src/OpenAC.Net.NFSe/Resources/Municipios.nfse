@@ -1849,43 +1849,43 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
