@@ -183,7 +183,7 @@ internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClie
         }
 
         return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
-    }
+    }    
 
     #endregion Methods
 }
