@@ -30,20 +30,14 @@
 // ***********************************************************************
 
 using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Nota;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderRLZ : ProviderABRASF203
+internal sealed class RLZProvider : ProviderABRASF203
 {
     #region Constructors
 
-    public ProviderRLZ(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public RLZProvider(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "RLZ";
     }

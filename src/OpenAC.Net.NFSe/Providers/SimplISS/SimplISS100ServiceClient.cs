@@ -140,8 +140,8 @@ internal sealed class SimplISS100ServiceClient : NFSeSoapServiceClient, IService
     {
         Guard.Against<OpenDFeCommunicationException>(ValidarUsernamePassword(), "Faltou informar username e/ou password");
 
-        return Execute(soapAction, message, "", responseTag, "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
-            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
+            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\""]);
     }
 
     public string AjustarMensagem(string msg, params string[] tags)

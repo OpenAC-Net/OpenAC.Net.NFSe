@@ -95,22 +95,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
     #region Methods
 
-    protected virtual string Execute(string soapAction, string message, string responseTag, params string[] soapNamespaces)
-    {
-        return Execute(soapAction, message, string.Empty, new[] { responseTag }, soapNamespaces);
-    }
-
-    protected virtual string Execute(string soapAction, string message, string[] responseTag, params string[] soapNamespaces)
-    {
-        return Execute(soapAction, message, string.Empty, responseTag, soapNamespaces);
-    }
-
-    protected virtual string Execute(string soapAction, string message, string soapHeader, string responseTag, params string[] soapNamespaces)
-    {
-        return Execute(soapAction, message, soapHeader, new[] { responseTag }, soapNamespaces);
-    }
-
-    protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
+    protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, string[] soapNamespaces)
     {
         var envelope = new StringBuilder();
         switch (MessageVersion)

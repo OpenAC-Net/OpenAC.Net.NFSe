@@ -123,7 +123,7 @@ internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceCl
 
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("CancelarNFSeLote nao implementada/suportada para este provedor.");
 
-    private string Execute(string action, string message, params string[] responseTag) => Execute(action, message, responseTag, new string[] { "xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\"" });
+    private string Execute(string action, string message, params string[] responseTag) => Execute(action, message, "", responseTag, ["xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\""]);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {

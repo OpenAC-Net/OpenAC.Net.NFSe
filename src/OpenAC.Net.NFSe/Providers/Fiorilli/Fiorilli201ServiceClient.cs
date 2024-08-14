@@ -179,7 +179,7 @@ internal sealed class Fiorilli201ServiceClient : NFSeSoapServiceClient, IService
         var result = ValidarUsernamePassword();
         if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
 
-        return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://ws.issweb.fiorilli.com.br/\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:ws=\"http://ws.issweb.fiorilli.com.br/\""]);
     }
 
     public bool ValidarUsernamePassword()

@@ -1,10 +1,12 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : Felipe Silveira/Transis
-// Created          : 02-13-2023
+// Author           : Rafael Dias
+// Created          : 08-14-2024
 //
+// Last Modified By : Rafael Dias
+// Last Modified On : 08-14-2024
 // ***********************************************************************
-// <copyright file="Pronim2ServiceClient.cs" company="OpenAC .Net">
+// <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
@@ -36,15 +38,15 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceClient
+internal sealed class PronimServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public Pronim203ServiceClient(ProviderPronim203 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public PronimServiceClient(ProviderPronim provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
-    public Pronim203ServiceClient(ProviderPronim203 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    public PronimServiceClient(ProviderPronim provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
     }
 
@@ -61,22 +63,35 @@ internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</tem:xmlEnvio>");
         message.Append("</tem:RecepcionarLoteRps>");
 
-        return Execute("RecepcionarLoteRps", cabec, message.ToString(), "RecepcionarLoteRpsResponse");
+        return Execute("INFSEGeracao/RecepcionarLoteRps", cabec, message.ToString(),
+            ["RecepcionarLoteRpsResponse", "RecepcionarLoteRpsResult"]);
     }
 
     public string EnviarSincrono(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<tem:EnviarLoteRpsSincrono>");
+        message.Append("<tem:GerarNfse>");
         message.Append("<tem:xmlEnvio>");
         message.AppendCData(msg);
         message.Append("</tem:xmlEnvio>");
-        message.Append("</tem:EnviarLoteRpsSincrono>");
+        message.Append("</tem:GerarNfse>");
 
-        return Execute("EnviarLoteRpsSincrono", cabec, message.ToString(), "EnviarLoteRpsSincronoResponse");
+        return Execute("INFSEGeracao/GerarNfse", cabec, message.ToString(), 
+            ["GerarNfseResponse", "GerarNfseResponseResult"]);
     }
 
-    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<tem:ConsultarSituacaoLoteRps>");
+        message.Append("<tem:xmlEnvio>");
+        message.AppendCData(msg);
+        message.Append("</tem:xmlEnvio>");
+        message.Append("</tem:ConsultarSituacaoLoteRps>");
+
+        return Execute("INFSEConsultas/ConsultarSituacaoLoteRps", cabec, message.ToString(), 
+            ["ConsultarSituacaoLoteRpsResponse", "ConsultarSituacaoLoteRpsResult"]);
+    }
 
     public string ConsultarLoteRps(string cabec, string msg)
     {
@@ -87,7 +102,8 @@ internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</tem:xmlEnvio>");
         message.Append("</tem:ConsultarLoteRps>");
 
-        return Execute("ConsultarLoteRps", cabec, message.ToString(), "ConsultarLoteRpsResponse");
+        return Execute("INFSEConsultas/ConsultarLoteRps", cabec, message.ToString(), 
+            ["ConsultarLoteRpsResponse", "ConsultarLoteRpsResult"]);
     }
 
     public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
@@ -101,7 +117,8 @@ internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</tem:xmlEnvio>");
         message.Append("</tem:ConsultarNfsePorRps>");
 
-        return Execute("ConsultarNfsePorRps", cabec, message.ToString(), "ConsultarNfsePorRpsResponse");
+        return Execute("INFSEConsultas/ConsultarNfsePorRps", cabec, message.ToString(), 
+            ["ConsultarNfsePorRpsResponse", "ConsultarNfsePorRpsResult"]);
     }
 
     public string ConsultarNFSe(string cabec, string msg)
@@ -113,7 +130,8 @@ internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</tem:xmlEnvio>");
         message.Append("</tem:ConsultarNfseServicoPrestado>");
 
-        return Execute("ConsultarNfseServicoPrestado", cabec, message.ToString(), "ConsultarNfseServicoPrestadoResponse");
+        return Execute("INFSEConsultas/ConsultarNfseServicoPrestado", cabec, message.ToString(), 
+            ["ConsultarNfseServicoPrestadoResponse", "ConsultarNfseServicoPrestadoResult"]);
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -125,7 +143,8 @@ internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</tem:xmlEnvio>");
         message.Append("</tem:CancelarNfse>");
 
-        return Execute("CancelarNfse", cabec, message.ToString(), "CancelarNfseResponse");
+        return Execute("INFSEGeracao/CancelarNfse", cabec, message.ToString(), 
+            ["CancelarNfseResponse", "CancelarNfseResult"]);
     }
 
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
@@ -139,12 +158,14 @@ internal sealed class Pronim203ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</tem:xmlEnvio>");
         message.Append("</tem:SubstituirNfse>");
 
-        return Execute("SubstituirNfse", cabec, message.ToString(), "SubstituirNfseResponse");
+        return Execute("INFSEGeracao/SubstituirNfse", cabec, message.ToString(), 
+            ["SubstituirNfseResponse", "SubstituirNfseResult"]);
     }
 
-    private string Execute(string soapAction, string cabec, string message, string responseTag)
+    private string Execute(string soapAction, string header, string message, string[] responseTag)
     {
-        return Execute(soapAction, message, cabec, [responseTag], ["xmlns:tem=\"http://tempuri.org/\""]);
+        return Execute("http://tempuri.org/" + soapAction, message, 
+            header, responseTag, ["xmlns:tem=\"http://tempuri.org/\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

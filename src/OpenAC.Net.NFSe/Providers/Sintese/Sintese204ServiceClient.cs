@@ -104,7 +104,7 @@ internal sealed class Sintese204ServiceClient : NFSeSoapServiceClient, IServiceC
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

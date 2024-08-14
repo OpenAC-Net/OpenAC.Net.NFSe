@@ -111,7 +111,7 @@ internal sealed class MitraServiceClient : NFSeSoapServiceClient, IServiceClient
 
     private string Execute(string action, string message, params string[] responseTag)
     {
-        return Execute(action, message, responseTag, new string[0]);
+        return Execute(action, message, "", responseTag, []);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

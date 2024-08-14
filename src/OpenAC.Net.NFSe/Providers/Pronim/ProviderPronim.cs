@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : Felipe Silveira (Transis Software)
-// Created          : 18-04-2022
+// Author           : Rafael Dias
+// Created          : 08-14-2024
 //
-// Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 13-05-2022
+// Last Modified By : Rafael Dias
+// Last Modified On : 08-14-2024
 // ***********************************************************************
-// <copyright file="ProviderSIAPNet.cs" company="OpenAC .Net">
+// <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
@@ -33,20 +33,35 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderSiapNet : ProviderABRASF201
+internal sealed class ProviderPronim : ProviderABRASF
 {
     #region Constructors
 
-    public ProviderSiapNet(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public ProviderPronim(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "SiapNet";
+        Name = "Pronim";
     }
 
     #endregion Constructors
 
     #region Methods
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new SiapNetServiceClient(this, tipo, Certificado);
+    protected override string GerarCabecalho()
+    {
+        return "<tem:cabecalho versao=\"1.00\">" +
+               "<tem:versaoDados>1.00</tem:versaoDados>" +
+               "</tem:cabecalho>";
+    }
+
+    protected override IServiceClient GetClient(TipoUrl tipo) => new PronimServiceClient(this, tipo, null);
+
+    protected override void ValidarSchema(RetornoWebservice retorno, string schema)
+    {
+        base.ValidarSchema(retorno, schema);
+        if(retorno.Erros.Count > 0) return;
+
+        retorno.XmlEnvio = retorno.XmlEnvio.Replace(" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"", "");
+    }
 
     #endregion Methods
 }

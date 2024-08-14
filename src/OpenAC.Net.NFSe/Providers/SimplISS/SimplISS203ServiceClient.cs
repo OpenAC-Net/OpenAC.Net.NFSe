@@ -130,8 +130,8 @@ internal sealed class SimplISS203ServiceClient : NFSeSoapServiceClient, IService
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
-            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
+            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\""]);
     }
 
     public string AjustarMensagem(string msg, params string[] tags)

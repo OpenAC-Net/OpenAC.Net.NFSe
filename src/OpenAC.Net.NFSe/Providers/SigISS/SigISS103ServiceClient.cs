@@ -61,7 +61,7 @@ internal sealed class SigISS103ServiceClient : NFSeSoapServiceClient, IServiceCl
         request.Append("</xml>");
         request.Append("</ws:GerarNfse>");
 
-        return Execute(GetUrlWsProvedor + "#GerarNfse", request.ToString(), new string[] { "GerarNfseResponse", "RetornoNfse" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
+        return Execute(GetUrlWsProvedor + "#GerarNfse", request.ToString(), "", ["GerarNfseResponse", "RetornoNfse"], ["xmlns:ws=\"" + GetUrlWsProvedor + "\""]);
     }
     public string ConsultarSituacao(string cabec, string msg)
     {
@@ -72,7 +72,7 @@ internal sealed class SigISS103ServiceClient : NFSeSoapServiceClient, IServiceCl
         request.Append("</DadosConsultaNota>");
         request.Append("</urn:ConsultarNotaValida>");
 
-        return Execute("urn:sigiss_ws#ConsultarNotaValida", request.ToString(), new[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+        return Execute("urn:sigiss_ws#ConsultarNotaValida", request.ToString(), "", ["GerarNotaResponse", "RetornoNota"], ["xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\""]);
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -82,7 +82,7 @@ internal sealed class SigISS103ServiceClient : NFSeSoapServiceClient, IServiceCl
         request.Append(msg);
         request.Append("</urn:CancelarNota>");
 
-        return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), new[] { "CancelarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+        return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), "", ["CancelarNotaResponse", "RetornoNota"], ["xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\""]);
     }
 
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
@@ -95,16 +95,10 @@ internal sealed class SigISS103ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.AppendCData(msg);
         message.Append("</xml>");
         message.Append("</ws:ConsultarLoteRps>");
-        return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", new[] { "ConsultarLoteRpsResponse", "ConsultarLoteRpsResult" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
+        return Execute("ConsultarLoteRpsEnvio", message.ToString(), "",["ConsultarLoteRpsResponse", "ConsultarLoteRpsResult"], ["xmlns:ws=\"" + GetUrlWsProvedor + "\""]);
     }
 
-    private string GetUrlWsProvedor
-    {
-        get
-        {
-            return Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
-        }
-    }
+    private string GetUrlWsProvedor => Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
 
     public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
 
@@ -116,8 +110,7 @@ internal sealed class SigISS103ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.AppendCData(msg);
         message.Append("</xml>");
         message.Append("</ws:ConsultarNfsePorRps>");
-        //return Execute(GetUrlWsProvedor + "#ConsultarNfsePorRps", message.ToString(), "", new[] { "ConsultarNfsePorRpsResponse", "ConsultarNfsePorRpsResult" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
-        return Execute("ConsultarNfsePorRps", message.ToString(), "", new[] { "ConsultarNfsePorRpsResponse", "ConsultarNfsePorRpsResult" }, "xmlns:ws=\"" + GetUrlWsProvedor + "\"");
+        return Execute("ConsultarNfsePorRps", message.ToString(), "", ["ConsultarNfsePorRpsResponse", "ConsultarNfsePorRpsResult"], ["xmlns:ws=\"" + GetUrlWsProvedor + "\""]);
     }
 
     public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
@@ -132,10 +125,7 @@ internal sealed class SigISS103ServiceClient : NFSeSoapServiceClient, IServiceCl
         if (element == null)
         {
             element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
-            if (element == null)
-                return xmlDocument.ToString();
-
-            return element.ToString();
+            return element == null ? xmlDocument.ToString() : element.ToString();
         }
 
         var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";

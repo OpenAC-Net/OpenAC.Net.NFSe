@@ -43,7 +43,7 @@ internal sealed class SiapNetServiceClient : NFSeSoapServiceClient, IServiceClie
 {
     #region Constructors
 
-    public SiapNetServiceClient(ProviderSiapNet provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public SiapNetServiceClient(SiapNetProvider provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
             
     }
@@ -104,7 +104,7 @@ internal sealed class SiapNetServiceClient : NFSeSoapServiceClient, IServiceClie
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

@@ -29,13 +29,13 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
+
 namespace OpenAC.Net.NFSe.Providers;
 
 internal sealed class ISSNet204ServiceClient : NFSeSoapServiceClient, IServiceClient
@@ -170,7 +170,7 @@ internal sealed class ISSNet204ServiceClient : NFSeSoapServiceClient, IServiceCl
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
     }
 
     protected override bool ValidarCertificadoServidor()

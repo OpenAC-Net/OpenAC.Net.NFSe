@@ -146,12 +146,8 @@ internal sealed class DSF100ServiceClient : NFSeSoapServiceClient, IServiceClien
 
     public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-    private string Execute(string message, string responseTag)
-    {
-        var ns = "xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\"";
-
-        return Execute("", message, "", responseTag, ns);
-    }
+    private string Execute(string message, string responseTag) => 
+        Execute("", message, "", [responseTag], ["xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\""]);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag) => xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
 

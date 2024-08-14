@@ -41,7 +41,8 @@ internal sealed class CittaServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public CittaServiceClient(ProviderCitta provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public CittaServiceClient(ProviderCitta provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider,
+        tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
@@ -60,7 +61,8 @@ internal sealed class CittaServiceClient : NFSeSoapServiceClient, IServiceClient
 
     public string EnviarSincrono(string cabec, string msg)
     {
-        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", msg, "RecepcionarLoteRpsSincronoResposta");
+        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", msg,
+            "RecepcionarLoteRpsSincronoResposta");
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -86,11 +88,13 @@ internal sealed class CittaServiceClient : NFSeSoapServiceClient, IServiceClient
     public string ConsultarNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<nfse:ConsultarNfsePorFaixaEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        message.Append(
+            "<nfse:ConsultarNfsePorFaixaEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
         message.Append(msg);
         message.Append("</nfse:ConsultarNfsePorFaixaEnvio>");
 
-        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorFaixa", message.ToString(), "ConsultarNfseFaixaResponse");
+        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorFaixa", message.ToString(),
+            "ConsultarNfseFaixaResponse");
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -111,7 +115,8 @@ internal sealed class CittaServiceClient : NFSeSoapServiceClient, IServiceClient
     public string SubstituirNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-        message.Append("<nfse:SubstituirNfseEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+        message.Append(
+            "<nfse:SubstituirNfseEnvio soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
         message.Append(msg);
         message.Append("</nfse:SubstituirNfseEnvio>");
 
@@ -120,10 +125,12 @@ internal sealed class CittaServiceClient : NFSeSoapServiceClient, IServiceClient
 
     private string Execute(string action, string message, params string[] responseTag)
     {
-        var ns = "xmlns:nfse=\"http://nfse.abrasf.org.br\" xmlns:nfs=\"http://localhost:8080/nfse/services/nfseSOAP?wsdl\"";
-        if (action == "http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono") ns += " xmlns:nfse1=\"http://nfse.citta.com.br\"";
+        var ns =
+            "xmlns:nfse=\"http://nfse.abrasf.org.br\" xmlns:nfs=\"http://localhost:8080/nfse/services/nfseSOAP?wsdl\"";
+        if (action == "http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono")
+            ns += " xmlns:nfse1=\"http://nfse.citta.com.br\"";
 
-        return Execute(action, message, responseTag, ns);
+        return Execute(action, message, "", responseTag, [ns]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

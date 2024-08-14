@@ -42,7 +42,8 @@ internal sealed class ABaseServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public ABaseServiceClient(ProviderABase provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public ABaseServiceClient(ProviderABase provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider,
+        tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
@@ -66,12 +67,16 @@ internal sealed class ABaseServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</nfs:nfseDadosMsg>");
         message.Append("</nfs:RecepcionarLoteRps>");
 
-        return Execute("http://nfse.abase.com.br/NFSeWS/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
+        return Execute("http://nfse.abase.com.br/NFSeWS/RecepcionarLoteRps", message.ToString(),
+            "RecepcionarLoteRpsResponse");
     }
 
-    public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor ! Utilize o envio assincrono");
+    public string EnviarSincrono(string cabec, string msg) =>
+        throw new NotImplementedException(
+            "Função não implementada/suportada neste Provedor ! Utilize o envio assincrono");
 
-    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string ConsultarSituacao(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string ConsultarLoteRps(string cabec, string msg)
     {
@@ -85,10 +90,12 @@ internal sealed class ABaseServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</nfs:nfseDadosMsg>");
         message.Append("</nfs:ConsultaLoteRps>");
 
-        return Execute("http://nfse.abase.com.br/NFSeWS/ConsultaLoteRps", message.ToString(), "ConsultaLoteRpsResponse");
+        return Execute("http://nfse.abase.com.br/NFSeWS/ConsultaLoteRps", message.ToString(),
+            "ConsultaLoteRpsResponse");
     }
 
-    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string ConsultarSequencialRps(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {
@@ -102,10 +109,12 @@ internal sealed class ABaseServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</nfs:nfseDadosMsg>");
         message.Append("</nfs:ConsultaNfseRps>");
 
-        return Execute("http://nfse.abase.com.br/NFSeWS/ConsultaNfseRps", message.ToString(), "ConsultaNfseRpsResponse");
+        return Execute("http://nfse.abase.com.br/NFSeWS/ConsultaNfseRps", message.ToString(),
+            "ConsultaNfseRpsResponse");
     }
 
-    public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string ConsultarNFSe(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string CancelarNFSe(string cabec, string msg)
     {
@@ -122,13 +131,15 @@ internal sealed class ABaseServiceClient : NFSeSoapServiceClient, IServiceClient
         return Execute("http://nfse.abase.com.br/NFSeWS/CancelaNfse", message.ToString(), "CancelaNfseResponse");
     }
 
-    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string CancelarNFSeLote(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string SubstituirNFSe(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfs=\"http://nfse.abase.com.br/NFSeWS\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfs=\"http://nfse.abase.com.br/NFSeWS\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
@@ -136,7 +147,8 @@ internal sealed class ABaseServiceClient : NFSeSoapServiceClient, IServiceClient
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element != null)
         {
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            var exMessage =
+                $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);
         }
 
@@ -146,6 +158,4 @@ internal sealed class ABaseServiceClient : NFSeSoapServiceClient, IServiceClient
     }
 
     #endregion Methods
-
-
 }

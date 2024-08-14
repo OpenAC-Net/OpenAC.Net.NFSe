@@ -146,9 +146,12 @@ internal sealed class EquiplanoServiceClient : NFSeSoapServiceClient, IServiceCl
         throw new NotImplementedException();
     }
 
+    private string Execute(string soapAction, string message, string responseTag) =>
+        Execute(soapAction, message, "", [responseTag], []);
+
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
-        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value.ToString();
+        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
     }
 
     #endregion Methods

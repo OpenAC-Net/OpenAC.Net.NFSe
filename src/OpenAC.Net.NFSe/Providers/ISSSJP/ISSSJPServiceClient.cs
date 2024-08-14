@@ -36,134 +36,133 @@ using System;
 using System.Text;
 using System.Xml.Linq;
 
-namespace OpenAC.Net.NFSe.Providers.ISSSJP
+namespace OpenAC.Net.NFSe.Providers;
+
+internal sealed class ISSSJPServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    internal sealed class ISSSJPServiceClient : NFSeSoapServiceClient, IServiceClient
+    #region Constructors
+
+    public ISSSJPServiceClient(ProviderISSSJP provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        #region Constructors
-
-        public ISSSJPServiceClient(ProviderISSSJP provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
-        {
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public string Enviar(string cabecalho, string dados)
-        {
-            var message = new StringBuilder();
-
-            message.Append("<nfe:RecepcionarLoteRpsV3>");
-            message.Append("<arg0>");
-            message.AppendCData(cabecalho);
-            message.Append("</arg0>");
-            message.Append("<arg1>");
-            message.AppendCData(dados);
-            message.Append("</arg1>");
-            message.Append("</nfe:RecepcionarLoteRpsV3>");
-
-            return Execute("", message.ToString(), "", "", "xmlns:nfe=\"http://nfe.sjp.pr.gov.br\"");            
-        }
-
-        public string EnviarSincrono(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CancelarNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CancelarNFSeLote(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarLoteRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-
-            message.Append("<nfe:ConsultarLoteRpsV3>");
-            message.Append("<arg0>");
-            message.AppendCData(cabec);
-            message.Append("</arg0>");
-            message.Append("<arg1>");
-            message.AppendCData(msg);
-            message.Append("</arg1>");
-            message.Append("</nfe:ConsultarLoteRpsV3>");
-
-            return Execute("", message.ToString(), "", "", "xmlns:nfe=\"http://nfe.sjp.pr.gov.br\"");
-        }
-
-        public string ConsultarNFSe(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-
-            message.Append("<nfe:ConsultarNfseV3>");
-            message.Append("<arg0>");
-            message.AppendCData(cabec);
-            message.Append("</arg0>");
-            message.Append("<arg1>");
-            message.AppendCData(msg);
-            message.Append("</arg1>");
-            message.Append("</nfe:ConsultarNfseV3>");
-
-            return Execute("", message.ToString(), "", "", "xmlns:nfe=\"http://nfe.sjp.pr.gov.br\"");
-        }
-
-        public string ConsultarNFSeRps(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-
-            message.Append("<nfe:ConsultarNfsePorRpsV3>");
-            message.Append("<arg0>");
-            message.AppendCData(cabec);
-            message.Append("</arg0>");
-            message.Append("<arg1>");
-            message.AppendCData(msg);
-            message.Append("</arg1>");
-            message.Append("</nfe:ConsultarNfsePorRpsV3>");
-
-            return Execute("", message.ToString(), "", "", "xmlns:nfe=\"http://nfe.sjp.pr.gov.br\"");
-        }
-
-        public string ConsultarSequencialRps(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ConsultarSituacao(string cabec, string msg)
-        {
-            var message = new StringBuilder();
-
-            message.Append("<nfe:ConsultarSituacaoLoteRpsV3>");
-            message.Append("<arg0>");
-            message.AppendCData(cabec);
-            message.Append("</arg0>");
-            message.Append("<arg1>");
-            message.AppendCData(msg);
-            message.Append("</arg1>");
-            message.Append("</nfe:ConsultarSituacaoLoteRpsV3>");
-
-            return Execute("", message.ToString(), "", "", "xmlns:nfe=\"http://nfe.sjp.pr.gov.br\"");
-        }
-
-        public string SubstituirNFSe(string cabec, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
-        {
-            var element = xmlDocument.ElementAnyNs("Fault");
-            if (element == null) return xmlDocument.ToString();
-
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
-
-        #endregion
     }
+
+    #endregion Constructors
+
+    #region Methods
+
+    public string Enviar(string cabecalho, string dados)
+    {
+        var message = new StringBuilder();
+
+        message.Append("<nfe:RecepcionarLoteRpsV3>");
+        message.Append("<arg0>");
+        message.AppendCData(cabecalho);
+        message.Append("</arg0>");
+        message.Append("<arg1>");
+        message.AppendCData(dados);
+        message.Append("</arg1>");
+        message.Append("</nfe:RecepcionarLoteRpsV3>");
+
+        return Execute("", message.ToString(), "", [], ["xmlns:nfe=\"http://nfe.sjp.pr.gov.br\""]);            
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string CancelarNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+
+        message.Append("<nfe:ConsultarLoteRpsV3>");
+        message.Append("<arg0>");
+        message.AppendCData(cabec);
+        message.Append("</arg0>");
+        message.Append("<arg1>");
+        message.AppendCData(msg);
+        message.Append("</arg1>");
+        message.Append("</nfe:ConsultarLoteRpsV3>");
+
+        return Execute("", message.ToString(), "", [], ["xmlns:nfe=\"http://nfe.sjp.pr.gov.br\""]);
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+
+        message.Append("<nfe:ConsultarNfseV3>");
+        message.Append("<arg0>");
+        message.AppendCData(cabec);
+        message.Append("</arg0>");
+        message.Append("<arg1>");
+        message.AppendCData(msg);
+        message.Append("</arg1>");
+        message.Append("</nfe:ConsultarNfseV3>");
+
+        return Execute("", message.ToString(), "", [], ["xmlns:nfe=\"http://nfe.sjp.pr.gov.br\""]);
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+
+        message.Append("<nfe:ConsultarNfsePorRpsV3>");
+        message.Append("<arg0>");
+        message.AppendCData(cabec);
+        message.Append("</arg0>");
+        message.Append("<arg1>");
+        message.AppendCData(msg);
+        message.Append("</arg1>");
+        message.Append("</nfe:ConsultarNfsePorRpsV3>");
+
+        return Execute("", message.ToString(), "", [], ["xmlns:nfe=\"http://nfe.sjp.pr.gov.br\""]);
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarSituacao(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+
+        message.Append("<nfe:ConsultarSituacaoLoteRpsV3>");
+        message.Append("<arg0>");
+        message.AppendCData(cabec);
+        message.Append("</arg0>");
+        message.Append("<arg1>");
+        message.AppendCData(msg);
+        message.Append("</arg1>");
+        message.Append("</nfe:ConsultarSituacaoLoteRpsV3>");
+
+        return Execute("", message.ToString(), "", [], ["xmlns:nfe=\"http://nfe.sjp.pr.gov.br\""]);
+    }
+
+    public string SubstituirNFSe(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    {
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element == null) return xmlDocument.ToString();
+
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    #endregion
 }

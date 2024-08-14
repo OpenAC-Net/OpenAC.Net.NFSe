@@ -145,7 +145,7 @@ internal sealed class Pronim202ServiceClient : NFSeSoapServiceClient, IServiceCl
     private string Execute(string soapAction, string header, string message, string responseTag)
     {
         return Execute("http://tempuri.org/" + soapAction, message, 
-            header, responseTag, "xmlns:tem=\"http://tempuri.org/\"");
+            header, [responseTag], ["xmlns:tem=\"http://tempuri.org/\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

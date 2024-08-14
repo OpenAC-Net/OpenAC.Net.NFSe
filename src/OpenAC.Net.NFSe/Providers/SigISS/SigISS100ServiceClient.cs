@@ -58,7 +58,7 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
         request.Append(msg);
         request.Append("</urn:GerarNota>");
 
-        return Execute("urn:sigiss_ws#GerarNota", request.ToString(), new[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+        return Execute("urn:sigiss_ws#GerarNota", request.ToString(), "", ["GerarNotaResponse", "RetornoNota"], ["xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\""]);
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -70,7 +70,7 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
         request.Append("</DadosConsultaNota>");
         request.Append("</urn:ConsultarNotaValida>");
 
-        return Execute("urn:sigiss_ws#ConsultarNotaValida", request.ToString(), new[] { "GerarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+        return Execute("urn:sigiss_ws#ConsultarNotaValida", request.ToString(), "", ["GerarNotaResponse", "RetornoNota"], ["xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\""]);
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -80,24 +80,22 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
         request.Append(msg);
         request.Append("</urn:CancelarNota>");
 
-        return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), new[] { "CancelarNotaResponse", "RetornoNota" }, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\"");
+        return Execute("urn:sigiss_ws#CancelarNota", request.ToString(), "", ["CancelarNotaResponse", "RetornoNota"], ["xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\""]);
     }
 
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 
     public string ConsultarLoteRps(string cabec, string msg)
     {
-        string Url = Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "").Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
-        string Namespace = "xmlns:ws=\"" + Url + "\"";
-        //string Namespace1 = "xmlns:ws=\"https://abrasfchapeco.meumunicipio.online/ws\"";
-
+        var url = Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "")
+            .Replace("https://", "https://abrasf").Replace("/abrasf/ws", "/ws");
         var message = new StringBuilder();
         message.Append("<ws:ConsultarLoteRps>");
         message.Append("<xml>");
         message.AppendCData(msg);
         message.Append("</xml>");
         message.Append("</ws:ConsultarLoteRps>");
-        return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", new[] { "ConsultarLoteRpsResponse", "ConsultarLoteRpsResult" }, Namespace);
+        return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", ["ConsultarLoteRpsResponse", "ConsultarLoteRpsResult"], ["xmlns:ws=\"" + url + "\""]);
     }
 
     public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
@@ -115,7 +113,6 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
         //verifica se o retorno tem os elementos corretos senão da erro.
         var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
         _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
-        //_ = element.ElementAnyNs("DescricaoErros") ?? throw new OpenDFeCommunicationException($"Erro ({responseTag[1]}) do xml não encontrado"); -> removido em concordancia com o Rafael pois o provedor nao mandava essa tag em alguns casos
 
         return element.ToString();
     }

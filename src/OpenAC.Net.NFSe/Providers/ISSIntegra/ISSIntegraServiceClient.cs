@@ -41,7 +41,8 @@ internal sealed class ISSIntegraServiceClient : NFSeSoapServiceClient, IServiceC
 {
     #region Constructors
 
-    private string[] _namespaces = new[] { "xmlns:api=\"https://www.issintegra.com.br/webservices/abrasf/wsdl\"", "xmlns:e=\"http://www.abrasf.org.br/nfse.xsd\"" };
+    private string[] _namespaces = ["xmlns:api=\"https://www.issintegra.com.br/webservices/abrasf/wsdl\"", "xmlns:e=\"http://www.abrasf.org.br/nfse.xsd\""
+    ];
 
     public ISSIntegraServiceClient(ProviderISSIntegra provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
@@ -131,10 +132,13 @@ internal sealed class ISSIntegraServiceClient : NFSeSoapServiceClient, IServiceC
         throw new NotImplementedException();
     }
 
+    private string Execute(string soapAction, string message, string responseTag, string[] namespaces) =>
+        Execute(soapAction, message, "", [responseTag], namespaces);
+
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");
-        if (element == null) return xmlDocument.FirstNode.ToString();
+        if (element == null) return xmlDocument.FirstNode?.ToString(); 
 
         var exMessage = $"{element.ElementAnyNs("Code").GetValue<string>()} - {element.ElementAnyNs("Reason").GetValue<string>()}";
         throw new OpenDFeCommunicationException(exMessage);

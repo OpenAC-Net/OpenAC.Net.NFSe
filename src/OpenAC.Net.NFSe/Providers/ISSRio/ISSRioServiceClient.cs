@@ -151,7 +151,7 @@ internal sealed class ISSRioServiceClient : NFSeSoapServiceClient, IServiceClien
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:not=\"http://notacarioca.rio.gov.br/\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:not=\"http://notacarioca.rio.gov.br/\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

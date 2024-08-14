@@ -41,7 +41,7 @@ internal sealed class RLZServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public RLZServiceClient(ProviderRLZ provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    public RLZServiceClient(RLZProvider provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
     }
 
@@ -175,7 +175,7 @@ internal sealed class RLZServiceClient : NFSeSoapServiceClient, IServiceClient
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
     }
 
     #endregion Methods

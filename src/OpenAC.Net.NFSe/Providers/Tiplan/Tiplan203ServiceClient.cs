@@ -177,7 +177,7 @@ internal sealed class Tiplan203ServiceClient : NFSeSoapServiceClient, IServiceCl
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

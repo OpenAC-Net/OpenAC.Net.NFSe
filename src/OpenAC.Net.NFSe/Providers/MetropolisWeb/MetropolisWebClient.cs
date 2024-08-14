@@ -162,7 +162,7 @@ internal sealed class MetropolisWebClient : NFSeSoapServiceClient, IServiceClien
 
     private string Execute(string message)
     {
-        return Execute("", message, "", "", "xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\"");
+        return Execute("", message, "", [], ["xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\""]);
     }
 
     #endregion Methods

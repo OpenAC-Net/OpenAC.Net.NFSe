@@ -117,7 +117,7 @@ internal sealed class ProviderSpeedGov : ProviderABRASF
 
     protected override string GerarCabecalho()
     {
-        var cabecalho = new System.Text.StringBuilder();
+        var cabecalho = new StringBuilder();
         //cabecalho.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         cabecalho.Append("<p:cabecalho versao=\"1\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:p=\"http://ws.speedgov.com.br/cabecalho_v1.xsd\" xmlns:p1=\"http://ws.speedgov.com.br/tipos_v1.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ws.speedgov.com.br/cabecalho_v1.xsd cabecalho_v1.xsd\">");
         cabecalho.Append("<versaoDados>1</versaoDados>");
@@ -135,7 +135,7 @@ internal sealed class ProviderSpeedGov : ProviderABRASF
             case TipoUrl.ConsultarNFSeRps: return "consultar_nfse_rps_envio_v1.xsd";
             case TipoUrl.ConsultarNFSe: return "consultar_nfse_envio_v1.xsd";
             case TipoUrl.CancelarNFSe: return "cancelar_nfse_envio_v1.xsd";
-            default: throw new System.ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou serviço não suportado.");
+            default: throw new ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou serviço não suportado.");
         }
     }
 

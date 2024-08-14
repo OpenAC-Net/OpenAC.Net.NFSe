@@ -116,7 +116,7 @@ internal sealed class ISSGoianiaServiceClient : NFSeSoapServiceClient, IServiceC
 
     private string Execute(string soapAction, string[] responseTag, string message)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://nfse.goiania.go.gov.br/ws/\"");
+        return Execute(soapAction, message, "", responseTag, ["xmlns:ws=\"http://nfse.goiania.go.gov.br/ws/\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

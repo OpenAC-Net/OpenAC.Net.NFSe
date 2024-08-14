@@ -1,4 +1,35 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : OpenAC.Net.NFSe
+// Author           : Rafael Dias
+// Created          : 05-22-2018
+//
+// Last Modified By : Leandro Rossi (rossism.com.br)
+// Last Modified On : 14-04-2023
+// ***********************************************************************
+// <copyright file="ISSNetServiceClient.cs" company="OpenAC .Net">
+//		        		   The MIT License (MIT)
+//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//
+//	 Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+//	 The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//	 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+
+using System;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -8,11 +39,14 @@ namespace OpenAC.Net.NFSe.Providers;
 
 internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    public ISSPortoVelhoServiceClient(ProviderISSPortoVelho provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    #region Constructors
+
+    public ISSPortoVelhoServiceClient(ProviderISSPortoVelho provider, TipoUrl tipoUrl) : base(provider, tipoUrl,
+        SoapVersion.Soap11)
     {
     }
 
-
+    #endregion Constructors
 
     #region Methods
 
@@ -134,15 +168,17 @@ internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServi
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element != null)
         {
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            var exMessage =
+                $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);
         }
+
         return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
     }
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
     }
 
     #endregion Methods

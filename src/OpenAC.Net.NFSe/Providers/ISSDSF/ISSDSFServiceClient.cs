@@ -41,7 +41,8 @@ internal sealed class ISSDSFServiceClient : NFSeSoapServiceClient, IServiceClien
 {
     #region Constructor
 
-    public ISSDSFServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
+    public ISSDSFServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null,
+        SoapVersion.Soap11)
     {
     }
 
@@ -156,14 +157,16 @@ internal sealed class ISSDSFServiceClient : NFSeSoapServiceClient, IServiceClien
 
     public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
-    private string Execute(string message, params string[] reponseTags) => Execute("", message, reponseTags, "xmlns:proc=\"http://proces.wsnfe2.dsfnet.com.br\"");
+    private string Execute(string message, params string[] reponseTags) => Execute("", message, "", reponseTags,
+        ["xmlns:proc=\"http://proces.wsnfe2.dsfnet.com.br\""]);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs(responseTag[1]).Value;
 
-        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        var exMessage =
+            $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
         throw new OpenDFeCommunicationException(exMessage);
     }
 

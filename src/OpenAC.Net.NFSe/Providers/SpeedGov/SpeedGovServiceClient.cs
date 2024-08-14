@@ -68,7 +68,7 @@ internal sealed class SpeedGovServiceClient : NFSeSoapServiceClient, IServiceCli
 
     public string EnviarSincrono(string cabec, string msg)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -147,7 +147,7 @@ internal sealed class SpeedGovServiceClient : NFSeSoapServiceClient, IServiceCli
 
     private string Execute(string soapAction, string responseTag, string message)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

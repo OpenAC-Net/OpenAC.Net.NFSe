@@ -49,7 +49,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
 
     #region Constructors
 
-    public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider,
+        tipoUrl, certificado, SoapVersion.Soap11)
     {
         expect100Continue = ServicePointManager.Expect100Continue;
         ServicePointManager.Expect100Continue = false;
@@ -84,7 +85,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</Recepcionarloterpsrequest>");
         message.Append("</nfse_web_service.RECEPCIONARLOTERPS>");
 
-        return Execute("RECEPCIONARLOTERPS", message.ToString(), "nfse_web_service.RECEPCIONARLOTERPSResponse", "Recepcionarloterpsresponse");
+        return Execute("RECEPCIONARLOTERPS", message.ToString(), "nfse_web_service.RECEPCIONARLOTERPSResponse",
+            "Recepcionarloterpsresponse");
     }
 
     public string EnviarSincrono(string cabec, string msg)
@@ -101,7 +103,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</Recepcionarloterpssincronorequest>");
         message.Append("</nfse_web_service.RECEPCIONARLOTERPSSINCRONO>");
 
-        return Execute("RECEPCIONARLOTERPSSINCRONO", message.ToString(), "nfse_web_service.RECEPCIONARLOTERPSSINCRONOResponse", "Recepcionarloterpssincronoresponse");
+        return Execute("RECEPCIONARLOTERPSSINCRONO", message.ToString(),
+            "nfse_web_service.RECEPCIONARLOTERPSSINCRONOResponse", "Recepcionarloterpssincronoresponse");
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -123,7 +126,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</Consultarloterpsrequest>");
         message.Append("</nfse_web_service.CONSULTARLOTERPS>");
 
-        return Execute("CONSULTARLOTERPS", message.ToString(), "nfse_web_service.CONSULTARLOTERPSResponse", "Consultarloterpsresponse");
+        return Execute("CONSULTARLOTERPS", message.ToString(), "nfse_web_service.CONSULTARLOTERPSResponse",
+            "Consultarloterpsresponse");
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -145,7 +149,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</Consultarnfseporrpsrequest>");
         message.Append("</nfse_web_service.CONSULTARNFSEPORRPS>");
 
-        return Execute("CONSULTARNFSEPORRPS", message.ToString(), "nfse_web_service.CONSULTARNFSEPORRPSResponse", "Consultarnfseporrpsresponse");
+        return Execute("CONSULTARNFSEPORRPS", message.ToString(), "nfse_web_service.CONSULTARNFSEPORRPSResponse",
+            "Consultarnfseporrpsresponse");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
@@ -162,7 +167,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</Consultarnfseservicoprestadorequest>");
         message.Append("</nfse_web_service.CONSULTARNFSESERVICOPRESTADO>");
 
-        return Execute("CONSULTARNFSESERVICOPRESTADO", message.ToString(), "nfse_web_service.CONSULTARNFSESERVICOPRESTADOResponse", "Consultarnfseservicoprestadoresponse");
+        return Execute("CONSULTARNFSESERVICOPRESTADO", message.ToString(),
+            "nfse_web_service.CONSULTARNFSESERVICOPRESTADOResponse", "Consultarnfseservicoprestadoresponse");
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -179,7 +185,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</Cancelarnfserequest>");
         message.Append("</nfse_web_service.CANCELARNFSE>");
 
-        return Execute("CANCELARNFSE", message.ToString(), "nfse_web_service.CANCELARNFSEResponse", "Cancelarnfseresponse");
+        return Execute("CANCELARNFSE", message.ToString(), "nfse_web_service.CANCELARNFSEResponse",
+            "Cancelarnfseresponse");
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -201,12 +208,13 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</Substituirnfserequest>");
         message.Append("</nfse_web_service.SUBSTITUIRNFSE>");
 
-        return Execute("SUBSTITUIRNFSE", message.ToString(), "nfse_web_service.SUBSTITUIRNFSEResponse", "Substituirnfseresponse");
+        return Execute("SUBSTITUIRNFSE", message.ToString(), "nfse_web_service.SUBSTITUIRNFSEResponse",
+            "Substituirnfseresponse");
     }
 
     private string Execute(string action, string message, params string[] responseTag)
     {
-        return base.Execute($"Tributarioaction/ANFSE_WEB_SERVICE.{action}", message, responseTag);
+        return base.Execute($"Tributarioaction/ANFSE_WEB_SERVICE.{action}", message, "", responseTag, []);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
@@ -214,7 +222,8 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
         var element = xmlDocument.ElementAnyNs(responseTag[0])?.ElementAnyNs("Fault");
         if (element != null)
         {
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            var exMessage =
+                $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);
         }
 

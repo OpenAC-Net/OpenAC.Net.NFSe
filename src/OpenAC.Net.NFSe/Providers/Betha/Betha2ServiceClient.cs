@@ -41,7 +41,8 @@ internal sealed class Betha2ServiceClient : NFSeSoapServiceClient, IServiceClien
 {
     #region Constructors
 
-    public Betha2ServiceClient(ProviderBetha2 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
+    public Betha2ServiceClient(ProviderBetha2 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null,
+        SoapVersion.Soap11)
     {
     }
 
@@ -171,7 +172,8 @@ internal sealed class Betha2ServiceClient : NFSeSoapServiceClient, IServiceClien
 
     private string Execute(string soapAction, string responseTag, string message)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:e=\"http://www.betha.com.br/e-nota-contribuinte-ws\"");
+        return Execute(soapAction, message, "", [responseTag],
+            ["xmlns:e=\"http://www.betha.com.br/e-nota-contribuinte-ws\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
@@ -179,7 +181,8 @@ internal sealed class Betha2ServiceClient : NFSeSoapServiceClient, IServiceClien
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
 
-        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        var exMessage =
+            $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
         throw new OpenDFeCommunicationException(exMessage);
     }
 

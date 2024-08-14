@@ -38,9 +38,6 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Providers.ISSRecife;
-using OpenAC.Net.NFSe.Providers.ISSSJP;
-using OpenAC.Net.NFSe.Providers.Sigep;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -84,10 +81,10 @@ public static class ProviderManager
             {NFSeProvider.MetropolisWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderMetropolisWeb)}}},
             {NFSeProvider.Mitra, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderMitra)}}},
             {NFSeProvider.NFeCidades, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderNFeCidades)}}},
-            {NFSeProvider.Pronim, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve202, typeof(ProviderPronim202)}, {VersaoNFSe.ve203, typeof(ProviderPronim203)}}},
+            {NFSeProvider.Pronim, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderPronim)},{VersaoNFSe.ve202, typeof(ProviderPronim202)}, {VersaoNFSe.ve203, typeof(ProviderPronim203)}}},
             {NFSeProvider.IISPortoVelho, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderISSPortoVelho)}}},
-            {NFSeProvider.RLZ, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderRLZ)}}},
-            {NFSeProvider.SiapNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderSiapNet)}}},
+            {NFSeProvider.RLZ, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(RLZProvider)}}},
+            {NFSeProvider.SiapNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(SiapNetProvider)}}},
             {NFSeProvider.SigISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISS100)}, {VersaoNFSe.ve103, typeof(ProviderSigISS103)}}},
             {NFSeProvider.SigISSWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISSWeb)}}},
             {NFSeProvider.SimplISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSimplISS100)}, {VersaoNFSe.ve203, typeof(ProviderSimplISS203)}}},

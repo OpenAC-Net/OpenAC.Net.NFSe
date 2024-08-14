@@ -64,7 +64,8 @@ internal sealed class GinfesServiceClient : NFSeSoapServiceClient, IServiceClien
         return Execute(message.ToString(), "RecepcionarLoteRpsV3Response");
     }
 
-    public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string EnviarSincrono(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string ConsultarSituacao(string cabecalho, string dados)
     {
@@ -96,7 +97,8 @@ internal sealed class GinfesServiceClient : NFSeSoapServiceClient, IServiceClien
         return Execute(message.ToString(), "ConsultarLoteRpsV3Response");
     }
 
-    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string ConsultarSequencialRps(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string ConsultarNFSeRps(string cabecalho, string dados)
     {
@@ -143,19 +145,23 @@ internal sealed class GinfesServiceClient : NFSeSoapServiceClient, IServiceClien
         return Execute(message.ToString(), "CancelarNfseV3Response");
     }
 
-    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string CancelarNFSeLote(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    public string SubstituirNFSe(string cabec, string msg) =>
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     private string Execute(string message, string responseTag)
     {
-        var ns = Provider.Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Homologacao ?
-            "xmlns:gin=\"http://homologacao.ginfes.com.br\"" : "xmlns:gin=\"http://producao.ginfes.com.br\"";
+        var ns = Provider.Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Homologacao
+            ? "xmlns:gin=\"http://homologacao.ginfes.com.br\""
+            : "xmlns:gin=\"http://producao.ginfes.com.br\"";
 
-        return Execute("", message, "", responseTag, ns);
+        return Execute("", message, "", [responseTag], [ns]);
     }
 
-    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag) => xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
+    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag) =>
+        xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("return").Value;
 
     #endregion Methods
 }

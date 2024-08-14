@@ -162,7 +162,7 @@ internal sealed class WebIssServiceClient : NFSeSoapServiceClient, IServiceClien
 
     private string Execute(string soapAction, string message)
     {
-        return Execute(soapAction, message, "");
+        return Execute(soapAction, message, "", [], []);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
@@ -170,7 +170,8 @@ internal sealed class WebIssServiceClient : NFSeSoapServiceClient, IServiceClien
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element == null) return xmlDocument.ToString();
 
-        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        var exMessage =
+            $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
         throw new OpenDFeCommunicationException(exMessage);
     }
 

@@ -159,7 +159,7 @@ internal sealed class ISSeServiceClient : NFSeSoapServiceClient, IServiceClient
         var soapNs = $"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
                      $"xmlns:v2=\"{baseUrl}/v2.01\"";
 
-        return Execute($"https://nfse-ws.hom-ecity.maringa.pr.gov.br/v2.01#{action}", message, responseTag, soapNs);
+        return Execute($"https://nfse-ws.hom-ecity.maringa.pr.gov.br/v2.01#{action}", message, "", responseTag, [soapNs]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
