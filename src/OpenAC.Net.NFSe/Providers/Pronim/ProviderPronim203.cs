@@ -30,12 +30,9 @@
 // ***********************************************************************
 
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -56,6 +53,13 @@ internal sealed class ProviderPronim203 : ProviderABRASF203
     protected override IServiceClient GetClient(TipoUrl tipo)
     {
         return new Pronim203ServiceClient(this, tipo, null);
+    }
+    
+    protected override string GerarCabecalho()
+    {
+        return "<tem:cabecalho versao=\"203\">" +
+               "<tem:versaoDados>2.03</tem:versaoDados>" +
+               "</tem:cabecalho>";
     }
 
     protected override XElement WriteValoresRps(NotaServico nota)
@@ -81,21 +85,11 @@ internal sealed class ProviderPronim203 : ProviderABRASF203
 
         return valores;
     }
+    
     protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
     {
         //NAO PRECISA ASSINAR
     }
-
-    protected override void ValidarSchema(RetornoWebservice retorno, string schema)
-    {
-        schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, "Pronim2", schema);
-        if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
-
-        foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
-            retorno.Erros.Add(erro);
-
-        foreach (var alerta in alertasSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
-            retorno.Alertas.Add(alerta);
-    }
+ 
     #endregion Methods
 }

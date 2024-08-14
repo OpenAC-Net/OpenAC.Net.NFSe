@@ -29,6 +29,7 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.Linq;
 using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -46,7 +47,22 @@ internal sealed class ProviderPronim202 : ProviderABRASF202
 
     #region Methods
 
+    protected override string GerarCabecalho()
+    {
+        return "<tem:cabecalho versao=\"202\">" +
+               "<tem:versaoDados>2.02</tem:versaoDados>" +
+               "</tem:cabecalho>";
+    }
+
     protected override IServiceClient GetClient(TipoUrl tipo) => new Pronim202ServiceClient(this, tipo, null);
+
+    protected override void ValidarSchema(RetornoWebservice retorno, string schema)
+    {
+        base.ValidarSchema(retorno, schema);
+        if(retorno.Erros.Count > 0) return;
+
+        retorno.XmlEnvio = retorno.XmlEnvio.Replace(" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"", "");
+    }
 
     #endregion Methods
 }

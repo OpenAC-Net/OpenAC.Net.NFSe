@@ -1499,7 +1499,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     protected virtual void ValidarSchema(RetornoWebservice retorno, string schema)
     {
         schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, Name, Versao.GetDFeValue(), schema);
-        if (!System.IO.File.Exists(schema))
+        if (!File.Exists(schema))
             retorno.Erros.Add(new Evento { Codigo = "0", Descricao = "Nao encontrou o arquivo schema do xml => " + schema });
             
         if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
