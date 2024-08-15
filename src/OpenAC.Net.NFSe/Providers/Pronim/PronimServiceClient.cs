@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -177,9 +178,9 @@ internal sealed class PronimServiceClient : NFSeSoapServiceClient, IServiceClien
             throw new OpenDFeCommunicationException(exMessage);
         }
 
-        var reader = xmlDocument.ElementAnyNs(responseTag[0]).CreateReader();
+        var reader = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag)).CreateReader();
         reader.MoveToContent();
-        return reader.ReadInnerXml();
+        return reader.ReadInnerXml().HtmlDecode();
     }
 
     #endregion Methods

@@ -57,9 +57,10 @@ internal sealed class ProviderPronim : ProviderABRASF
 
     protected override void ValidarSchema(RetornoWebservice retorno, string schema)
     {
-        base.ValidarSchema(retorno, schema);
+        if(retorno is not RetornoEnviar)
+            base.ValidarSchema(retorno, schema);
+        
         if(retorno.Erros.Count > 0) return;
-
         retorno.XmlEnvio = retorno.XmlEnvio.Replace(" xmlns=\"http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd\"", "");
     }
 

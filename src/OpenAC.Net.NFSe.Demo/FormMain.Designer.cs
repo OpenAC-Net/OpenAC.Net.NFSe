@@ -155,6 +155,7 @@ namespace OpenAC.Net.NFSe.Demo
             btnCarregar = new System.Windows.Forms.Button();
             lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
+            txtVersao = new System.Windows.Forms.TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabControl2.SuspendLayout();
@@ -671,6 +672,7 @@ namespace OpenAC.Net.NFSe.Demo
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(txtVersao);
             tabPage2.Controls.Add(btnEditCidade);
             tabPage2.Controls.Add(txtProvedor);
             tabPage2.Controls.Add(label7);
@@ -1575,6 +1577,16 @@ namespace OpenAC.Net.NFSe.Demo
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
+            // txtVersao
+            // 
+            txtVersao.BackColor = System.Drawing.SystemColors.Control;
+            txtVersao.Location = new System.Drawing.Point(160, 395);
+            txtVersao.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            txtVersao.Name = "txtVersao";
+            txtVersao.ReadOnly = true;
+            txtVersao.Size = new System.Drawing.Size(146, 23);
+            txtVersao.TabIndex = 51;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1755,6 +1767,7 @@ namespace OpenAC.Net.NFSe.Demo
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox txtWebserviceChavePrivada;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txtVersao;
     }
 }
 

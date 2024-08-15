@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -280,8 +279,7 @@ public partial class FormMain : Form, IOpenLog
             var certificates = store.Certificates.Find(X509FindType.FindByTimeValid, DateTime.Now, true)
                 .Find(X509FindType.FindByKeyUsage, X509KeyUsageFlags.DigitalSignature, false);
 
-            X509Certificate2Collection certificadosSelecionados;
-            certificadosSelecionados = X509Certificate2UI.SelectFromCollection(certificates, "Certificados Digitais",
+            var certificadosSelecionados = X509Certificate2UI.SelectFromCollection(certificates, "Certificados Digitais",
                 "Selecione o Certificado Digital para uso no aplicativo", X509SelectionFlag.SingleSelection);
 
             var certificado = certificadosSelecionados.Count < 1 ? null : certificadosSelecionados[0];
@@ -427,6 +425,7 @@ public partial class FormMain : Form, IOpenLog
         txtCodCidade.Text = municipio.Codigo.ToString();
         txtCodSiafi.Text = municipio.CodigoSiafi.ToString();
         txtProvedor.Text = municipio.Provedor.ToString();
+        txtVersao.Text = municipio.Versao.GetDFeValue();
 
         openNFSe.Configuracoes.WebServices.CodigoMunicipio = municipio.Codigo;
         openNFSe.Configuracoes.PrestadorPadrao.Endereco.Municipio = municipio.Nome;
@@ -436,7 +435,7 @@ public partial class FormMain : Form, IOpenLog
 
     private void txtCertificado_TextChanged(object sender, EventArgs e)
     {
-        if (txtNumeroSerie.Text.IsEmpty()) return;
+        if (txtCertificado.Text.IsEmpty()) return;
 
         txtNumeroSerie.Text = string.Empty;
         openNFSe.Configuracoes.Certificados.Certificado = txtCertificado.Text;
