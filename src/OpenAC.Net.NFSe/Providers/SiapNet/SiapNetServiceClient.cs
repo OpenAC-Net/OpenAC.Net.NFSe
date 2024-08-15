@@ -43,7 +43,7 @@ internal sealed class SiapNetServiceClient : NFSeSoapServiceClient, IServiceClie
 {
     #region Constructors
 
-    public SiapNetServiceClient(SiapNetProvider provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public SiapNetServiceClient(ProviderSiapNet provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
             
     }

@@ -132,6 +132,13 @@ public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
     /// <value>The provedor.</value>
     [DFeElement(TipoCampo.Enum, "Versao")]
     public VersaoNFSe Versao { get; set; }
+    
+    /// <summary>
+    /// Define ou retorna o CNPJ da prefeitura
+    /// </summary>
+    /// <value>The Prefeitura Cnpj.</value>
+    [DFeElement(TipoCampo.Str, "CnpjPrefeitura")]
+    public string CnpjPrefeitura { get; set; }
 
     /// <summary>
     /// Lista de url de homologação dos serviços.

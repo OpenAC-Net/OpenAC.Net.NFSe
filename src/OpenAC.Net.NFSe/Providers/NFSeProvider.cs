@@ -3,12 +3,12 @@
 // Author           : Rafael Dias
 // Created          : 07-30-2017
 //
-// Last Modified By : Fabio Dias
-// Last Modified On : 12-11-2021
+// Last Modified By : Rafael Dias
+// Last Modified On : 08-15-2024
 // ***********************************************************************
 // <copyright file="NFSeProvider.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		    Copyright (c) 2024 - 2023 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -38,11 +38,11 @@ public enum NFSeProvider : sbyte
 {
     Nenhum = -1,
 
-    Americana = 29,
-
     Abaco = 0,
 
     ABase = 39,
+    
+    Agili = 49,
 
     AssessorPublico = 33,
 
@@ -79,6 +79,8 @@ public enum NFSeProvider : sbyte
     ISSNet = 18,
 
     ISSSJP = 43,
+
+    Megasoft = 50,
 
     Mitra = 34,
 

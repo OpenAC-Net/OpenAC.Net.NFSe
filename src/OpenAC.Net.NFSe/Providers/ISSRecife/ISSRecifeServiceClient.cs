@@ -167,7 +167,7 @@ internal class ISSRecifeServiceClient : NFSeSoapServiceClient, IServiceClient
         var xmlRet = XDocument.Parse(EnvelopeRetorno);            
         var el = xmlRet.Descendants().FirstOrDefault(e => e.Name.LocalName == "outputXML");
 
-        return el.Value;
+        return el?.Value;
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

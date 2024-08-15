@@ -33,11 +33,11 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class SiapNetProvider : ProviderABRASF201
+internal sealed class ProviderSiapNet : ProviderABRASF201
 {
     #region Constructors
 
-    public SiapNetProvider(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public ProviderSiapNet(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "SiapNet";
     }

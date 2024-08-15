@@ -240,6 +240,14 @@
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSIntegra</PackagePath>
 		</None>
+		<None Update="Schemas\Agili\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Agili</PackagePath>
+		</None>
+		<None Update="Schemas\Megasoft\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Megasoft</PackagePath>
+		</None>
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -376,6 +384,12 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\ISSIntegra\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\Agili\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\Megasoft\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

@@ -557,6 +557,8 @@ public partial class FormMain : Form, IOpenLog
         nfSe.IdentificacaoRps.DataEmissao = DateTime.Now;
         nfSe.Competencia = DateTime.Now;
         nfSe.Situacao = SituacaoNFSeRps.Normal;
+        nfSe.OptanteSimplesNacional = NFSeSimNao.Sim;
+        nfSe.OptanteMEISimei = NFSeSimNao.Nao;
 
         // Setar a natureza de operação de acordo com o provedor.
         switch (municipio.Provedor)

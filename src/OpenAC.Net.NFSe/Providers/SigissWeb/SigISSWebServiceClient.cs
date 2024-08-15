@@ -46,7 +46,7 @@ public class SigISSWebServiceClient : NFSeRestServiceClient, IServiceClient
 
     #region Methods
 
-    public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, "application/xml");
+    public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, HttpContentType.Applicationxml);
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {

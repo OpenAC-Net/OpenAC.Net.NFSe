@@ -133,6 +133,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public RegimeEspecialTributacao RegimeEspecialTributacao { get; set; }
 
     public NFSeSimNao OptanteSimplesNacional { get; set; }
+    
+    public NFSeSimNao OptanteMEISimei { get; set; }
 
     public DateTime DataOptanteSimplesNacional { get; set; }
 

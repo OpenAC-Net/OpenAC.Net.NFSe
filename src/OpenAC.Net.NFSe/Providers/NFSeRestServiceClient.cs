@@ -114,7 +114,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
             var requestContent = new MultipartFormDataContent();
             var fileContent = new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio));
-            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/xml");
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(HttpContentType.Applicationxml);
 
             requestContent.Add(fileContent, "file", fileName);
 

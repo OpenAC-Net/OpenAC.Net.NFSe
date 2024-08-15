@@ -1,12 +1,12 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : Rafael Dias
-// Created          : 08-14-2024
+// Author           : Flávio Vodzinski
+// Created          : 04-24-2024
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 08-14-2024
+// Last Modified On : 08-15-2024
 // ***********************************************************************
-// <copyright file="ProviderPronim.cs" company="OpenAC .Net">
+// <copyright file="AgiliServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
@@ -29,39 +29,47 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.NFSe.Configuracao;
+using System;
+using System.Net.Http;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderPronim : ProviderABRASF
+internal class AgiliServiceClient : NFSeHttpServiceClient, IServiceClient
 {
     #region Constructors
 
-    public ProviderPronim(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public AgiliServiceClient(ProviderAgili provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
-        Name = "Pronim";
     }
 
     #endregion Constructors
 
     #region Methods
 
-    protected override string GerarCabecalho()
-    {
-        return "<tem:cabecalho versao=\"1.00\">" +
-               "<tem:versaoDados>1.00</tem:versaoDados>" +
-               "</tem:cabecalho>";
-    }
+    public string Enviar(string cabec, string msg) => Execute(msg);
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new PronimServiceClient(this, tipo, null);
+    public string EnviarSincrono(string cabec, string msg) => Execute(msg);
 
-    protected override void ValidarSchema(RetornoWebservice retorno, string schema)
+    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarLoteRps(string cabec, string msg) => Execute(msg);
+
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
+
+    public string ConsultarNFSeRps(string cabec, string msg) => Execute(msg);
+
+    public string ConsultarNFSe(string cabec, string msg) => Execute(msg);
+
+    public string CancelarNFSe(string cabec, string msg) => Execute(msg);
+
+    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
+
+    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
+
+    private string Execute(string msg)
     {
-        if(retorno is not RetornoEnviar)
-            base.ValidarSchema(retorno, schema);
-        
-        if(retorno.Erros.Count > 0) return;
-        retorno.XmlEnvio = retorno.XmlEnvio.Replace(" xmlns=\"http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd\"", "");
+        Execute(new StringContent(msg, Charset, HttpContentType.Applicationxml), HttpMethod.Post);
+        return EnvelopeRetorno;
     }
 
     #endregion Methods

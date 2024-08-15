@@ -50,10 +50,11 @@ public static class ProviderManager
 
     static ProviderManager()
     {
-        Municipios = new List<OpenMunicipioNFSe>();
+        Municipios = [];
         Providers = new Dictionary<NFSeProvider, Dictionary<VersaoNFSe, Type>>
         {
             {NFSeProvider.Abaco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAbaco)}}},
+            {NFSeProvider.Agili, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAgili)}}},
             {NFSeProvider.ABase, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderABase)}}},
             {NFSeProvider.AssessorPublico, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAssessorPublico)}}},
             {NFSeProvider.Betha, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSIntegra)}, {VersaoNFSe.ve202, typeof(ProviderBetha2)}}},
@@ -62,7 +63,7 @@ public static class ProviderManager
             {NFSeProvider.Conam, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderConam)}}},
             {NFSeProvider.Coplan, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderCoplan)}}},
             {NFSeProvider.DBSeller, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDBSeller)}}},
-            {NFSeProvider.DSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDSF100)}}},
+            {NFSeProvider.DSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDSF)}}},
             {NFSeProvider.Equiplano, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderEquiplano)}}},
             {NFSeProvider.Fiorilli, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderFiorilli200)}, {VersaoNFSe.ve201, typeof(ProviderFiorilli201)}}},
             {NFSeProvider.Fisco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderFisco)}}},
@@ -78,13 +79,14 @@ public static class ProviderManager
             {NFSeProvider.ISSRio, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSRio)}}},
             {NFSeProvider.ISSSaoPaulo, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSSaoPaulo)}}},
             {NFSeProvider.ISSVitoria, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderISSVitoria)}}},
+            {NFSeProvider.Megasoft, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderMegasoft)}}},
             {NFSeProvider.MetropolisWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderMetropolisWeb)}}},
             {NFSeProvider.Mitra, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderMitra)}}},
             {NFSeProvider.NFeCidades, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderNFeCidades)}}},
             {NFSeProvider.Pronim, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderPronim)},{VersaoNFSe.ve202, typeof(ProviderPronim202)}, {VersaoNFSe.ve203, typeof(ProviderPronim203)}}},
             {NFSeProvider.IISPortoVelho, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderISSPortoVelho)}}},
             {NFSeProvider.RLZ, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(RLZProvider)}}},
-            {NFSeProvider.SiapNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(SiapNetProvider)}}},
+            {NFSeProvider.SiapNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderSiapNet)}}},
             {NFSeProvider.SigISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISS100)}, {VersaoNFSe.ve103, typeof(ProviderSigISS103)}}},
             {NFSeProvider.SigISSWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISSWeb)}}},
             {NFSeProvider.SimplISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSimplISS100)}, {VersaoNFSe.ve203, typeof(ProviderSimplISS203)}}},
