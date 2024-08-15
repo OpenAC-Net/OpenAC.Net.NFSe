@@ -90,6 +90,14 @@ internal sealed class ProviderPronim203 : ProviderABRASF203
     {
         //NAO PRECISA ASSINAR
     }
+    
+    protected override void ValidarSchema(RetornoWebservice retorno, string schema)
+    {
+        base.ValidarSchema(retorno, schema);
+        if(retorno.Erros.Count > 0) return;
+
+        retorno.XmlEnvio = retorno.XmlEnvio.Replace(" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"", "");
+    }
  
     #endregion Methods
 }
