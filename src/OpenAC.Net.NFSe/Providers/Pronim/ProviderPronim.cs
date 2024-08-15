@@ -29,7 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System;
+using System.Linq;
+using System.Xml.Linq;
+using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -45,6 +50,39 @@ internal sealed class ProviderPronim : ProviderABRASF
     #endregion Constructors
 
     #region Methods
+
+    protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
+    {
+        // Analisa mensagem de retorno
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        MensagemErro(retornoWebservice, xmlRet.Root);
+        if (retornoWebservice.Erros.Count != 0) return;
+
+        var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("Cancelamento")?
+            .ElementAnyNs("Confirmacao");
+
+        if (confirmacaoCancelamento == null)
+        {
+            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
+            return;
+        }
+
+        retornoWebservice.Data = confirmacaoCancelamento.ElementAnyNs("DataHoraCancelamento")?.GetValue<DateTime>() ?? DateTime.MinValue;
+        retornoWebservice.Sucesso = retornoWebservice.Data != DateTime.MinValue;
+        retornoWebservice.CodigoCancelamento = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("InfPedidoCancelamento")
+            .ElementAnyNs("CodigoCancelamento").GetValue<string>();
+
+        var numeroNfSe = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("InfPedidoCancelamento")?
+            .ElementAnyNs("IdentificacaoNfse")?.ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
+
+        // Se a nota fiscal cancelada existir na coleção de Notas Fiscais, atualiza seu status:
+        var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == numeroNfSe);
+        if (nota == null) return;
+
+        nota.Situacao = SituacaoNFSeRps.Cancelado;
+        nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
+        nota.Cancelamento.DataHora = retornoWebservice.Data;
+    }
 
     protected override string GerarCabecalho()
     {
