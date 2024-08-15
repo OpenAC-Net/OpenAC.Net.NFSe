@@ -57,7 +57,7 @@ internal sealed class ProviderPronim : ProviderABRASF
 
     protected override void ValidarSchema(RetornoWebservice retorno, string schema)
     {
-        if(retorno is not RetornoEnviar)
+        if(retorno is not RetornoEnviar && retorno is not RetornoCancelar)
             base.ValidarSchema(retorno, schema);
         
         if(retorno.Erros.Count > 0) return;
