@@ -231,7 +231,15 @@
 		<None Include="Schemas\WebISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\WebISS</PackagePath>
-		</None>				
+		</None>
+		<None Update="Schemas\Sigep\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Sigep</PackagePath>
+		</None>
+		<None Update="Schemas\ISSIntegra\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\ISSIntegra</PackagePath>
+		</None>
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -363,20 +371,13 @@
 		</None>
 		<None Update="Schemas\WebISS\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>				
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <None Update="Schemas\ISSIntegra\1.00\nfse.xsd">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Schemas\ISSIntegra\1.00\xmldsig-core-schema20020212.xsd">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Folder Include="Schemas\Sigep\" />
+		</None>
+		<None Update="Schemas\Sigep\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\ISSIntegra\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>
