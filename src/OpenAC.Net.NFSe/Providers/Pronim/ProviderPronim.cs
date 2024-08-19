@@ -67,6 +67,7 @@ internal sealed class ProviderPronim : ProviderABRASF
             return;
         }
 
+        retornoWebservice.Sucesso = true;
         retornoWebservice.Data = confirmacaoCancelamento.ElementAnyNs("DataHoraCancelamento")?.GetValue<DateTime>() ?? DateTime.MinValue;
         retornoWebservice.Sucesso = retornoWebservice.Data != DateTime.MinValue;
         retornoWebservice.CodigoCancelamento = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("InfPedidoCancelamento")
@@ -84,12 +85,7 @@ internal sealed class ProviderPronim : ProviderABRASF
         nota.Cancelamento.DataHora = retornoWebservice.Data;
     }
 
-    protected override string GerarCabecalho()
-    {
-        return "<tem:cabecalho versao=\"1.00\">" +
-               "<tem:versaoDados>1.00</tem:versaoDados>" +
-               "</tem:cabecalho>";
-    }
+    protected override string GerarCabecalho() => "<tem:cabecalho versao=\"1.00\"><tem:versaoDados>1.00</tem:versaoDados></tem:cabecalho>";
 
     protected override IServiceClient GetClient(TipoUrl tipo) => new PronimServiceClient(this, tipo, null);
 

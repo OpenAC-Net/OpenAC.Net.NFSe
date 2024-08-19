@@ -1431,6 +1431,7 @@ public abstract class ProviderABRASF : ProviderBase
             return;
         }
 
+        retornoWebservice.Sucesso = true;
         retornoWebservice.Data = confirmacaoCancelamento.ElementAnyNs("DataHoraCancelamento")?.GetValue<DateTime>() ?? DateTime.MinValue;
         retornoWebservice.Sucesso = retornoWebservice.Data != DateTime.MinValue;
         retornoWebservice.CodigoCancelamento = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("InfPedidoCancelamento")
