@@ -53,7 +53,7 @@ public static class ProviderManager
         Municipios = [];
         Providers = new Dictionary<NFSeProvider, Dictionary<VersaoNFSe, Type>>
         {
-            {NFSeProvider.Abaco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAbaco)}}},
+            {NFSeProvider.Abaco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAbaco)},{VersaoNFSe.ve101, typeof(ProviderAbaco101)},{VersaoNFSe.ve204, typeof(ProviderAbaco204)}}},
             {NFSeProvider.Agili, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAgili)}}},
             {NFSeProvider.ABase, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderABase)}}},
             {NFSeProvider.AssessorPublico, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderAssessorPublico)}}},
