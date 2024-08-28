@@ -32,6 +32,7 @@
 
 using OpenAC.Net.DFe.Core;
 using System;
+using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 
@@ -46,6 +47,7 @@ public sealed class IPM101ServiceClient : NFSeMultiPartClient, IServiceClient
         Charset = OpenEncoding.CP1252;
         FileNameForm = "filename";
         UseFormAuth = false;
+        AuthenticationScheme  = AuthScheme.Basic;
     }
 
     #endregion Constructors

@@ -54,6 +54,8 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 
     #endregion Constructors
 
+    #region Properties
+
     protected string FileNameForm { get; set; } = "file";
     
     protected string UsuarioForm { get; set; } = "login";
@@ -62,20 +64,27 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 
     protected bool UseFormAuth { get; set; } = true;
 
+    #endregion Properties
+
     #region Methods
 
-    protected string Upload(string message)
+    protected string Upload(string message, string contentType = "text/xml")
     {
         var url = Url;
 
         try
         {
             EnvelopeEnvio = message;
-
-            var form = new MultipartFormDataContent
-            {
-                { new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio)), FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml" }
-            };
+            
+            var tempFile = Path.GetTempFileName();
+            File.WriteAllText(tempFile, EnvelopeEnvio);
+            using var fileStream = new FileStream(tempFile, FileMode.Open);
+            
+            var content = new StreamContent(fileStream);
+            content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+            
+            using var form = new MultipartFormDataContent();
+            form.Add(content, FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
 
             if (UseFormAuth)
             {

@@ -54,6 +54,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
     {
         [DFeEnum("Basic")]
         Basic,
+        
         [DFeEnum("Bearer")]
         Bearer,
     }
@@ -201,7 +202,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
             var request = new HttpRequestMessage(method, Url);
 
             var assemblyName = GetType().Assembly.GetName();
-            var productValue = new ProductInfoHeaderValue(assemblyName.Name, assemblyName.Version.ToString());
+            var productValue = new ProductInfoHeaderValue(assemblyName.Name!, assemblyName.Version!.ToString());
             var commentValue = new ProductInfoHeaderValue("(+https://github.com/OpenAC-Net/OpenAC.Net.NFSe)");
 
             request.Headers.UserAgent.Add(productValue);
