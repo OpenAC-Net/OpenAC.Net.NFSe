@@ -37,6 +37,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -107,6 +108,6 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
             Url = url;
         }
     }
-
+    
     #endregion Methods
 }

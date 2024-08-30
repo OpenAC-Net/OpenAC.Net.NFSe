@@ -41,6 +41,7 @@ public class IPM100ServiceClient : NFSeMultiPartClient, IServiceClient
     public IPM100ServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
         UseFormAuth = true;
+        FileNameForm = "f1";
     }
 
     #endregion Constructors
