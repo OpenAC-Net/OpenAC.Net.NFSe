@@ -51,6 +51,8 @@ public class IPM100ServiceClient : NFSeMultiPartClient, IServiceClient
     public string EnviarSincrono(string cabec, string msg) => Upload(msg);
 
     public string ConsultarLoteRps(string cabec, string msg) => Upload(msg);
+    
+    public string ConsultarNFSe(string cabec, string msg) => Upload(msg);
 
     public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
@@ -61,8 +63,6 @@ public class IPM100ServiceClient : NFSeMultiPartClient, IServiceClient
     public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
 
     public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
-
-    public string ConsultarNFSe(string cabec, string msg) => Upload(msg);
 
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
 

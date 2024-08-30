@@ -54,13 +54,13 @@ public sealed class IPM101ServiceClient : NFSeMultiPartClient, IServiceClient
 
     #region Methods
 
-    public string EnviarSincrono(string cabec, string msg) => Upload(msg);
+    public string EnviarSincrono(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
 
-    public string ConsultarLoteRps(string cabec, string msg) => Upload(msg);
+    public string ConsultarLoteRps(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
+    
+    public string CancelarNFSe(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
 
     public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
-
-    public string CancelarNFSe(string cabec, string msg) => Upload(msg);
 
     public string Enviar(string cabec, string msg) => throw new NotImplementedException();
 

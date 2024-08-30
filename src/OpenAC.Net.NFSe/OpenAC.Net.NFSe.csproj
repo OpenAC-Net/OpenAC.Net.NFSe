@@ -29,6 +29,7 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>OpenAC.Net.NFSe</PackageId>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>	
 
 	<ItemGroup>

@@ -43,6 +43,17 @@ namespace OpenAC.Net.NFSe.Providers;
 
 public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 {
+    #region Inner Types
+
+    protected enum SendFormat
+    {
+        Text,
+        Binary,
+        File
+    }
+
+    #endregion  Inner Types
+    
     #region Constructors
 
     protected NFSeMultiPartClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
@@ -69,23 +80,31 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 
     #region Methods
 
-    protected string Upload(string message, string contentType = "text/xml")
+    protected string Upload(string message, string contentType = "text/xml", SendFormat sendFormat = SendFormat.Text)
     {
         var url = Url;
 
         try
         {
             EnvelopeEnvio = message;
+            HttpContent content = sendFormat switch
+            {
+                SendFormat.Text => new StringContent(EnvelopeEnvio),
+                SendFormat.Binary => new ByteArrayContent(Encoding.UTF8.GetBytes(EnvelopeEnvio)),
+                SendFormat.File => new StreamContent(GetFileStream(message)),
+                _ => throw new ArgumentException("Formato de envio inválido", nameof(sendFormat))
+            };
             
-            var tempFile = Path.GetTempFileName();
-            File.WriteAllText(tempFile, EnvelopeEnvio);
-            using var fileStream = new FileStream(tempFile, FileMode.Open);
-            
-            var content = new StreamContent(fileStream);
             content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-            
+
             using var form = new MultipartFormDataContent();
-            form.Add(content, FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
+            form.Add(new StringContent(EnvelopeEnvio), FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
+
+            if (content is ByteArrayContent arrayContent)
+            {
+                arrayContent.Headers.Add("Content-Transfer-Encoding", "binary");
+                arrayContent.Headers.ContentEncoding.Add("Cp1252");
+            }
 
             if (UseFormAuth)
             {
@@ -107,6 +126,13 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
         {
             Url = url;
         }
+    }
+    
+    private static FileStream GetFileStream(string message)
+    {
+        var tempFile = Path.GetTempFileName();
+        File.WriteAllText(tempFile, message);
+        return new FileStream(tempFile, FileMode.Open);
     }
     
     #endregion Methods

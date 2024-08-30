@@ -62,7 +62,7 @@ internal sealed class ProviderSimplISS100 : ProviderABRASF
         var items = rootServico.ElementsAnyNs("ItensServico");
         foreach (var item in items)
         {
-            var servico = nota.Servico.ItensServico.AddNew();
+            var servico = nota.Servico.ItemsServico.AddNew();
             servico.Descricao = item.ElementAnyNs("Descricao")?.GetValue<string>() ?? "";
             servico.Quantidade = item.ElementAnyNs("Quantidade")?.GetValue<decimal>() ?? 0;
             servico.ValorUnitario = item.ElementAnyNs("ValorUnitario")?.GetValue<decimal>() ?? 0;
@@ -104,7 +104,7 @@ internal sealed class ProviderSimplISS100 : ProviderABRASF
         servico.AddChild(AdicionarTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
         servico.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "CodigoMunicipio", 1, 7, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
 
-        foreach (var item in nota.Servico.ItensServico)
+        foreach (var item in nota.Servico.ItemsServico)
         {
             var itemServico = new XElement("ItensServico");
             itemServico.AddChild(AdicionarTag(TipoCampo.Str, "", "Descricao", 1, 100, Ocorrencia.Obrigatoria, item.Descricao));

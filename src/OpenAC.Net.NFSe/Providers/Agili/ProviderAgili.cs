@@ -407,7 +407,7 @@ internal class ProviderAgili : ProviderABRASF
         var xmlLote = new StringBuilder();
         xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xmlLote.Append($"<GerarNfseEnvio {GetNamespace()}>");
-        xmlLote.Append($"<UnidadeGestora>{Municipio.CnpjPrefeitura}</UnidadeGestora>");
+        xmlLote.Append($"<UnidadeGestora>{Municipio.Parametros["UnidadeGestora"]}</UnidadeGestora>");
         xmlLote.Append(xmlLoteRps);
 
         xmlLote.Append("</GerarNfseEnvio>");
@@ -438,7 +438,7 @@ internal class ProviderAgili : ProviderABRASF
         var xmlLote = new StringBuilder();
         xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xmlLote.Append($"<EnviarLoteRpsEnvio {GetNamespace()}>");
-        xmlLote.Append($"<UnidadeGestora>{Municipio.CnpjPrefeitura}</UnidadeGestora>");
+        xmlLote.Append($"<UnidadeGestora>{Municipio.Parametros["UnidadeGestora"]}</UnidadeGestora>");
         xmlLote.Append("<LoteRps>");
         xmlLote.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
         xmlLote.Append("<IdentificacaoPrestador>");
@@ -501,7 +501,7 @@ internal class ProviderAgili : ProviderABRASF
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteBuilder.Append($"<CancelarNfseEnvio {GetNamespace()}>");
-        loteBuilder.Append($"<UnidadeGestora>{Municipio.CnpjPrefeitura}</UnidadeGestora>");
+        loteBuilder.Append($"<UnidadeGestora>{Municipio.Parametros["UnidadeGestora"]}</UnidadeGestora>");
         loteBuilder.Append("<PedidoCancelamento>");
         loteBuilder.Append("<IdentificacaoNfse>");
         loteBuilder.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");

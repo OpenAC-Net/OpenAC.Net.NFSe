@@ -78,33 +78,11 @@ public sealed class Servico : GenericClone<Servico>, INotifyPropertyChanged
 
     public decimal BaseCalculo { get; set; }
 
-    public decimal DescontoCondicionado { get; set; }
-
-    public decimal DescontoIncondicionado { get; set; }
-
     public string Discriminacao { get; set; }
 
+    public string MunicipioIncidencia { get; set; }
+
     public NFSeSimNao Tributavel { get; set; }
-
-    public decimal ValorPis { get; set; }
-
-    public decimal ValorCofins { get; set; }
-
-    public decimal ValorInss { get; set; }
-
-    public decimal ValorIr { get; set; }
-
-    public decimal ValorCsll { get; set; }
-
-    public string CodServ { get; set; }
-
-    public string CodLcServ { get; set; }
-
-    public string Unidade { get; set; }
-
-    public decimal AlicotaIssst { get; set; }
-
-    public decimal ValorIssst { get; set; }
 
     #endregion Propriedades
 }

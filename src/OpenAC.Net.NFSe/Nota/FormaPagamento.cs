@@ -37,5 +37,8 @@ public enum FormaPagamento
     NaApresentacao,
     APrazo,
     CartaoCredito,
-    CartaoDebito
+    CartaoDebito,
+    Deposito,
+    Cheque,
+    PIX
 }

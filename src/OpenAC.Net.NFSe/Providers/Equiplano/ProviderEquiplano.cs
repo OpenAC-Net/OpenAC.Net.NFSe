@@ -112,7 +112,7 @@ internal sealed class ProviderEquiplano : ProviderBase
                 }
             case "3":
                 {
-                    ret.Tomador.DocTomadorEstrangeiro = documento.ElementAnyNs("nrDocumento")?.GetValue<string>();
+                    ret.Tomador.DocEstrangeiro = documento.ElementAnyNs("nrDocumento")?.GetValue<string>();
                     break;
                 }
         }
@@ -331,9 +331,9 @@ internal sealed class ProviderEquiplano : ProviderBase
     private XElement WriteValoresServicos(NotaServico nota)
     {
         var listaServicos = new XElement("listaServicos");
-        if (nota.Servico.ItensServico.Count > 0)
+        if (nota.Servico.ItemsServico.Count > 0)
         {
-            foreach (var servicoItem in nota.Servico.ItensServico)
+            foreach (var servicoItem in nota.Servico.ItemsServico)
             {
                 var iSerItem = 0;
                 var iSerSubItem = 0;
@@ -455,7 +455,7 @@ internal sealed class ProviderEquiplano : ProviderBase
     private XElement WriteTomadorRps(NotaServico nota)
     {
         string sTpDoc;
-        if (!string.IsNullOrEmpty(nota.Tomador.DocTomadorEstrangeiro))
+        if (!string.IsNullOrEmpty(nota.Tomador.DocEstrangeiro))
             sTpDoc = "3"; // Estrangeiro
         else if (nota.Tomador.CpfCnpj.IsCNPJ())
             sTpDoc = "2"; // CNPJ
@@ -466,8 +466,8 @@ internal sealed class ProviderEquiplano : ProviderBase
         var documento = new XElement("documento");
         documento.AddChild(AdicionarTagCNPJCPF("", "nrDocumento", "nrDocumento", nota.Tomador.CpfCnpj));
         documento.AddChild(AdicionarTag(TipoCampo.Int, "", "tpDocumento", 1, 1, Ocorrencia.Obrigatoria, sTpDoc));
-        if (!nota.Tomador.DocTomadorEstrangeiro.IsEmpty())
-            documento.AddChild(AdicionarTag(TipoCampo.Str, "", "dsDocumentoEstrangeiro", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.DocTomadorEstrangeiro));
+        if (!nota.Tomador.DocEstrangeiro.IsEmpty())
+            documento.AddChild(AdicionarTag(TipoCampo.Str, "", "dsDocumentoEstrangeiro", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.DocEstrangeiro));
         tomador.Add(documento);
 
         tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "nmTomador", 1, 80, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
@@ -489,7 +489,7 @@ internal sealed class ProviderEquiplano : ProviderBase
         if (!nota.Tomador.Endereco.Uf.IsEmpty())
             tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "nmUf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
 
-        if (!nota.Tomador.DocTomadorEstrangeiro.IsEmpty())
+        if (!nota.Tomador.DocEstrangeiro.IsEmpty())
             tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "nmCidadeEstrangeira", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Municipio));
 
         if (!nota.Tomador.Endereco.Pais.IsEmpty())
