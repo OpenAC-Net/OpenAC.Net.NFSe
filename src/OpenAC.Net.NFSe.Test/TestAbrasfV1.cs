@@ -1,5 +1,4 @@
-﻿using System;
-using OpenAC.Net.NFSe.Nota;
+﻿using OpenAC.Net.NFSe.Nota;
 using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;

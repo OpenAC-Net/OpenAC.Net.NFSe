@@ -29,7 +29,6 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
 using System.Collections.Generic;
 using OpenAC.Net.DFe.Core.Attributes;
 using OpenAC.Net.DFe.Core.Common;
@@ -77,6 +76,8 @@ public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
             { TipoUrl.SubstituirNFSe, string.Empty },
             { TipoUrl.Autenticacao, string.Empty }
         };
+
+        Parametros = new Dictionary<string, string?>();
     }
 
     #endregion Constructors
@@ -136,24 +137,24 @@ public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
     [DFeDictionary("Parametros")]
     [DFeDictionaryKey(TipoCampo.Str, "Id")]
     [DFeDictionaryValue(TipoCampo.Str, "Parametro")]
-    public Dictionary<string, string?> Parametros { get; set; } = [];
+    public Dictionary<string, string?> Parametros { get; set; }
 
     /// <summary>
     /// Lista de url de homologação dos serviços.
     /// </summary>
     /// <value>The URL homologacao.</value>
-    [DFeDictionary("UrlHomologacao", ItemName = "Item")]
-    [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
+    [DFeDictionary("UrlHomologacao", "Item")]
     [DFeDictionaryValue(TipoCampo.Str, "Url")]
+    [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", false)]
     public Dictionary<TipoUrl, string> UrlHomologacao { get; set; }
 
     /// <summary>
     /// Lista de url de produção dos serviços.
     /// </summary>
     /// <value>The URL producao.</value>
-    [DFeDictionary("UrlProducao", ItemName = "Item")]
-    [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", AsAttribute = false)]
+    [DFeDictionary("UrlProducao", "Item")]
     [DFeDictionaryValue(TipoCampo.Str, "Url")]
+    [DFeDictionaryKey(TipoCampo.Enum, "TipoUrl", false)]
     public Dictionary<TipoUrl, string> UrlProducao { get; set; }
 
     #endregion Propriedades

@@ -34,6 +34,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -47,10 +48,20 @@ internal class ProviderAgili : ProviderABRASF
     public ProviderAgili(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "Agili";
+        if(!Municipio.Parametros.TryGetValue(nameof(UnidadeGestora), out var value) || value.IsEmpty())
+            throw new OpenDFeException($"Este provedor precisa que seja informado o parâmetro {nameof(UnidadeGestora)}.");
+
+        UnidadeGestora = value ?? "";
     }
 
     #endregion Constructors
 
+    #region Properties
+
+    public string UnidadeGestora { get; }
+
+    #endregion Properties
+    
     #region Methods
 
     protected virtual XElement WriteIdentificacaoPrestador(NotaServico nota)
@@ -61,11 +72,11 @@ internal class ProviderAgili : ProviderABRASF
 
         var cpfCnpj = new XElement("CpfCnpj");
 
-        cpfCnpj.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", Configuracoes.PrestadorPadrao.CpfCnpj));
+        cpfCnpj.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Prestador.CpfCnpj));
 
         identificacaoPrestador.Add(cpfCnpj);
         identificacaoPrestador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 32,
-            Ocorrencia.Obrigatoria, Configuracoes.PrestadorPadrao.InscricaoMunicipal));
+            Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal));
 
         return identificacaoPrestador;
     }
@@ -407,7 +418,7 @@ internal class ProviderAgili : ProviderABRASF
         var xmlLote = new StringBuilder();
         xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xmlLote.Append($"<GerarNfseEnvio {GetNamespace()}>");
-        xmlLote.Append($"<UnidadeGestora>{Municipio.Parametros["UnidadeGestora"]}</UnidadeGestora>");
+        xmlLote.Append($"<UnidadeGestora>{UnidadeGestora}</UnidadeGestora>");
         xmlLote.Append(xmlLoteRps);
 
         xmlLote.Append("</GerarNfseEnvio>");
@@ -438,7 +449,7 @@ internal class ProviderAgili : ProviderABRASF
         var xmlLote = new StringBuilder();
         xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xmlLote.Append($"<EnviarLoteRpsEnvio {GetNamespace()}>");
-        xmlLote.Append($"<UnidadeGestora>{Municipio.Parametros["UnidadeGestora"]}</UnidadeGestora>");
+        xmlLote.Append($"<UnidadeGestora>{UnidadeGestora}</UnidadeGestora>");
         xmlLote.Append("<LoteRps>");
         xmlLote.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
         xmlLote.Append("<IdentificacaoPrestador>");
@@ -501,7 +512,7 @@ internal class ProviderAgili : ProviderABRASF
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteBuilder.Append($"<CancelarNfseEnvio {GetNamespace()}>");
-        loteBuilder.Append($"<UnidadeGestora>{Municipio.Parametros["UnidadeGestora"]}</UnidadeGestora>");
+        loteBuilder.Append($"<UnidadeGestora>{UnidadeGestora}</UnidadeGestora>");
         loteBuilder.Append("<PedidoCancelamento>");
         loteBuilder.Append("<IdentificacaoNfse>");
         loteBuilder.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");
