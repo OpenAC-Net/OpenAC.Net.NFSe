@@ -106,7 +106,9 @@ internal class ProviderIPM100 : ProviderBase
             }
         }
 
-        nfse.AddChild(GerarIdentificacaoRps(nota));
+        var identificacao = GerarIdentificacaoRps(nota);
+        if (identificacao != null)
+            nfse.AddChild(identificacao);
         nfse.AddChild(GerarValoresServico(nota));
         nfse.AddChild(GerarPrestador(nota));
         nfse.AddChild(GerarTomador(nota));
@@ -302,23 +304,27 @@ internal class ProviderIPM100 : ProviderBase
                 item.Descricao.IsEmpty() ? nota.Servico.Discriminacao : item.Descricao));
 
             if (item.Aliquota == 0)
-                lista.AddChild(AdicionarTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15, Ocorrencia.Obrigatoria,
+                lista.AddChild(AdicionarTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
+                    Ocorrencia.Obrigatoria,
                     nota.Servico.Valores.Aliquota));
             else
-                lista.AddChild(AdicionarTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15, Ocorrencia.Obrigatoria,
+                lista.AddChild(AdicionarTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
+                    Ocorrencia.Obrigatoria,
                     item.Aliquota));
 
             if (nota.Servico.Valores.ValorDeducoes <= 0)
             {
-                lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal ?
-                    AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "01" : "00") :
-                    AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
+                lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                    ? AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                        nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "01" : "00")
+                    : AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
             }
             else
             {
-                lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal ?
-                    AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "04" : "03") :
-                    AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
+                lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                    ? AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                        nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "04" : "03")
+                    : AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
             }
 
             lista.AddChild(AdicionarTag(TipoCampo.De2, "#", "valor_tributavel", 1, 15, Ocorrencia.NaoObrigatoria,
@@ -327,7 +333,7 @@ internal class ProviderIPM100 : ProviderBase
             lista.AddChild(AdicionarTag(TipoCampo.De2, "#", "valor_deducao", 1, 15, Ocorrencia.NaoObrigatoria,
                 item.ValorDeducoes));
 
-            lista.AddChild(AdicionarTag(TipoCampo.De2, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria, 
+            lista.AddChild(AdicionarTag(TipoCampo.De2, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
                 nota.Servico.Valores.IssRetido != SituacaoTributaria.Normal ? item.ValorIss : 0));
         }
 
@@ -353,10 +359,11 @@ internal class ProviderIPM100 : ProviderBase
             FormaPagamento.PIX => "8",
             _ => throw new OpenException("Forma de pagamento invalida")
         };
-        
-        formaPagamento.AddChild(AdicionarTag(TipoCampo.Str, "#1", "tipo_pagamento", 1, 1, Ocorrencia.Obrigatoria, forma));
+
+        formaPagamento.AddChild(
+            AdicionarTag(TipoCampo.Str, "#1", "tipo_pagamento", 1, 1, Ocorrencia.Obrigatoria, forma));
         if (nota.Pagamento.Parcelas.Count <= 0) return formaPagamento;
-        
+
         var parcelas = new XElement("parcelas");
         formaPagamento.AddChild(parcelas);
 
@@ -364,7 +371,7 @@ internal class ProviderIPM100 : ProviderBase
         {
             var parcela = new XElement("parcela");
             parcelas.AddChild(parcela);
-                
+
             parcela.AddChild(AdicionarTag(TipoCampo.Str, "#", "numero", 1, 2, Ocorrencia.Obrigatoria,
                 item.Parcela));
 
@@ -372,7 +379,7 @@ internal class ProviderIPM100 : ProviderBase
                 item.Valor));
 
             parcela.AddChild(AdicionarTag(TipoCampo.Str, "#", "data_vencimento", 10, 10, Ocorrencia.Obrigatoria,
-                FormataData(item.DataVencimento)));  
+                FormataData(item.DataVencimento)));
         }
 
         return formaPagamento;
@@ -393,7 +400,7 @@ internal class ProviderIPM100 : ProviderBase
     public override NotaServico LoadXml(XDocument? xml)
     {
         Guard.Against<XmlException>(xml == null, "Xml invalido.");
-        var notaXml = xml.ElementAnyNs("nfse");
+        var notaXml = xml?.ElementAnyNs("nfse");
         Guard.Against<XmlException>(notaXml == null, "Xml de RPS ou NFSe invalido.");
 
         var nota = new NotaServico(Configuracoes)
@@ -402,83 +409,131 @@ internal class ProviderIPM100 : ProviderBase
             {
                 // Nota Fiscal
                 Numero = notaXml.ElementAnyNs("nf").ElementAnyNs("numero_nfse")?.GetValue<string>() ?? string.Empty,
-                Chave = notaXml.ElementAnyNs("nf").ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ?? string.Empty,
-                DataEmissao = DateTime.Parse(notaXml.ElementAnyNs("nf").ElementAnyNs("data_nfse")?.GetValue<string>() + " " + notaXml.ElementAnyNs("nf").ElementAnyNs("hora_nfse")?.GetValue<string>())
+                Chave = notaXml.ElementAnyNs("nf").ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ??
+                        string.Empty,
+                DataEmissao = DateTime.Parse(notaXml.ElementAnyNs("nf").ElementAnyNs("data_nfse")?.GetValue<string>() +
+                                             " " + notaXml.ElementAnyNs("nf").ElementAnyNs("hora_nfse")
+                                                 ?.GetValue<string>())
             }
         };
 
         if (notaXml.ElementAnyNs("rps") != null)
         {
             // RPS
-            nota.IdentificacaoRps.Numero = notaXml.ElementAnyNs("rps")?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>() ?? string.Empty;
-            nota.IdentificacaoRps.Serie = notaXml.ElementAnyNs("rps")?.ElementAnyNs("serie_recibo_provisorio")?.GetValue<string>() ?? string.Empty;
+            nota.IdentificacaoRps.Numero =
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>() ?? string.Empty;
+            nota.IdentificacaoRps.Serie =
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("serie_recibo_provisorio")?.GetValue<string>() ??
+                string.Empty;
             nota.IdentificacaoRps.Tipo = TipoRps.RPS;
-            nota.IdentificacaoRps.DataEmissao = DateTime.Parse(notaXml.ElementAnyNs("rps")?.ElementAnyNs("data_emissao_recibo_provisorio")?.GetValue<string>() + " " + notaXml.ElementAnyNs("rps")?.ElementAnyNs("hora_emissao_recibo_provisorio")?.GetValue<string>());
+            nota.IdentificacaoRps.DataEmissao = DateTime.Parse(
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("data_emissao_recibo_provisorio")?.GetValue<string>() + " " +
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("hora_emissao_recibo_provisorio")?.GetValue<string>());
         }
 
         if (string.IsNullOrEmpty(nota.IdentificacaoRps.Numero))
         {
             nota.IdentificacaoRps.Numero = notaXml.ElementAnyNs("identificacao")?.GetValue<string>() ?? string.Empty;
-            nota.IdentificacaoRps.Serie = notaXml.ElementAnyNs("nf")?.ElementAnyNs("serie_nfse")?.GetValue<string>() ?? string.Empty;
+            nota.IdentificacaoRps.Serie = notaXml.ElementAnyNs("nf")?.ElementAnyNs("serie_nfse")?.GetValue<string>() ??
+                                          string.Empty;
             nota.IdentificacaoRps.DataEmissao = nota.IdentificacaoNFSe.DataEmissao;
         }
 
         // Situação do RPS
-        nota.Situacao = (notaXml.ElementAnyNs("nf")?.ElementAnyNs("situacao_codigo_nfse")?.GetValue<string>() ?? string.Empty) == "2" ? SituacaoNFSeRps.Cancelado : SituacaoNFSeRps.Normal;
+        nota.Situacao =
+            (notaXml.ElementAnyNs("nf")?.ElementAnyNs("situacao_codigo_nfse")?.GetValue<string>() ?? string.Empty) ==
+            "2"
+                ? SituacaoNFSeRps.Cancelado
+                : SituacaoNFSeRps.Normal;
 
         // Serviços e Valores
-        nota.Servico.Valores.ValorDeducoes = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("valor_deducao")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.ValorPis = decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_pis")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.ValorCofins = decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_cofins")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.ValorInss = decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_inss")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.ValorIr = decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_ir")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.ValorCsll = decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_contribuicao_social")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorDeducoes = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("valor_deducao")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorPis =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_pis")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorCofins =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_cofins")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorInss =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_inss")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorIr =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_ir")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorCsll =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_contribuicao_social")?.GetValue<string>() ??
+                          "0");
 
-        var codSituacaoTributaria = notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("situacao_tributaria")?.GetValue<string>();
-        nota.Servico.Valores.IssRetido = codSituacaoTributaria == "2" || codSituacaoTributaria == "5" ? SituacaoTributaria.Retencao : SituacaoTributaria.Normal;
+        var codSituacaoTributaria = notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("situacao_tributaria")?.GetValue<string>();
+        nota.Servico.Valores.IssRetido = codSituacaoTributaria == "2" || codSituacaoTributaria == "5"
+            ? SituacaoTributaria.Retencao
+            : SituacaoTributaria.Normal;
 
-        nota.Servico.Valores.ValorIss = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("valor_issrf")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.BaseCalculo = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("valor_tributavel")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.Aliquota = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("aliquota_item_lista_servico")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.ValorLiquidoNfse = decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_total")?.GetValue<string>() ?? "0");
-        nota.Servico.Valores.ValorIssRetido = nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? nota.Servico.Valores.ValorIss : 0;
-        nota.Servico.ItemListaServico = notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("codigo_item_lista_servico")?.GetValue<string>() ?? string.Empty;
-        nota.Servico.Discriminacao = notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("descritivo")?.GetValue<string>() ?? string.Empty;
+        nota.Servico.Valores.ValorIss = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("valor_issrf")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.BaseCalculo = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("valor_tributavel")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.Aliquota = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("aliquota_item_lista_servico")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorLiquidoNfse =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_total")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorIssRetido = nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao
+            ? nota.Servico.Valores.ValorIss
+            : 0;
+        nota.Servico.ItemListaServico =
+            notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("codigo_item_lista_servico")
+                ?.GetValue<string>() ?? string.Empty;
+        nota.Servico.Discriminacao =
+            notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("descritivo")?.GetValue<string>() ??
+            string.Empty;
 
         nota.Servico.Valores.ValorServicos = nota.Servico.Valores.BaseCalculo + nota.Servico.Valores.ValorDeducoes;
 
         // Prestador
-        nota.Prestador.CpfCnpj = notaXml.ElementAnyNs("prestador")?.ElementAnyNs("cpfcnpj")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.CpfCnpj = notaXml.ElementAnyNs("prestador")?.ElementAnyNs("cpfcnpj")?.GetValue<string>() ??
+                                 string.Empty;
 
         // Tomador
-        nota.Tomador.CpfCnpj = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cpfcnpj")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.RazaoSocial = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("nome_razao_social")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.NomeFantasia = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("sobrenome_nome_fantasia")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Logradouro = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("logradouro")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Numero = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("numero_residencia")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Complemento = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("complemento")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Bairro = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("bairro")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Cep = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cep")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Municipio = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cidade")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Uf = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("estado")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Pais = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("pais")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.CpfCnpj =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cpfcnpj")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.RazaoSocial =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("nome_razao_social")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.NomeFantasia =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("sobrenome_nome_fantasia")?.GetValue<string>() ??
+            string.Empty;
+        nota.Tomador.Endereco.Logradouro =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("logradouro")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Numero =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("numero_residencia")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Complemento =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("complemento")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Bairro =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("bairro")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Cep =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cep")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Municipio = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cidade")?.GetValue<string>() ??
+                                          string.Empty;
+        nota.Tomador.Endereco.Uf =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("estado")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Pais =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("pais")?.GetValue<string>() ?? string.Empty;
 
         return nota;
     }
 
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (Municipio.CodigoSiafi == 0) 
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Faltou informar o codigo Siafi(codigo tom) no cadastro de cidades" });
+        if (Municipio.CodigoSiafi == 0)
+            retornoWebservice.Erros.Add(new Evento
+                { Codigo = "0", Descricao = "Faltou informar o codigo Siafi(codigo tom) no cadastro de cidades" });
 
         switch (notas.Count)
         {
             case 0:
                 retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
                 break;
-            
+
             case > 1:
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Este provedor aceita apenas uma RPS por vez" });
+                retornoWebservice.Erros.Add(new Evento
+                    { Codigo = "0", Descricao = "Este provedor aceita apenas uma RPS por vez" });
                 break;
         }
 
@@ -487,7 +542,8 @@ internal class ProviderIPM100 : ProviderBase
         var nota = notas[0];
         var xmlRps = WriteXmlRps(nota);
 
-        GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
+        GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml",
+            nota.IdentificacaoRps.DataEmissao);
 
         retornoWebservice.XmlEnvio = xmlRps;
     }
@@ -496,12 +552,112 @@ internal class ProviderIPM100 : ProviderBase
     {
         retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "nfse", "", Certificado);
     }
-    
+
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if (retornoWebservice.XmlRetorno.IsValidXml())
+            {
+                retornoWebservice.Erros.Add(new Evento
+                {
+                    Codigo = "999",
+                    Correcao = string.Empty,
+                    Descricao = "Erro no xml de retorno inválido."
+                });
+
+                return;
+            }
+
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+            var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
+            if (mensagens != null)
+            {
+                foreach (var item in mensagens.Elements())
+                {
+                    var erro = item.GetValue<string>();
+                    retornoWebservice.Erros.Add(new Evento
+                    {
+                        Codigo = erro.Substring(0, 5),
+                        Correcao = string.Empty,
+                        Descricao = erro
+                    });
+                }
+                
+                return;
+            }
+
+            var nfse = xmlRet.Root?.ElementAnyNs("nfse");
+            if (nfse == null)
+            {
+                retornoWebservice.Erros.Add(new Evento
+                {
+                    Codigo = "999",
+                    Correcao = string.Empty,
+                    Descricao = "Erro no xml de retorno, elemento nfse não encontrado."
+                });
+
+                return;
+            }
+
+            retornoWebservice.Protocolo = nfse.ElementAnyNs("rps")
+                .ElementAnyNs("nro_recibo_provisorio")
+                .GetValue<string>();
+
+            if (retornoWebservice.Protocolo.IsEmpty())
+                retornoWebservice.Protocolo = nfse.ElementAnyNs("identificador").GetValue<string>();
+
+            retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
+
+            retornoWebservice.Data = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nfse")
+                .ElementAnyNs("nf")
+                .ElementAnyNs("data_nfse")
+                .GetValue<string>() ?? "");
+
+            var numeroNfSe =
+                xmlRet.Root?.ElementAnyNs("nfse")
+                    .ElementAnyNs("nf")
+                    .ElementAnyNs("numero_nfse")
+                    .GetValue<string>() ?? string.Empty;
+            var dataNfSe =
+                DateTime.Parse(
+                    xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")
+                        .GetValue<string>() + " " + xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")
+                        .ElementAnyNs("hora_nfse")?.GetValue<string>());
+            var chaveNfSe =
+                xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("cod_verificador_autenticidade")
+                    ?.GetValue<string>() ?? string.Empty;
+            var numeroRps = xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("rps")
+                ?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
+
+            if (string.IsNullOrEmpty(numeroRps))
+                numeroRps = xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("identificador")?.GetValue<string>();
+
+            GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
+
+            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+            if (nota == null)
+            {
+                notas.Load(retornoWebservice.XmlRetorno);
+            }
+            else
+            {
+                nota.IdentificacaoNFSe.Chave = chaveNfSe;
+                nota.IdentificacaoNFSe.Numero = numeroNfSe;
+                nota.XmlOriginal = retornoWebservice.XmlRetorno;
+            }
+        }
+        catch (Exception e)
+        {
+            retornoWebservice.Erros.Add(new Evento
+            {
+                Codigo = $"999 - {nameof(e)}",
+                Correcao = "",
+                Descricao = e.Message
+            });
+        }
     }
-    
+
     protected override void PrepararConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
     {
         var message = new StringBuilder();
@@ -512,19 +668,25 @@ internal class ProviderIPM100 : ProviderBase
         message.Append("</nfse>");
         retornoWebservice.XmlEnvio = message.ToString();
     }
-    
+
     protected override void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice)
     {
         // Ignore
     }
-    
-    protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
+
+    protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice,
+        NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        
-        var numeroNfSe = xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("numero_nfse")?.GetValue<string>() ?? string.Empty;
-        var dataNFSe = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")?.GetValue<string>() + " " + xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("hora_nfse")?.GetValue<string>());
-        var chaveNFSe = xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ?? string.Empty;
+
+        var numeroNfSe = xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("numero_nfse")?.GetValue<string>() ??
+                         string.Empty;
+        var dataNfSe = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")?.GetValue<string>() +
+                                      " " + xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("hora_nfse")
+                                          ?.GetValue<string>());
+        var chaveNfSe =
+            xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ??
+            string.Empty;
         var numeroRps = xmlRet.Root?.ElementAnyNs("rps")?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
 
         if (string.IsNullOrEmpty(numeroRps))
@@ -537,15 +699,15 @@ internal class ProviderIPM100 : ProviderBase
         }
         else
         {
-            nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+            nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
             nota.IdentificacaoNFSe.Numero = numeroNfSe;
-            nota.IdentificacaoNFSe.Chave = chaveNFSe;
+            nota.IdentificacaoNFSe.Chave = chaveNfSe;
             nota.XmlOriginal = retornoWebservice.XmlRetorno;
         }
 
         retornoWebservice.Sucesso = true;
     }
-    
+
     protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
     {
         var message = new StringBuilder();
@@ -565,15 +727,17 @@ internal class ProviderIPM100 : ProviderBase
 
         retornoWebservice.XmlEnvio = message.ToString();
     }
-    
+
     protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
     {
         // Ignore
     }
-    
+
     protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
     {
-        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno.Replace("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>", ""));
+        var xmlRet =
+            XDocument.Parse(
+                retornoWebservice.XmlRetorno.Replace("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>", ""));
 
         var mensagens = xmlRet.Root.ElementAnyNs("mensagem");
 
@@ -615,49 +779,66 @@ internal class ProviderIPM100 : ProviderBase
 
     #region Não Implementados
 
-    protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
- 
-    protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
-    
-    protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
-    
+    protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) =>
+        throw new NotImplementedException();
+
+    protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice) =>
+        throw new NotImplementedException();
+
+    protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) =>
+        throw new NotImplementedException();
+
     protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice,
         NotaServicoCollection notas) => throw new NotImplementedException();
 
-    protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice) => throw new NotImplementedException();
+    protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice) =>
+        throw new NotImplementedException();
 
     protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice,
         NotaServicoCollection notas) => throw new NotImplementedException();
 
-    protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+    protected override void
+        PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) =>
+        throw new NotImplementedException();
 
     protected override void AssinarEnviar(RetornoEnviar retornoWebservice) => throw new NotImplementedException();
 
-    protected override void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice) => throw new NotImplementedException();
-    
-    protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
-   
-    protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
+    protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) =>
+        throw new NotImplementedException();
+
+    protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) =>
+        throw new NotImplementedException();
+
+    protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) =>
+        throw new NotImplementedException();
 
     protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice,
         NotaServicoCollection notas) => throw new NotImplementedException();
+
     protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice,
         NotaServicoCollection notas) => throw new NotImplementedException();
 
     protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice,
         NotaServicoCollection notas) => throw new NotImplementedException();
+
     protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice,
         NotaServicoCollection notas) => throw new NotImplementedException();
 

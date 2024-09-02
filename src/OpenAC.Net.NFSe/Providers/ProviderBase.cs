@@ -346,7 +346,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
             using (var cliente = GetClient(TipoUrl.Enviar))
             {
-                string cabec = GerarCabecalho();
+                var cabec = GerarCabecalho();
                 retornoWebservice.XmlRetorno = cliente.Enviar(cabec, retornoWebservice.XmlEnvio);
                 retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
                 retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
@@ -401,8 +401,9 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         try
         {
             using var cliente = GetClient(TipoUrl.EnviarSincrono);
-            string Cabecalho = GerarCabecalho();//Separei o cabecalho em string pois dificultava o debug do envio, obrigando sempre a passar pelo GerarCabecalho
-            retornoWebservice.XmlRetorno = cliente.EnviarSincrono(Cabecalho, retornoWebservice.XmlEnvio);
+            //Separei o cabecalho em string pois dificultava o debug do envio, obrigando sempre a passar pelo GerarCabecalho
+            var cabecalho = GerarCabecalho(); 
+            retornoWebservice.XmlRetorno = cliente.EnviarSincrono(cabecalho, retornoWebservice.XmlEnvio);
             retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
             retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
         }

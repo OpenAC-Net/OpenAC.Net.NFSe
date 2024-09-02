@@ -82,7 +82,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
     protected NFSeHttpServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado)
     {
         Certificado = certificado;
-        Url = provider.GetUrl(tipoUrl)?.Replace("?wsdl", "");
+        Url = provider.GetUrl(tipoUrl).Replace("?wsdl", "") ?? throw new OpenDFeException("Url não encontrada.");
         Provider = provider;
 
         switch (tipoUrl)
@@ -132,6 +132,15 @@ public abstract class NFSeHttpServiceClient : IDisposable
                 PrefixoResposta = "sub-nfse";
                 break;
 
+            case TipoUrl.CancelarNFSeLote:
+                PrefixoEnvio = "canc-lote-nfse";
+                PrefixoResposta = "canc-lote-nfse";
+                break;
+            case TipoUrl.Autenticacao:
+                PrefixoEnvio = "aut-nfse";
+                PrefixoResposta = "aut-nfse";
+                break;
+            
             default:
                 throw new ArgumentOutOfRangeException(nameof(tipoUrl), tipoUrl, null);
         }
@@ -157,7 +166,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
     protected string Url { get; set; }
 
-    protected X509Certificate2 Certificado { get; set; }
+    protected X509Certificate2? Certificado { get; set; }
 
     protected bool IsDisposed { get; private set; }
 
