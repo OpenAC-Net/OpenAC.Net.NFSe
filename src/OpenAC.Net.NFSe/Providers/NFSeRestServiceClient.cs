@@ -72,7 +72,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         {
             SetAction(action);
             EnvelopeEnvio = string.Empty;
-            Execute(null, HttpMethod.Get);
+            ExecuteGet();
             return EnvelopeRetorno;
         }
         finally
@@ -90,7 +90,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
             SetAction(action);
 
             EnvelopeEnvio = message;
-            Execute(new StringContent(message, Charset, contentyType), HttpMethod.Post);
+            ExecutePost(new StringContent(message, Charset, contentyType));
             return EnvelopeRetorno;
         }
         finally
@@ -118,7 +118,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
             requestContent.Add(fileContent, "file", fileName);
 
-            Execute(requestContent, HttpMethod.Post);
+            ExecutePost(requestContent);
             return EnvelopeRetorno;
         }
         finally
@@ -129,7 +129,6 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
     protected void SetAction(string action)
     {
-        Url ??= "";
         Url = !Url.EndsWith("/") ? $"{Url}/{action}" : $"{Url}{action}";
     }
 

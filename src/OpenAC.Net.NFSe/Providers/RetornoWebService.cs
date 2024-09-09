@@ -45,9 +45,9 @@ public abstract class RetornoWebservice
     /// <value><c>true</c> se não teve erro, senão <c>false</c>.</value>
     public bool Sucesso { get; internal set; }
 
-    public List<Evento> Alertas { get; } = new List<Evento>();
+    public List<Evento> Alertas { get; } = [];
 
-    public List<Evento> Erros { get; } = new List<Evento>();
+    public List<Evento> Erros { get; } = [];
 
     public string XmlEnvio { get; internal set; } = "";
 
@@ -66,7 +66,7 @@ public sealed class RetornoEnviar : RetornoWebservice
 
     public DateTime Data { get; internal set; }
 
-    public string Protocolo { get; internal set; }
+    public string Protocolo { get; internal set; } = "";
 
     public bool Sincrono { get; internal set; }
 }
@@ -75,31 +75,31 @@ public sealed class RetornoConsultarSituacao : RetornoWebservice
 {
     public int Lote { get; internal set; }
 
-    public string Protocolo { get; internal set; }
+    public string Protocolo { get; internal set; } = "";
 
-    public string Situacao { get; internal set; }
+    public string Situacao { get; internal set; } = "";
 }
 
 public sealed class RetornoConsultarLoteRps : RetornoWebservice
 {
     public int Lote { get; internal set; }
 
-    public string Protocolo { get; internal set; }
+    public string Protocolo { get; internal set; } = "";
 
-    public string Situacao { get; internal set; }
+    public string Situacao { get; internal set; } = "";
 
-    public NotaServico[] Notas { get; internal set; }
+    public NotaServico[] Notas { get; internal set; } = [];
 }
 
 public sealed class RetornoConsultarNFSeRps : RetornoWebservice
 {
     public int NumeroRps { get; internal set; }
 
-    public string Serie { get; internal set; }
+    public string Serie { get; internal set; } = "";
 
     public TipoRps Tipo { get; internal set; }
 
-    public NotaServico Nota { get; internal set; }
+    public NotaServico? Nota { get; internal set; }
 
     public int AnoCompetencia { get; internal set; }
 
@@ -114,23 +114,23 @@ public sealed class RetornoConsultarNFSe : RetornoWebservice
 
     public int NumeroNFse { get; internal set; }
 
-    public string SerieNFse { get; internal set; }
+    public string SerieNFse { get; internal set; } = "";
 
     public int Pagina { get; internal set; }
 
     public int ProximaPagina { get; internal set; }
 
-    public string CPFCNPJTomador { get; internal set; }
+    public string CPFCNPJTomador { get; internal set; } = "";
 
-    public string IMTomador { get; internal set; }
+    public string IMTomador { get; internal set; } = "";
 
-    public string NomeIntermediario { get; internal set; }
+    public string NomeIntermediario { get; internal set; } = "";
 
-    public string CPFCNPJIntermediario { get; internal set; }
+    public string CPFCNPJIntermediario { get; internal set; } = "";
 
-    public string IMIntermediario { get; internal set; }
+    public string IMIntermediario { get; internal set; } = "";
 
-    public NotaServico[] Notas { get; internal set; }
+    public NotaServico[] Notas { get; internal set; } = [];
 }
 
 public sealed class RetornoConsultarSequencialRps : RetornoWebservice
@@ -144,16 +144,17 @@ public sealed class RetornoCancelar : RetornoWebservice
 {
     public DateTime Data { get; internal set; }
 
-    public string NumeroNFSe { get; internal set; }
+    public string NumeroNFSe { get; internal set; } = "";
 
-    public string SerieNFSe { get; internal set; }
+    public string SerieNFSe { get; internal set; } = "";
 
     public decimal ValorNFSe { get; internal set; }
 
-        public string CodigoCancelamento { get; internal set; }
-        public string CodigoVerificacao { get; internal set; }
-
-    public string Motivo { get; internal set; }
+    public string CodigoCancelamento { get; internal set; } = "";
+    
+    public string CodigoVerificacao { get; internal set; } = "";
+    
+    public string Motivo { get; internal set; } = "";
 }
 
 public sealed class RetornoCancelarNFSeLote : RetornoWebservice
@@ -163,11 +164,11 @@ public sealed class RetornoCancelarNFSeLote : RetornoWebservice
 
 public sealed class RetornoSubstituirNFSe : RetornoWebservice
 {
-    public string CodigoCancelamento { get; internal set; }
+    public string CodigoCancelamento { get; internal set; } = "";
 
-    public string NumeroNFSe { get; internal set; }
+    public string NumeroNFSe { get; internal set; } = "";
 
-    public string Motivo { get; internal set; }
+    public string Motivo { get; internal set; } = "";
 
-    public NotaServico Nota { get; internal set; }
+    public NotaServico? Nota { get; internal set; }
 }

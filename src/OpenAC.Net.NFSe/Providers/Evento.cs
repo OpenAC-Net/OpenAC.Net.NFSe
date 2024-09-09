@@ -50,11 +50,11 @@ public class Evento
 
     #region Propriedades
 
-    public string Codigo { get; set; }
+    public string Codigo { get; set; } = "";
 
-    public string Descricao { get; set; }
+    public string Descricao { get; set; } = "";
 
-    public string Correcao { get; set; }
+    public string Correcao { get; set; } = "";
 
     public IdeRps IdentificacaoRps { get; set; }
 

@@ -222,13 +222,13 @@ internal sealed class ProviderBetha : ProviderABRASF
 
     protected override IServiceClient GetClient(TipoUrl tipo)
     {
-        switch (tipo)
+        return tipo switch
         {
-            case TipoUrl.CancelarNFSe: return new BethaServiceClient(this, tipo, null);
-            case TipoUrl.ConsultarNFSeRps: return new BethaServiceClient(this, tipo, null);
-            case TipoUrl.ConsultarNFSe: return new BethaServiceClient(this, tipo, null);
-            default: return new BethaServiceClient(this, tipo);
-        }
+            TipoUrl.CancelarNFSe => new BethaServiceClient(this, tipo, null),
+            TipoUrl.ConsultarNFSeRps => new BethaServiceClient(this, tipo, null),
+            TipoUrl.ConsultarNFSe => new BethaServiceClient(this, tipo, null),
+            _ => new BethaServiceClient(this, tipo)
+        };
     }
 
     protected override string GetNamespace()

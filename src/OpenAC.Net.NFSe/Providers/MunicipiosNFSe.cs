@@ -42,5 +42,5 @@ internal sealed class MunicipiosNFSe : DFeDocument<MunicipiosNFSe>
 {
     [DFeCollection("Municipios")]
     [DFeItem(typeof(OpenMunicipioNFSe), "Municipio")]
-    public OpenMunicipioNFSe[] Municipios { get; set; }
+    public OpenMunicipioNFSe[] Municipios { get; set; } = [];
 }

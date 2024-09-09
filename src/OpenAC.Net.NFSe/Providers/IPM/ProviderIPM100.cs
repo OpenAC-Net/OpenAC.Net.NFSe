@@ -557,7 +557,7 @@ internal class ProviderIPM100 : ProviderBase
     {
         try
         {
-            if (retornoWebservice.XmlRetorno.IsValidXml())
+            if (!retornoWebservice.XmlRetorno.IsValidXml())
             {
                 retornoWebservice.Erros.Add(new Evento
                 {
@@ -583,7 +583,7 @@ internal class ProviderIPM100 : ProviderBase
                         Descricao = erro
                     });
                 }
-                
+
                 return;
             }
 
@@ -677,6 +677,18 @@ internal class ProviderIPM100 : ProviderBase
     protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice,
         NotaServicoCollection notas)
     {
+        if (!retornoWebservice.XmlRetorno.IsValidXml())
+        {
+            retornoWebservice.Erros.Add(new Evento
+            {
+                Codigo = "999",
+                Correcao = string.Empty,
+                Descricao = "Erro xml de retorno inválido."
+            });
+
+            return;
+        }
+        
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
 
         var numeroNfSe = xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("numero_nfse")?.GetValue<string>() ??
@@ -735,12 +747,20 @@ internal class ProviderIPM100 : ProviderBase
 
     protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
     {
-        var xmlRet =
-            XDocument.Parse(
-                retornoWebservice.XmlRetorno.Replace("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>", ""));
+        if (!retornoWebservice.XmlRetorno.IsValidXml())
+        {
+            retornoWebservice.Erros.Add(new Evento
+            {
+                Codigo = "999",
+                Correcao = string.Empty,
+                Descricao = "Erro xml de retorno inválido."
+            });
 
-        var mensagens = xmlRet.Root.ElementAnyNs("mensagem");
+            return;
+        }
 
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno.RemoverDeclaracaoXml()!);
+        var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
         if (mensagens != null)
         {
             foreach (var item in mensagens.Elements())

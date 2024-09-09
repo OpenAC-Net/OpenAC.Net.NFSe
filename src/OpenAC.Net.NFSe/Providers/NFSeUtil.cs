@@ -42,7 +42,7 @@ internal static class NFSeUtil
 {
     #region Fields
 
-    private static readonly Dictionary<string, string> htmlChars = new()
+    private static readonly Dictionary<string, string> HtmlChars = new()
     {
         {"&", "&amp;"},
         {"<", "&lt;"},
@@ -82,7 +82,7 @@ internal static class NFSeUtil
 
     #region Methods
 
-    public static void ApplyNamespace(XElement parent, XNamespace nameSpace, params string[] excludeElements)
+    public static void ApplyNamespace(XElement? parent, XNamespace nameSpace, params string[] excludeElements)
     {
         if (parent == null) return;
 
@@ -93,9 +93,9 @@ internal static class NFSeUtil
             ApplyNamespace(child, nameSpace, excludeElements);
     }
 
-    public static string RemoverDeclaracaoXml(this string xml)
+    public static string? RemoverDeclaracaoXml(this string? xml)
     {
-        if (xml.IsEmpty()) return xml;
+        if (xml == null || xml.IsEmpty()) return xml;
 
         var posIni = xml.IndexOf("<?", StringComparison.Ordinal);
         if (posIni < 0) return xml;
@@ -108,11 +108,11 @@ internal static class NFSeUtil
 
     public static StringBuilder AppendCData(this StringBuilder sb, string dados) => sb.Append($"<![CDATA[{dados}]]>");
 
-    public static string HtmlEncode(this string dados) => htmlChars.Aggregate(dados, (current, htmlChar) => current.Replace(htmlChar.Key, htmlChar.Value));
+    public static string HtmlEncode(this string dados) => HtmlChars.Aggregate(dados, (current, htmlChar) => current.Replace(htmlChar.Key, htmlChar.Value));
 
-    public static string HtmlDecode(this string dados) => htmlChars.Aggregate(dados, (current, htmlChar) => current.Replace(htmlChar.Value, htmlChar.Key));
+    public static string HtmlDecode(this string dados) => HtmlChars.Aggregate(dados, (current, htmlChar) => current.Replace(htmlChar.Value, htmlChar.Key));
 
-    public static string GetCPF_CNPJ(this XElement element)
+    public static string GetCPF_CNPJ(this XElement? element)
     {
         if (element == null) return string.Empty;
 
@@ -126,7 +126,7 @@ internal static class NFSeUtil
             if (string.IsNullOrEmpty(xmlstring))
                 return false;
 
-            var xDocument = XDocument.Parse(xmlstring);
+            _ = XDocument.Parse(xmlstring);
             return true;
         }
         catch (Exception)
