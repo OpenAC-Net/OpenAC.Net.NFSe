@@ -20,9 +20,9 @@
     <Description>Biblioteca de impressão de DANFSe usando o FastReport OpenSource.</Description>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <AssemblyVersion>1.5.0.2</AssemblyVersion>
-    <FileVersion>1.5.0.2</FileVersion>
-    <Version>1.5.0.2</Version>
+    <AssemblyVersion>1.6.0</AssemblyVersion>
+    <FileVersion>1.6.0</FileVersion>
+    <Version>1.6.0</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
@@ -41,15 +41,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.Compat" Version="2024.2.16" />
     <PackageReference Include="FastReport.OpenSource" Version="2024.2.14" />
     <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2024.2.14" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-	<PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
+	<PackageReference Include="OpenAC.Net.Core" Version="1.6.0" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">

@@ -195,6 +195,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <value><c>true</c> if [retirar acentos]; otherwise, <c>false</c>.</value>
     public bool RetirarAcentos { get; set; }
+    
+    protected bool UsarVirgulaDecimais { get; set; }
 
     public ConfigNFSe Configuracoes { get; }
 
@@ -344,7 +346,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
             using (var cliente = GetClient(TipoUrl.Enviar))
             {
-                string cabec = GerarCabecalho();
+                var cabec = GerarCabecalho();
                 retornoWebservice.XmlRetorno = cliente.Enviar(cabec, retornoWebservice.XmlEnvio);
                 retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
                 retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
@@ -399,8 +401,9 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         try
         {
             using var cliente = GetClient(TipoUrl.EnviarSincrono);
-            string Cabecalho = GerarCabecalho();//Separei o cabecalho em string pois dificultava o debug do envio, obrigando sempre a passar pelo GerarCabecalho
-            retornoWebservice.XmlRetorno = cliente.EnviarSincrono(Cabecalho, retornoWebservice.XmlEnvio);
+            //Separei o cabecalho em string pois dificultava o debug do envio, obrigando sempre a passar pelo GerarCabecalho
+            var cabecalho = GerarCabecalho(); 
+            retornoWebservice.XmlRetorno = cliente.EnviarSincrono(cabecalho, retornoWebservice.XmlEnvio);
             retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
             retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
         }
@@ -727,7 +730,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         /// <param name="motivo"></param>
         /// <param name="notas"></param>
         /// <returns></returns>
-        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serieNFSe, decimal valorNFSe, string motivo, string codigoVerificacao, NotaServicoCollection notas)
+        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serieNFSe, decimal valorNFSe, string motivo, string? codigoVerificacao, NotaServicoCollection notas)
         {
             var retornoWebservice = new RetornoCancelar()
             {
@@ -1154,22 +1157,14 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <returns>System.String.</returns>
     public string GetUrl(TipoUrl url)
     {
-        string ret;
-        switch (Configuracoes.WebServices.Ambiente)
+        var ret = Configuracoes.WebServices.Ambiente switch
         {
-            case DFeTipoAmbiente.Producao:
-                ret = Municipio.UrlProducao[url];
-                break;
+            DFeTipoAmbiente.Producao => Municipio.UrlProducao[url],
+            DFeTipoAmbiente.Homologacao => Municipio.UrlHomologacao[url],
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
-            case DFeTipoAmbiente.Homologacao:
-                ret = Municipio.UrlHomologacao[url];
-                break;
-
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        return ret?.Replace("?wsdl", "");
+        return ret.Replace("?wsdl", "");
     }
 
     /// <summary>
@@ -1184,7 +1179,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <param name="signature">The signature.</param>
     /// <returns>XElement.</returns>
-    protected XElement WriteSignature(DFeSignature signature)
+    protected XElement? WriteSignature(DFeSignature signature)
     {
         if (signature.SignatureValue.IsEmpty() || signature.SignedInfo.Reference.DigestValue.IsEmpty() ||
             signature.KeyInfo.X509Data.X509Certificate.IsEmpty())
@@ -1192,9 +1187,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
         var ms = new MemoryStream();
         var serializer = DFeSerializer<DFeSignature>.CreateSerializer<DFeSignature>();
-        if (!serializer.Serialize(signature, ms)) return null;
-
-        return XElement.Load(ms);
+        return !serializer.Serialize(signature, ms) ? null : XElement.Load(ms);
     }
 
     /// <summary>
@@ -1202,7 +1195,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <param name="element">The element.</param>
     /// <returns>DFeSignature.</returns>
-    protected DFeSignature LoadSignature(XElement element)
+    protected DFeSignature LoadSignature(XElement? element)
     {
         if (element == null) return new DFeSignature();
 
@@ -1219,11 +1212,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The CNPJCPF.</param>
     /// <param name="ns"></param>
     /// <returns>XmlElement.</returns>
-    protected XElement AdicionarTagCNPJCPF(string id, string tagCPF, string tagCNPJ, string valor, XNamespace ns = null)
+    protected XElement? AdicionarTagCNPJCPF(string id, string tagCPF, string tagCNPJ, string valor, XNamespace ns = null)
     {
         valor = valor.Trim().OnlyNumbers();
 
-        XElement tag = null;
+        XElement? tag = null;
         switch (valor.Length)
         {
             case 11:
@@ -1257,9 +1250,9 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The valor.</param>
     /// <param name="descricao">The descricao.</param>
     /// <param name="ns"></param>
-    /// <param name="nsAtt"></param>
     /// <returns>XmlElement.</returns>
-    protected XElement AdicionarTag(TipoCampo tipo, string id, string tag, XNamespace ns, int min, int max, Ocorrencia ocorrencia, object valor, string descricao = "")
+    protected XElement AdicionarTag(TipoCampo tipo, string id, string tag, XNamespace ns, int min, int max, 
+        Ocorrencia ocorrencia, object valor, string descricao = "")
     {
         Guard.Against<ArgumentException>(ns == null, "Namespace não informado");
 
@@ -1278,12 +1271,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The valor.</param>
     /// <param name="descricao">The descricao.</param>
     /// <returns>XmlElement.</returns>
-    protected XElement AdicionarTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object valor, string descricao = "")
+    protected XElement AdicionarTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao = "")
     {
         return AdicionarTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, null);
     }
 
-    private XElement AdicionarTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object valor, string descricao, XNamespace ns)
+    private XElement AdicionarTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao, XNamespace? ns)
     {
         try
         {
@@ -1296,12 +1289,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
                 switch (tipo)
                 {
                     case TipoCampo.Str:
-                        conteudoProcessado = valor.ToString().Trim();
+                        conteudoProcessado = valor!.ToString()!.Trim();
                         break;
 
                     case TipoCampo.Dat:
                     case TipoCampo.DatCFe:
-                        if (DateTime.TryParse(valor.ToString(), out var data))
+                        if (DateTime.TryParse(valor!.ToString(), out var data))
                         {
                             conteudoProcessado = data.ToString(tipo == TipoCampo.DatCFe ? "yyyyMMdd" : "yyyy-MM-dd");
                         }
@@ -1378,6 +1371,9 @@ public abstract class ProviderBase : IOpenLog, IDisposable
                                         conteudoProcessado = string.Format(numberFormat, "{0:0.0000000000}", vDecimal);
                                         break;
                                 }
+
+                                if (UsarVirgulaDecimais)
+                                    conteudoProcessado = conteudoProcessado.Replace(".", ",");
                             }
                         }
                         else

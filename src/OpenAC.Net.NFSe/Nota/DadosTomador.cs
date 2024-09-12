@@ -61,7 +61,7 @@ public sealed class DadosTomador : GenericClone<DadosTomador>, INotifyPropertyCh
 
     public string InscricaoEstadual { get; set; }
 
-    public string DocTomadorEstrangeiro { get; set; }
+    public string DocEstrangeiro { get; set; }
 
     public string RazaoSocial { get; set; }
 

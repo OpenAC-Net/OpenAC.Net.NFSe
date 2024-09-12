@@ -53,7 +53,7 @@ public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyCh
         Discriminacao = string.Empty;
         NumeroProcesso = string.Empty;
         ExigibilidadeIss = ExigibilidadeIss.Exigivel;
-        ItensServico = new ServicosCollection();
+        ItemsServico = new ServicosCollection();
         Deducoes = new DeducoesCollection();
     }
 
@@ -89,7 +89,7 @@ public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyCh
 
     public string NumeroProcesso { get; set; }
 
-    public ServicosCollection ItensServico { get; }
+    public ServicosCollection ItemsServico { get; }
 
     public ResponsavelRetencao? ResponsavelRetencao { get; set; }
 

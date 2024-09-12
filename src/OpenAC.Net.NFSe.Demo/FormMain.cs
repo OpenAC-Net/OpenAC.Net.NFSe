@@ -617,7 +617,7 @@ public partial class FormMain : Form, IOpenLog
 
         if (municipio.Provedor == NFSeProvider.ISSDSF)
         {
-            var servico = nfSe.Servico.ItensServico.AddNew();
+            var servico = nfSe.Servico.ItemsServico.AddNew();
             servico.Descricao = "Teste";
             servico.Quantidade = 1M;
             servico.ValorTotal = 100;

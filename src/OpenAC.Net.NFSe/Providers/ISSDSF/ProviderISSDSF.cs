@@ -258,7 +258,7 @@ internal sealed class ProviderISSDSF : ProviderBase
             foreach (var node in servicos.Descendants())
             {
                 var servicoRoot = node.ElementAnyNs("Item");
-                var servico = ret.Servico.ItensServico.AddNew();
+                var servico = ret.Servico.ItemsServico.AddNew();
                 servico.Descricao = servicoRoot.ElementAnyNs("DiscriminacaoServico").GetValue<string>();
                 servico.Quantidade = servicoRoot.ElementAnyNs("Quantidade").GetValue<decimal>();
                 servico.ValorServicos = servicoRoot.ElementAnyNs("ValorUnitario").GetValue<decimal>();
@@ -298,7 +298,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalTomador", 1, 0, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal.OnlyNumbers()));
         rpsTag.AddChild(AdicionarTagCNPJCPF("", "CPFCNPJTomador", "CPFCNPJTomador", nota.Tomador.CpfCnpj));
         rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialTomador", 1, 120, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Tomador.RazaoSocial.RemoveAccent() : nota.Tomador.RazaoSocial));
-        rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "DocTomadorEstrangeiro", 0, 20, Ocorrencia.Obrigatoria, nota.Tomador.DocTomadorEstrangeiro));
+        rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "DocTomadorEstrangeiro", 0, 20, Ocorrencia.Obrigatoria, nota.Tomador.DocEstrangeiro));
         rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoLogradouroTomador", 0, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.TipoLogradouro));
         rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "LogradouroTomador", 1, 50, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Tomador.Endereco.Logradouro.RemoveAccent() : nota.Tomador.Endereco.Logradouro));
         rpsTag.AddChild(AdicionarTag(TipoCampo.Str, "", "NumeroEnderecoTomador", 1, 9, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
@@ -343,7 +343,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         if (!nota.Intermediario.CpfCnpj.IsEmpty())
             rpsTag.AddChild(AdicionarTagCNPJCPF("", "CPFCNPJIntermediario", "CPFCNPJIntermediario", nota.Intermediario.CpfCnpj));
 
-        rpsTag.AddChild(GerarServicos(nota.Servico.ItensServico));
+        rpsTag.AddChild(GerarServicos(nota.Servico.ItemsServico));
         if (nota.Servico.Deducoes.Count > 0)
             rpsTag.AddChild(GerarDeducoes(nota.Servico.Deducoes));
 
@@ -384,7 +384,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalTomador", 1, 0, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal.OnlyNumbers()));
         notaTag.AddChild(AdicionarTagCNPJCPF("", "CPFCNPJTomador", "CPFCNPJTomador", nota.Tomador.CpfCnpj));
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialTomador", 1, 120, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Tomador.RazaoSocial.RemoveAccent() : nota.Tomador.RazaoSocial));
-        notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "DocTomadorEstrangeiro", 0, 20, Ocorrencia.Obrigatoria, nota.Tomador.DocTomadorEstrangeiro));
+        notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "DocTomadorEstrangeiro", 0, 20, Ocorrencia.Obrigatoria, nota.Tomador.DocEstrangeiro));
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoLogradouroTomador", 0, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.TipoLogradouro));
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "LogradouroTomador", 1, 50, Ocorrencia.Obrigatoria, RetirarAcentos ? nota.Tomador.Endereco.Logradouro.RemoveAccent() : nota.Tomador.Endereco.Logradouro));
         notaTag.AddChild(AdicionarTag(TipoCampo.Str, "", "NumeroEnderecoTomador", 1, 9, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
@@ -430,7 +430,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         if (!nota.Intermediario.CpfCnpj.IsEmpty())
             notaTag.AddChild(AdicionarTagCNPJCPF("", "CPFCNPJIntermediario", "CPFCNPJIntermediario", nota.Intermediario.CpfCnpj));
 
-        notaTag.AddChild(GerarServicos(nota.Servico.ItensServico));
+        notaTag.AddChild(GerarServicos(nota.Servico.ItemsServico));
         if (nota.Servico.Deducoes.Count > 0)
             notaTag.AddChild(GerarDeducoes(nota.Servico.Deducoes));
 
