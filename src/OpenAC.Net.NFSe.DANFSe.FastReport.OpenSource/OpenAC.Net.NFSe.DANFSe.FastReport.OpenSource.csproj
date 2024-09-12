@@ -10,10 +10,10 @@
     <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
     <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2024</Copyright>
     <Company>OpenAC .Net - Automação Comercial em .Net</Company>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Projeto OpenAC .Net</Authors>
     <PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>https://avatars.githubusercontent.com/u/90476515?s=200&amp;v=4</PackageIconUrl>
     <RepositoryUrl>https://github.com/OpenAC-Net/OpenAC.Net.NFSe</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>OpenAC.Net NFSe OpenNFSe DANFSe</PackageTags>
@@ -31,6 +31,7 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageId>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</PackageId>
+    <PackageIcon>nuget.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
@@ -66,7 +67,12 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\..\README.md">
+    <None Include="..\..\nuget.png">
+      <Pack>True</Pack>
+      <PackagePath/>
+      <Link>nuget.png</Link>
+    </None>
+    <None Include="README.md">
       <Pack>True</Pack>
       <PackagePath>/</PackagePath>
     </None>
