@@ -111,7 +111,7 @@ public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
     /// </summary>
     /// <value>The nome.</value>
     [DFeElement(TipoCampo.Str, "Nome")]
-    public string Nome { get; set; }
+    public string Nome { get; set; } = "";
 
     /// <summary>
     /// Define ou retorna a UF do municipio.

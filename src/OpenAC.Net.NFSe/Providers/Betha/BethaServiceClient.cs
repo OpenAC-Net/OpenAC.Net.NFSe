@@ -45,7 +45,7 @@ internal sealed class BethaServiceClient : NFSeSoapServiceClient, IServiceClient
     {
     }
 
-    public BethaServiceClient(ProviderBetha provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider,
+    public BethaServiceClient(ProviderBetha provider, TipoUrl tipoUrl, X509Certificate2? certificado) : base(provider,
         tipoUrl, certificado, SoapVersion.Soap11)
     {
     }

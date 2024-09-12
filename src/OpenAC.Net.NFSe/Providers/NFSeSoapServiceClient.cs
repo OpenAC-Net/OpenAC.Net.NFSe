@@ -58,10 +58,11 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
     #region Constructors
 
     /// <summary>
-    ///
+    /// 
     /// </summary>
     /// <param name="provider"></param>
     /// <param name="tipoUrl"></param>
+    /// <param name="message"></param>
     protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, SoapVersion message) : base(provider, tipoUrl, provider.Certificado)
     {
         Guard.Against<ArgumentException>(!Enum.IsDefined(typeof(SoapVersion), message), "Versão Soap não definida.");
@@ -70,13 +71,14 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
     }
 
     /// <summary>
-    ///
+    /// 
     /// </summary>
     /// <param name="provider"></param>
     /// <param name="tipoUrl"></param>
     /// <param name="certificado"></param>
+    /// <param name="message"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado, SoapVersion message) : base(provider, tipoUrl, certificado)
+    protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2? certificado, SoapVersion message) : base(provider, tipoUrl, certificado)
     {
         Guard.Against<ArgumentException>(!Enum.IsDefined(typeof(SoapVersion), message), "Versão Soap não definida.");
 
