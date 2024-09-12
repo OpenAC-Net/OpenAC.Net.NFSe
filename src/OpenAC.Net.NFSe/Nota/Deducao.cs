@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="Deducao.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     	Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,19 +29,13 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.ComponentModel;
+using System;
 using OpenAC.Net.Core.Generics;
 
 namespace OpenAC.Net.NFSe.Nota;
 
-public sealed class Deducao : GenericClone<Deducao>, INotifyPropertyChanged
+public sealed class Deducao : GenericClone<Deducao>
 {
-    #region Events
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    #endregion Events
-
     #region Constructors
 
     internal Deducao()
@@ -53,16 +47,22 @@ public sealed class Deducao : GenericClone<Deducao>, INotifyPropertyChanged
     #region Propriedades
 
     /// <summary>
+    /// Gets or sets the tipo deducao.
+    /// </summary>
+    /// <value>The tipo deducao.</value>
+    public int TipoDeducao { get; set; }
+    
+    /// <summary>
+    /// Gets or sets Descricao.
+    /// </summary>
+    /// <value>The Descricao referencia.</value>
+    public string? Descricao { get; set; }
+    
+    /// <summary>
     /// Gets or sets the deducao por.
     /// </summary>
     /// <value>The deducao por.</value>
     public DeducaoPor DeducaoPor { get; set; }
-
-    /// <summary>
-    /// Gets or sets the tipo deducao.
-    /// </summary>
-    /// <value>The tipo deducao.</value>
-    public TipoDeducao TipoDeducao { get; set; }
 
     /// <summary>
     /// Gets or sets the CPFCNPJ referencia.
@@ -82,6 +82,12 @@ public sealed class Deducao : GenericClone<Deducao>, INotifyPropertyChanged
     /// <value>The valor total referencia.</value>
     public decimal ValorTotalReferencia { get; set; }
 
+    public DateTime DataEmissao { get; set; }
+    
+    public decimal ValorDedutivel { get; set; }
+
+    public decimal ValorUtilizadoDeducao { get; set; }
+
     /// <summary>
     /// Gets or sets the percentual deduzir.
     /// </summary>
@@ -93,6 +99,10 @@ public sealed class Deducao : GenericClone<Deducao>, INotifyPropertyChanged
     /// </summary>
     /// <value>The valor deduzir.</value>
     public decimal ValorDeduzir { get; set; }
+
+    public IdeFornecedor DadosFornecedor { get; set; } = new();
+
+    public IdeDocumentoDeducao DocumentoDeducao { get; set; } = new();
 
     #endregion Propriedades
 }

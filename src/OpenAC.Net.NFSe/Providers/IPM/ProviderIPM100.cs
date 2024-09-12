@@ -91,17 +91,17 @@ internal class ProviderIPM100 : ProviderBase
         {
             if (!NaoGerarGrupoRps)
             {
-                nfse.AddChild(AdicionarTag(TipoCampo.Str, "#2", "identificador", 1, 80, Ocorrencia.Obrigatoria,
+                nfse.AddChild(AddTag(TipoCampo.Str, "#2", "identificador", 1, 80, Ocorrencia.Obrigatoria,
                     $"nfseh_{nota.IdentificacaoRps.Numero}.{nota.IdentificacaoRps.Serie}"));
             }
 
-            nfse.AddChild(AdicionarTag(TipoCampo.Str, "#3", "nfse_teste", 1, 1, Ocorrencia.Obrigatoria, "1"));
+            nfse.AddChild(AddTag(TipoCampo.Str, "#3", "nfse_teste", 1, 1, Ocorrencia.Obrigatoria, "1"));
         }
         else
         {
             if (!NaoGerarGrupoRps)
             {
-                nfse.AddChild(AdicionarTag(TipoCampo.Str, "#2", "identificador", 1, 80, Ocorrencia.Obrigatoria,
+                nfse.AddChild(AddTag(TipoCampo.Str, "#2", "identificador", 1, 80, Ocorrencia.Obrigatoria,
                     $"nfse_{nota.IdentificacaoRps.Numero}.{nota.IdentificacaoRps.Serie}"));
             }
         }
@@ -128,16 +128,16 @@ internal class ProviderIPM100 : ProviderBase
             return null;
 
         var rps = new XElement("rps");
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "#1", "nro_recibo_provisorio", 1, 12, Ocorrencia.Obrigatoria,
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "nro_recibo_provisorio", 1, 12, Ocorrencia.Obrigatoria,
             nota.IdentificacaoRps.Numero));
 
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "#1", "serie_recibo_provisorio", 1, 2, Ocorrencia.Obrigatoria,
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "serie_recibo_provisorio", 1, 2, Ocorrencia.Obrigatoria,
             nota.IdentificacaoRps.Serie));
 
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "#1", "data_emissao_recibo_provisorio", 1, 10, Ocorrencia.Obrigatoria,
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "data_emissao_recibo_provisorio", 1, 10, Ocorrencia.Obrigatoria,
             FormataData(nota.IdentificacaoRps.DataEmissao)));
 
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "#1", "hora_emissao_recibo_provisorio", 1, 8, Ocorrencia.Obrigatoria,
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "hora_emissao_recibo_provisorio", 1, 8, Ocorrencia.Obrigatoria,
             FormataHora(nota.IdentificacaoRps.DataEmissao)));
 
         return rps;
@@ -148,40 +148,40 @@ internal class ProviderIPM100 : ProviderBase
         var valor = new XElement("nf");
         if (nota.Situacao == SituacaoNFSeRps.Cancelado)
         {
-            valor.AddChild(AdicionarTag(TipoCampo.Str, "#1", "numero", 0, 9, Ocorrencia.Obrigatoria,
+            valor.AddChild(AddTag(TipoCampo.Str, "#1", "numero", 0, 9, Ocorrencia.Obrigatoria,
                 nota.IdentificacaoNFSe.Numero));
 
-            valor.AddChild(AdicionarTag(TipoCampo.Str, "#1", "situacao", 1, 1, Ocorrencia.Obrigatoria, "C"));
+            valor.AddChild(AddTag(TipoCampo.Str, "#1", "situacao", 1, 1, Ocorrencia.Obrigatoria, "C"));
         }
 
-        valor.AddChild(AdicionarTag(TipoCampo.Str, "#1", "data_fato_gerador", 1, 10, Ocorrencia.NaoObrigatoria,
+        valor.AddChild(AddTag(TipoCampo.Str, "#1", "data_fato_gerador", 1, 10, Ocorrencia.NaoObrigatoria,
             FormataData(nota.Competencia)));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_total", 1, 15, Ocorrencia.Obrigatoria,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_total", 1, 15, Ocorrencia.Obrigatoria,
             nota.Servico.Valores.ValorServicos));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_desconto", 1, 15, Ocorrencia.NaoObrigatoria,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_desconto", 1, 15, Ocorrencia.NaoObrigatoria,
             nota.Servico.Valores.DescontoIncondicionado));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_ir", 1, 15, Ocorrencia.Obrigatoria,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_ir", 1, 15, Ocorrencia.Obrigatoria,
             nota.Servico.Valores.ValorIr));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_inss", 1, 15, Ocorrencia.NaoObrigatoria,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_inss", 1, 15, Ocorrencia.NaoObrigatoria,
             nota.Servico.Valores.ValorInss));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_contribuicao_social", 1, 15, 0,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_contribuicao_social", 1, 15, 0,
             nota.Servico.Valores.ValorCsll));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_rps", 1, 15, Ocorrencia.NaoObrigatoria,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_rps", 1, 15, Ocorrencia.NaoObrigatoria,
             nota.Servico.Valores.OutrasRetencoes));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_pis", 1, 15, Ocorrencia.NaoObrigatoria,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_pis", 1, 15, Ocorrencia.NaoObrigatoria,
             nota.Servico.Valores.ValorPis));
 
-        valor.AddChild(AdicionarTag(TipoCampo.De2, "#1", "valor_cofins", 1, 15, Ocorrencia.NaoObrigatoria,
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_cofins", 1, 15, Ocorrencia.NaoObrigatoria,
             nota.Servico.Valores.ValorCofins));
 
-        valor.AddChild(AdicionarTag(TipoCampo.Str, "#1", "observacao", 1, 1000, Ocorrencia.NaoObrigatoria,
+        valor.AddChild(AddTag(TipoCampo.Str, "#1", "observacao", 1, 1000, Ocorrencia.NaoObrigatoria,
             nota.OutrasInformacoes));
 
         return valor;
@@ -190,9 +190,9 @@ internal class ProviderIPM100 : ProviderBase
     private XElement GerarPrestador(NotaServico nota)
     {
         var prestador = new XElement("prestador");
-        prestador.AddChild(AdicionarTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria,
+        prestador.AddChild(AddTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria,
             nota.Prestador.CpfCnpj.OnlyNumbers()));
-        prestador.AddChild(AdicionarTag(TipoCampo.Str, "", "cidade", 1, 14, Ocorrencia.Obrigatoria,
+        prestador.AddChild(AddTag(TipoCampo.Str, "", "cidade", 1, 14, Ocorrencia.Obrigatoria,
             nota.Prestador.Endereco.CodigoMunicipio));
 
         return prestador;
@@ -203,70 +203,70 @@ internal class ProviderIPM100 : ProviderBase
         var tomador = new XElement("tomador");
         if (!nota.Tomador.DocEstrangeiro.IsEmpty())
         {
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "tipo", 1, 14, Ocorrencia.Obrigatoria, "E"));
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "#1", "identificador", 1, 20, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "tipo", 1, 14, Ocorrencia.Obrigatoria, "E"));
+            tomador.AddChild(AddTag(TipoCampo.Str, "#1", "identificador", 1, 20, Ocorrencia.Obrigatoria,
                 nota.Tomador.DocEstrangeiro.Trim()));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "#1", "estado", 1, 100, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "#1", "estado", 1, 100, Ocorrencia.Obrigatoria,
                 nota.Tomador.Endereco.Uf));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "#1", "pais", 1, 100, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "#1", "pais", 1, 100, Ocorrencia.Obrigatoria,
                 nota.Tomador.Endereco.Pais));
         }
         else
         {
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "tipo", 1, 14, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "tipo", 1, 14, Ocorrencia.Obrigatoria,
                 nota.Tomador.CpfCnpj.IsCNPJ() ? "J" : "F"));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria,
                 nota.Tomador.CpfCnpj.OnlyNumbers()));
 
             if (nota.Tomador.CpfCnpj.IsCNPJ())
-                tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "ie", 1, 20, Ocorrencia.Obrigatoria,
+                tomador.AddChild(AddTag(TipoCampo.Str, "", "ie", 1, 20, Ocorrencia.Obrigatoria,
                     nota.Tomador.InscricaoEstadual.OnlyNumbers()));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "nome_razao_social", 1, 115, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "nome_razao_social", 1, 115, Ocorrencia.Obrigatoria,
                 nota.Tomador.RazaoSocial));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "sobrenome_nome_fantasia", 1, 115, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "sobrenome_nome_fantasia", 1, 115, Ocorrencia.Obrigatoria,
                 nota.Tomador.NomeFantasia));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "logradouro", 1, 125, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "logradouro", 1, 125, Ocorrencia.Obrigatoria,
                 nota.Tomador.Endereco.Logradouro));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "email", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "email", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.DadosContato.Email));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "numero_residencia", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "numero_residencia", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.Endereco.Numero));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "complemento", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "complemento", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.Endereco.Complemento));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "ponto_referencia", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "ponto_referencia", 1, 120, Ocorrencia.Obrigatoria, ""));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "bairro", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "bairro", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.Endereco.Bairro));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "cidade", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "cidade", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.DocEstrangeiro.IsEmpty()
                     ? nota.Tomador.Endereco.CodigoMunicipio
                     : nota.Tomador.Endereco.Municipio));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "cep", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "cep", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.Endereco.Cep.OnlyNumbers()));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "ddd_fone_comercial", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "ddd_fone_comercial", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.DadosContato.DDD));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "fone_comercial", 1, 120, Ocorrencia.Obrigatoria,
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "fone_comercial", 1, 120, Ocorrencia.Obrigatoria,
                 nota.Tomador.DadosContato.Telefone));
 
             tomador.AddChild(
-                AdicionarTag(TipoCampo.Str, "", "ddd_fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "ddd_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "fone_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
+                AddTag(TipoCampo.Str, "", "ddd_fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "ddd_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "fone_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
         }
 
         return tomador;
@@ -281,59 +281,59 @@ internal class ProviderIPM100 : ProviderBase
             var lista = new XElement("lista");
             itens.AddChild(lista);
 
-            lista.AddChild(AdicionarTag(TipoCampo.Str, "#", "tributa_municipio_prestador", 1, 1, Ocorrencia.Obrigatoria,
+            lista.AddChild(AddTag(TipoCampo.Str, "#", "tributa_municipio_prestador", 1, 1, Ocorrencia.Obrigatoria,
                 item.Tributavel == NFSeSimNao.Sim ? "S" : "N"));
 
-            lista.AddChild(AdicionarTag(TipoCampo.Str, "#", "codigo_local_prestacao_servico", 1, 9,
+            lista.AddChild(AddTag(TipoCampo.Str, "#", "codigo_local_prestacao_servico", 1, 9,
                 Ocorrencia.Obrigatoria, item.MunicipioIncidencia));
 
-            lista.AddChild(AdicionarTag(TipoCampo.Str, "#", "unidade_codigo", 1, 9, Ocorrencia.NaoObrigatoria, ""));
-            lista.AddChild(AdicionarTag(TipoCampo.De2, "#", "unidade_quantidade", 1, 15, Ocorrencia.NaoObrigatoria,
+            lista.AddChild(AddTag(TipoCampo.Str, "#", "unidade_codigo", 1, 9, Ocorrencia.NaoObrigatoria, ""));
+            lista.AddChild(AddTag(TipoCampo.De2, "#", "unidade_quantidade", 1, 15, Ocorrencia.NaoObrigatoria,
                 item.Quantidade));
 
-            lista.AddChild(AdicionarTag(TipoCampo.De10, "#", "unidade_valor_unitario", 1, 15, Ocorrencia.NaoObrigatoria,
+            lista.AddChild(AddTag(TipoCampo.De10, "#", "unidade_valor_unitario", 1, 15, Ocorrencia.NaoObrigatoria,
                 item.ValorUnitario));
 
-            lista.AddChild(AdicionarTag(TipoCampo.Str, "#", "codigo_item_lista_servico", 1, 9, Ocorrencia.Obrigatoria,
+            lista.AddChild(AddTag(TipoCampo.Str, "#", "codigo_item_lista_servico", 1, 9, Ocorrencia.Obrigatoria,
                 item.ItemListaServico.OnlyNumbers()));
 
-            lista.AddChild(AdicionarTag(TipoCampo.Str, "#", "codigo_atividade", 1, 9, Ocorrencia.Obrigatoria,
+            lista.AddChild(AddTag(TipoCampo.Str, "#", "codigo_atividade", 1, 9, Ocorrencia.Obrigatoria,
                 item.Codigo.OnlyNumbers()));
 
-            lista.AddChild(AdicionarTag(TipoCampo.Str, "#", "descritivo", 1, 1000, Ocorrencia.Obrigatoria,
+            lista.AddChild(AddTag(TipoCampo.Str, "#", "descritivo", 1, 1000, Ocorrencia.Obrigatoria,
                 item.Descricao.IsEmpty() ? nota.Servico.Discriminacao : item.Descricao));
 
             if (item.Aliquota == 0)
-                lista.AddChild(AdicionarTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
+                lista.AddChild(AddTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
                     Ocorrencia.Obrigatoria,
                     nota.Servico.Valores.Aliquota));
             else
-                lista.AddChild(AdicionarTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
+                lista.AddChild(AddTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
                     Ocorrencia.Obrigatoria,
                     item.Aliquota));
 
             if (nota.Servico.Valores.ValorDeducoes <= 0)
             {
                 lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
-                    ? AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                    ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
                         nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "01" : "00")
-                    : AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
+                    : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
             }
             else
             {
                 lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
-                    ? AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                    ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
                         nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "04" : "03")
-                    : AdicionarTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
+                    : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
             }
 
-            lista.AddChild(AdicionarTag(TipoCampo.De2, "#", "valor_tributavel", 1, 15, Ocorrencia.NaoObrigatoria,
+            lista.AddChild(AddTag(TipoCampo.De2, "#", "valor_tributavel", 1, 15, Ocorrencia.NaoObrigatoria,
                 item.ValorServicos));
 
-            lista.AddChild(AdicionarTag(TipoCampo.De2, "#", "valor_deducao", 1, 15, Ocorrencia.NaoObrigatoria,
+            lista.AddChild(AddTag(TipoCampo.De2, "#", "valor_deducao", 1, 15, Ocorrencia.NaoObrigatoria,
                 item.ValorDeducoes));
 
-            lista.AddChild(AdicionarTag(TipoCampo.De2, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
+            lista.AddChild(AddTag(TipoCampo.De2, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
                 nota.Servico.Valores.IssRetido != SituacaoTributaria.Normal ? item.ValorIss : 0));
         }
 
@@ -361,7 +361,7 @@ internal class ProviderIPM100 : ProviderBase
         };
 
         formaPagamento.AddChild(
-            AdicionarTag(TipoCampo.Str, "#1", "tipo_pagamento", 1, 1, Ocorrencia.Obrigatoria, forma));
+            AddTag(TipoCampo.Str, "#1", "tipo_pagamento", 1, 1, Ocorrencia.Obrigatoria, forma));
         if (nota.Pagamento.Parcelas.Count <= 0) return formaPagamento;
 
         var parcelas = new XElement("parcelas");
@@ -372,13 +372,13 @@ internal class ProviderIPM100 : ProviderBase
             var parcela = new XElement("parcela");
             parcelas.AddChild(parcela);
 
-            parcela.AddChild(AdicionarTag(TipoCampo.Str, "#", "numero", 1, 2, Ocorrencia.Obrigatoria,
+            parcela.AddChild(AddTag(TipoCampo.Str, "#", "numero", 1, 2, Ocorrencia.Obrigatoria,
                 item.Parcela));
 
-            parcela.AddChild(AdicionarTag(TipoCampo.De2, "#", "valor", 1, 15, Ocorrencia.Obrigatoria,
+            parcela.AddChild(AddTag(TipoCampo.De2, "#", "valor", 1, 15, Ocorrencia.Obrigatoria,
                 item.Valor));
 
-            parcela.AddChild(AdicionarTag(TipoCampo.Str, "#", "data_vencimento", 10, 10, Ocorrencia.Obrigatoria,
+            parcela.AddChild(AddTag(TipoCampo.Str, "#", "data_vencimento", 10, 10, Ocorrencia.Obrigatoria,
                 FormataData(item.DataVencimento)));
         }
 

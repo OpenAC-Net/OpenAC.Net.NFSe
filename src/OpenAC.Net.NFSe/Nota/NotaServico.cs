@@ -174,6 +174,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
 
     public string XmlOriginal { get; set; }
 
+    public EventoRps? Evento { get; set; }
+
     #endregion Propriedades
 
     #region Methods

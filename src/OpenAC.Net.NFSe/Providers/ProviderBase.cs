@@ -1220,13 +1220,13 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         switch (valor.Length)
         {
             case 11:
-                tag = AdicionarTag(TipoCampo.StrNumber, id, tagCPF, 11, 11, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
+                tag = AddTag(TipoCampo.StrNumber, id, tagCPF, 11, 11, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
                 if (!valor.IsCPF())
                     WAlerta(tagCPF, "CPF", "CPF", ErrMsgInvalido);
                 break;
 
             case 14:
-                tag = AdicionarTag(TipoCampo.StrNumber, id, tagCNPJ, 14, 14, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
+                tag = AddTag(TipoCampo.StrNumber, id, tagCNPJ, 14, 14, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
                 if (!valor.IsCNPJ())
                     WAlerta(tagCNPJ, "CNPJ", "CNPJ", ErrMsgInvalido);
                 break;
@@ -1251,12 +1251,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="descricao">The descricao.</param>
     /// <param name="ns"></param>
     /// <returns>XmlElement.</returns>
-    protected XElement AdicionarTag(TipoCampo tipo, string id, string tag, XNamespace ns, int min, int max, 
-        Ocorrencia ocorrencia, object valor, string descricao = "")
+    protected XElement AddTag(TipoCampo tipo, string id, string tag, XNamespace? ns, int min, int max, 
+        Ocorrencia ocorrencia, object? valor, string descricao = "")
     {
         Guard.Against<ArgumentException>(ns == null, "Namespace não informado");
 
-        return AdicionarTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, ns);
+        return AddTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, ns);
     }
 
     /// <summary>
@@ -1271,12 +1271,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The valor.</param>
     /// <param name="descricao">The descricao.</param>
     /// <returns>XmlElement.</returns>
-    protected XElement AdicionarTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao = "")
+    protected XElement AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao = "")
     {
-        return AdicionarTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, null);
+        return AddTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, null);
     }
 
-    private XElement AdicionarTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao, XNamespace? ns)
+    private XElement AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao, XNamespace? ns)
     {
         try
         {

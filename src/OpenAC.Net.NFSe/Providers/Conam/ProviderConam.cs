@@ -142,15 +142,15 @@ internal sealed class ProviderConam : ProviderBase
                 break;
         }
 
-        sdt.AddChild(AdicionarTag(TipoCampo.Int, "", "Ano", 0, 0, Ocorrencia.Obrigatoria, nota.Competencia.Year));
-        sdt.AddChild(AdicionarTag(TipoCampo.Int, "", "Mes", 0, 0, Ocorrencia.Obrigatoria, nota.Competencia.Month.ZeroFill(2)));
-        sdt.AddChild(AdicionarTag(TipoCampo.Str, "", "CPFCNPJ", 0, 0, Ocorrencia.Obrigatoria, nota.Prestador.CpfCnpj.ZeroFill(14)));
-        sdt.AddChild(AdicionarTag(TipoCampo.Str, "", "DTIni", 0, 0, Ocorrencia.Obrigatoria, nota.Competencia.ToString("01/MM/yyyy")));
-        sdt.AddChild(AdicionarTag(TipoCampo.Str, "", "DTFin", 0, 0, Ocorrencia.Obrigatoria, DateTime.Parse(nota.Competencia.AddMonths(1).ToString("01/MM/yyyy")).AddDays(-1).ToString("dd/MM/yyyy")));
-        sdt.AddChild(AdicionarTag(TipoCampo.Int, "", "TipoTrib", 0, 0, Ocorrencia.Obrigatoria, tipoTrib));
-        sdt.AddChild(AdicionarTag(TipoCampo.Str, "", "DtAdeSN", 0, 0, Ocorrencia.Obrigatoria, nota.DataOptanteSimplesNacional == DateTime.MinValue || tipoTrib != 4 ? "" : nota.DataOptanteSimplesNacional.ToString("dd/MM/yyyy")));
-        sdt.AddChild(AdicionarTag(TipoCampo.Str, "", "AlqIssSN_IP", 0, 0, Ocorrencia.Obrigatoria, tipoTrib != 4 ? "" : nota.Servico.Valores.Aliquota.ToString("##0.00")));
-        sdt.AddChild(AdicionarTag(TipoCampo.Str, "", "Versao", 0, 0, Ocorrencia.Obrigatoria, "2.00"));
+        sdt.AddChild(AddTag(TipoCampo.Int, "", "Ano", 0, 0, Ocorrencia.Obrigatoria, nota.Competencia.Year));
+        sdt.AddChild(AddTag(TipoCampo.Int, "", "Mes", 0, 0, Ocorrencia.Obrigatoria, nota.Competencia.Month.ZeroFill(2)));
+        sdt.AddChild(AddTag(TipoCampo.Str, "", "CPFCNPJ", 0, 0, Ocorrencia.Obrigatoria, nota.Prestador.CpfCnpj.ZeroFill(14)));
+        sdt.AddChild(AddTag(TipoCampo.Str, "", "DTIni", 0, 0, Ocorrencia.Obrigatoria, nota.Competencia.ToString("01/MM/yyyy")));
+        sdt.AddChild(AddTag(TipoCampo.Str, "", "DTFin", 0, 0, Ocorrencia.Obrigatoria, DateTime.Parse(nota.Competencia.AddMonths(1).ToString("01/MM/yyyy")).AddDays(-1).ToString("dd/MM/yyyy")));
+        sdt.AddChild(AddTag(TipoCampo.Int, "", "TipoTrib", 0, 0, Ocorrencia.Obrigatoria, tipoTrib));
+        sdt.AddChild(AddTag(TipoCampo.Str, "", "DtAdeSN", 0, 0, Ocorrencia.Obrigatoria, nota.DataOptanteSimplesNacional == DateTime.MinValue || tipoTrib != 4 ? "" : nota.DataOptanteSimplesNacional.ToString("dd/MM/yyyy")));
+        sdt.AddChild(AddTag(TipoCampo.Str, "", "AlqIssSN_IP", 0, 0, Ocorrencia.Obrigatoria, tipoTrib != 4 ? "" : nota.Servico.Valores.Aliquota.ToString("##0.00")));
+        sdt.AddChild(AddTag(TipoCampo.Str, "", "Versao", 0, 0, Ocorrencia.Obrigatoria, "2.00"));
 
         sdt.Add(WriteREG20(nota));
 
@@ -165,35 +165,35 @@ internal sealed class ProviderConam : ProviderBase
         var reg20Item = new XElement("Reg20Item");
         reg20.AddChild(reg20Item);
 
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoNFS", 3, 3, Ocorrencia.Obrigatoria, "RPS"));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Int, "", "NumRps", 0, 0, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "SerRps", 1, 3, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "DtEmi", 0, 0, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.ToString("dd/MM/yyyy")));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "RetFonte", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? "SIM" : "NAO"));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "CodSrv", 5, 5, Ocorrencia.Obrigatoria, nota.Servico.CodigoTributacaoMunicipio));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "DiscrSrv", 1, 4000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "VlNFS", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos.ToString("##0.00")));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "VlDed", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes.ToString("##0.00")));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "DiscrDed", 0, 4000, Ocorrencia.Obrigatoria, nota.Servico.Valores.JustificativaDeducao));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "VlBasCalc", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.BaseCalculo.ToString("##0.00")));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "AlqIss", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota.ToString("##0.00")));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "VlIss", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIss.ToString("##0.00")));
-        reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "VlIssRet", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIssRetido.ToString("##0.00")));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "TipoNFS", 3, 3, Ocorrencia.Obrigatoria, "RPS"));
+        reg20Item.AddChild(AddTag(TipoCampo.Int, "", "NumRps", 0, 0, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "SerRps", 1, 3, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "DtEmi", 0, 0, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.ToString("dd/MM/yyyy")));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "RetFonte", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? "SIM" : "NAO"));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "CodSrv", 5, 5, Ocorrencia.Obrigatoria, nota.Servico.CodigoTributacaoMunicipio));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "DiscrSrv", 1, 4000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "VlNFS", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos.ToString("##0.00")));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "VlDed", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes.ToString("##0.00")));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "DiscrDed", 0, 4000, Ocorrencia.Obrigatoria, nota.Servico.Valores.JustificativaDeducao));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "VlBasCalc", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.BaseCalculo.ToString("##0.00")));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "AlqIss", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota.ToString("##0.00")));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "VlIss", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIss.ToString("##0.00")));
+        reg20Item.AddChild(AddTag(TipoCampo.Str, "", "VlIssRet", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIssRetido.ToString("##0.00")));
 
         if (!string.IsNullOrEmpty(nota.Tomador.CpfCnpj))
         {
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "CpfCnpTom", 14, 14, Ocorrencia.Obrigatoria, nota.Tomador.CpfCnpj.Length <= 11 ? nota.Tomador.CpfCnpj.ZeroFill(11) : nota.Tomador.CpfCnpj.ZeroFill(14)));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "RazSocTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoLogtom", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.TipoLogradouro));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "LogTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Logradouro));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "NumEndTom", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "ComplEndTom", 0, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Complemento));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "BairroTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Bairro));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "MunTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Municipio));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "SiglaUFTom", 2, 2, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Uf));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "CepTom", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Cep.ZeroFill(8)));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "Telefone", 10, 10, Ocorrencia.Obrigatoria, (nota.Tomador.DadosContato.DDD.OnlyNumbers() + nota.Tomador.DadosContato.Telefone.OnlyNumbers()).ZeroFill(10)));
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 20, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "CpfCnpTom", 14, 14, Ocorrencia.Obrigatoria, nota.Tomador.CpfCnpj.Length <= 11 ? nota.Tomador.CpfCnpj.ZeroFill(11) : nota.Tomador.CpfCnpj.ZeroFill(14)));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "RazSocTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "TipoLogtom", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.TipoLogradouro));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "LogTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Logradouro));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "NumEndTom", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "ComplEndTom", 0, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Complemento));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "BairroTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Bairro));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "MunTom", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Municipio));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "SiglaUFTom", 2, 2, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Uf));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "CepTom", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Cep.ZeroFill(8)));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "Telefone", 10, 10, Ocorrencia.Obrigatoria, (nota.Tomador.DadosContato.DDD.OnlyNumbers() + nota.Tomador.DadosContato.Telefone.OnlyNumbers()).ZeroFill(10)));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 20, Ocorrencia.Obrigatoria, nota.Tomador.InscricaoMunicipal));
 
             if (
                 !string.IsNullOrEmpty(nota.EnderecoPrestacao.Logradouro)
@@ -208,21 +208,21 @@ internal sealed class ProviderConam : ProviderBase
                 )
                     throw new Exception("Para emissão com endereço de prestação do serviço diferente do endereço do tomador, informe os campos CEP, Logradouro, Numero, Bairro, Cidade e UF do local da prestação!");
 
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoLogLocPre", 1, 10, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.TipoLogradouro));
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "LogLocPre", 1, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Logradouro));
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "NumEndLocPre", 1, 10, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Numero));
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "ComplEndLocPre", 0, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Complemento));
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "BairroLocPre", 1, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Bairro));
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "MunLocPre", 1, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Municipio));
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "SiglaUFLocpre", 2, 2, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Uf));
-                reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "CepLocPre", 8, 8, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Cep.ZeroFill(8)));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "TipoLogLocPre", 1, 10, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.TipoLogradouro));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "LogLocPre", 1, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Logradouro));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "NumEndLocPre", 1, 10, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Numero));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "ComplEndLocPre", 0, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Complemento));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "BairroLocPre", 1, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Bairro));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "MunLocPre", 1, 60, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Municipio));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "SiglaUFLocpre", 2, 2, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Uf));
+                reg20Item.AddChild(AddTag(TipoCampo.Str, "", "CepLocPre", 8, 8, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Cep.ZeroFill(8)));
             }
 
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "Email1", 0, 120, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "Email1", 0, 120, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
         }
         else
         {
-            reg20Item.AddChild(AdicionarTag(TipoCampo.Str, "", "CpfCnpjTom", 1, 14, Ocorrencia.Obrigatoria, "CONSUMIDOR"));
+            reg20Item.AddChild(AddTag(TipoCampo.Str, "", "CpfCnpjTom", 1, 14, Ocorrencia.Obrigatoria, "CONSUMIDOR"));
         }
 
         if (
@@ -247,9 +247,9 @@ internal sealed class ProviderConam : ProviderBase
             var reg30Item = new XElement("Reg30Item");
             reg30.AddChild(reg30Item);
 
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "COFINS"));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaCofins.ToString("##0.00")));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "COFINS"));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaCofins.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins.ToString("##0.00")));
 
             valoresTipo30.Add(nota.Servico.Valores.ValorCofins);
         }
@@ -259,9 +259,9 @@ internal sealed class ProviderConam : ProviderBase
             var reg30Item = new XElement("Reg30Item");
             reg30.AddChild(reg30Item);
 
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "CSLL"));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaCsll.ToString("##0.00")));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "CSLL"));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaCsll.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll.ToString("##0.00")));
 
             valoresTipo30.Add(nota.Servico.Valores.ValorCsll);
         }
@@ -271,9 +271,9 @@ internal sealed class ProviderConam : ProviderBase
             var reg30Item = new XElement("Reg30Item");
             reg30.AddChild(reg30Item);
 
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "INSS"));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaInss.ToString("##0.00")));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "INSS"));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaInss.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss.ToString("##0.00")));
 
             valoresTipo30.Add(nota.Servico.Valores.ValorInss);
         }
@@ -283,9 +283,9 @@ internal sealed class ProviderConam : ProviderBase
             var reg30Item = new XElement("Reg30Item");
             reg30.AddChild(reg30Item);
 
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "IR"));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaIR.ToString("##0.00")));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "IR"));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaIR.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr.ToString("##0.00")));
 
             valoresTipo30.Add(nota.Servico.Valores.ValorIr);
         }
@@ -308,9 +308,9 @@ internal sealed class ProviderConam : ProviderBase
             var reg30Item = new XElement("Reg30Item");
             reg30.AddChild(reg30Item);
 
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "PIS"));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaPis.ToString("##0.00")));
-            reg30Item.AddChild(AdicionarTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoSigla", 1, 10, Ocorrencia.Obrigatoria, "PIS"));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoAliquota", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.AliquotaPis.ToString("##0.00")));
+            reg30Item.AddChild(AddTag(TipoCampo.Str, "", "TributoValor", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis.ToString("##0.00")));
 
             valoresTipo30.Add(nota.Servico.Valores.ValorPis);
         }
@@ -322,13 +322,13 @@ internal sealed class ProviderConam : ProviderBase
     {
         var reg90 = new XElement("Reg90");
 
-        reg90.AddChild(AdicionarTag(TipoCampo.Int, "", "QtdRegNormal", 0, 0, Ocorrencia.Obrigatoria, "1"));
-        reg90.AddChild(AdicionarTag(TipoCampo.Str, "", "ValorNFS", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos.ToString("##0.00")));
-        reg90.AddChild(AdicionarTag(TipoCampo.Str, "", "ValorISS", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIss.ToString("##0.00")));
-        reg90.AddChild(AdicionarTag(TipoCampo.Str, "", "ValorDed", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes.ToString("##0.00")));
-        reg90.AddChild(AdicionarTag(TipoCampo.Str, "", "ValorIssRetTom", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIssRetido.ToString("##0.00")));
-        reg90.AddChild(AdicionarTag(TipoCampo.Int, "", "QtdReg30", 0, 0, Ocorrencia.Obrigatoria, valoresTipo30.Count));
-        reg90.AddChild(AdicionarTag(TipoCampo.Str, "", "ValorTributos", 0, 0, Ocorrencia.Obrigatoria, valoresTipo30.Sum().ToString("##0.00")));
+        reg90.AddChild(AddTag(TipoCampo.Int, "", "QtdRegNormal", 0, 0, Ocorrencia.Obrigatoria, "1"));
+        reg90.AddChild(AddTag(TipoCampo.Str, "", "ValorNFS", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos.ToString("##0.00")));
+        reg90.AddChild(AddTag(TipoCampo.Str, "", "ValorISS", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIss.ToString("##0.00")));
+        reg90.AddChild(AddTag(TipoCampo.Str, "", "ValorDed", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes.ToString("##0.00")));
+        reg90.AddChild(AddTag(TipoCampo.Str, "", "ValorIssRetTom", 0, 0, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIssRetido.ToString("##0.00")));
+        reg90.AddChild(AddTag(TipoCampo.Int, "", "QtdReg30", 0, 0, Ocorrencia.Obrigatoria, valoresTipo30.Count));
+        reg90.AddChild(AddTag(TipoCampo.Str, "", "ValorTributos", 0, 0, Ocorrencia.Obrigatoria, valoresTipo30.Sum().ToString("##0.00")));
 
         return reg90;
     }
