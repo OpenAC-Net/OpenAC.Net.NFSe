@@ -70,7 +70,6 @@ jobs:
 
       - name: Install nuget validator
         run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
-        working-directory: src
 
       # Validate metadata and content of the NuGet package
       # https://www.nuget.org/packages/Meziantou.Framework.NuGetPackageValidation.Tool#readme-body-tab
