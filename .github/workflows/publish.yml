@@ -2,12 +2,6 @@
 name: publish
 on:
   workflow_dispatch: # Allow running the workflow manually from the GitHub UI
-  push:
-    branches:
-      - 'main'       # Run the workflow when pushing to the main branch
-  pull_request:
-    branches:
-      - '*'          # Run the workflow for all pull requests
   release:
     types:
       - published    # Run the workflow when a new GitHub release is published
@@ -25,12 +19,12 @@ jobs:
   create_nuget:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
         
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.2.0
+      uses: nuget/setup-nuget@v2
 
     - name: Restore NuGet packages
       run: nuget restore OpenAC.Net.NFSe.sln
@@ -47,7 +41,7 @@ jobs:
       working-directory: src
 
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: nuget
         if-no-files-found: error
