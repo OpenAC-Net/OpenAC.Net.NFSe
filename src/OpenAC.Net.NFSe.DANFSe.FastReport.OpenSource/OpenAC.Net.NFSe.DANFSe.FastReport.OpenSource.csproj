@@ -20,6 +20,7 @@
     <Description>Biblioteca de impressão de DANFSe usando o FastReport OpenSource.</Description>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <AssemblyVersion>1.6.0</AssemblyVersion>
     <FileVersion>1.6.0</FileVersion>
     <Version>1.6.0</Version>
