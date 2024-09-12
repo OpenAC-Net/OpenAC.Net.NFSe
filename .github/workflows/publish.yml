@@ -34,6 +34,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.x'
+    - run: dotnet msbuild OpenAC.Net.NFSe.sln -property:Configuration=Release -property:platform="Any CPU"
     - run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }}
       working-directory: src
 
