@@ -2,7 +2,7 @@
 
 public static partial class CodigoTOM
 {
-    private static void AddRJ()
+    private static void AddMS()
     {       
     }
 }

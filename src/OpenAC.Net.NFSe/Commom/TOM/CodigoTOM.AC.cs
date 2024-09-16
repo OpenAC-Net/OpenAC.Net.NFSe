@@ -35,27 +35,5 @@ public static partial class CodigoTOM
 {
     private static void AddAC()
     {
-        AddCidade("1200013", "0643"); // Acrelandia/AC
-        AddCidade("1200054", "0157"); // Assis Brasil/AC
-        AddCidade("1200104", "0105"); // Brasileia/AC
-        AddCidade("1200138", "0645"); // Bujari/AC
-        AddCidade("1200179", "0647"); // Capixaba/AC
-        AddCidade("1200203", "0107"); // Cruzeiro Do Sul/AC
-        AddCidade("1200252", "0651"); // Epitaciolandia/AC
-        AddCidade("1200302", "0113"); // Feijo/AC
-        AddCidade("1200328", "0653"); // Jordao/AC
-        AddCidade("1200336", "0109"); // Mancio Lima/AC
-        AddCidade("1200344", "0155"); // Manoel Urbano/AC
-        AddCidade("1200351", "0655"); // Marechal Thaumaturgo/AC
-        AddCidade("1200385", "0151"); // Placido De Castro/AC
-        AddCidade("1200393", "0657"); // Porto Walter/AC
-        AddCidade("1200401", "0139"); // Rio Branco/AC
-        AddCidade("1200427", "0659"); // Rodrigues Alves/AC
-        AddCidade("1200435", "0661"); // Santa Rosa Do Purus/AC
-        AddCidade("1200450", "0153"); // Senador Guiomard/AC
-        AddCidade("1200500", "0145"); // Sena Madureira/AC
-        AddCidade("1200609", "0147"); // Tarauaca/AC
-        AddCidade("1200708", "0149"); // Xapuri/AC
-        AddCidade("1200807", "0649"); // Porto Acre/AC
     }
 }

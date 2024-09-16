@@ -53,11 +53,16 @@ internal sealed class ProviderEquiplano : ProviderBase
     public ProviderEquiplano(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "Equiplano";
+        if (!Municipio.Parametros.ContainsKey("IdEntidade")) throw new  ArgumentException("Provedor Equiplano necessita que seja inforamado o IdEntidade na cidade");
     }
 
     #endregion Constructors
 
+    #region Properties
+
     private string IdEntidade => Municipio.Parametros["IdEntidade"];
+
+    #endregion Properties
     
     #region Methods
     

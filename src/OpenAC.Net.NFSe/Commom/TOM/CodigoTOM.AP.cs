@@ -33,23 +33,9 @@ namespace OpenAC.Net.NFSe.Commom;
 
 public static partial class CodigoTOM
 {
-    private static void AddAP()
+    private static void AddDF()
     {
-        AddCidade("1600055", "0665"); // Serra Do Navio/AP
-        AddCidade("1600105", "0601"); // Amapa/AP
-        AddCidade("1600154", "0663"); // Pedra Branca Do Amapari/AP
-        AddCidade("1600204", "0603"); // Calcoene/AP
-        AddCidade("1600212", "0667"); // Cutias/AP
-        AddCidade("1600238", "0611"); // Ferreira Gomes/AP
-        AddCidade("1600253", "0669"); // Itaubal/AP
-        AddCidade("1600279", "0613"); // Laranjal Do Jari/AP
-        AddCidade("1600303", "0605"); // Macapa/AP
-        AddCidade("1600402", "0607"); // Mazagao/AP
-        AddCidade("1600501", "0609"); // Oiapoque/AP
-        AddCidade("1600535", "0671"); // Porto Grande/AP
-        AddCidade("1600550", "0673"); // Pracuuba/AP
-        AddCidade("1600600", "0615"); // Santana/AP
-        AddCidade("1600709", "0617"); // Tartarugalzinho/AP
-        AddCidade("1600808", "0070"); // Vitoria Do Jari/AP
+        AddCidade("5300108", "9701"); // Brasilia/DF
+        AddCidade("0530020", "");     // Brazlandia/DF 
     }
 }
