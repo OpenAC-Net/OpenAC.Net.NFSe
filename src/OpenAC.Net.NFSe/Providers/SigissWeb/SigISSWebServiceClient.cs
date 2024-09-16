@@ -31,6 +31,7 @@ using System;
 using System.Net.Http;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -46,7 +47,7 @@ public class SigISSWebServiceClient : NFSeRestServiceClient, IServiceClient
 
     #region Methods
 
-    public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, HttpContentType.Applicationxml);
+    public string EnviarSincrono(string cabec, string msg) => Post("/nfes", msg, HttpContentType.ApplicationXml);
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {

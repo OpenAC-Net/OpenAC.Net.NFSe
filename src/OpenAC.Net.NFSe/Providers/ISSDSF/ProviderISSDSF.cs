@@ -40,6 +40,7 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -568,7 +569,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteBuilder.Append("<ns1:ReqConsultaLote xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote  http://localhost:8080/WsNFe2/xsd/ReqConsultaLote.xsd\">");
         loteBuilder.Append("<Cabecalho>");
-        loteBuilder.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
+        loteBuilder.Append($"<CodCidade>{CodigoTOM.FromIBGE(Municipio.Codigo)}</CodCidade>");
         loteBuilder.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CPFCNPJRemetente>");
         loteBuilder.Append("<Versao>1</Versao>");
         loteBuilder.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
@@ -625,7 +626,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         lote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         lote.Append("<ns1:ConsultaSeqRps xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ConsultaSeqRps.xsd\">");
         lote.Append("<Cabecalho>");
-        lote.Append($"<CodCid>{Municipio.CodigoSiafi}</CodCid>");
+        lote.Append($"<CodCid>{CodigoTOM.FromIBGE(Municipio.Codigo)}</CodCid>");
         lote.Append($"<IMPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.OnlyNumbers()}</IMPrestador>");
         lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers()}</CPFCNPJRemetente>");
         lote.Append($"<SeriePrestacao>{retornoWebservice.Serie}</SeriePrestacao>");
@@ -661,7 +662,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         lote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         lote.Append("<ns1:ReqConsultaNFSeRPS xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqConsultaNFSeRPS.xsd\">");
         lote.Append("<Cabecalho>");
-        lote.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
+        lote.Append($"<CodCidade>{CodigoTOM.FromIBGE(Municipio.Codigo)}</CodCidade>");
         lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers()}</CPFCNPJRemetente>");
         lote.Append("<transacao>true</transacao>");
         lote.Append("<Versao>1</Versao>");
@@ -739,7 +740,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         lote.Append(
             "<ns1:ReqConsultaNotas xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqConsultaNotas.xsd\">");
         lote.Append("<Cabecalho Id=\"Consulta:notas\">");
-        lote.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
+        lote.Append($"<CodCidade>{CodigoTOM.FromIBGE(Municipio.Codigo)}</CodCidade>");
         lote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers()}</CPFCNPJRemetente>");
         lote.Append($"<InscricaoMunicipalPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.OnlyNumbers()}</InscricaoMunicipalPrestador>");
         lote.Append($"<dtInicio>{retornoWebservice.Inicio:yyyy-MM-dd}</dtInicio>");
@@ -778,7 +779,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         loteCancelamento.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteCancelamento.Append("<ns1:ReqCancelamentoNFSe xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqCancelamentoNFSe.xsd\">");
         loteCancelamento.Append("<Cabecalho>");
-        loteCancelamento.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
+        loteCancelamento.Append($"<CodCidade>{CodigoTOM.FromIBGE(Municipio.Codigo)}</CodCidade>");
         loteCancelamento.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers().ZeroFill(14)}</CPFCNPJRemetente>");
         loteCancelamento.Append("<transacao>true</transacao>");
         loteCancelamento.Append("<Versao>1</Versao>");
@@ -841,7 +842,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         loteCancelamento.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteCancelamento.Append("<ns1:ReqCancelamentoNFSe xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqCancelamentoNFSe.xsd\">");
         loteCancelamento.Append("<Cabecalho>");
-        loteCancelamento.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
+        loteCancelamento.Append($"<CodCidade>{CodigoTOM.FromIBGE(Municipio.Codigo)}</CodCidade>");
         loteCancelamento.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers().ZeroFill(14)}</CPFCNPJRemetente>");
         loteCancelamento.Append("<transacao>true</transacao>");
         loteCancelamento.Append("<Versao>1</Versao>");
@@ -945,7 +946,7 @@ internal sealed class ProviderISSDSF : ProviderBase
         xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xmlLote.Append("<ns1:ReqEnvioLoteRPS xmlns:ns1=\"http://localhost:8080/WsNFe2/lote\" xmlns:tipos=\"http://localhost:8080/WsNFe2/tp\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqEnvioLoteRPS.xsd\">");
         xmlLote.Append("<Cabecalho>");
-        xmlLote.Append($"<CodCidade>{Municipio.CodigoSiafi}</CodCidade>");
+        xmlLote.Append($"<CodCidade>{CodigoTOM.FromIBGE(Municipio.Codigo)}</CodCidade>");
         xmlLote.Append($"<CPFCNPJRemetente>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CPFCNPJRemetente>");
         xmlLote.Append($"<RazaoSocialRemetente>{Configuracoes.PrestadorPadrao.RazaoSocial}</RazaoSocialRemetente>");
         xmlLote.Append("<transacao/>");
@@ -965,9 +966,9 @@ internal sealed class ProviderISSDSF : ProviderBase
         return xmlLote.ToString();
     }
 
-    private static IEnumerable<Evento> ProcessarEventos(TipoEvento tipo, XElement eventos)
+    private static IEnumerable<EventoRetorno> ProcessarEventos(TipoEvento tipo, XElement eventos)
     {
-        var ret = new List<Evento>();
+        var ret = new List<EventoRetorno>();
         if (eventos == null) return ret.ToArray();
 
         string nome;
@@ -991,7 +992,7 @@ internal sealed class ProviderISSDSF : ProviderBase
 
         foreach (var evento in eventos.ElementsAnyNs(nome))
         {
-            var item = new Evento();
+            var item = new EventoRetorno();
 
             if (tipo != TipoEvento.ListNFSeRps)
             {

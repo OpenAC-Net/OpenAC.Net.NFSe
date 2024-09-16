@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
-// Created          : 06-17-2016
+// Created          : 08-17-2016
 //
 // Last Modified By : Rafael Dias
-// Last Modified On : 06-17-2016
+// Last Modified On : 08-17-2016
 // ***********************************************************************
-// <copyright file="Evento.cs" company="OpenAC .Net">
+// <copyright file="TipoUrl.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
 //	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
 //
@@ -29,36 +29,19 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Commom;
 
-namespace OpenAC.Net.NFSe.Providers;
-
-public class Evento
+public enum TipoUrl
 {
-    #region Constructor
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Evento"/> class.
-    /// </summary>
-    public Evento()
-    {
-        IdentificacaoNfse = new IdeNFSe();
-        IdentificacaoRps = new IdeRps();
-    }
-
-    #endregion Constructor
-
-    #region Propriedades
-
-    public string Codigo { get; set; } = "";
-
-    public string Descricao { get; set; } = "";
-
-    public string Correcao { get; set; } = "";
-
-    public IdeRps IdentificacaoRps { get; set; }
-
-    public IdeNFSe IdentificacaoNfse { get; set; }
-
-    #endregion Propriedades
+    Enviar,
+    EnviarSincrono,
+    ConsultarSituacao,
+    ConsultarLoteRps,
+    ConsultarSequencialRps,
+    ConsultarNFSeRps,
+    ConsultarNFSe,
+    CancelarNFSe,
+    CancelarNFSeLote,
+    SubstituirNFSe,
+    Autenticacao,
 }

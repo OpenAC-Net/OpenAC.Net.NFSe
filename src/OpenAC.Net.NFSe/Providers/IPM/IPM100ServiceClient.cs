@@ -31,6 +31,7 @@
 // ***********************************************************************
 
 using System;
+using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
 

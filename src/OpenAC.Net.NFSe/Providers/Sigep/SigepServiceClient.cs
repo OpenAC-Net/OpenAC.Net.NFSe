@@ -36,6 +36,7 @@ using System.Text;
 using OpenAC.Net.Core.Extensions;
 using System.Xml.Linq;
 using System.Xml;
+using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
 

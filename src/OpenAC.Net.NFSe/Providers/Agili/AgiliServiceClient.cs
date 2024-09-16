@@ -31,6 +31,7 @@
 
 using System;
 using System.Net.Http;
+using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -68,7 +69,7 @@ internal class AgiliServiceClient : NFSeHttpServiceClient, IServiceClient
 
     private string Execute(string msg)
     {
-        Execute(new StringContent(msg, Charset, HttpContentType.Applicationxml), HttpMethod.Post);
+        Execute(new StringContent(msg, Charset, HttpContentType.ApplicationXml), HttpMethod.Post);
         return EnvelopeRetorno;
     }
 

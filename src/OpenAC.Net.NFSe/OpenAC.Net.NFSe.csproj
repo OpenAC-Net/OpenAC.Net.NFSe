@@ -53,6 +53,10 @@
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.3" />
 	</ItemGroup>
 
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0'">
+		<Compile Remove="Commom\Extensions\DictionaryExtensions.cs" />
+	</ItemGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
 		<PackageReference Include="System.Drawing.Common" Version="8.0.8" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="6.2.0" />

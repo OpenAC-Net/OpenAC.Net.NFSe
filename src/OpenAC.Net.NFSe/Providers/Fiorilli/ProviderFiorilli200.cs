@@ -31,6 +31,7 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 using System.Xml.Linq;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -48,7 +49,7 @@ internal sealed class ProviderFiorilli200 : ProviderABRASF200
 
     #region Methods
 
-    protected override XElement WriteTomadorRps(NotaServico nota)
+    protected override XElement? WriteTomadorRps(NotaServico nota)
     {
         if (nota.Tomador.Endereco.CodigoMunicipio != 9999999)
             nota.Tomador.Endereco.CodigoPais = 0;

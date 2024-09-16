@@ -1,6 +1,6 @@
 ﻿using OpenAC.Net.DFe.Core.Attributes;
 
-namespace OpenAC.Net.NFSe.Providers;
+namespace OpenAC.Net.NFSe.Commom;
 
 public enum VersaoNFSe
 {

@@ -37,6 +37,7 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -60,10 +61,10 @@ internal class ProviderMegasoft : ProviderABRASF200
         switch (notas.Count)
         {
             case 0:
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
                 break;
             case > 3:
-                retornoWebservice.Erros.Add(new Evento
+                retornoWebservice.Erros.Add(new EventoRetorno
                     { Codigo = "0", Descricao = "Apenas 3 RPS podem ser enviados em modo Sincrono." });
                 break;
         }
@@ -170,7 +171,7 @@ internal class ProviderMegasoft : ProviderABRASF200
             "InfDeclaracaoPrestacaoServico", Certificado);
     }
 
-    protected override XElement WriteTomadorRps(NotaServico nota)
+    protected override XElement? WriteTomadorRps(NotaServico nota)
     {
         var tomador = new XElement("Tomador");
 
@@ -254,7 +255,7 @@ internal class ProviderMegasoft : ProviderABRASF200
         
         foreach (var mensagem in mensagens.ElementsAnyNs("MensagemRetorno"))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,
@@ -277,7 +278,7 @@ internal class ProviderMegasoft : ProviderABRASF200
 
         if (compNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento
+            retornoWebservice.Erros.Add(new EventoRetorno
                 { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (CompNfse)" });
             return;
         }

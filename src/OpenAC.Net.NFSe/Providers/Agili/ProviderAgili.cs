@@ -36,6 +36,7 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -394,10 +395,10 @@ internal class ProviderAgili : ProviderABRASF
         switch (notas.Count)
         {
             case 0:
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
                 break;
             case > 3:
-                retornoWebservice.Erros.Add(new Evento
+                retornoWebservice.Erros.Add(new EventoRetorno
                     { Codigo = "0", Descricao = "Apenas 3 RPS podem ser enviados em modo Sincrono." });
                 break;
         }
@@ -428,9 +429,9 @@ internal class ProviderAgili : ProviderABRASF
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         if (retornoWebservice.Lote == 0)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
         if (notas.Count == 0)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
         if (retornoWebservice.Erros.Count > 0) return;
 
         var xmlLoteRps = new StringBuilder();
@@ -504,7 +505,7 @@ internal class ProviderAgili : ProviderABRASF
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new Evento
+            retornoWebservice.Erros.Add(new EventoRetorno
                 { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
             return;
         }
@@ -581,7 +582,7 @@ internal class ProviderAgili : ProviderABRASF
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento
+            retornoWebservice.Erros.Add(new EventoRetorno
                 { Codigo = "0", Descricao = "Número da NFSe não informado para a consulta." });
             return;
         }
@@ -665,7 +666,7 @@ internal class ProviderAgili : ProviderABRASF
         var protocoloCancelamento = xmlRet.Root.ElementAnyNs("ProtocoloRequerimentoCancelamento");
         if (protocoloCancelamento == null)
         {
-            retornoWebservice.Erros.Add(new Evento
+            retornoWebservice.Erros.Add(new EventoRetorno
                 { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
             return;
         }

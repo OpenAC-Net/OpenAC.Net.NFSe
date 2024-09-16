@@ -38,6 +38,7 @@ using System.IO;
 using System.Linq;
 using OpenAC.Net.Core.Extensions;
 using System.Text;
+using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -54,7 +55,7 @@ internal sealed class ProviderFiorilli201 : ProviderABRASF201
 
     #region Methods
 
-    protected override XElement WriteTomadorRps(NotaServico nota)
+    protected override XElement? WriteTomadorRps(NotaServico nota)
     {
         if (nota.Tomador.Endereco.CodigoMunicipio != 9999999)
             nota.Tomador.Endereco.CodigoPais = 0;
@@ -71,11 +72,11 @@ internal sealed class ProviderFiorilli201 : ProviderABRASF201
     protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty())
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para substituição." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NÃºmero da NFSe nÃ£o informado para substituiÃ§Ã£o." });
         if (retornoWebservice.CodigoCancelamento.IsEmpty())
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Codigo de cancelamento não informado para substituição." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Codigo de cancelamento nÃ£o informado para substituiÃ§Ã£o." });
         if (notas.Count < 1)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota para subituição não informada." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota para subituiÃ§Ã£o nÃ£o informada." });
 
         if (retornoWebservice.Erros.Any()) return;
 

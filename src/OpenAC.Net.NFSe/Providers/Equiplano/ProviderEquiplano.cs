@@ -40,6 +40,7 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -56,8 +57,10 @@ internal sealed class ProviderEquiplano : ProviderBase
 
     #endregion Constructors
 
+    private string IdEntidade => Municipio.Parametros["IdEntidade"];
+    
     #region Methods
-
+    
     #region RPS
 
     //ToDo: Fazer a leitura do xml.
@@ -510,8 +513,8 @@ internal sealed class ProviderEquiplano : ProviderBase
 
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
         if (retornoWebservice.Erros.Count > 0) return;
 
         var xmlListaRps = new StringBuilder();
@@ -538,7 +541,7 @@ internal sealed class ProviderEquiplano : ProviderBase
             .Append($"<nrCnpj>{ Configuracoes.PrestadorPadrao.CpfCnpj }</nrCnpj>")
             .Append($"<nrInscricaoMunicipal>{ Configuracoes.PrestadorPadrao.InscricaoMunicipal }</nrInscricaoMunicipal>")
             .Append($"<isOptanteSimplesNacional>{ optanteSimplesNacional }</isOptanteSimplesNacional>")
-            .Append($"<idEntidade>{ Municipio.IdEntidade }</idEntidade>")
+            .Append($"<idEntidade>{IdEntidade}</idEntidade>")
             .Append("</prestador>")
             .Append(xmlListaRps)
             .Append("</lote>")
@@ -596,7 +599,7 @@ internal sealed class ProviderEquiplano : ProviderBase
             .Append("<es:esConsultarSituacaoLoteRpsEnvio xmlns:es=\"http://www.equiplano.com.br/esnfs\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.equiplano.com.br/enfs esConsultarLoteRpsEnvio_v01.xsd\">")
             .Append("<prestador>")
             .Append($"<cnpj>{ Configuracoes.PrestadorPadrao.CpfCnpj }</cnpj>")
-            .Append($"<idEntidade>{ Municipio.IdEntidade }</idEntidade>")
+            .Append($"<idEntidade>{ IdEntidade }</idEntidade>")
             .Append("</prestador>")
             .Append($"<nrLoteRps>{ retornoWebservice.Lote }</nrLoteRps>")
             .Append("</es:esConsultarSituacaoLoteRpsEnvio>")
@@ -625,7 +628,7 @@ internal sealed class ProviderEquiplano : ProviderBase
             .Append("<es:esConsultarLoteRpsEnvio xmlns:es=\"http://www.equiplano.com.br/esnfs\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.equiplano.com.br/enfs esConsultarLoteRpsEnvio_v01.xsd\">")
             .Append("<prestador>")
             .Append($"<cnpj>{ Configuracoes.PrestadorPadrao.CpfCnpj }</cnpj>")
-            .Append($"<idEntidade>{ Municipio.IdEntidade }</idEntidade>")
+            .Append($"<idEntidade>{ IdEntidade }</idEntidade>")
             .Append("</prestador>")
             .Append($"<nrLoteRps>{ retornoWebservice.Lote }</nrLoteRps>")
             .Append("</es:esConsultarLoteRpsEnvio>")
@@ -651,7 +654,7 @@ internal sealed class ProviderEquiplano : ProviderBase
 
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (listaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (listaNfse)" });
             return;
         }
 
@@ -688,7 +691,7 @@ internal sealed class ProviderEquiplano : ProviderBase
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
             return;
         }
 
@@ -701,7 +704,7 @@ internal sealed class ProviderEquiplano : ProviderBase
             .Append("</rps>")
             .Append("<prestador>")
             .Append($"<cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj}</cnpj>")
-            .Append($"<idEntidade>{Municipio.IdEntidade}</idEntidade>")
+            .Append($"<idEntidade>{IdEntidade}</idEntidade>")
             .Append("</prestador>")
             .Append("</es:esConsultarNfsePorRpsEnvio>")
             .ToString();
@@ -726,7 +729,7 @@ internal sealed class ProviderEquiplano : ProviderBase
 
         if (nfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (nfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (nfse)" });
             return;
         }
 
@@ -757,7 +760,7 @@ internal sealed class ProviderEquiplano : ProviderBase
         xml.Append("<es:esConsultarNfseEnvio xmlns:es=\"http://www.equiplano.com.br/esnfs\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.equiplano.com.br/enfs esConsultarNfsePorRpsEnvio_v01.xsd\">");
         xml.Append("<prestador>");
         xml.Append($"<cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj}</cnpj>");
-        xml.Append($"<idEntidade>{Municipio.IdEntidade}</idEntidade>");
+        xml.Append($"<idEntidade>{IdEntidade}</idEntidade>");
         xml.Append("</prestador>");
 
         if (retornoWebservice.NumeroNFse > 0)
@@ -768,7 +771,7 @@ internal sealed class ProviderEquiplano : ProviderBase
         {
             if (!retornoWebservice.Inicio.HasValue || !retornoWebservice.Fim.HasValue)
             {
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Data de início ou fim não informada para a consulta." });
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Data de início ou fim não informada para a consulta." });
                 return;
             }
 
@@ -800,7 +803,7 @@ internal sealed class ProviderEquiplano : ProviderBase
 
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (listaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (listaNfse)" });
             return;
         }
 
@@ -835,7 +838,7 @@ internal sealed class ProviderEquiplano : ProviderBase
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
             return;
         }
 
@@ -844,7 +847,7 @@ internal sealed class ProviderEquiplano : ProviderBase
             .Append("<es:esCancelarNfseEnvio xmlns:es=\"http://www.equiplano.com.br/esnfs\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.equiplano.com.br/enfs esCancelarNfseEnvio_v01.xsd\">")
             .Append("<prestador>")
             .Append($"<cnpj>{ Configuracoes.PrestadorPadrao.CpfCnpj }</cnpj>")
-            .Append($"<idEntidade>{ Municipio.IdEntidade }</idEntidade>")
+            .Append($"<idEntidade>{ IdEntidade }</idEntidade>")
             .Append("</prestador>")
             .Append($"<nrNfse>{ retornoWebservice.NumeroNFSe }</nrNfse>")
             .Append($"<dsMotivoCancelamento>{ retornoWebservice.Motivo }</dsMotivoCancelamento>")
@@ -869,7 +872,7 @@ internal sealed class ProviderEquiplano : ProviderBase
         var sucesso = rootElement.ElementAnyNs("sucesso");
         if (sucesso == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
             return;
         }
 
@@ -972,7 +975,7 @@ internal sealed class ProviderEquiplano : ProviderBase
 
         foreach (var erro in listaErros.ElementsAnyNs(messageElement))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = erro?.ElementAnyNs("cdMensagem")?.GetValue<string>() ?? string.Empty,
                 Descricao = erro?.ElementAnyNs("dsMensagem")?.GetValue<string>() ?? string.Empty,

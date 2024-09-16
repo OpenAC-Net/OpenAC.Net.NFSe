@@ -36,7 +36,7 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 
-namespace OpenAC.Net.NFSe.Providers;
+namespace OpenAC.Net.NFSe.Commom;
 
 internal static class NFSeUtil
 {

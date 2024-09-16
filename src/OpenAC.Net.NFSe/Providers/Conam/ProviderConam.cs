@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -340,7 +341,7 @@ internal sealed class ProviderConam : ProviderBase
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         if (notas.Count == 0)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
 
         if (retornoWebservice.Erros.Count > 0)
             return;
@@ -466,7 +467,7 @@ internal sealed class ProviderConam : ProviderBase
         var listaNfse = retornoLote?.ElementAnyNs("XML_Notas");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
 
@@ -506,19 +507,19 @@ internal sealed class ProviderConam : ProviderBase
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número do RPS não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número do RPS não informado para a consulta." });
             return;
         }
 
         if (retornoWebservice.MesCompetencia <= 0 || retornoWebservice.MesCompetencia >= 13)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Você deve informar o mês de competência." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Você deve informar o mês de competência." });
             return;
         }
 
         if (retornoWebservice.AnoCompetencia <= 2000 || retornoWebservice.AnoCompetencia > DateTime.Now.Year)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Você deve informar o ano de competência." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Você deve informar o ano de competência." });
             return;
         }
 
@@ -549,7 +550,7 @@ internal sealed class ProviderConam : ProviderBase
         var listaNfse = xmlElement.ElementAnyNs("Lista_Notas");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (Nota)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (Nota)" });
             return;
         }
 
@@ -571,13 +572,13 @@ internal sealed class ProviderConam : ProviderBase
     {
         if (retornoWebservice.NumeroNFse < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número do NFSe não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número do NFSe não informado para a consulta." });
             return;
         }
 
         if (retornoWebservice.Inicio == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Você deve informar a competência no campo Início." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Você deve informar a competência no campo Início." });
             return;
         }
 
@@ -608,7 +609,7 @@ internal sealed class ProviderConam : ProviderBase
         var listaNfse = xmlElement.ElementAnyNs("Lista_Notas");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (Nota)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (Nota)" });
             return;
         }
 
@@ -630,7 +631,7 @@ internal sealed class ProviderConam : ProviderBase
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
             return;
         }
 
@@ -777,7 +778,7 @@ internal sealed class ProviderConam : ProviderBase
 
         foreach (var mensagem in mensagens.ElementsAnyNs("Message"))
         {
-            retornoWs.Erros.Add(new Evento
+            retornoWs.Erros.Add(new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Id")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Description")?.GetValue<string>() ?? string.Empty,
@@ -793,7 +794,7 @@ internal sealed class ProviderConam : ProviderBase
 
         var mensagem = xmlRet.ElementAnyNs("SDT_IMPRESSAO_OUT").ElementAnyNs("Message");
 
-        var evento = new Evento
+        var evento = new EventoRetorno
         {
             Codigo = mensagem?.ElementAnyNs("Id")?.GetValue<string>() ?? string.Empty,
             Descricao = mensagem?.ElementAnyNs("Description")?.GetValue<string>() ?? string.Empty,

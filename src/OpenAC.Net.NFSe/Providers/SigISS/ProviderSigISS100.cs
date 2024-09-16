@@ -36,6 +36,7 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -154,8 +155,8 @@ internal sealed class ProviderSigISS100 : ProviderBase
 
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (notas.Count > 1) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Apenas o envio de uma nota por vez é permitido para esse serviço." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+        if (notas.Count > 1) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Apenas o envio de uma nota por vez é permitido para esse serviço." });
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
         var nota = notas.FirstOrDefault() ?? throw new Exception("Nenhuma nota para ser enviada");
         nota.NumeroLote = retornoWebservice.Lote;
 
@@ -193,7 +194,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
                 var errorId = node.ElementAnyNs("id")?.Value ?? string.Empty;
                 var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
                 var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
-                retornoWebservice.Erros.Add(new Evento() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
+                retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
             }
         }
         else
@@ -246,7 +247,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
                 var errorId = node.ElementAnyNs("id")?.Value ?? string.Empty;
                 var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
                 var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
-                retornoWebservice.Erros.Add(new Evento() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
+                retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
             }
         }
         else
@@ -356,7 +357,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
         if (retornoWebservice.Erros.Any()) return;
         if (retornoWebservice.XmlRetorno.Contains("ListaMensagemRetorno"))
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
             return;
         }
         if (notas == null) return;
@@ -367,7 +368,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
 
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
 
@@ -416,7 +417,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
 
         foreach (var mensagem in mensagens.ElementsAnyNs("Message"))
         {
-            retornoWs.Erros.Add(new Evento
+            retornoWs.Erros.Add(new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Id")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Description")?.GetValue<string>() ?? string.Empty,

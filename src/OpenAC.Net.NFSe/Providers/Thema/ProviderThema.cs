@@ -33,6 +33,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers.Thema;
@@ -85,7 +86,7 @@ internal sealed class ProviderThema : ProviderABRASF
 
         foreach (var mensagem in listaMenssagens.ElementsAnyNs(messageElement))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,

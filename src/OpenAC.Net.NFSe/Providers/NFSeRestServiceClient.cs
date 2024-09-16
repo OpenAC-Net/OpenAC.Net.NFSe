@@ -33,6 +33,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
+using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -114,7 +115,7 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
             var requestContent = new MultipartFormDataContent();
             var fileContent = new ByteArrayContent(Charset.GetBytes(EnvelopeEnvio));
-            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(HttpContentType.Applicationxml);
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(HttpContentType.ApplicationXml);
 
             requestContent.Add(fileContent, "file", fileName);
 

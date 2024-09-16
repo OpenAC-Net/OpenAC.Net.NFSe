@@ -45,6 +45,7 @@ using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -358,7 +359,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
         }
     }
@@ -409,7 +410,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
         }
 
@@ -470,7 +471,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
         }
     }
@@ -527,7 +528,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
         }
     }
@@ -581,7 +582,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
         }
     }
@@ -644,7 +645,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em ConsultaNFSeRps: " + ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSeRps: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -717,7 +718,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em ConsultaNFSe: " + ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSe: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -778,7 +779,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em CancelarNFSe: " + ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSe: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -832,7 +833,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em CancelarNFSeLote: " + ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSeLote: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -891,7 +892,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Erro em SubstituirNFSe: " + ex.Message });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em SubstituirNFSe: " + ex.Message });
             return retornoWebservice;
         }
     }
@@ -1496,17 +1497,17 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     {
         schema = Path.Combine(Configuracoes.Arquivos.PathSchemas, Name, Versao.GetDFeValue(), schema);
         if (!File.Exists(schema))
-            retorno.Erros.Add(new Evento { Codigo = "0", Descricao = "Nao encontrou o arquivo schema do xml => " + schema });
+            retorno.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nao encontrou o arquivo schema do xml => " + schema });
             
         if (XmlSchemaValidation.ValidarXml(retorno.XmlEnvio, schema, out var errosSchema, out var alertasSchema)) return;
 
-        foreach (var erro in errosSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
+        foreach (var erro in errosSchema.Select(descricao => new EventoRetorno { Codigo = "0", Descricao = descricao }))
         {
-            retorno.Alertas.Add(new Evento { Codigo = "0", Descricao = "Erro gerado ao validar o schema do xml => " + erro.Descricao });
+            retorno.Alertas.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro gerado ao validar o schema do xml => " + erro.Descricao });
             retorno.Erros.Add(erro);
         }
 
-        foreach (var alerta in alertasSchema.Select(descricao => new Evento { Codigo = "0", Descricao = descricao }))
+        foreach (var alerta in alertasSchema.Select(descricao => new EventoRetorno { Codigo = "0", Descricao = descricao }))
             retorno.Alertas.Add(alerta);
     }
 

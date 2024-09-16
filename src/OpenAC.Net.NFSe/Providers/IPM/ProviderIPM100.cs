@@ -42,6 +42,7 @@ using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -521,18 +522,14 @@ internal class ProviderIPM100 : ProviderBase
 
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (Municipio.CodigoSiafi == 0)
-            retornoWebservice.Erros.Add(new Evento
-                { Codigo = "0", Descricao = "Faltou informar o codigo Siafi(codigo tom) no cadastro de cidades" });
-
         switch (notas.Count)
         {
             case 0:
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
                 break;
 
             case > 1:
-                retornoWebservice.Erros.Add(new Evento
+                retornoWebservice.Erros.Add(new EventoRetorno
                     { Codigo = "0", Descricao = "Este provedor aceita apenas uma RPS por vez" });
                 break;
         }
@@ -559,7 +556,7 @@ internal class ProviderIPM100 : ProviderBase
         {
             if (!retornoWebservice.XmlRetorno.IsValidXml())
             {
-                retornoWebservice.Erros.Add(new Evento
+                retornoWebservice.Erros.Add(new EventoRetorno
                 {
                     Codigo = "999",
                     Correcao = string.Empty,
@@ -576,7 +573,7 @@ internal class ProviderIPM100 : ProviderBase
                 foreach (var item in mensagens.Elements())
                 {
                     var erro = item.GetValue<string>();
-                    retornoWebservice.Erros.Add(new Evento
+                    retornoWebservice.Erros.Add(new EventoRetorno
                     {
                         Codigo = erro.Substring(0, 5),
                         Correcao = string.Empty,
@@ -590,7 +587,7 @@ internal class ProviderIPM100 : ProviderBase
             var nfse = xmlRet.Root?.ElementAnyNs("nfse");
             if (nfse == null)
             {
-                retornoWebservice.Erros.Add(new Evento
+                retornoWebservice.Erros.Add(new EventoRetorno
                 {
                     Codigo = "999",
                     Correcao = string.Empty,
@@ -649,7 +646,7 @@ internal class ProviderIPM100 : ProviderBase
         }
         catch (Exception e)
         {
-            retornoWebservice.Erros.Add(new Evento
+            retornoWebservice.Erros.Add(new EventoRetorno
             {
                 Codigo = $"999 - {nameof(e)}",
                 Correcao = "",
@@ -679,7 +676,7 @@ internal class ProviderIPM100 : ProviderBase
     {
         if (!retornoWebservice.XmlRetorno.IsValidXml())
         {
-            retornoWebservice.Erros.Add(new Evento
+            retornoWebservice.Erros.Add(new EventoRetorno
             {
                 Codigo = "999",
                 Correcao = string.Empty,
@@ -749,7 +746,7 @@ internal class ProviderIPM100 : ProviderBase
     {
         if (!retornoWebservice.XmlRetorno.IsValidXml())
         {
-            retornoWebservice.Erros.Add(new Evento
+            retornoWebservice.Erros.Add(new EventoRetorno
             {
                 Codigo = "999",
                 Correcao = string.Empty,
@@ -774,7 +771,7 @@ internal class ProviderIPM100 : ProviderBase
 
                 var mensagemErro = erro;
 
-                retornoWebservice.Erros.Add(new Evento
+                retornoWebservice.Erros.Add(new EventoRetorno
                 {
                     Codigo = codigo,
                     Correcao = null,

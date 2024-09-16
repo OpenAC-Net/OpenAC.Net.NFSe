@@ -42,6 +42,7 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -343,10 +344,10 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         if (retornoWebservice.Lote == 0)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
 
         if (notas.Count == 0)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
 
         if (retornoWebservice.Erros.Count > 0)
             return;
@@ -527,7 +528,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
             return;
         }
 
@@ -577,7 +578,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     {
         if (retornoWebservice.NumeroNFse < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
             return;
         }
 
@@ -608,7 +609,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
             return;
         }
 
@@ -829,7 +830,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
         foreach (var mensagem in mensagens.ElementsAnyNs("Alerta"))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Descricao")?.GetValue<string>() ?? string.Empty
@@ -845,7 +846,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
         foreach (var mensagem in mensagens.ElementsAnyNs("Erro"))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Descricao")?.GetValue<string>() ?? string.Empty

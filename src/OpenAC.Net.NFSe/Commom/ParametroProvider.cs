@@ -1,4 +1,4 @@
-﻿namespace OpenAC.Net.NFSe.Providers;
+﻿namespace OpenAC.Net.NFSe.Commom;
 
 public sealed class ParametroProvider
 {

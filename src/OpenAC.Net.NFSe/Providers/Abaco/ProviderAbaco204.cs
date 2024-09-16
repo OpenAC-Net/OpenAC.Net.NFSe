@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using System;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 

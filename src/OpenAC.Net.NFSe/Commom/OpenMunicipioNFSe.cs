@@ -34,8 +34,9 @@ using OpenAC.Net.DFe.Core.Attributes;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Providers;
 
-namespace OpenAC.Net.NFSe.Providers;
+namespace OpenAC.Net.NFSe.Commom;
 
 [DFeRoot("Municipio", Namespace = "https://www.openac.net.br/")]
 public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
@@ -90,21 +91,6 @@ public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
     /// <value>The codigo.</value>
     [DFeElement(TipoCampo.Int, "Codigo")]
     public int Codigo { get; set; }
-
-    /// <summary>
-    /// Define ou retorna o codigo Siafi do municipio
-    /// Obrigatorio para municipios com provedor DSF.
-    /// </summary>
-    /// <value>The codigo siafi.</value>
-    [DFeElement(TipoCampo.Int, "CodigoSiafi")]
-    public int CodigoSiafi { get; set; }
-
-    /// <summary>
-    /// Define ou retorna o identificador do município no provedor Equiplano
-    /// </summary>
-    /// <value>The Id Entidade.</value>
-    [DFeElement(TipoCampo.Int, "IdEntidade")]
-    public int IdEntidade { get; set; }
 
     /// <summary>
     /// Define ou retorna o nome do municipio

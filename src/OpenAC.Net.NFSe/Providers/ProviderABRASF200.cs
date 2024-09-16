@@ -41,6 +41,7 @@ using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -782,8 +783,8 @@ public abstract class ProviderABRASF200 : ProviderBase
     /// <inheritdoc />
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
         if (retornoWebservice.Erros.Any()) return;
 
         var xmlLoteRps = new StringBuilder();
@@ -846,8 +847,8 @@ public abstract class ProviderABRASF200 : ProviderBase
     /// <inheritdoc />
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
         if (retornoWebservice.Erros.Any()) return;
 
         var xmlLoteRps = new StringBuilder();
@@ -907,7 +908,7 @@ public abstract class ProviderABRASF200 : ProviderBase
 
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
 
@@ -1027,7 +1028,7 @@ public abstract class ProviderABRASF200 : ProviderBase
 
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
 
@@ -1072,7 +1073,7 @@ public abstract class ProviderABRASF200 : ProviderBase
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "AC0001", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "AC0001", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
             return;
         }
 
@@ -1115,7 +1116,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         var confirmacaoCancelamento = xmlRet.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
         if (confirmacaoCancelamento == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
             return;
         }
 
@@ -1156,7 +1157,7 @@ public abstract class ProviderABRASF200 : ProviderBase
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
             return;
         }
 
@@ -1208,7 +1209,7 @@ public abstract class ProviderABRASF200 : ProviderBase
 
         if (compNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (CompNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (CompNfse)" });
             return;
         }
 
@@ -1365,7 +1366,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
 
@@ -1390,11 +1391,11 @@ public abstract class ProviderABRASF200 : ProviderBase
     protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty())
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para substituição." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe não informado para substituição." });
         if (retornoWebservice.CodigoCancelamento.IsEmpty())
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Codigo de cancelamento não informado para substituição." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Codigo de cancelamento não informado para substituição." });
         if (notas.Count < 1)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nota para subituição não informada." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota para subituição não informada." });
 
         if (retornoWebservice.Erros.Any()) return;
 
@@ -1450,12 +1451,12 @@ public abstract class ProviderABRASF200 : ProviderBase
         var nfseSubstituida = retornoLote?.ElementAnyNs("NfseSubstituida");
         var nfseSubstituidora = retornoLote?.ElementAnyNs("NfseSubstituidora");
 
-        if (nfseSubstituida == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe Substituida não encontrada! (NfseSubstituida)" });
-        if (nfseSubstituidora == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe Substituidora não encontrada! (NfseSubstituidora)" });
+        if (nfseSubstituida == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe Substituida não encontrada! (NfseSubstituida)" });
+        if (nfseSubstituidora == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe Substituidora não encontrada! (NfseSubstituidora)" });
         if (retornoWebservice.Erros.Any()) return;
 
         var compNfse = nfseSubstituidora.ElementAnyNs("CompNfse");
-        if (compNfse == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
+        if (compNfse == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
         if (retornoWebservice.Erros.Any()) return;
 
         retornoWebservice.Nota = LoadXml(compNfse.ToString());
@@ -1480,7 +1481,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         }
 
         compNfse = nfseSubstituida.ElementAnyNs("CompNfse");
-        if (compNfse == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
+        if (compNfse == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
         if (retornoWebservice.Erros.Any()) return;
 
         retornoWebservice.Sucesso = true;
@@ -1539,7 +1540,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         {
             foreach (var mensagem in mensagens.ElementsAnyNs("MensagemRetorno"))
             {
-                var evento = new Evento
+                var evento = new EventoRetorno
                 {
                     Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                     Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,
@@ -1556,7 +1557,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         {
             foreach (var mensagem in mensagens.ElementsAnyNs("MensagemRetorno"))
             {
-                var evento = new Evento
+                var evento = new EventoRetorno
                 {
                     Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                     Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,

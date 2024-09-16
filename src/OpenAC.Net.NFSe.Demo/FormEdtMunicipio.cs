@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Demo;
@@ -56,8 +57,6 @@ public partial class FormEdtMunicipio : Form
         txtMunicipio.Text = target.Nome;
         cmbUf.EnumDataSource(target.UF);
         nudCodIBGE.Value = target.Codigo;
-        nudCodSiafi.Value = target.CodigoSiafi;
-        nudIdEntidade.Value = target.IdEntidade;
         cmbProvedor.EnumDataSourceSorted(target.Provedor);
         cmbVersao.EnumDataSource(target.Versao);
 
@@ -91,11 +90,9 @@ public partial class FormEdtMunicipio : Form
         target.Nome = txtMunicipio.Text;
         target.UF = cmbUf.GetSelectedValue<DFeSiglaUF>();
         target.Codigo = (int)nudCodIBGE.Value;
-        target.CodigoSiafi = (int)nudCodSiafi.Value;
 
         target.Provedor = cmbProvedor.GetSelectedValue<NFSeProvider>();
         target.Versao = cmbVersao.GetSelectedValue<VersaoNFSe>();
-        target.IdEntidade = (int)nudIdEntidade.Value;
 
         target.UrlProducao[TipoUrl.Enviar] = txtPEnviar.Text;
         target.UrlProducao[TipoUrl.EnviarSincrono] = txtPEnviarSincrono.Text;
@@ -138,6 +135,24 @@ public partial class FormEdtMunicipio : Form
         if (!string.IsNullOrWhiteSpace(txtPConsultarSequencialRps.Text)) txtPConsultarSequencialRps.Text = novoLink;
         if (!string.IsNullOrWhiteSpace(txtPSubstituirNFSe.Text)) txtPSubstituirNFSe.Text = novoLink;
         if (!string.IsNullOrWhiteSpace(txtPAutenticacao.Text)) txtPAutenticacao.Text = novoLink;
+    }
+
+    private void btnAtualizarHom_Click(object sender, EventArgs e)
+    {
+        string novoLink = "";
+        if (InputBox.Show("Atualização de todos os endereços de homologação", "Digite o link, se quiser alterar em tela, todos os campos com dados", ref novoLink).Equals(DialogResult.Cancel)) return;
+
+        if (!string.IsNullOrWhiteSpace(txtHEnviar.Text)) txtPEnviar.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHCancelaNFSe.Text)) txtPCancelaNFSe.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHCancelaNFSeLote.Text)) txtPCancelaNFSeLote.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHConsultaNFSeRps.Text)) txtPConsultaNFSeRps.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHConsultarSituacao.Text)) txtPConsultarSituacao.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHEnviarSincrono.Text)) txtPEnviarSincrono.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHConsultaNFSe.Text)) txtPConsultaNFSe.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHConsultrLoteRps.Text)) txtPConsultrLoteRps.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHConsultarSequencialRps.Text)) txtPConsultarSequencialRps.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHSubstituirNFSe.Text)) txtPSubstituirNFSe.Text = novoLink;
+        if (!string.IsNullOrWhiteSpace(txtHAutenticacao.Text)) txtPAutenticacao.Text = novoLink;
     }
 
     #endregion Methods

@@ -45,9 +45,9 @@ public abstract class RetornoWebservice
     /// <value><c>true</c> se não teve erro, senão <c>false</c>.</value>
     public bool Sucesso { get; internal set; }
 
-    public List<Evento> Alertas { get; } = [];
+    public List<EventoRetorno> Alertas { get; } = [];
 
-    public List<Evento> Erros { get; } = [];
+    public List<EventoRetorno> Erros { get; } = [];
 
     public string XmlEnvio { get; internal set; } = "";
 
