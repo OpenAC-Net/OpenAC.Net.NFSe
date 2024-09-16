@@ -33,9 +33,22 @@ namespace OpenAC.Net.NFSe.Commom;
 
 public static partial class CodigoTOM
 {
-    private static void AddDF()
+    private static void AddRR()
     {
-        AddCidade("5300108", "9701"); // Brasilia/DF
-        AddCidade("0530020", "");     // Brazlandia/DF 
+        AddCidade("1400027", "0026"); // Amajari/RR
+        AddCidade("1400050", "0305"); // Alto Alegre/RR
+        AddCidade("1400100", "0301"); // Boa Vista/RR
+        AddCidade("1400159", "0307"); // Bonfim/RR
+        AddCidade("1400175", "0028"); // Canta/RR
+        AddCidade("1400209", "0303"); // Caracarai/RR
+        AddCidade("1400233", "0030"); // Caroebe/RR
+        AddCidade("1400282", "0032"); // Iracema/RR
+        AddCidade("1400308", "0309"); // Mucajai/RR
+        AddCidade("1400407", "0311"); // Normandia/RR
+        AddCidade("1400456", "0034"); // Pacaraima/RR
+        AddCidade("1400472", "0036"); // Rorainopolis/RR
+        AddCidade("1400506", "0313"); // Sao Joao Da Baliza/RR
+        AddCidade("1400605", "0315"); // Sao Luiz/RR
+        AddCidade("1400704", "0038"); // Uiramuta/RR
     }
 }
