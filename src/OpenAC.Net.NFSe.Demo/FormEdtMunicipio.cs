@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
@@ -27,6 +29,29 @@ public partial class FormEdtMunicipio : Form
     #region Methods
 
     #region Event Handlers
+
+    private void cmbProvedor_SelectedValueChanged(object sender, EventArgs e)
+    {
+        tbpParametros.Controls.Clear();
+
+        var provider = ((ComboBox)sender).GetSelectedValue<NFSeProvider>();
+        if (provider != null && ParametrosProvider.Parametros.ContainsKey(provider))
+        {
+            foreach(var parametro in ParametrosProvider.Parametros[provider])
+            {
+                var controls = CreateControl(parametro);
+
+                toolTip1.SetToolTip(controls.Last(), parametro.Descricao);
+
+                tbpParametros.SuspendLayout();
+
+                tbpParametros.Controls.AddRange(controls);
+
+                tbpParametros.ResumeLayout();
+                tbpParametros.PerformLayout();
+            }
+        }
+    }
 
     private void btnCancelar_Click(object sender, EventArgs e)
     {
@@ -83,6 +108,18 @@ public partial class FormEdtMunicipio : Form
         txtHConsultarSequencialRps.Text = target.UrlHomologacao[TipoUrl.ConsultarSequencialRps];
         txtHSubstituirNFSe.Text = target.UrlHomologacao[TipoUrl.SubstituirNFSe];
         txtHAutenticacao.Text = target.UrlHomologacao[TipoUrl.Autenticacao];
+
+        var controls = tbpParametros.Controls.Cast<Control>().Where(x => x.Tag != null);
+
+        foreach (var param in target.Parametros)
+        {
+            var control = controls.SingleOrDefault(x => ((ParametroProvider)x.Tag).Nome == param.Key);
+            if (control == null) continue;
+            if (control is CheckBox checkBox)
+                checkBox.Checked = true;
+            else
+                control.Text = param.Value;
+        }
     }
 
     private void Salvar()
@@ -117,6 +154,25 @@ public partial class FormEdtMunicipio : Form
         target.UrlHomologacao[TipoUrl.ConsultarSequencialRps] = txtHConsultarSequencialRps.Text;
         target.UrlHomologacao[TipoUrl.SubstituirNFSe] = txtHSubstituirNFSe.Text;
         target.UrlHomologacao[TipoUrl.Autenticacao] = txtHAutenticacao.Text;
+        
+        foreach(var control in tbpParametros.Controls.Cast<Control>())
+        {
+            var parametro = control.Tag as ParametroProvider;
+            if (parametro == null) continue;
+
+            if (control is CheckBox checkBox)
+                if (checkBox.Checked)
+                    target.Parametros.TryAdd(parametro.Nome, "TRUE");
+                else
+                    target.Parametros.Remove(parametro.Nome);
+            else
+            {
+                if(target.Parametros.ContainsKey(parametro.Nome))
+                    target.Parametros[parametro.Nome] = control.Text;
+                else
+                    target.Parametros.TryAdd(parametro.Nome, control.Text);
+            }
+        }
     }
 
     private void btnAtualizar_Click(object sender, EventArgs e)
@@ -155,5 +211,16 @@ public partial class FormEdtMunicipio : Form
         if (!string.IsNullOrWhiteSpace(txtHAutenticacao.Text)) txtPAutenticacao.Text = novoLink;
     }
 
-    #endregion Methods
+    private Control[] CreateControl(ParametroProvider parametro)
+    {
+        return parametro.Tipo switch
+        {
+            TipoParametro.Text => [new TextBox() { Tag = parametro, Dock = DockStyle.Top},
+                                   new Label() { Text = parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, }],
+            TipoParametro.Boolean => [new CheckBox() { Text= parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, Tag = parametro }],
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    #endregion Methods    
 }

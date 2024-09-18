@@ -6,6 +6,8 @@
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>default</LangVersion>
     <IsPackable>false</IsPackable>
+	 <Nullable>enable</Nullable>
+	 <LangVersion>latest</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>
