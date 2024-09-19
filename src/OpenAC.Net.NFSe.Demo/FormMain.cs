@@ -14,6 +14,7 @@ using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource;
+using OpenAC.Net.NFSe.DANFSe.QuestPdf;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;
 
@@ -300,7 +301,10 @@ public partial class FormMain : Form, IOpenLog
     private void btnImprimirDANFSe_Click(object sender, EventArgs e)
     {
         GerarRps();
-        openNFSe.Imprimir(o => o.MostrarPreview = true);
+        var danfe = new QuestPdfDANFSe(openNFSe.Configuracoes);
+        danfe.Imprimir(openNFSe.NotasServico.ToArray());
+        
+        //openNFSe.Imprimir(o => o.MostrarPreview = true);
     }
 
     private void btnGerarPDF_Click(object sender, EventArgs e)
