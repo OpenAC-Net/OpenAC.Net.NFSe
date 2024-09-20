@@ -24,7 +24,7 @@ public class QuestPdfDANFSe : OpenDANFSeBase<QuestPdfDANFSeOptions, FiltroDFeRep
 
     public override async void Imprimir(NotaServico[] notas)
     {
-        var document = Document.Merge(new DANFSeDocument(Configuracoes, notas.First()));
+        var document = Document.Merge(notas.Select(x => new DANFSeDocument(Configuracoes, x)));
         await document.ShowInPreviewerAsync();
     }
 

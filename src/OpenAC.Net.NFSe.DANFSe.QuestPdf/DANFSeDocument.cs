@@ -1,7 +1,6 @@
 ﻿using System;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Nota;
-using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -21,10 +20,36 @@ public class DANFSeDocument : IDocument
     private const string OpenSans = "Open Sans";
     private const string UbuntuCondensed = "Ubuntu Condensed";
     private const float BorderSize = 0.5f;
+    private const float TitleSize = 2f;
+    private static readonly TextStyle ItemTitleStyle;
+    private static readonly TextStyle ItemContentStyle;
+    private static readonly TextStyle BoxTitleStyle;
+    private static readonly TextStyle BoxContentStyle;
 
     #endregion Fields
 
     #region Constructors
+
+    static DANFSeDocument()
+    {
+        ItemTitleStyle = TextStyle.Default.FontSize(8)
+            .FontColor(Colors.Black)
+            .FontFamily(OpenSans);
+
+        ItemContentStyle = TextStyle.Default.FontSize(10).Bold()
+            .FontColor(Colors.Black)
+            .FontFamily(OpenSans)
+            .Bold();
+        
+        BoxTitleStyle = TextStyle.Default.FontSize(5)
+            .FontColor(Colors.Black)
+            .FontFamily(UbuntuCondensed);
+
+        BoxContentStyle = TextStyle.Default.FontSize(8)
+            .FontColor(Colors.Black)
+            .FontFamily(UbuntuCondensed)
+            .Bold();
+    }
 
     /// <summary>
     /// 
@@ -38,7 +63,7 @@ public class DANFSeDocument : IDocument
     }
 
     #endregion Constructors
-
+    
     #region Methods
 
     /// <inheritdoc />
@@ -76,6 +101,8 @@ public class DANFSeDocument : IDocument
                 page.Margin(1, Unit.Centimetre);
 
                 page.Header().Element(ComposeHeader);
+                page.Content().Element(ComposeBody);
+                page.Footer().Element(ComposeFooter);
             });
     }
 
@@ -126,9 +153,9 @@ public class DANFSeDocument : IDocument
                     });
 
                 row.ConstantItem(4.2f, Unit.Centimetre)
-                    .Column(column =>
+                    .Column(dadosNota =>
                     {
-                        column.Item()
+                        dadosNota.Item()
                             .MinHeight(0.7f, Unit.Centimetre)
                             .BorderLeft(BorderSize)
                             .BorderBottom(BorderSize)
@@ -139,19 +166,14 @@ public class DANFSeDocument : IDocument
                                     .PaddingLeft(1)
                                     .Text("NÚMERO NOTA")
                                     .AlignStart()
-                                    .Style(TextStyle.Default.FontSize(5)
-                                        .FontColor(Colors.Black)
-                                        .FontFamily(UbuntuCondensed));
+                                    .Style(BoxTitleStyle);
 
                                 c.Item().Text(nota.IdentificacaoNFSe.Numero)
                                     .AlignCenter()
-                                    .Style(TextStyle.Default.FontSize(8)
-                                        .FontColor(Colors.Black)
-                                        .FontFamily(UbuntuCondensed)
-                                        .Bold());
+                                    .Style(BoxContentStyle);
                             });
 
-                        column.Item()
+                        dadosNota.Item()
                             .MinHeight(0.7f, Unit.Centimetre)
                             .BorderLeft(BorderSize)
                             .BorderBottom(BorderSize)
@@ -162,19 +184,14 @@ public class DANFSeDocument : IDocument
                                     .PaddingLeft(1)
                                     .Text("DATA E HORA DA EMISSÃO")
                                     .AlignStart()
-                                    .Style(TextStyle.Default.FontSize(5)
-                                        .FontColor(Colors.Black)
-                                        .FontFamily(UbuntuCondensed));
+                                    .Style(BoxTitleStyle);
 
                                 c.Item().Text(nota.IdentificacaoNFSe.DataEmissao.ToString("dd/MM/yyyy HH:mm"))
                                     .AlignCenter()
-                                    .Style(TextStyle.Default.FontSize(8)
-                                        .FontColor(Colors.Black)
-                                        .FontFamily(UbuntuCondensed)
-                                        .Bold());
+                                    .Style(BoxContentStyle);
                             });
 
-                        column.Item()
+                        dadosNota.Item()
                             .MinHeight(0.7f, Unit.Centimetre)
                             .BorderLeft(BorderSize)
                             .Column(c =>
@@ -184,21 +201,17 @@ public class DANFSeDocument : IDocument
                                     .PaddingLeft(1)
                                     .Text("CÓDIGO DE VERIFICAÇÃO")
                                     .AlignStart()
-                                    .Style(TextStyle.Default.FontSize(5)
-                                        .FontColor(Colors.Black)
-                                        .FontFamily(UbuntuCondensed));
+                                    .Style(BoxTitleStyle);
 
                                 c.Item().Text(nota.IdentificacaoNFSe.Chave)
                                     .AlignCenter()
-                                    .Style(TextStyle.Default.FontSize(8)
-                                        .FontColor(Colors.Black)
-                                        .FontFamily(UbuntuCondensed)
-                                        .Bold());
+                                    .Style(BoxContentStyle);
                             });
                     });
             });
 
-            column.Item().Border(BorderSize).MinHeight(3.12f, Unit.Centimetre).Column(prestador =>
+            // Dados Prestador
+            column.Item().ShowOnce().Border(BorderSize).Column(prestador =>
             {
                 prestador.Item()
                     .Padding(2)
@@ -211,6 +224,7 @@ public class DANFSeDocument : IDocument
                 prestador.Item().Row(row =>
                 {
                     var logo = row.ConstantItem(2.9f, Unit.Centimetre)
+                        .MinHeight(2.3f, Unit.Centimetre)
                         .Padding(1, Unit.Millimetre);
 
                     if (options.Logo == null)
@@ -218,25 +232,205 @@ public class DANFSeDocument : IDocument
                     else
                         logo.Image(options.Logo.ToStream()).FitArea();
 
-                    var titleStyle = TextStyle.Default.FontSize(6).Bold()
-                        .FontColor(Colors.Black)
-                        .FontFamily(OpenSans);
-                    
-                    var contentStyle = TextStyle.Default.FontSize(8).Bold()
-                        .FontColor(Colors.Black)
-                        .FontFamily(OpenSans)
-                        .Bold();
                     row.RelativeItem().Column(dadosprestador =>
                     {
                         dadosprestador.Item().Row(row1 =>
                         {
-                            
+                            row1.ConstantItem(TitleSize, Unit.Centimetre)
+                                .Text("CPF / CNPJ").Style(ItemTitleStyle);
+
+                            row1.RelativeItem()
+                                .Text(nota.Prestador.CpfCnpj.FormataCPFCNPJ())
+                                .Style(ItemContentStyle);
+
+                            row1.ConstantItem(3, Unit.Centimetre)
+                                .Text("INSCRIÇÃO MUNICIPAL")
+                                .Style(ItemTitleStyle);
+
+                            row1.ConstantItem(3.6f, Unit.Centimetre)
+                                .Text(nota.Prestador.InscricaoMunicipal)
+                                .Style(ItemContentStyle);
+                        });
+
+                        dadosprestador.Item().Row(row1 =>
+                        {
+                            row1.ConstantItem(TitleSize, Unit.Centimetre)
+                                .Text("NOME / RAZÃO").Style(ItemTitleStyle);
+
+                            row1.RelativeItem()
+                                .Text(nota.Prestador.RazaoSocial)
+                                .Style(ItemContentStyle);
+                        });
+
+                        dadosprestador.Item().Row(row1 =>
+                        {
+                            row1.ConstantItem(TitleSize, Unit.Centimetre)
+                                .Text("ENDEREÇO").Style(ItemTitleStyle);
+
+                            row1.RelativeItem()
+                                .Text($"{nota.Prestador.Endereco.Logradouro}, {nota.Prestador.Endereco.Numero}")
+                                .Style(ItemContentStyle);
+                        });
+
+                        dadosprestador.Item().Row(row1 =>
+                        {
+                            row1.ConstantItem(TitleSize, Unit.Centimetre)
+                                .Text("MUNICÍPIO").Style(ItemTitleStyle);
+
+                            row1.RelativeItem()
+                                .Text(nota.Prestador.Endereco.Municipio)
+                                .Style(ItemContentStyle);
+
+                            row1.ConstantItem(1.5f, Unit.Centimetre)
+                                .Text("TELEFONE")
+                                .Style(ItemTitleStyle);
+
+                            row1.ConstantItem(3, Unit.Centimetre)
+                                .Text(nota.Prestador.DadosContato.Telefone)
+                                .Style(ItemContentStyle);
+                        });
+
+                        dadosprestador.Item().Row(row1 =>
+                        {
+                            row1.ConstantItem(TitleSize, Unit.Centimetre)
+                                .Text("COMPLEMENTO")
+                                .Style(ItemTitleStyle);
+
+                            row1.RelativeItem()
+                                .Text(nota.Prestador.Endereco.Complemento)
+                                .Style(ItemContentStyle);
                         });
                     });
                 });
             });
+
+            // Dados Tomador
+            column.Item().ShowOnce().Border(BorderSize).Column(tomador =>
+            {
+                tomador.Item()
+                    .Padding(2)
+                    .Text("TOMADOR DE SERVIÇOS")
+                    .AlignCenter()
+                    .Style(TextStyle.Default.FontSize(10).Bold()
+                        .FontColor(Colors.Black)
+                        .FontFamily(OpenSans));
+
+                tomador.Item().Padding(2).Column(dadosTomador =>
+                {
+                    dadosTomador.Item().Row(row1 =>
+                    {
+                        row1.ConstantItem(TitleSize, Unit.Centimetre)
+                            .Text("CPF / CNPJ").Style(ItemTitleStyle);
+
+                        row1.RelativeItem()
+                            .Text(nota.Tomador.CpfCnpj.FormataCPFCNPJ())
+                            .Style(ItemContentStyle);
+
+                        row1.ConstantItem(3, Unit.Centimetre)
+                            .Text("INSCRIÇÃO MUNICIPAL")
+                            .Style(ItemTitleStyle);
+
+                        row1.ConstantItem(3.6f, Unit.Centimetre)
+                            .Text(nota.Tomador.InscricaoMunicipal)
+                            .Style(ItemContentStyle);
+                    });
+
+                    dadosTomador.Item().Row(row1 =>
+                    {
+                        row1.ConstantItem(TitleSize, Unit.Centimetre)
+                            .Text("NOME / RAZÃO").Style(ItemTitleStyle);
+
+                        row1.RelativeItem()
+                            .Text(nota.Tomador.RazaoSocial)
+                            .Style(ItemContentStyle);
+                    });
+
+                    dadosTomador.Item().Row(row1 =>
+                    {
+                        row1.ConstantItem(TitleSize, Unit.Centimetre)
+                            .Text("ENDEREÇO").Style(ItemTitleStyle);
+
+                        row1.RelativeItem()
+                            .Text($"{nota.Tomador.Endereco.Logradouro}, {nota.Tomador.Endereco.Numero}")
+                            .Style(ItemContentStyle);
+                    });
+
+                    dadosTomador.Item().Row(row1 =>
+                    {
+                        row1.ConstantItem(TitleSize, Unit.Centimetre)
+                            .Text("MUNICÍPIO").Style(ItemTitleStyle);
+
+                        row1.RelativeItem()
+                            .Text(nota.Tomador.Endereco.Municipio)
+                            .Style(ItemContentStyle);
+
+                        row1.ConstantItem(1.5f, Unit.Centimetre)
+                            .Text("TELEFONE")
+                            .Style(ItemTitleStyle);
+
+                        row1.ConstantItem(3, Unit.Centimetre)
+                            .Text(nota.Tomador.DadosContato.Telefone)
+                            .Style(ItemContentStyle);
+                    });
+
+                    dadosTomador.Item().Row(row1 =>
+                    {
+                        row1.ConstantItem(TitleSize, Unit.Centimetre)
+                            .Text("COMPLEMENTO")
+                            .Style(ItemTitleStyle);
+
+                        row1.RelativeItem()
+                            .Text(nota.Tomador.Endereco.Complemento)
+                            .Style(ItemContentStyle);
+                    });
+                });
+            });
+            
+            // Dados Pestração
+            column.Item().ShowOnce().Border(BorderSize).Row(dados =>
+            {
+                dados.RelativeItem()
+                    .Column(c =>
+                    {
+                        c.Item()
+                            .PaddingTop(1)
+                            .PaddingLeft(1)
+                            .Text("LOCAL DA PRESTAÇÃO DO(S) SERVIÇO(S)")
+                            .AlignStart()
+                            .Style(BoxTitleStyle);
+
+                        c.Item().Text(nota.Servico.CodigoMunicipio.ToString())
+                            .AlignCenter()
+                            .Style(BoxContentStyle);
+                    });
+                
+                dados.RelativeItem()
+                    .BorderLeft(BorderSize)
+                    .Column(c =>
+                    {
+                        c.Item()
+                            .PaddingTop(1)
+                            .PaddingLeft(1)
+                            .Text("LOCAL DA INCIDÊNCIA DO(S) SERVIÇO(S)")
+                            .AlignStart()
+                            .Style(BoxTitleStyle);
+
+                        c.Item().Text(nota.Servico.MunicipioIncidencia.ToString())
+                            .AlignCenter()
+                            .Style(BoxContentStyle);
+                    });
+            });
         });
     }
 
+    private void ComposeBody(IContainer container)
+    {
+    }
+    
+    private void ComposeFooter(IContainer container)
+    {
+        
+    }
+    
     #endregion Methods
 }
