@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAC.Net.NFSe.DANFSe.Fast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAC.Net.NFSe.Test", "OpenAC.Net.NFSe.Test\OpenAC.Net.NFSe.Test.csproj", "{D7756984-AAC2-499D-BD47-AC5559D9EFC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAC.Net.NFSe.DANFSe.QuestPdf", "OpenAC.Net.NFSe.DANFSe.QuestPdf\OpenAC.Net.NFSe.DANFSe.QuestPdf.csproj", "{C50F1C5C-180F-48DD-B7CF-050AFE4B002D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D7756984-AAC2-499D-BD47-AC5559D9EFC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7756984-AAC2-499D-BD47-AC5559D9EFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7756984-AAC2-499D-BD47-AC5559D9EFC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C50F1C5C-180F-48DD-B7CF-050AFE4B002D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C50F1C5C-180F-48DD-B7CF-050AFE4B002D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C50F1C5C-180F-48DD-B7CF-050AFE4B002D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C50F1C5C-180F-48DD-B7CF-050AFE4B002D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
