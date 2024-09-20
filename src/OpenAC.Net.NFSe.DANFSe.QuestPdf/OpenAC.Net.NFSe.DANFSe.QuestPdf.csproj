@@ -58,4 +58,11 @@
       <PackageReference Include="QuestPDF" Version="2024.7.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Font\OpenSans-Regular.ttf" />
+      <EmbeddedResource Include="Font\OpenSans-Regular.ttf" />
+      <None Remove="Font\UbuntuCondensed-Regular.ttf" />
+      <EmbeddedResource Include="Font\UbuntuCondensed-Regular.ttf" />
+    </ItemGroup>
+
 </Project>

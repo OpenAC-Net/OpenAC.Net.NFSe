@@ -53,6 +53,8 @@ public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebService
     #endregion Constructor
 
     #region Properties
+    
+    public static ConfigNFSe Default { get; } = new();
 
     /// <summary>
     /// Gets the prestado padrão.
