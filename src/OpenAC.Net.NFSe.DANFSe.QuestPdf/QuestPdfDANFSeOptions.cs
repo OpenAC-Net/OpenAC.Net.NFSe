@@ -13,10 +13,23 @@ public sealed class QuestPdfDANFSeOptions : DANFSeOptions<FiltroDFeReport>
     /// <summary>
     /// 
     /// </summary>
+    public QuestPdfDANFSeOptions() : base(ConfigNFSe.Default)
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="configuracoes"></param>
     public QuestPdfDANFSeOptions(ConfigNFSe configuracoes) : base(configuracoes)
     {
     }
 
     #endregion Constructors
+
+    #region Properties
+
+    public static QuestPdfDANFSeOptions Default { get; } = new(ConfigNFSe.Default);
+
+    #endregion Properties
 }

@@ -301,9 +301,6 @@ public partial class FormMain : Form, IOpenLog
     private void btnImprimirDANFSe_Click(object sender, EventArgs e)
     {
         GerarRps();
-        var danfe = new QuestPdfDANFSe(openNFSe.Configuracoes);
-        danfe.Imprimir(openNFSe.NotasServico.ToArray());
-        
         openNFSe.Imprimir(o => o.MostrarPreview = true);
     }
 
@@ -588,9 +585,10 @@ public partial class FormMain : Form, IOpenLog
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
-        nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
+        nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA";
         nfSe.Servico.CodigoMunicipio = municipio.Codigo;
         nfSe.Servico.Municipio = municipio.Nome;
+        nfSe.OutrasInformacoes = "VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
         if (municipio.Provedor.IsIn(NFSeProvider.SiapNet))
         {
             nfSe.Servico.ResponsavelRetencao = ResponsavelRetencao.Prestador;

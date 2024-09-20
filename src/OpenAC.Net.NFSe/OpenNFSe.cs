@@ -60,7 +60,13 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
 
     public OpenNFSe()
     {
-        Configuracoes = new ConfigNFSe();
+        Configuracoes = ConfigNFSe.Default;
+        NotasServico = new NotaServicoCollection(Configuracoes);
+    }
+    
+    public OpenNFSe(ConfigNFSe configuracoes)
+    {
+        Configuracoes = configuracoes;
         NotasServico = new NotaServicoCollection(Configuracoes);
     }
 
