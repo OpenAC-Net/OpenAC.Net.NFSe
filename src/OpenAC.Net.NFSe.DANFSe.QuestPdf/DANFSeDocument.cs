@@ -40,7 +40,7 @@ public class DANFSeDocument : IDocument
             .FontColor(Colors.Black)
             .FontFamily(OpenSans)
             .Bold();
-        
+
         BoxTitleStyle = TextStyle.Default.FontSize(5)
             .FontColor(Colors.Black)
             .FontFamily(UbuntuCondensed);
@@ -63,7 +63,7 @@ public class DANFSeDocument : IDocument
     }
 
     #endregion Constructors
-    
+
     #region Methods
 
     /// <inheritdoc />
@@ -385,7 +385,7 @@ public class DANFSeDocument : IDocument
                     });
                 });
             });
-            
+
             // Dados Pestração
             column.Item().ShowOnce().Border(BorderSize).Row(dados =>
             {
@@ -403,7 +403,7 @@ public class DANFSeDocument : IDocument
                             .AlignCenter()
                             .Style(BoxContentStyle);
                     });
-                
+
                 dados.RelativeItem()
                     .BorderLeft(BorderSize)
                     .Column(c =>
@@ -425,12 +425,58 @@ public class DANFSeDocument : IDocument
 
     private void ComposeBody(IContainer container)
     {
+        container.Column(body =>
+        {
+            body.Item()
+                .Border(BorderSize)
+                .Text("DISCRIMINAÇÃO DOS SERVIÇOS")
+                .AlignCenter()
+                .Style(TextStyle.Default
+                    .FontSize(10)
+                    .FontFamily(OpenSans)
+                    .Bold());
+
+            body.Item()
+                .Padding(2)
+                .Border(BorderSize)
+                .Height(14.5f, Unit.Centimetre)
+                .Text(nota.Servico.Discriminacao)
+                .Style(TextStyle.Default
+                    .FontSize(9)
+                    .FontFamily(OpenSans));
+        });
     }
-    
+
     private void ComposeFooter(IContainer container)
     {
-        
+        container.Column(footer =>
+        {
+            footer.Item()
+                .Border(BorderSize)
+                .Text($"VALOR TOTAL DA NOTA = {nota.Servico.Valores.ValorServicos:c2}")
+                .AlignCenter()
+                .Style(TextStyle.Default
+                    .FontSize(10)
+                    .FontFamily(OpenSans)
+                    .Bold());
+
+            footer.Item()
+                .Border(BorderSize)
+                .Padding(2)
+                .Column(c =>
+                {
+                    c.Item()
+                        .Text("CÓDIGO DE CLASSIFICAÇÃO DO SERVIÇO")
+                        .AlignStart()
+                        .Style(BoxTitleStyle);
+
+                    c.Item()
+                        .Text($"{nota.Servico.CodigoCnae} - {nota.Servico.ItemListaServico}")
+                        .AlignStart()
+                        .Style(BoxContentStyle);
+                });
+        });
     }
-    
+
     #endregion Methods
 }

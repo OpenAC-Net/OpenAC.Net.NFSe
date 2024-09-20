@@ -304,7 +304,7 @@ public partial class FormMain : Form, IOpenLog
         var danfe = new QuestPdfDANFSe(openNFSe.Configuracoes);
         danfe.Imprimir(openNFSe.NotasServico.ToArray());
         
-        //openNFSe.Imprimir(o => o.MostrarPreview = true);
+        openNFSe.Imprimir(o => o.MostrarPreview = true);
     }
 
     private void btnGerarPDF_Click(object sender, EventArgs e)
