@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using OpenAC.Net.Core;
@@ -175,49 +174,49 @@ public partial class FormEdtMunicipio : Form
         }
     }
 
-    private void btnAtualizar_Click(object sender, EventArgs e)
+    private void btnAtualizarProd_Click(object sender, EventArgs e)
     {
-        string novoLink = "";
+        var novoLink = "";
         if (InputBox.Show("Atualização de todos os endereços de produção", "Digite o link, se quiser alterar em tela, todos os campos com dados", ref novoLink).Equals(DialogResult.Cancel)) return;
 
-        if (!string.IsNullOrWhiteSpace(txtPEnviar.Text)) txtPEnviar.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPCancelaNFSe.Text)) txtPCancelaNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPCancelaNFSeLote.Text)) txtPCancelaNFSeLote.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultaNFSeRps.Text)) txtPConsultaNFSeRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultarSituacao.Text)) txtPConsultarSituacao.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPEnviarSincrono.Text)) txtPEnviarSincrono.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultaNFSe.Text)) txtPConsultaNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultrLoteRps.Text)) txtPConsultrLoteRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultarSequencialRps.Text)) txtPConsultarSequencialRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPSubstituirNFSe.Text)) txtPSubstituirNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPAutenticacao.Text)) txtPAutenticacao.Text = novoLink;
+        txtPEnviar.Text = novoLink;
+        txtPCancelaNFSe.Text = novoLink;
+        txtPCancelaNFSeLote.Text = novoLink;
+        txtPConsultaNFSeRps.Text = novoLink;
+        txtPConsultarSituacao.Text = novoLink;
+        txtPEnviarSincrono.Text = novoLink;
+        txtPConsultaNFSe.Text = novoLink;
+        txtPConsultrLoteRps.Text = novoLink;
+        txtPConsultarSequencialRps.Text = novoLink;
+        txtPSubstituirNFSe.Text = novoLink;
+        txtPAutenticacao.Text = novoLink;
     }
 
     private void btnAtualizarHom_Click(object sender, EventArgs e)
     {
-        string novoLink = "";
+        var novoLink = "";
         if (InputBox.Show("Atualização de todos os endereços de homologação", "Digite o link, se quiser alterar em tela, todos os campos com dados", ref novoLink).Equals(DialogResult.Cancel)) return;
 
-        if (!string.IsNullOrWhiteSpace(txtHEnviar.Text)) txtPEnviar.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHCancelaNFSe.Text)) txtPCancelaNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHCancelaNFSeLote.Text)) txtPCancelaNFSeLote.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHConsultaNFSeRps.Text)) txtPConsultaNFSeRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHConsultarSituacao.Text)) txtPConsultarSituacao.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHEnviarSincrono.Text)) txtPEnviarSincrono.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHConsultaNFSe.Text)) txtPConsultaNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHConsultrLoteRps.Text)) txtPConsultrLoteRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHConsultarSequencialRps.Text)) txtPConsultarSequencialRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHSubstituirNFSe.Text)) txtPSubstituirNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtHAutenticacao.Text)) txtPAutenticacao.Text = novoLink;
+        txtHEnviar.Text = novoLink;
+        txtHCancelaNFSe.Text = novoLink;
+        txtHCancelaNFSeLote.Text = novoLink;
+        txtHConsultaNFSeRps.Text = novoLink;
+        txtHConsultarSituacao.Text = novoLink;
+        txtHEnviarSincrono.Text = novoLink;
+        txtHConsultaNFSe.Text = novoLink;
+        txtHConsultrLoteRps.Text = novoLink;
+        txtHConsultarSequencialRps.Text = novoLink;
+        txtHSubstituirNFSe.Text = novoLink;
+        txtHAutenticacao.Text = novoLink;
     }
 
     private Control[] CreateControl(ParametroProvider parametro)
     {
         return parametro.Tipo switch
         {
-            TipoParametro.Text => [new TextBox() { Tag = parametro, Dock = DockStyle.Top},
-                                   new Label() { Text = parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, }],
-            TipoParametro.Boolean => [new CheckBox() { Text= parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, Tag = parametro }],
+            TipoParametro.Text => [new TextBox { Tag = parametro, Dock = DockStyle.Top},
+                                   new Label { Text = parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, }],
+            TipoParametro.Boolean => [new CheckBox { Text= parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, Tag = parametro }],
             _ => throw new NotImplementedException(),
         };
     }

@@ -69,7 +69,7 @@ namespace OpenAC.Net.NFSe.Demo
             label3 = new System.Windows.Forms.Label();
             txtHEnviar = new System.Windows.Forms.TextBox();
             tabPage2 = new System.Windows.Forms.TabPage();
-            btnAtualizar = new System.Windows.Forms.Button();
+            btnAtualizarProd = new System.Windows.Forms.Button();
             label29 = new System.Windows.Forms.Label();
             txtPAutenticacao = new System.Windows.Forms.TextBox();
             label27 = new System.Windows.Forms.Label();
@@ -299,6 +299,7 @@ namespace OpenAC.Net.NFSe.Demo
             btnAtualizarHom.TabIndex = 22;
             btnAtualizarHom.Text = "Atualizar Endereços";
             btnAtualizarHom.UseVisualStyleBackColor = true;
+            btnAtualizarHom.Click += btnAtualizarHom_Click;
             // 
             // label28
             // 
@@ -500,7 +501,7 @@ namespace OpenAC.Net.NFSe.Demo
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(btnAtualizar);
+            tabPage2.Controls.Add(btnAtualizarProd);
             tabPage2.Controls.Add(label29);
             tabPage2.Controls.Add(txtPAutenticacao);
             tabPage2.Controls.Add(label27);
@@ -534,13 +535,14 @@ namespace OpenAC.Net.NFSe.Demo
             // 
             // btnAtualizar
             // 
-            btnAtualizar.Location = new System.Drawing.Point(638, 244);
-            btnAtualizar.Margin = new System.Windows.Forms.Padding(4);
-            btnAtualizar.Name = "btnAtualizar";
-            btnAtualizar.Size = new System.Drawing.Size(141, 26);
-            btnAtualizar.TabIndex = 20;
-            btnAtualizar.Text = "Atualizar Endereços";
-            btnAtualizar.UseVisualStyleBackColor = true;
+            btnAtualizarProd.Location = new System.Drawing.Point(638, 244);
+            btnAtualizarProd.Margin = new System.Windows.Forms.Padding(4);
+            btnAtualizarProd.Name = "btnAtualizarProd";
+            btnAtualizarProd.Size = new System.Drawing.Size(141, 26);
+            btnAtualizarProd.TabIndex = 20;
+            btnAtualizarProd.Text = "Atualizar Endereços";
+            btnAtualizarProd.UseVisualStyleBackColor = true;
+            btnAtualizarProd.Click += btnAtualizarProd_Click;
             // 
             // label29
             // 
@@ -830,7 +832,7 @@ namespace OpenAC.Net.NFSe.Demo
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtHEnviar;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button btnAtualizar;
+        private System.Windows.Forms.Button btnAtualizarProd;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox txtPAutenticacao;
         private System.Windows.Forms.Label label27;

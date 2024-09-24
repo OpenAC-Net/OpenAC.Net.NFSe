@@ -20,9 +20,9 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
-		<AssemblyVersion>1.6.0</AssemblyVersion>
-		<FileVersion>1.6.0</FileVersion>
-		<Version>1.6.0</Version>
+		<AssemblyVersion>1.6.0.1</AssemblyVersion>
+		<FileVersion>1.6.0.1</FileVersion>
+		<Version>1.6.0.1</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
@@ -40,7 +40,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="OpenAC.Net.Core" Version="1.6.0" />
-		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.1" />				
+		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.2" />				
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
