@@ -31,6 +31,7 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 using System.Xml.Linq;
+using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Nota;
 
@@ -59,5 +60,29 @@ internal sealed class ProviderFiorilli200 : ProviderABRASF200
 
     protected override IServiceClient GetClient(TipoUrl tipo) => new Fiorilli200ServiceClient(this, tipo);
 
+    protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarEnviar(retornoWebservice);
+    }
+
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarEnviarSincrono(retornoWebservice);
+    }
+    
+    protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarCancelarNFSe(retornoWebservice);
+    }
+    
+    protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarSubstituirNFSe(retornoWebservice);
+    }
+    
     #endregion Methods
 }
