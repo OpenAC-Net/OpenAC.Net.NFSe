@@ -31,6 +31,7 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 using System.Xml.Linq;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Nota;
@@ -64,12 +65,16 @@ internal sealed class ProviderFiorilli200 : ProviderABRASF200
     {
         if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
             base.AssinarEnviar(retornoWebservice);
+        else
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
     }
 
     protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
     {
         if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
             base.AssinarEnviarSincrono(retornoWebservice);
+        else
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
     }
     
     protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)

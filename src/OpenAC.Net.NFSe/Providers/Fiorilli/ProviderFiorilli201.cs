@@ -38,6 +38,7 @@ using System.IO;
 using System.Linq;
 using OpenAC.Net.Core.Extensions;
 using System.Text;
+using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -113,5 +114,33 @@ internal sealed class ProviderFiorilli201 : ProviderABRASF201
         retornoWebservice.XmlEnvio = loteBuilder.ToString();
     }
 
+    protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarEnviar(retornoWebservice);
+        else
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
+    }
+
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarEnviarSincrono(retornoWebservice);
+        else
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
+    }
+    
+    protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarCancelarNFSe(retornoWebservice);
+    }
+    
+    protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarSubstituirNFSe(retornoWebservice);
+    }
+    
     #endregion Services
 }
