@@ -611,11 +611,15 @@ public abstract class ProviderABRASF200 : ProviderBase
 
     protected virtual XElement? WriteConstrucaoCivilRps(NotaServico nota)
     {
-        if (nota.ConstrucaoCivil.ArtObra.IsEmpty()) return null;
+        if (nota.ConstrucaoCivil.ArtObra.IsEmpty() && nota.ConstrucaoCivil.CodigoObra.IsEmpty()) return null;
 
         var construcao = new XElement("ConstrucaoCivil");
-        construcao.AddChild(AddTag(TipoCampo.Str, "", "CodigoObra", 1, 15, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoObra));
-        construcao.AddChild(AddTag(TipoCampo.Str, "", "Art", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.ArtObra));
+
+        if (!nota.ConstrucaoCivil.CodigoObra.IsEmpty())
+            construcao.AddChild(AddTag(TipoCampo.Str, "", "CodigoObra", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.CodigoObra));
+
+        if (!nota.ConstrucaoCivil.ArtObra.IsEmpty())
+            construcao.AddChild(AddTag(TipoCampo.Str, "", "Art", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.ArtObra));
 
         return construcao;
     }
