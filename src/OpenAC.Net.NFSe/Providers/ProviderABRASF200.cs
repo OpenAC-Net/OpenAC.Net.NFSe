@@ -615,11 +615,8 @@ public abstract class ProviderABRASF200 : ProviderBase
 
         var construcao = new XElement("ConstrucaoCivil");
 
-        if (!nota.ConstrucaoCivil.CodigoObra.IsEmpty())
-            construcao.AddChild(AddTag(TipoCampo.Str, "", "CodigoObra", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.CodigoObra));
-
-        if (!nota.ConstrucaoCivil.ArtObra.IsEmpty())
-            construcao.AddChild(AddTag(TipoCampo.Str, "", "Art", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.ArtObra));
+        construcao.AddChild(AddTag(TipoCampo.Str, "", "CodigoObra", 1, 30, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoObra));
+        construcao.AddChild(AddTag(TipoCampo.Str, "", "Art", 1, 30, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.ArtObra));
 
         return construcao;
     }
