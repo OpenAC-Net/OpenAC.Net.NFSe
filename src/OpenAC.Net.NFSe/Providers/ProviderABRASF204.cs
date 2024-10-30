@@ -193,7 +193,8 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
 
         if(nota.Evento != null) 
             info.AddChild(WriteEvento(nota));
-        info.AddChild(AddTag(TipoCampo.Int, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
+
+        info.AddChild(AddTag(TipoCampo.Str, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
         
         if(nota.Servico.Deducoes.Count > 0)
             info.AddChild(WriteDeducoes(nota));
