@@ -46,6 +46,9 @@ using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -58,17 +61,41 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 {
     #region Internal Types
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected enum TipoArquivo
     {
+        /// <summary>
+        /// 
+        /// </summary>
         Webservice,
+        /// <summary>
+        /// 
+        /// </summary>
         Rps,
+        /// <summary>
+        /// 
+        /// </summary>
         NFSe
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected enum Ocorrencia
     {
+        /// <summary>
+        /// 
+        /// </summary>
         NaoObrigatoria,
+        /// <summary>
+        /// 
+        /// </summary>
         Obrigatoria,
+        /// <summary>
+        /// 
+        /// </summary>
         MaiorQueZero
     }
 
@@ -76,7 +103,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
     #region Fields
 
-    private X509Certificate2 certificado;
+    private X509Certificate2? certificado;
     private bool disposed;
 
     #endregion Fields
@@ -86,52 +113,52 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <summary>
     /// The er r_ ms g_ maior
     /// </summary>
-    protected const string ErrMsgMaior = "Tamanho maior que o máximo permitido";
+    protected const string MsgMaior = "Tamanho maior que o máximo permitido";
 
     /// <summary>
     /// The er r_ ms g_ menor
     /// </summary>
-    protected const string ErrMsgMenor = "Tamanho menor que o mínimo permitido";
+    protected const string MsgMenor = "Tamanho menor que o mínimo permitido";
 
     /// <summary>
     /// The er r_ ms g_ vazio
     /// </summary>
-    protected const string ErrMsgVazio = "Nenhum valor informado";
+    protected const string MsgVazio = "Nenhum valor informado";
 
     /// <summary>
     /// The er r_ ms g_ invalido
     /// </summary>
-    protected const string ErrMsgInvalido = "Conteúdo inválido";
+    protected const string MsgInvalido = "Conteúdo inválido";
 
     /// <summary>
     /// The er r_ ms g_ maxim o_ decimais
     /// </summary>
-    protected const string ErrMsgMaximoDecimais = "Numero máximo de casas decimais permitidas";
+    protected const string MsgMaximoDecimais = "Numero máximo de casas decimais permitidas";
 
     /// <summary>
     /// The er r_ ms g_ maio r_ maximo
     /// </summary>
-    protected const string ErrMsgMaiorMaximo = "Número de ocorrências maior que o máximo permitido - Máximo ";
+    protected const string MsgMaiorMaximo = "Número de ocorrências maior que o máximo permitido - Máximo ";
 
     /// <summary>
     /// The er r_ ms g_ fina l_ meno r_ inicial
     /// </summary>
-    protected const string ErrMsgFinalMenorInicial = "O numero final não pode ser menor que o inicial";
+    protected const string MsgFinalMenorInicial = "O numero final não pode ser menor que o inicial";
 
     /// <summary>
     /// The er r_ ms g_ arquiv o_ na o_ encontrado
     /// </summary>
-    protected const string ErrMsgArquivoNaoEncontrado = "Arquivo não encontrado";
+    protected const string MsgArquivoNaoEncontrado = "Arquivo não encontrado";
 
     /// <summary>
     /// The er r_ ms g_ soment e_ um
     /// </summary>
-    protected const string ErrMsgSomenteUm = "Somente um campo deve ser preenchido";
+    protected const string MsgSomenteUm = "Somente um campo deve ser preenchido";
 
     /// <summary>
     /// The er r_ ms g_ meno r_ minimo
     /// </summary>
-    protected const string ErrMsgMenorMinimo = "Número de ocorrências menor que o mínimo permitido - Mínimo ";
+    protected const string MsgMenorMinimo = "Número de ocorrências menor que o mínimo permitido - Mínimo ";
 
     /// <summary>
     /// The ds c_ CNPJ
@@ -148,7 +175,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     #region Constructor
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProviderBase"/> class.
+    /// Inicializa uma nova instância da classe <see cref="ProviderBase"/>.
     /// </summary>
     protected ProviderBase(ConfigNFSe config, OpenMunicipioNFSe municipio)
     {
@@ -177,6 +204,9 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <value>The name.</value>
     public string Name { get; protected set; }
     
+    /// <summary>
+    /// 
+    /// </summary>
     public VersaoNFSe Versao { get; protected set; }
 
     /// <summary>
@@ -197,12 +227,24 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <value><c>true</c> if [retirar acentos]; otherwise, <c>false</c>.</value>
     public bool RetirarAcentos { get; set; }
     
+    /// <summary>
+    /// Define/Obtém se deve usar vírgula nos números decimais.
+    /// </summary>
     protected bool UsarVirgulaDecimais { get; set; }
 
+    /// <summary>
+    /// Obtém as configurações do componente
+    /// </summary>
     public ConfigNFSe Configuracoes { get; }
 
+    /// <summary>
+    /// Obtém o Municipio atual.
+    /// </summary>
     public OpenMunicipioNFSe Municipio { get; }
 
+    /// <summary>
+    /// Define/Obtém o tempo de espera pela resposta do provedor.
+    /// </summary>
     public TimeSpan? TimeOut
     {
         get
@@ -215,6 +257,9 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
     }
 
+    /// <summary>
+    /// Obtém o certificado para ser usado na conexão ao provedor.
+    /// </summary>
     public X509Certificate2 Certificado => certificado ??= Configuracoes.Certificados.ObterCertificado();
 
     #endregion Propriedades
@@ -231,7 +276,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="xml">Local do arquivo Xml</param>
     /// <param name="encoding">Enconde para utilizar na leitura do arquivo</param>
     /// <returns></returns>
-    public NotaServico LoadXml(string xml, Encoding encoding = null)
+    public NotaServico LoadXml(string xml, Encoding? encoding = null)
     {
         Guard.Against<ArgumentNullException>(xml.IsEmpty(), "Xml não pode ser vazio ou nulo");
 
@@ -1213,7 +1258,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The CNPJCPF.</param>
     /// <param name="ns"></param>
     /// <returns>XmlElement.</returns>
-    protected XElement? AdicionarTagCNPJCPF(string id, string tagCPF, string tagCNPJ, string valor, XNamespace ns = null)
+    protected XElement? AdicionarTagCNPJCPF(string id, string tagCPF, string tagCNPJ, string valor, XNamespace? ns = null)
     {
         valor = valor.Trim().OnlyNumbers();
 
@@ -1223,18 +1268,18 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             case 11:
                 tag = AddTag(TipoCampo.StrNumber, id, tagCPF, 11, 11, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
                 if (!valor.IsCPF())
-                    WAlerta(tagCPF, "CPF", "CPF", ErrMsgInvalido);
+                    WAlerta(tagCPF, "CPF", "CPF", MsgInvalido);
                 break;
 
             case 14:
                 tag = AddTag(TipoCampo.StrNumber, id, tagCNPJ, 14, 14, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
                 if (!valor.IsCNPJ())
-                    WAlerta(tagCNPJ, "CNPJ", "CNPJ", ErrMsgInvalido);
+                    WAlerta(tagCNPJ, "CNPJ", "CNPJ", MsgInvalido);
                 break;
         }
 
         if (!valor.Length.IsIn(11, 14))
-            WAlerta($"{tagCPF}-{tagCNPJ}", "CNPJ-CPF", "CNPJ/CPF", ErrMsgVazio);
+            WAlerta($"{tagCPF}-{tagCNPJ}", "CNPJ-CPF", "CNPJ/CPF", MsgVazio);
 
         return tag;
     }
@@ -1252,7 +1297,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="descricao">The descricao.</param>
     /// <param name="ns"></param>
     /// <returns>XmlElement.</returns>
-    protected XElement AddTag(TipoCampo tipo, string id, string tag, XNamespace? ns, int min, int max, 
+    protected XElement? AddTag(TipoCampo tipo, string id, string tag, XNamespace? ns, int min, int max, 
         Ocorrencia ocorrencia, object? valor, string descricao = "")
     {
         Guard.Against<ArgumentException>(ns == null, "Namespace não informado");
@@ -1272,12 +1317,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The valor.</param>
     /// <param name="descricao">The descricao.</param>
     /// <returns>XmlElement.</returns>
-    protected XElement AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao = "")
+    protected XElement? AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao = "")
     {
         return AddTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, null);
     }
 
-    private XElement AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao, XNamespace? ns)
+    private XElement? AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao, XNamespace? ns)
     {
         try
         {
@@ -1340,7 +1385,13 @@ public abstract class ProviderBase : IOpenLog, IDisposable
                     case TipoCampo.De4:
                     case TipoCampo.De6:
                     case TipoCampo.De10:
-                        var numberFormat = CultureInfo.InvariantCulture.NumberFormat;
+                        var cultureInfo = new CultureInfo(CultureInfo.InvariantCulture.Name);
+                        if (UsarVirgulaDecimais)
+                        {
+                            cultureInfo.NumberFormat.NumberGroupSeparator = ".";
+                            cultureInfo.NumberFormat.NumberDecimalSeparator = ",";
+                        }
+                        
                         if (decimal.TryParse(valor.ToString(), out var vDecimal))
                         {
                             if (ocorrencia == Ocorrencia.MaiorQueZero && vDecimal == 0)
@@ -1350,31 +1401,14 @@ public abstract class ProviderBase : IOpenLog, IDisposable
                             else
                             {
                                 // ReSharper disable once SwitchStatementMissingSomeCases
-                                switch (tipo)
+                                conteudoProcessado = tipo switch
                                 {
-                                    case TipoCampo.De2:
-                                        conteudoProcessado = string.Format(numberFormat, "{0:0.00}", vDecimal);
-                                        break;
-
-                                    case TipoCampo.De3:
-                                        conteudoProcessado = string.Format(numberFormat, "{0:0.000}", vDecimal);
-                                        break;
-
-                                    case TipoCampo.De4:
-                                        conteudoProcessado = string.Format(numberFormat, "{0:0.0000}", vDecimal);
-                                        break;
-
-                                    case TipoCampo.De6:
-                                        conteudoProcessado = string.Format(numberFormat, "{0:0.000000}", vDecimal);
-                                        break;
-
-                                    default:
-                                        conteudoProcessado = string.Format(numberFormat, "{0:0.0000000000}", vDecimal);
-                                        break;
-                                }
-
-                                if (UsarVirgulaDecimais)
-                                    conteudoProcessado = conteudoProcessado.Replace(".", ",");
+                                    TipoCampo.De2 => string.Format(cultureInfo, "{0:0.00}", vDecimal),
+                                    TipoCampo.De3 => string.Format(cultureInfo, "{0:0.000}", vDecimal),
+                                    TipoCampo.De4 => string.Format(cultureInfo, "{0:0.0000}", vDecimal),
+                                    TipoCampo.De6 => string.Format(cultureInfo, "{0:0.000000}", vDecimal),
+                                    _ => string.Format(cultureInfo, "{0:0.0000000000}", vDecimal)
+                                };
                             }
                         }
                         else
@@ -1427,26 +1461,26 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             var alerta = string.Empty;
             if (ocorrencia == Ocorrencia.Obrigatoria && estaVazio)
             {
-                alerta = ErrMsgVazio;
+                alerta = MsgVazio;
             }
 
             if (!conteudoProcessado.IsEmpty() && conteudoProcessado.Length < min && alerta.IsEmpty() && conteudoProcessado.Length > 1)
             {
-                alerta = ErrMsgMenor;
+                alerta = MsgMenor;
             }
 
             if (!conteudoProcessado.IsEmpty() && conteudoProcessado.Length > max)
             {
-                alerta = ErrMsgMaior;
+                alerta = MsgMaior;
             }
 
-            if (!alerta.IsEmpty() && ErrMsgVazio.Equals(alerta) && !estaVazio)
+            if (!alerta.IsEmpty() && MsgVazio.Equals(alerta) && !estaVazio)
             {
                 alerta += $" [{valor}]";
                 WAlerta(id, tag, descricao, alerta);
             }
 
-            XElement xmlTag = null;
+            XElement? xmlTag = null;
             if (ocorrencia == Ocorrencia.Obrigatoria && estaVazio)
                 xmlTag = GetElement(tag, string.Empty, ns);
 
@@ -1459,7 +1493,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
     }
 
-    private static XElement GetElement(string name, string value, XNamespace ns = null)
+    private static XElement GetElement(string name, string value, XNamespace? ns = null)
     {
         return ns != null ? new XElement(ns + name, value) : new XElement(name, value);
     }
@@ -1551,23 +1585,19 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
     private void GravarArquivoEmDisco(TipoArquivo tipo, string conteudoArquivo, string nomeArquivo, DateTime? data = null)
     {
-        switch (tipo)
+        nomeArquivo = tipo switch
         {
-            case TipoArquivo.Webservice:
-                nomeArquivo = Path.Combine(Configuracoes.Arquivos.GetPathLote(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj), nomeArquivo);
-                break;
-
-            case TipoArquivo.Rps:
-                nomeArquivo = Path.Combine(Configuracoes.Arquivos.GetPathRps(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj), nomeArquivo);
-                break;
-
-            case TipoArquivo.NFSe:
-                nomeArquivo = Path.Combine(Configuracoes.Arquivos.GetPathNFSe(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj), nomeArquivo);
-                break;
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null);
-        }
+            TipoArquivo.Webservice => Path.Combine(
+                Configuracoes.Arquivos.GetPathLote(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj),
+                nomeArquivo),
+            TipoArquivo.Rps => Path.Combine(
+                Configuracoes.Arquivos.GetPathRps(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj),
+                nomeArquivo),
+            TipoArquivo.NFSe => Path.Combine(
+                Configuracoes.Arquivos.GetPathNFSe(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj),
+                nomeArquivo),
+            _ => throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null)
+        };
 
         File.WriteAllText(nomeArquivo, conteudoArquivo, Encoding.UTF8);
     }

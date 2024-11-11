@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Demo;

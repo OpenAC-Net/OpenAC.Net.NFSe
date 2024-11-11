@@ -60,6 +60,8 @@ public sealed class IdeNFSe : GenericClone<IdeNFSe>, INotifyPropertyChanged
     public string Numero { get; set; }
 
     public string Chave { get; set; }
+    
+    public string Serie { get; set; }
 
     public DateTime DataEmissao { get; set; }
 

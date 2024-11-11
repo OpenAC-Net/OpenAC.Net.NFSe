@@ -13,6 +13,8 @@ using OpenAC.Net.Core.Logging;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource;
 using OpenAC.Net.NFSe.DANFSe.QuestPdf;
 using OpenAC.Net.NFSe.Nota;

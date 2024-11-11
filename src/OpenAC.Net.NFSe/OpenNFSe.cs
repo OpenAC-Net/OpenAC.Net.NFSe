@@ -34,6 +34,7 @@ using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;
+using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;

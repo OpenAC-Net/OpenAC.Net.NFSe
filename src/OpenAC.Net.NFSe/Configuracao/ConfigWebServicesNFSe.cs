@@ -34,6 +34,7 @@ using System.Linq;
 using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Configuracao;

@@ -32,7 +32,6 @@
 using System.IO;
 using System.Text;
 using System.Xml.Linq;
-using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Collection;
@@ -41,6 +40,9 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Nota;
 
+/// <summary>
+/// 
+/// </summary>
 public sealed class NotaServicoCollection : DFeCollection<NotaServico>
 {
     #region Fields
@@ -57,9 +59,7 @@ public sealed class NotaServicoCollection : DFeCollection<NotaServico>
     /// <param name="config">The configuration.</param>
     public NotaServicoCollection(ConfigNFSe config)
     {
-        Guard.Against<OpenDFeException>(config == null, "Configurações não podem ser nulas");
-
-        this.config = config;
+        this.config = config ?? throw new OpenDFeException("Configurações não podem ser nulas");
     }
 
     #endregion Constructor
@@ -80,10 +80,10 @@ public sealed class NotaServicoCollection : DFeCollection<NotaServico>
     /// <summary>
     /// Carrega a NFSe/RPS do arquivo.
     /// </summary>
-    /// <param name="xml">caminho do arquivo XML ou string com o XML.</param>
+    /// <param name="xml">Caminho do arquivo XML ou “string” com o XML.</param>
     /// <param name="encoding">encoding do XML.</param>
     /// <returns>NotaServico carregada.</returns>
-    public NotaServico Load(string xml, Encoding encoding = null)
+    public NotaServico Load(string xml, Encoding? encoding = null)
     {
         var provider = ProviderManager.GetProvider(config);
 

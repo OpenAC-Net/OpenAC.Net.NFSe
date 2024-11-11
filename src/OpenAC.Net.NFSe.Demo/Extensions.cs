@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Xml;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Demo;
