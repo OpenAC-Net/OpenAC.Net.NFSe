@@ -37,9 +37,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -109,6 +106,11 @@ internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClien
 
         return Execute("RECEPCIONARLOTERPSSINCRONO", message.ToString(),
             "nfse_web_service.RECEPCIONARLOTERPSSINCRONOResponse", "Recepcionarloterpssincronoresponse");
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
     }
 
     public string ConsultarSituacao(string cabec, string msg)

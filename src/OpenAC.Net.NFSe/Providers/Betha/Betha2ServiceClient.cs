@@ -35,9 +35,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -83,6 +80,9 @@ internal sealed class Betha2ServiceClient : NFSeSoapServiceClient, IServiceClien
 
         return Execute("RecepcionarLoteRpsSincronoEnvio", "RecepcionarLoteRpsSincronoResponse", message.ToString());
     }
+
+    public string GerarNfse(string cabec, string msg) =>
+       throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string ConsultarSituacao(string cabec, string msg)
     {

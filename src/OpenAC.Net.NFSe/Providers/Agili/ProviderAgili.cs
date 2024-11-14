@@ -37,9 +37,6 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -52,7 +49,7 @@ internal class ProviderAgili : ProviderABRASF
     public ProviderAgili(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "Agili";
-        if(!Municipio.Parametros.TryGetValue(nameof(UnidadeGestora), out var value) || value.IsEmpty())
+        if (!Municipio.Parametros.TryGetValue(nameof(UnidadeGestora), out var value) || value.IsEmpty())
             throw new OpenDFeException($"Este provedor precisa que seja informado o parâmetro {nameof(UnidadeGestora)}.");
 
         UnidadeGestora = value ?? "";
@@ -65,7 +62,7 @@ internal class ProviderAgili : ProviderABRASF
     public string UnidadeGestora { get; }
 
     #endregion Properties
-    
+
     #region Methods
 
     protected virtual XElement WriteIdentificacaoPrestador(NotaServico nota)
@@ -263,35 +260,35 @@ internal class ProviderAgili : ProviderABRASF
             switch (nota.RegimeEspecialTributacao)
             {
                 case RegimeEspecialTributacao.Estimativa:
-                {
-                    regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
-                        Ocorrencia.Obrigatoria, "-2"));
-                    break;
-                }
+                    {
+                        regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
+                            Ocorrencia.Obrigatoria, "-2"));
+                        break;
+                    }
                 case RegimeEspecialTributacao.SociedadeProfissionais:
-                {
-                    regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
-                        Ocorrencia.Obrigatoria, "-3"));
-                    break;
-                }
+                    {
+                        regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
+                            Ocorrencia.Obrigatoria, "-3"));
+                        break;
+                    }
                 case RegimeEspecialTributacao.Cooperativa:
-                {
-                    regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
-                        Ocorrencia.Obrigatoria, "-4"));
-                    break;
-                }
+                    {
+                        regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
+                            Ocorrencia.Obrigatoria, "-4"));
+                        break;
+                    }
                 case RegimeEspecialTributacao.MicroEmpresarioIndividual:
-                {
-                    regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
-                        Ocorrencia.Obrigatoria, "-5"));
-                    break;
-                }
+                    {
+                        regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
+                            Ocorrencia.Obrigatoria, "-5"));
+                        break;
+                    }
                 case RegimeEspecialTributacao.MicroEmpresarioEmpresaPP:
-                {
-                    regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
-                        Ocorrencia.Obrigatoria, "-6"));
-                    break;
-                }
+                    {
+                        regimeEspecialTributacao.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1,
+                            Ocorrencia.Obrigatoria, "-6"));
+                        break;
+                    }
             }
 
             declaracaoPrestacaoServico.AddChild(regimeEspecialTributacao);
@@ -311,47 +308,47 @@ internal class ProviderAgili : ProviderABRASF
         switch (nota.Servico.ExigibilidadeIss)
         {
             case ExigibilidadeIss.Exigivel:
-            {
-                exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
-                    "-1"));
-                break;
-            }
+                {
+                    exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
+                        "-1"));
+                    break;
+                }
             case ExigibilidadeIss.NaoIncidencia:
-            {
-                exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
-                    "-2"));
-                break;
-            }
+                {
+                    exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
+                        "-2"));
+                    break;
+                }
             case ExigibilidadeIss.Isencao:
-            {
-                exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
-                    "-3"));
-                break;
-            }
+                {
+                    exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
+                        "-3"));
+                    break;
+                }
             case ExigibilidadeIss.Exportacao:
-            {
-                exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
-                    "-4"));
-                break;
-            }
+                {
+                    exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
+                        "-4"));
+                    break;
+                }
             case ExigibilidadeIss.Imunidade:
-            {
-                exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
-                    "-5"));
-                break;
-            }
+                {
+                    exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
+                        "-5"));
+                    break;
+                }
             case ExigibilidadeIss.SuspensaDecisaoJudicial:
-            {
-                exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
-                    "-6"));
-                break;
-            }
+                {
+                    exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
+                        "-6"));
+                    break;
+                }
             case ExigibilidadeIss.SuspensaProcessoAdministrativo:
-            {
-                exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
-                    "-7"));
-                break;
-            }
+                {
+                    exigibilidadeIss.AddChild(AddTag(TipoCampo.Int, "", "Codigo", 1, 1, Ocorrencia.Obrigatoria,
+                        "-7"));
+                    break;
+                }
         }
 
         declaracaoPrestacaoServico.AddChild(exigibilidadeIss);
@@ -395,6 +392,8 @@ internal class ProviderAgili : ProviderABRASF
 
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
         switch (notas.Count)
         {
             case 0:
@@ -402,7 +401,7 @@ internal class ProviderAgili : ProviderABRASF
                 break;
             case > 3:
                 retornoWebservice.Erros.Add(new EventoRetorno
-                    { Codigo = "0", Descricao = "Apenas 3 RPS podem ser enviados em modo Sincrono." });
+                { Codigo = "0", Descricao = "Apenas 3 RPS podem ser enviados em modo Sincrono." });
                 break;
         }
 
@@ -418,6 +417,26 @@ internal class ProviderAgili : ProviderABRASF
                 $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml",
                 nota.IdentificacaoRps.DataEmissao);
         }
+
+        var xmlLote = new StringBuilder();
+        xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xmlLote.Append($"<GerarNfseEnvio {GetNamespace()}>");
+        xmlLote.Append($"<UnidadeGestora>{UnidadeGestora}</UnidadeGestora>");
+        xmlLote.Append(xmlLoteRps);
+
+        xmlLote.Append("</GerarNfseEnvio>");
+        retornoWebservice.XmlEnvio = xmlLote.ToString();
+    }
+
+    protected override void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        var xmlLoteRps = new StringBuilder();
+
+        var xmlRps = WriteXmlRps(nota, false, false);
+        xmlLoteRps.Append(xmlRps);
+        GravarRpsEmDisco(xmlRps,
+            $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml",
+            nota.IdentificacaoRps.DataEmissao);
 
         var xmlLote = new StringBuilder();
         xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -463,15 +482,15 @@ internal class ProviderAgili : ProviderABRASF
         switch (Configuracoes.PrestadorPadrao.CpfCnpj.Length)
         {
             case 11:
-            {
-                xmlLote.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cnpj>");
-                break;
-            }
+                {
+                    xmlLote.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cnpj>");
+                    break;
+                }
             case 14:
-            {
-                xmlLote.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
-                break;
-            }
+                {
+                    xmlLote.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
+                    break;
+                }
         }
 
         xmlLote.Append("</CpfCnpj>");
@@ -500,6 +519,10 @@ internal class ProviderAgili : ProviderABRASF
     {
     }
 
+    protected override void AssinarGerarNfse(RetornoGerarNfse retornoWebservice)
+    {
+    }
+
     protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
     {
     }
@@ -509,7 +532,7 @@ internal class ProviderAgili : ProviderABRASF
         if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
         {
             retornoWebservice.Erros.Add(new EventoRetorno
-                { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
+            { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
             return;
         }
 
@@ -527,15 +550,15 @@ internal class ProviderAgili : ProviderABRASF
         switch (Configuracoes.PrestadorPadrao.CpfCnpj.Length)
         {
             case 11:
-            {
-                loteBuilder.Append($"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj}</Cpf>");
-                break;
-            }
+                {
+                    loteBuilder.Append($"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj}</Cpf>");
+                    break;
+                }
             case 14:
-            {
-                loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj}</Cnpj>");
-                break;
-            }
+                {
+                    loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj}</Cnpj>");
+                    break;
+                }
         }
 
         loteBuilder.Append("</CpfCnpj>");
@@ -586,7 +609,7 @@ internal class ProviderAgili : ProviderABRASF
         if (retornoWebservice.NumeroRps < 1)
         {
             retornoWebservice.Erros.Add(new EventoRetorno
-                { Codigo = "0", Descricao = "Número da NFSe não informado para a consulta." });
+            { Codigo = "0", Descricao = "Número da NFSe não informado para a consulta." });
             return;
         }
 
@@ -670,7 +693,7 @@ internal class ProviderAgili : ProviderABRASF
         if (protocoloCancelamento == null)
         {
             retornoWebservice.Erros.Add(new EventoRetorno
-                { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
+            { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
             return;
         }
 
@@ -693,6 +716,8 @@ internal class ProviderAgili : ProviderABRASF
 
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA RETORNO DO LOTE
+
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
         MensagemErro(retornoWebservice, xmlRet.Root);
         if (retornoWebservice.Erros.Count > 0) return;
@@ -714,6 +739,29 @@ internal class ProviderAgili : ProviderABRASF
             nota.IdentificacaoNFSe.Chave = chaveNfSe;
             nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
         }
+
+        retornoWebservice.Sucesso = true;
+    }
+
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        MensagemErro(retornoWebservice, xmlRet.Root);
+        if (retornoWebservice.Erros.Count > 0) return;
+
+        var nfse = xmlRet.ElementAnyNs("GerarNfseResposta")?.ElementAnyNs("Nfse");
+        var numeroNfSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+        var chaveNfSe = nfse.ElementAnyNs("CodigoAutenticidade")?.GetValue<string>() ?? string.Empty;
+        var dataNfSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+        var numeroRps =
+            nfse?.ElementAnyNs("DeclaracaoPrestacaoServico")?.ElementAnyNs("Rps")?.ElementAnyNs("IdentificacaoRps")
+                ?.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+
+        GravarNFSeEmDisco(nfse.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
+
+        nota.IdentificacaoNFSe.Numero = numeroNfSe;
+        nota.IdentificacaoNFSe.Chave = chaveNfSe;
+        nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
 
         retornoWebservice.Sucesso = true;
     }

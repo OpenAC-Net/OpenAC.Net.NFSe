@@ -34,7 +34,6 @@ using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;
-using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;
@@ -104,6 +103,35 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         catch (Exception exception)
         {
             this.Log().Error("[Enviar]", exception);
+            throw;
+        }
+        finally
+        {
+            ServicePointManager.SecurityProtocol = oldProtocol;
+            provider.Dispose();
+        }
+    }
+
+    /// <summary>
+    /// Envia as NFSe para o provedor da cidade.
+    /// </summary>
+    /// <returns>RetornoWebservice.</returns>
+    public RetornoGerarNfse GerarNfse()
+    {
+        Guard.Against<OpenException>(NotasServico.Count < 1, "ERRO: Nenhuma RPS adicionada ao Lote");
+
+        var provider = ProviderManager.GetProvider(Configuracoes);
+        var oldProtocol = ServicePointManager.SecurityProtocol;
+
+        try
+        {
+            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+
+            return provider.GerarNfse(NotasServico[0]);
+        }
+        catch (Exception exception)
+        {
+            this.Log().Error("[GerarNfse]", exception);
             throw;
         }
         finally

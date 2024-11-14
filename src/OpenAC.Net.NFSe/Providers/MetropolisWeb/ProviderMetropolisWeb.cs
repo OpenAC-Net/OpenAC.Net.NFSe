@@ -30,9 +30,6 @@
 // ***********************************************************************
 
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;

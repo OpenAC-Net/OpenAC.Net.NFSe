@@ -46,9 +46,6 @@ using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -61,41 +58,17 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 {
     #region Internal Types
 
-    /// <summary>
-    /// 
-    /// </summary>
     protected enum TipoArquivo
     {
-        /// <summary>
-        /// 
-        /// </summary>
         Webservice,
-        /// <summary>
-        /// 
-        /// </summary>
         Rps,
-        /// <summary>
-        /// 
-        /// </summary>
         NFSe
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     protected enum Ocorrencia
     {
-        /// <summary>
-        /// 
-        /// </summary>
         NaoObrigatoria,
-        /// <summary>
-        /// 
-        /// </summary>
         Obrigatoria,
-        /// <summary>
-        /// 
-        /// </summary>
         MaiorQueZero
     }
 
@@ -103,7 +76,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
     #region Fields
 
-    private X509Certificate2? certificado;
+    private X509Certificate2 certificado;
     private bool disposed;
 
     #endregion Fields
@@ -113,52 +86,52 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <summary>
     /// The er r_ ms g_ maior
     /// </summary>
-    protected const string MsgMaior = "Tamanho maior que o máximo permitido";
+    protected const string ErrMsgMaior = "Tamanho maior que o máximo permitido";
 
     /// <summary>
     /// The er r_ ms g_ menor
     /// </summary>
-    protected const string MsgMenor = "Tamanho menor que o mínimo permitido";
+    protected const string ErrMsgMenor = "Tamanho menor que o mínimo permitido";
 
     /// <summary>
     /// The er r_ ms g_ vazio
     /// </summary>
-    protected const string MsgVazio = "Nenhum valor informado";
+    protected const string ErrMsgVazio = "Nenhum valor informado";
 
     /// <summary>
     /// The er r_ ms g_ invalido
     /// </summary>
-    protected const string MsgInvalido = "Conteúdo inválido";
+    protected const string ErrMsgInvalido = "Conteúdo inválido";
 
     /// <summary>
     /// The er r_ ms g_ maxim o_ decimais
     /// </summary>
-    protected const string MsgMaximoDecimais = "Numero máximo de casas decimais permitidas";
+    protected const string ErrMsgMaximoDecimais = "Numero máximo de casas decimais permitidas";
 
     /// <summary>
     /// The er r_ ms g_ maio r_ maximo
     /// </summary>
-    protected const string MsgMaiorMaximo = "Número de ocorrências maior que o máximo permitido - Máximo ";
+    protected const string ErrMsgMaiorMaximo = "Número de ocorrências maior que o máximo permitido - Máximo ";
 
     /// <summary>
     /// The er r_ ms g_ fina l_ meno r_ inicial
     /// </summary>
-    protected const string MsgFinalMenorInicial = "O numero final não pode ser menor que o inicial";
+    protected const string ErrMsgFinalMenorInicial = "O numero final não pode ser menor que o inicial";
 
     /// <summary>
     /// The er r_ ms g_ arquiv o_ na o_ encontrado
     /// </summary>
-    protected const string MsgArquivoNaoEncontrado = "Arquivo não encontrado";
+    protected const string ErrMsgArquivoNaoEncontrado = "Arquivo não encontrado";
 
     /// <summary>
     /// The er r_ ms g_ soment e_ um
     /// </summary>
-    protected const string MsgSomenteUm = "Somente um campo deve ser preenchido";
+    protected const string ErrMsgSomenteUm = "Somente um campo deve ser preenchido";
 
     /// <summary>
     /// The er r_ ms g_ meno r_ minimo
     /// </summary>
-    protected const string MsgMenorMinimo = "Número de ocorrências menor que o mínimo permitido - Mínimo ";
+    protected const string ErrMsgMenorMinimo = "Número de ocorrências menor que o mínimo permitido - Mínimo ";
 
     /// <summary>
     /// The ds c_ CNPJ
@@ -175,7 +148,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     #region Constructor
 
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="ProviderBase"/>.
+    /// Initializes a new instance of the <see cref="ProviderBase"/> class.
     /// </summary>
     protected ProviderBase(ConfigNFSe config, OpenMunicipioNFSe municipio)
     {
@@ -204,9 +177,6 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <value>The name.</value>
     public string Name { get; protected set; }
     
-    /// <summary>
-    /// 
-    /// </summary>
     public VersaoNFSe Versao { get; protected set; }
 
     /// <summary>
@@ -227,24 +197,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <value><c>true</c> if [retirar acentos]; otherwise, <c>false</c>.</value>
     public bool RetirarAcentos { get; set; }
     
-    /// <summary>
-    /// Define/Obtém se deve usar vírgula nos números decimais.
-    /// </summary>
     protected bool UsarVirgulaDecimais { get; set; }
 
-    /// <summary>
-    /// Obtém as configurações do componente
-    /// </summary>
     public ConfigNFSe Configuracoes { get; }
 
-    /// <summary>
-    /// Obtém o Municipio atual.
-    /// </summary>
     public OpenMunicipioNFSe Municipio { get; }
 
-    /// <summary>
-    /// Define/Obtém o tempo de espera pela resposta do provedor.
-    /// </summary>
     public TimeSpan? TimeOut
     {
         get
@@ -257,9 +215,6 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
     }
 
-    /// <summary>
-    /// Obtém o certificado para ser usado na conexão ao provedor.
-    /// </summary>
     public X509Certificate2 Certificado => certificado ??= Configuracoes.Certificados.ObterCertificado();
 
     #endregion Propriedades
@@ -276,7 +231,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="xml">Local do arquivo Xml</param>
     /// <param name="encoding">Enconde para utilizar na leitura do arquivo</param>
     /// <returns></returns>
-    public NotaServico LoadXml(string xml, Encoding? encoding = null)
+    public NotaServico LoadXml(string xml, Encoding encoding = null)
     {
         Guard.Against<ArgumentNullException>(xml.IsEmpty(), "Xml não pode ser vazio ou nulo");
 
@@ -404,7 +359,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -455,12 +414,71 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+
             return retornoWebservice;
         }
 
         GravarArquivoEmDisco(retornoWebservice.XmlRetorno, $"EnviarSincrono-{lote}-ret.xml");
         TratarRetornoEnviarSincrono(retornoWebservice, notas);
+
+        return retornoWebservice;
+    }
+
+    /// <summary>
+    /// Gera e envia um único Rps para o provedor de forma síncrona.
+    /// </summary>
+    /// <param name="nota"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public RetornoGerarNfse GerarNfse(NotaServico nota)
+    {
+        var retornoWebservice = new RetornoGerarNfse();
+
+        PrepararGerarNfse(retornoWebservice, nota);
+        if (retornoWebservice.Erros.Count > 0) return retornoWebservice;
+
+        if (Configuracoes.Geral.RetirarAcentos)
+            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoveAccent();
+
+        AssinarGerarNfse(retornoWebservice);
+        GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"GerarNfse-env.xml");
+
+        //Remover a declaração do Xml se tiver
+        retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+
+        // Verifica Schema
+        if (PrecisaValidarSchema(TipoUrl.EnviarSincrono))
+        {
+            ValidarSchema(retornoWebservice, GetSchema(TipoUrl.EnviarSincrono));
+            if (retornoWebservice.Erros.Any()) return retornoWebservice;
+        }
+
+        // Recebe mensagem de retorno
+        try
+        {
+            using var cliente = GetClient(TipoUrl.EnviarSincrono);
+            //Separei o cabecalho em string pois dificultava o debug do envio, obrigando sempre a passar pelo GerarCabecalho
+            var cabecalho = GerarCabecalho();
+            retornoWebservice.XmlRetorno = cliente.GerarNfse(cabecalho, retornoWebservice.XmlEnvio);
+            retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
+            retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
+        }
+        catch (Exception ex)
+        {
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+
+            return retornoWebservice;
+        }
+
+        GravarArquivoEmDisco(retornoWebservice.XmlRetorno, $"GerarNfse-ret.xml");
+        TratarRetornoGerarNfse(retornoWebservice, nota);
 
         return retornoWebservice;
     }
@@ -516,7 +534,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -573,7 +595,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -627,7 +653,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -690,8 +720,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSeRps: " + ex.Message });
-            return retornoWebservice;
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSeRps: " + ex.Message });
+
+            return retornoWebservice;           
         }
     }
 
@@ -763,7 +797,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSe: " + ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSe: " + ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -824,7 +862,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSe: " + ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSe: " + ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -878,7 +920,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSeLote: " + ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSeLote: " + ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -937,7 +983,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
         catch (Exception ex)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em SubstituirNFSe: " + ex.Message });
+            if (ex is NotImplementedException)
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "NOT_IMPL", Descricao = ex.Message });
+            else
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em SubstituirNFSe: " + ex.Message });
+
             return retornoWebservice;
         }
     }
@@ -953,7 +1003,6 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <param name="retornoWebservice"></param>
     /// <param name="notas"></param>
-    /// <param name="lote"></param>
     /// <returns></returns>
     protected abstract void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas);
 
@@ -962,16 +1011,20 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <param name="retornoWebservice"></param>
     /// <param name="notas"></param>
-    /// <param name="lote"></param>
     /// <returns></returns>
     protected abstract void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas);
+
+    /// <summary>
+    /// Gera o xml de envio para o serviço de gerar nfs-e.
+    /// </summary>
+    /// <param name="retornoWebservice"></param>
+    /// <param name="nota"></param>
+    protected abstract void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota);
 
     /// <summary>
     /// Gera o xml de envio para o serviço de consultar situação.
     /// </summary>
     /// <param name="retornoWebservice"></param>
-    /// <param name="lote"></param>
-    /// <param name="protocolo"></param>
     /// <returns></returns>
     protected abstract void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice);
 
@@ -1000,27 +1053,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <summary>
     /// Gera o xml de envio para o serviço consultar NFSe.
     /// </summary>
-    /// <param name="notas"></param>
-    /// <param name="inicio"></param>
-    /// <param name="fim"></param>
-    /// <param name="numeroNfse"></param>
-    /// <param name="pagina"></param>
-    /// <param name="cnpjTomador"></param>
-    /// <param name="imTomador"></param>
-    /// <param name="nomeInter"></param>
-    /// <param name="cnpjInter"></param>
-    /// <param name="imInter"></param>
-    /// <param name="serie"></param>
     /// <returns></returns>
     protected abstract void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice);
 
     /// <summary>
     /// Gera o xml de envio para o serviço cancelar NFSe.
     /// </summary>
-    /// <param name="notas"></param>
-    /// <param name="codigoCancelamento"></param>
-    /// <param name="numeroNFSe"></param>
-    /// <param name="motivo"></param>
     /// <returns></returns>
     protected abstract void PrepararCancelarNFSe(RetornoCancelar retornoWebservice);
 
@@ -1029,7 +1067,6 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <param name="retornoWebservice"></param>
     /// <param name="notas"></param>
-    /// <param name="lote"></param>
     /// <returns></returns>
     protected abstract void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice,
         NotaServicoCollection notas);
@@ -1037,10 +1074,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <summary>
     /// Gera o xml de envio para o serviço substituir NFSe.
     /// </summary>
+    /// <param name="retornoWebservice"></param>
     /// <param name="notas"></param>
-    /// <param name="codigoCancelamento"></param>
-    /// <param name="numeroNFSe"></param>
-    /// <param name="motivo"></param>
     /// <returns></returns>
     protected abstract void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas);
 
@@ -1055,6 +1090,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// </summary>
     /// <param name="retornoWebservice"></param>
     protected abstract void AssinarEnviarSincrono(RetornoEnviar retornoWebservice);
+
+    /// <summary>
+    /// Metodo para assinar o xml do serviço gerar nfs-e.
+    /// </summary>
+    /// <param name="retornoWebservice"></param>
+    protected abstract void AssinarGerarNfse(RetornoGerarNfse retornoWebservice);
 
     /// <summary>
     /// Metodo para assinar o xml do serviço consultar situação.
@@ -1117,6 +1158,13 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="retornoWebservice"></param>
     /// <param name="notas"></param>
     protected abstract void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas);
+
+    /// <summary>
+    /// Trata o retorno do gerar nfs-e.
+    /// </summary>
+    /// <param name="retornoWebservice"></param>
+    /// <param name="nota"></param>
+    protected abstract void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota);
 
     /// <summary>
     /// Trata o retorno do serviço de consultar situação.
@@ -1258,7 +1306,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The CNPJCPF.</param>
     /// <param name="ns"></param>
     /// <returns>XmlElement.</returns>
-    protected XElement? AdicionarTagCNPJCPF(string id, string tagCPF, string tagCNPJ, string valor, XNamespace? ns = null)
+    protected XElement? AdicionarTagCNPJCPF(string id, string tagCPF, string tagCNPJ, string valor, XNamespace ns = null)
     {
         valor = valor.Trim().OnlyNumbers();
 
@@ -1268,18 +1316,18 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             case 11:
                 tag = AddTag(TipoCampo.StrNumber, id, tagCPF, 11, 11, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
                 if (!valor.IsCPF())
-                    WAlerta(tagCPF, "CPF", "CPF", MsgInvalido);
+                    WAlerta(tagCPF, "CPF", "CPF", ErrMsgInvalido);
                 break;
 
             case 14:
                 tag = AddTag(TipoCampo.StrNumber, id, tagCNPJ, 14, 14, Ocorrencia.Obrigatoria, valor, string.Empty, ns);
                 if (!valor.IsCNPJ())
-                    WAlerta(tagCNPJ, "CNPJ", "CNPJ", MsgInvalido);
+                    WAlerta(tagCNPJ, "CNPJ", "CNPJ", ErrMsgInvalido);
                 break;
         }
 
         if (!valor.Length.IsIn(11, 14))
-            WAlerta($"{tagCPF}-{tagCNPJ}", "CNPJ-CPF", "CNPJ/CPF", MsgVazio);
+            WAlerta($"{tagCPF}-{tagCNPJ}", "CNPJ-CPF", "CNPJ/CPF", ErrMsgVazio);
 
         return tag;
     }
@@ -1297,7 +1345,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="descricao">The descricao.</param>
     /// <param name="ns"></param>
     /// <returns>XmlElement.</returns>
-    protected XElement? AddTag(TipoCampo tipo, string id, string tag, XNamespace? ns, int min, int max, 
+    protected XElement AddTag(TipoCampo tipo, string id, string tag, XNamespace? ns, int min, int max, 
         Ocorrencia ocorrencia, object? valor, string descricao = "")
     {
         Guard.Against<ArgumentException>(ns == null, "Namespace não informado");
@@ -1317,12 +1365,12 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="valor">The valor.</param>
     /// <param name="descricao">The descricao.</param>
     /// <returns>XmlElement.</returns>
-    protected XElement? AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao = "")
+    protected XElement AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao = "")
     {
         return AddTag(tipo, id, tag, min, max, ocorrencia, valor, descricao, null);
     }
 
-    private XElement? AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao, XNamespace? ns)
+    private XElement AddTag(TipoCampo tipo, string id, string tag, int min, int max, Ocorrencia ocorrencia, object? valor, string descricao, XNamespace? ns)
     {
         try
         {
@@ -1385,13 +1433,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
                     case TipoCampo.De4:
                     case TipoCampo.De6:
                     case TipoCampo.De10:
-                        var cultureInfo = new CultureInfo(CultureInfo.InvariantCulture.Name);
-                        if (UsarVirgulaDecimais)
-                        {
-                            cultureInfo.NumberFormat.NumberGroupSeparator = ".";
-                            cultureInfo.NumberFormat.NumberDecimalSeparator = ",";
-                        }
-                        
+                        var numberFormat = CultureInfo.InvariantCulture.NumberFormat;
                         if (decimal.TryParse(valor.ToString(), out var vDecimal))
                         {
                             if (ocorrencia == Ocorrencia.MaiorQueZero && vDecimal == 0)
@@ -1401,14 +1443,31 @@ public abstract class ProviderBase : IOpenLog, IDisposable
                             else
                             {
                                 // ReSharper disable once SwitchStatementMissingSomeCases
-                                conteudoProcessado = tipo switch
+                                switch (tipo)
                                 {
-                                    TipoCampo.De2 => string.Format(cultureInfo, "{0:0.00}", vDecimal),
-                                    TipoCampo.De3 => string.Format(cultureInfo, "{0:0.000}", vDecimal),
-                                    TipoCampo.De4 => string.Format(cultureInfo, "{0:0.0000}", vDecimal),
-                                    TipoCampo.De6 => string.Format(cultureInfo, "{0:0.000000}", vDecimal),
-                                    _ => string.Format(cultureInfo, "{0:0.0000000000}", vDecimal)
-                                };
+                                    case TipoCampo.De2:
+                                        conteudoProcessado = string.Format(numberFormat, "{0:0.00}", vDecimal);
+                                        break;
+
+                                    case TipoCampo.De3:
+                                        conteudoProcessado = string.Format(numberFormat, "{0:0.000}", vDecimal);
+                                        break;
+
+                                    case TipoCampo.De4:
+                                        conteudoProcessado = string.Format(numberFormat, "{0:0.0000}", vDecimal);
+                                        break;
+
+                                    case TipoCampo.De6:
+                                        conteudoProcessado = string.Format(numberFormat, "{0:0.000000}", vDecimal);
+                                        break;
+
+                                    default:
+                                        conteudoProcessado = string.Format(numberFormat, "{0:0.0000000000}", vDecimal);
+                                        break;
+                                }
+
+                                if (UsarVirgulaDecimais)
+                                    conteudoProcessado = conteudoProcessado.Replace(".", ",");
                             }
                         }
                         else
@@ -1461,26 +1520,26 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             var alerta = string.Empty;
             if (ocorrencia == Ocorrencia.Obrigatoria && estaVazio)
             {
-                alerta = MsgVazio;
+                alerta = ErrMsgVazio;
             }
 
             if (!conteudoProcessado.IsEmpty() && conteudoProcessado.Length < min && alerta.IsEmpty() && conteudoProcessado.Length > 1)
             {
-                alerta = MsgMenor;
+                alerta = ErrMsgMenor;
             }
 
             if (!conteudoProcessado.IsEmpty() && conteudoProcessado.Length > max)
             {
-                alerta = MsgMaior;
+                alerta = ErrMsgMaior;
             }
 
-            if (!alerta.IsEmpty() && MsgVazio.Equals(alerta) && !estaVazio)
+            if (!alerta.IsEmpty() && ErrMsgVazio.Equals(alerta) && !estaVazio)
             {
                 alerta += $" [{valor}]";
                 WAlerta(id, tag, descricao, alerta);
             }
 
-            XElement? xmlTag = null;
+            XElement xmlTag = null;
             if (ocorrencia == Ocorrencia.Obrigatoria && estaVazio)
                 xmlTag = GetElement(tag, string.Empty, ns);
 
@@ -1493,7 +1552,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
     }
 
-    private static XElement GetElement(string name, string value, XNamespace? ns = null)
+    private static XElement GetElement(string name, string value, XNamespace ns = null)
     {
         return ns != null ? new XElement(ns + name, value) : new XElement(name, value);
     }
@@ -1585,19 +1644,23 @@ public abstract class ProviderBase : IOpenLog, IDisposable
 
     private void GravarArquivoEmDisco(TipoArquivo tipo, string conteudoArquivo, string nomeArquivo, DateTime? data = null)
     {
-        nomeArquivo = tipo switch
+        switch (tipo)
         {
-            TipoArquivo.Webservice => Path.Combine(
-                Configuracoes.Arquivos.GetPathLote(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj),
-                nomeArquivo),
-            TipoArquivo.Rps => Path.Combine(
-                Configuracoes.Arquivos.GetPathRps(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj),
-                nomeArquivo),
-            TipoArquivo.NFSe => Path.Combine(
-                Configuracoes.Arquivos.GetPathNFSe(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj),
-                nomeArquivo),
-            _ => throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null)
-        };
+            case TipoArquivo.Webservice:
+                nomeArquivo = Path.Combine(Configuracoes.Arquivos.GetPathLote(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj), nomeArquivo);
+                break;
+
+            case TipoArquivo.Rps:
+                nomeArquivo = Path.Combine(Configuracoes.Arquivos.GetPathRps(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj), nomeArquivo);
+                break;
+
+            case TipoArquivo.NFSe:
+                nomeArquivo = Path.Combine(Configuracoes.Arquivos.GetPathNFSe(data ?? DateTime.Today, Configuracoes.PrestadorPadrao.CpfCnpj), nomeArquivo);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null);
+        }
 
         File.WriteAllText(nomeArquivo, conteudoArquivo, Encoding.UTF8);
     }

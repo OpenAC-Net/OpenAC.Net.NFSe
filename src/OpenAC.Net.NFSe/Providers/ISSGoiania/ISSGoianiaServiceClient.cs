@@ -36,9 +36,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -60,6 +57,20 @@ internal sealed class ISSGoianiaServiceClient : NFSeSoapServiceClient, IServiceC
     }
 
     public string EnviarSincrono(string cabec, string msg)
+    {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
+        var message = new StringBuilder();
+        message.Append("<ws:GerarNfse>");
+        message.Append("<ws:ArquivoXML>");
+        message.AppendCData(msg);
+        message.Append("</ws:ArquivoXML>");
+        message.Append("</ws:GerarNfse>");
+
+        return Execute("http://nfse.goiania.go.gov.br/ws/GerarNfse", new[] { "GerarNfseResponse", "GerarNfseResult" }, message.ToString());
+    }
+
+    public string GerarNfse(string cabec, string msg)
     {
         var message = new StringBuilder();
         message.Append("<ws:GerarNfse>");

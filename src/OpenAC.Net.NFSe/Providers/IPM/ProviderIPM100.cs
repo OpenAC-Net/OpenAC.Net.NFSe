@@ -35,7 +35,6 @@ using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -44,9 +43,6 @@ using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -343,7 +339,7 @@ internal class ProviderIPM100 : ProviderBase
         }
 
         if (nota.Servico.ItemsServico.Count > 10)
-            WAlerta("#", "lista", "", MsgMaiorMaximo + "10");
+            WAlerta("#", "lista", "", ErrMsgMaiorMaximo + "10");
 
         return itens;
     }
@@ -571,15 +567,12 @@ internal class ProviderIPM100 : ProviderBase
             }
 
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade");
-            if (chaveNfSe == null)
+            var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
+            if (mensagens != null)
             {
-                var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
-                if (mensagens == null) return;
-                
                 foreach (var item in mensagens.Elements())
                 {
-                    var erro = item.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
+                    var erro = item.GetValue<string>();
                     retornoWebservice.Erros.Add(new EventoRetorno
                     {
                         Codigo = erro.Substring(0, 5),
@@ -590,23 +583,66 @@ internal class ProviderIPM100 : ProviderBase
 
                 return;
             }
-            
-            var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>();
-            var serieNfse = xmlRet.Root?.ElementAnyNs("serie_nfse").GetValue<string>();
-            
-            var data = xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>();
-            var hora = xmlRet.Root?.ElementAnyNs("hora_nfse").GetValue<string>();
-            
-            var dataNfSe = DateTime.ParseExact($"{data} {hora}", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            var nfse = xmlRet.Root?.ElementAnyNs("nfse");
+            if (nfse == null)
+            {
+                retornoWebservice.Erros.Add(new EventoRetorno
+                {
+                    Codigo = "999",
+                    Correcao = string.Empty,
+                    Descricao = "Erro no xml de retorno, elemento nfse não encontrado."
+                });
+
+                return;
+            }
+
+            retornoWebservice.Protocolo = nfse.ElementAnyNs("rps")
+                .ElementAnyNs("nro_recibo_provisorio")
+                .GetValue<string>();
+
+            if (retornoWebservice.Protocolo.IsEmpty())
+                retornoWebservice.Protocolo = nfse.ElementAnyNs("identificador").GetValue<string>();
+
+            retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
+
+            retornoWebservice.Data = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nfse")
+                .ElementAnyNs("nf")
+                .ElementAnyNs("data_nfse")
+                .GetValue<string>() ?? "");
+
+            var numeroNfSe =
+                xmlRet.Root?.ElementAnyNs("nfse")
+                    .ElementAnyNs("nf")
+                    .ElementAnyNs("numero_nfse")
+                    .GetValue<string>() ?? string.Empty;
+            var dataNfSe =
+                DateTime.Parse(
+                    xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")
+                        .GetValue<string>() + " " + xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")
+                        .ElementAnyNs("hora_nfse")?.GetValue<string>());
+            var chaveNfSe =
+                xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("nf")?.ElementAnyNs("cod_verificador_autenticidade")
+                    ?.GetValue<string>() ?? string.Empty;
+            var numeroRps = xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("rps")
+                ?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
+
+            if (string.IsNullOrEmpty(numeroRps))
+                numeroRps = xmlRet.Root?.ElementAnyNs("nfse")?.ElementAnyNs("identificador")?.GetValue<string>();
 
             GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
 
-            var nota = notas.First();
-            nota.IdentificacaoNFSe.Numero = numeroNfSe ?? string.Empty;
-            nota.IdentificacaoNFSe.Serie = serieNfse ?? string.Empty;
-            nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
-            nota.IdentificacaoNFSe.Chave = chaveNfSe.GetValue<string>();
-            nota.LinkNFSe = xmlRet.Root?.ElementAnyNs("link_nfse")?.GetValue<string>() ?? string.Empty;
+            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+            if (nota == null)
+            {
+                notas.Load(retornoWebservice.XmlRetorno);
+            }
+            else
+            {
+                nota.IdentificacaoNFSe.Chave = chaveNfSe;
+                nota.IdentificacaoNFSe.Numero = numeroNfSe;
+                nota.XmlOriginal = retornoWebservice.XmlRetorno;
+            }
         }
         catch (Exception e)
         {
@@ -822,6 +858,21 @@ internal class ProviderIPM100 : ProviderBase
 
     protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice,
         NotaServicoCollection notas) => throw new NotImplementedException();
+
+    protected override void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    protected override void AssinarGerarNfse(RetornoGerarNfse retornoWebservice)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
 
     #endregion Não Implementados
 

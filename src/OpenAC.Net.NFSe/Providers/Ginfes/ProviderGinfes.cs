@@ -40,9 +40,6 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -701,6 +698,21 @@ internal sealed class ProviderGinfes : ProviderBase
         throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
     }
 
+    protected override void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        throw new NotImplementedException("Função não suportada neste Provedor !");
+    }
+
+    protected override void AssinarGerarNfse(RetornoGerarNfse retornoWebservice)
+    {
+        throw new NotImplementedException("Função não suportada neste Provedor !");
+    }
+
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        throw new NotImplementedException("Função não suportada neste Provedor !");
+    }
+
     protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice)
     {
         // Monta mensagem de envio
@@ -944,6 +956,10 @@ internal sealed class ProviderGinfes : ProviderBase
         retornoWebservice.Sucesso = true;
     }
 
+    /// <summary>
+    /// COM ESSA ESTRUTURA FUNCIONA, PORÉM COM O XSD QUE TEMOS AQUI, O XSD DO OPENAC APRESENTA ERRO DE ESTRUTURA
+    /// </summary>
+    /// <param name="retornoWebservice"></param>
     protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty())
@@ -954,21 +970,51 @@ internal sealed class ProviderGinfes : ProviderBase
 
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        loteBuilder.Append("<CancelarNfseEnvio xmlns=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd\">");
+        loteBuilder.Append("<CancelarNfseEnvio xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd\">");
         loteBuilder.Append("<Pedido xmlns=\"\">");
-        loteBuilder.Append($"<tipos:InfPedidoCancelamento Id=\"C{retornoWebservice.CodigoCancelamento}\" xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\">");
-        loteBuilder.Append("<tipos:IdentificacaoNfse>");
-        loteBuilder.Append($"<tipos:Numero>{retornoWebservice.NumeroNFSe}</tipos:Numero>");
-        loteBuilder.Append($"<tipos:Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</tipos:Cnpj>");
-        loteBuilder.Append($"<tipos:InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</tipos:InscricaoMunicipal>");
-        loteBuilder.Append($"<tipos:CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</tipos:CodigoMunicipio>");
-        loteBuilder.Append("</tipos:IdentificacaoNfse>");
-        loteBuilder.Append($"<tipos:CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</tipos:CodigoCancelamento>");
-        loteBuilder.Append("</tipos:InfPedidoCancelamento>");
+        loteBuilder.Append($"<InfPedidoCancelamento xmlns=\"http://www.ginfes.com.br/tipos_v03.xsd\">");
+        loteBuilder.Append("<IdentificacaoNfse>");
+        loteBuilder.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");
+        loteBuilder.Append($"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>");
+        loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+        loteBuilder.Append($"<CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</CodigoMunicipio>");
+        loteBuilder.Append("</IdentificacaoNfse>");
+        loteBuilder.Append($"<CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</CodigoCancelamento>");
+        loteBuilder.Append("</InfPedidoCancelamento>");
         loteBuilder.Append("</Pedido>");
         loteBuilder.Append("</CancelarNfseEnvio>");
         retornoWebservice.XmlEnvio = loteBuilder.ToString();
     }
+
+    /// <summary>
+    /// COMENTADO POIS ESTAVA RETORNANDO ERRO QUE O ELEMENTO FILHO 'PEDIDO' ERA INVÁLIDO
+    /// </summary>
+    /// <param name="retornoWebservice"></param>
+    //protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
+    //{
+    //    if (retornoWebservice.NumeroNFSe.IsEmpty())
+    //    {
+    //        retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
+    //        return;
+    //    }
+
+    //    var loteBuilder = new StringBuilder();
+    //    loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+    //    loteBuilder.Append("<CancelarNfseEnvio xmlns=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd\">");
+    //    loteBuilder.Append("<Pedido xmlns=\"\">");
+    //    loteBuilder.Append($"<tipos:InfPedidoCancelamento Id=\"C{retornoWebservice.CodigoCancelamento}\" xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\">");
+    //    loteBuilder.Append("<tipos:IdentificacaoNfse>");
+    //    loteBuilder.Append($"<tipos:Numero>{retornoWebservice.NumeroNFSe}</tipos:Numero>");
+    //    loteBuilder.Append($"<tipos:Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</tipos:Cnpj>");
+    //    loteBuilder.Append($"<tipos:InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</tipos:InscricaoMunicipal>");
+    //    loteBuilder.Append($"<tipos:CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</tipos:CodigoMunicipio>");
+    //    loteBuilder.Append("</tipos:IdentificacaoNfse>");
+    //    loteBuilder.Append($"<tipos:CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</tipos:CodigoCancelamento>");
+    //    loteBuilder.Append("</tipos:InfPedidoCancelamento>");
+    //    loteBuilder.Append("</Pedido>");
+    //    loteBuilder.Append("</CancelarNfseEnvio>");
+    //    retornoWebservice.XmlEnvio = loteBuilder.ToString();
+    //}
 
     protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
     {

@@ -41,9 +41,6 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -469,16 +466,16 @@ internal sealed class ProviderISSDSF : ProviderBase
     protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        var cabecalho = xmlRet.ElementAnyNs("Cabecalho");
+        var cabecalho = xmlRet.ElementAnyNs("RetornoEnvioLoteRPS")?.ElementAnyNs("Cabecalho");
 
         retornoWebservice.Sucesso = cabecalho?.ElementAnyNs("Sucesso")?.GetValue<bool>() ?? false;
         retornoWebservice.Lote = cabecalho?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
         retornoWebservice.Data = cabecalho?.ElementAnyNs("DataEnvioLote")?.GetValue<DateTime>() ?? DateTime.MinValue;
 
-        var erros = xmlRet.ElementAnyNs("Erros");
+        var erros = xmlRet.ElementAnyNs("RetornoEnvioLoteRPS")?.ElementAnyNs("Erros");
         retornoWebservice.Erros.AddRange(ProcessarEventos(TipoEvento.Erros, erros));
 
-        var alertas = xmlRet.ElementAnyNs("Alertas");
+        var alertas = xmlRet.ElementAnyNs("RetornoEnvioLoteRPS")?.ElementAnyNs("Alertas");
         retornoWebservice.Alertas.AddRange(ProcessarEventos(TipoEvento.Alertas, alertas));
 
         if (!retornoWebservice.Sucesso || retornoWebservice.Erros.Any()) return;
@@ -517,16 +514,16 @@ internal sealed class ProviderISSDSF : ProviderBase
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        var cabecalho = xmlRet.ElementAnyNs("Cabecalho");
+        var cabecalho = xmlRet.ElementAnyNs("RetornoEnvioLoteRPS")?.ElementAnyNs("Cabecalho");
 
         retornoWebservice.Sucesso = cabecalho?.ElementAnyNs("Sucesso")?.GetValue<bool>() ?? false;
         retornoWebservice.Lote = cabecalho?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
         retornoWebservice.Data = cabecalho?.ElementAnyNs("DataEnvioLote")?.GetValue<DateTime>() ?? DateTime.MinValue;
 
-        var erros = xmlRet.ElementAnyNs("Erros");
+        var erros = xmlRet.ElementAnyNs("RetornoEnvioLoteRPS")?.ElementAnyNs("Erros");
         retornoWebservice.Erros.AddRange(ProcessarEventos(TipoEvento.Erros, erros));
 
-        var alertas = xmlRet.ElementAnyNs("Alertas");
+        var alertas = xmlRet.ElementAnyNs("RetornoEnvioLoteRPS")?.ElementAnyNs("Alertas");
         retornoWebservice.Alertas.AddRange(ProcessarEventos(TipoEvento.Alertas, alertas));
 
         if (!retornoWebservice.Sucesso || retornoWebservice.Erros.Any()) return;
@@ -549,6 +546,21 @@ internal sealed class ProviderISSDSF : ProviderBase
             nota.XmlOriginal = WriteXmlNFSe(nota);
             GravarNFSeEmDisco(nota.XmlOriginal, $"NFSe-{nota.IdentificacaoNFSe.Chave}-{nota.IdentificacaoNFSe.Numero}.xml", nota.IdentificacaoNFSe.DataEmissao);
         }
+    }
+
+    protected override void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    protected override void AssinarGerarNfse(RetornoGerarNfse retornoWebservice)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
     }
 
     protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice)
@@ -590,18 +602,20 @@ internal sealed class ProviderISSDSF : ProviderBase
     protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        var cabecalho = xmlRet.ElementAnyNs("Cabecalho");
+        var cabecalho = xmlRet.Root.ElementAnyNs("Cabecalho");
 
         retornoWebservice.Sucesso = cabecalho?.ElementAnyNs("Sucesso")?.GetValue<bool>() ?? false;
         retornoWebservice.Lote = cabecalho?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
 
-        var erros = xmlRet.ElementAnyNs("Erros");
+        var erros = xmlRet.Root.ElementAnyNs("Erros");
         retornoWebservice.Erros.AddRange(ProcessarEventos(TipoEvento.Erros, erros));
 
-        var alertas = xmlRet.ElementAnyNs("Alertas");
+        var alertas = xmlRet.Root.ElementAnyNs("Alertas");
         retornoWebservice.Alertas.AddRange(ProcessarEventos(TipoEvento.Alertas, alertas));
 
-        var nfses = xmlRet.ElementAnyNs("ListaNFSe");
+        if (!retornoWebservice.Sucesso || retornoWebservice.Erros.Any()) return;
+
+        var nfses = xmlRet.Root.ElementAnyNs("ListaNFSe");
         if (nfses == null) return;
 
         var notasServico = new List<NotaServico>();

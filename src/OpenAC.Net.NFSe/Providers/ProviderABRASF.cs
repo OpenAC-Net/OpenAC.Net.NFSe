@@ -41,8 +41,6 @@ using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -1021,6 +1019,22 @@ public abstract class ProviderABRASF : ProviderBase
     }
 
     /// <inheritdoc />
+    protected override void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        var xmlLote = new StringBuilder();
+        xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xmlLote.Append("<GerarNfseEnvio xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
+
+        var xmlRps = WriteXmlRps(nota, false, false);
+        //XmlSigning.AssinarXml(xmlRps, "Rps", "", Certificado);
+        GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
+
+        xmlLote.Append(xmlRps);
+        xmlLote.Append("</GerarNfseEnvio>");
+        retornoWebservice.XmlEnvio = xmlLote.ToString();
+    }
+
+    /// <inheritdoc />
     protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice)
     {
         // Monta mensagem de envio
@@ -1175,6 +1189,14 @@ public abstract class ProviderABRASF : ProviderBase
     {
         retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfRps", Certificado);
         retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "GerarNfseEnvio", "LoteRps", Certificado);
+        //***VERIFICAR SUBSTITUIÇÃO PELA LINHA ABAIXO
+        // retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
+    }
+
+    /// <inheritdoc />
+    protected override void AssinarGerarNfse(RetornoGerarNfse retornoWebservice)
+    {
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Rps", "InfRps", Certificado);
     }
 
     /// <inheritdoc />
@@ -1285,6 +1307,54 @@ public abstract class ProviderABRASF : ProviderBase
                 nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
                 nota.XmlOriginal = compNfse.AsString();
             }
+        }
+    }
+
+    /// <summary>
+    /// Trata o retorno do gerar nfs-e.
+    /// </summary>
+    /// <param name="retornoWebservice"></param>
+    /// <param name="nota"></param>
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        // Analisa mensagem de retorno
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        MensagemErro(retornoWebservice, xmlRet, "GerarNfseResposta");
+        if (retornoWebservice.Erros.Any()) return;
+
+        retornoWebservice.Sucesso = xmlRet.Root.ElementAnyNs("ListaNfse") != null;
+
+        if (!retornoWebservice.Sucesso) return;
+
+        retornoWebservice.Data = xmlRet.Root.ElementAnyNs("ListaNfse").ElementAnyNs("CompNfse").ElementAnyNs("Nfse").ElementAnyNs("InfNfse").ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
+        retornoWebservice.Protocolo = xmlRet.Root.ElementAnyNs("ListaNfse").ElementAnyNs("CompNfse").ElementAnyNs("Nfse").ElementAnyNs("InfNfse").ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? "";
+
+        var listaNfse = xmlRet.Root.ElementAnyNs("ListaNfse");
+
+        if (listaNfse == null)
+        {
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+            return;
+        }
+
+        foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
+        {
+            var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
+            var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+            var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+            var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+            var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
+                                .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
+                                .ElementAnyNs("Rps")?
+                                .ElementAnyNs("IdentificacaoRps")?
+                                .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
+
+            GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+
+            nota.IdentificacaoNFSe.Numero = numeroNFSe;
+            nota.IdentificacaoNFSe.Chave = chaveNFSe;
+
+            nota.Protocolo = retornoWebservice.Protocolo;
         }
     }
 

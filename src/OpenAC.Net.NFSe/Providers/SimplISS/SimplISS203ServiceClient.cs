@@ -36,9 +36,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -68,6 +65,28 @@ internal sealed class SimplISS203ServiceClient : NFSeSoapServiceClient, IService
         message.Append("</sis:RecepcionarLoteRps>");
 
         return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResult");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
+        var message = new StringBuilder();
+        message.Append("<sis:GerarNfse>");
+        message.Append(msg);
+        message.Append("</sis:GerarNfse>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse", message.ToString(), "GerarNfseResult");
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<sis:GerarNfse>");
+        message.Append(msg);
+        message.Append("</sis:GerarNfse>");
+
+        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse", message.ToString(), "GerarNfseResult");
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -116,26 +135,22 @@ internal sealed class SimplISS203ServiceClient : NFSeSoapServiceClient, IService
 
     public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
-    public string EnviarSincrono(string cabec, string msg)
-    {
-        var message = new StringBuilder();
-        message.Append("<sis:GerarNfse>");
-        message.Append(msg);
-        message.Append("</sis:GerarNfse>");
-
-        return Execute("http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse", message.ToString(), "GerarNfseResult");
-    }
-
     public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
+    //private string Execute(string soapAction, string message, string responseTag)
+    //{
+    //    return Execute(soapAction, message, "", [responseTag], ["xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
+    //        "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\""]);
+    //}
+
     private string Execute(string soapAction, string message, string responseTag)
     {
         return Execute(soapAction, message, "", [responseTag], ["xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
-            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\""]);
+            "xmlns:nfse=\"http://www.abrasf.org.br/nfse.xsd\"", "xmlns:xd=\"http://www.w3.org/2000/09/xmldsig#\""]);
     }
 
     public string AjustarMensagem(string msg, params string[] tags)

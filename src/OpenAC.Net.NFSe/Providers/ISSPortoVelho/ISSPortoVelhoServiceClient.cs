@@ -35,9 +35,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -53,6 +50,39 @@ internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServi
     #endregion Constructors
 
     #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:RecepcionarLoteRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:RecepcionarLoteRpsRequest>");
+        return Execute("EnviarLoteRpsEnvio", message.ToString(), "RecepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:RecepcionarLoteRpsSincronoRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:RecepcionarLoteRpsSincronoRequest>");
+        return Execute("EnviarLoteRpsSincronoEnvio", message.ToString(), "RecepcionarLoteRpsSincronoResponse");
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
 
     public string CancelarNFSe(string cabec, string msg)
     {
@@ -123,34 +153,6 @@ internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServi
     public string ConsultarSituacao(string cabec, string msg)
     {
         throw new NotImplementedException();
-    }
-
-    public string Enviar(string cabec, string msg)
-    {
-        var message = new StringBuilder();
-        message.Append("<nfse:RecepcionarLoteRpsRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</nfse:RecepcionarLoteRpsRequest>");
-        return Execute("EnviarLoteRpsEnvio", message.ToString(), "RecepcionarLoteRpsResponse");
-    }
-
-    public string EnviarSincrono(string cabec, string msg)
-    {
-        var message = new StringBuilder();
-        message.Append("<nfse:RecepcionarLoteRpsSincronoRequest>");
-        message.Append("<nfseCabecMsg>");
-        message.AppendCData(cabec);
-        message.Append("</nfseCabecMsg>");
-        message.Append("<nfseDadosMsg>");
-        message.AppendCData(msg);
-        message.Append("</nfseDadosMsg>");
-        message.Append("</nfse:RecepcionarLoteRpsSincronoRequest>");
-        return Execute("EnviarLoteRpsSincronoEnvio", message.ToString(), "RecepcionarLoteRpsSincronoResponse");
     }
 
     public string SubstituirNFSe(string cabec, string msg)

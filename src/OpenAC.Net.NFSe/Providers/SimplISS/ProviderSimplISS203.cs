@@ -40,9 +40,6 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -64,6 +61,102 @@ internal sealed class ProviderSimplISS203 : ProviderABRASF203
     protected override IServiceClient GetClient(TipoUrl tipo) => new SimplISS203ServiceClient(this, tipo);
 
     protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
+
+    /// <summary>
+    /// Trata o retorno do gerar nfs-e.
+    /// </summary>
+    /// <param name="retornoWebservice"></param>
+    /// <param name="nota"></param>
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        // Analisa mensagem de retorno
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        MensagemErro(retornoWebservice, xmlRet.Root, "");
+        if (retornoWebservice.Erros.Any()) return;
+
+        retornoWebservice.Sucesso = xmlRet.Root.ElementAnyNs("ListaNfse") != null;
+
+        if (!retornoWebservice.Sucesso) return;
+
+        retornoWebservice.Data = xmlRet.Root.ElementAnyNs("ListaNfse").ElementAnyNs("CompNfse").ElementAnyNs("Nfse").ElementAnyNs("InfNfse").ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
+        retornoWebservice.Protocolo = xmlRet.Root.ElementAnyNs("ListaNfse").ElementAnyNs("CompNfse").ElementAnyNs("Nfse").ElementAnyNs("InfNfse").ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? "";
+
+        var listaNfse = xmlRet.Root.ElementAnyNs("ListaNfse");
+
+        if (listaNfse == null)
+        {
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+            return;
+        }
+
+        foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
+        {
+            var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
+            var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+            var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+            var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+            var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
+                                .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
+                                .ElementAnyNs("Rps")?
+                                .ElementAnyNs("IdentificacaoRps")?
+                                .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
+
+            GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+
+            nota.IdentificacaoNFSe.Numero = numeroNFSe;
+            nota.IdentificacaoNFSe.Chave = chaveNFSe;
+
+            nota.Protocolo = retornoWebservice.Protocolo;
+        }
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="retornoWs"></param>
+    /// <param name="xmlRet"></param>
+    /// <param name="xmlTag"></param>
+    protected override void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string xmlTag)
+    {
+        var mensagens = xmlRet?.ElementAnyNs("GerarNfseResponse")?.ElementAnyNs("GerarNfseResult");
+        mensagens = mensagens?.ElementAnyNs("ListaMensagemRetorno");
+        if (mensagens != null)
+        {
+            foreach (var mensagem in mensagens.ElementsAnyNs("MensagemRetorno"))
+            {
+                var evento = new EventoRetorno
+                {
+                    Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
+                    Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,
+                    Correcao = mensagem?.ElementAnyNs("Correcao")?.GetValue<string>() ?? string.Empty
+                };
+
+                retornoWs.Erros.Add(evento);
+            }
+        }
+
+        mensagens = xmlRet?.ElementAnyNs("GerarNfseResponse")?.ElementAnyNs("GerarNfseResult"); ;
+        mensagens = mensagens?.ElementAnyNs("ListaMensagemRetornoLote");
+        if (mensagens == null) return;
+        {
+            foreach (var mensagem in mensagens.ElementsAnyNs("MensagemRetorno"))
+            {
+                var evento = new EventoRetorno
+                {
+                    Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
+                    Descricao = mensagem?.ElementAnyNs("Mensagem")?.GetValue<string>() ?? string.Empty,
+                    IdentificacaoRps = new IdeRps()
+                    {
+                        Numero = mensagem?.ElementAnyNs("IdentificacaoRps")?.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty,
+                        Serie = mensagem?.ElementAnyNs("IdentificacaoRps")?.ElementAnyNs("Serie")?.GetValue<string>() ?? string.Empty,
+                        Tipo = mensagem?.ElementAnyNs("IdentificacaoRps")?.ElementAnyNs("Tipo")?.GetValue<TipoRps>() ?? TipoRps.RPS,
+                    }
+                };
+
+                retornoWs.Erros.Add(evento);
+            }
+        }
+    }
 
     #endregion Methods
 }

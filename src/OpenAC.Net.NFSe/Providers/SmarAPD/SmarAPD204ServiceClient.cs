@@ -29,6 +29,7 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
@@ -36,9 +37,6 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -78,9 +76,22 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
         return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "recepcionarLoteRpsSincronoResponse");
     }
 
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+
+        //var message = new StringBuilder();
+        //message.Append("<e:GerarNfse>");
+        //message.Append("<xml>");
+        //message.Append(msg);
+        //message.Append("</xml>");
+        //message.Append("</e:GerarNfse>");
+        //return Execute("http://nfse.abrasf.org.br/GerarNfse", message.ToString(), "GerarNfseResponse");
+    }
+
     public string ConsultarSituacao(string cabec, string msg)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public string ConsultarLoteRps(string cabec, string msg)

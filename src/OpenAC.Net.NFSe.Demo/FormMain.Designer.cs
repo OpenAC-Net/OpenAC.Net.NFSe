@@ -141,6 +141,11 @@ namespace OpenAC.Net.NFSe.Demo
             tabPage7 = new System.Windows.Forms.TabPage();
             tabPage3 = new System.Windows.Forms.TabPage();
             dgvCidades = new System.Windows.Forms.DataGridView();
+            dgcCodigoIBGE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dgcCidade = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dgcUF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dgcProvedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dgcVersao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             btnCopiar = new System.Windows.Forms.Button();
             btnDeletar = new System.Windows.Forms.Button();
             btnAdicionar = new System.Windows.Forms.Button();
@@ -148,11 +153,6 @@ namespace OpenAC.Net.NFSe.Demo
             btnCarregar = new System.Windows.Forms.Button();
             lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
-            dgcCodigoIBGE = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            dgcCidade = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            dgcUF = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            dgcProvedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            dgcVersao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabControl2.SuspendLayout();
@@ -300,6 +300,7 @@ namespace OpenAC.Net.NFSe.Demo
             btnGerarEnviarRps.TabIndex = 20;
             btnGerarEnviarRps.Text = "Gerar e Enviar um RPS";
             btnGerarEnviarRps.UseVisualStyleBackColor = true;
+            btnGerarEnviarRps.Click += btnGerarEnviarRps_Click;
             // 
             // btnGerarEnviarLoteRps
             // 
@@ -1231,7 +1232,6 @@ namespace OpenAC.Net.NFSe.Demo
             txtWebserviceChavePrivada.Name = "txtWebserviceChavePrivada";
             txtWebserviceChavePrivada.Size = new System.Drawing.Size(284, 23);
             txtWebserviceChavePrivada.TabIndex = 19;
-            txtWebserviceChavePrivada.UseSystemPasswordChar = true;
             txtWebserviceChavePrivada.TextChanged += txtWebserviceChavePrivada_TextChanged;
             // 
             // label23
@@ -1439,6 +1439,46 @@ namespace OpenAC.Net.NFSe.Demo
             dgvCidades.CellDoubleClick += dgvCidades_CellDoubleClick;
             dgvCidades.CellFormatting += dgvCidades_CellFormatting;
             // 
+            // dgcCodigoIBGE
+            // 
+            dgcCodigoIBGE.FillWeight = 40F;
+            dgcCodigoIBGE.HeaderText = "Código";
+            dgcCodigoIBGE.MinimumWidth = 8;
+            dgcCodigoIBGE.Name = "dgcCodigoIBGE";
+            dgcCodigoIBGE.ReadOnly = true;
+            // 
+            // dgcCidade
+            // 
+            dgcCidade.FillWeight = 200F;
+            dgcCidade.HeaderText = "Cidade";
+            dgcCidade.MinimumWidth = 8;
+            dgcCidade.Name = "dgcCidade";
+            dgcCidade.ReadOnly = true;
+            // 
+            // dgcUF
+            // 
+            dgcUF.FillWeight = 27.27273F;
+            dgcUF.HeaderText = "UF";
+            dgcUF.MinimumWidth = 8;
+            dgcUF.Name = "dgcUF";
+            dgcUF.ReadOnly = true;
+            // 
+            // dgcProvedor
+            // 
+            dgcProvedor.FillWeight = 50F;
+            dgcProvedor.HeaderText = "Provedor";
+            dgcProvedor.MinimumWidth = 8;
+            dgcProvedor.Name = "dgcProvedor";
+            dgcProvedor.ReadOnly = true;
+            // 
+            // dgcVersao
+            // 
+            dgcVersao.FillWeight = 30F;
+            dgcVersao.HeaderText = "Versão";
+            dgcVersao.MinimumWidth = 8;
+            dgcVersao.Name = "dgcVersao";
+            dgcVersao.ReadOnly = true;
+            // 
             // btnCopiar
             // 
             btnCopiar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
@@ -1514,46 +1554,6 @@ namespace OpenAC.Net.NFSe.Demo
             statusStrip1.Size = new System.Drawing.Size(1003, 22);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
-            // 
-            // dgcCodigoIBGE
-            // 
-            dgcCodigoIBGE.FillWeight = 40F;
-            dgcCodigoIBGE.HeaderText = "Código";
-            dgcCodigoIBGE.MinimumWidth = 8;
-            dgcCodigoIBGE.Name = "dgcCodigoIBGE";
-            dgcCodigoIBGE.ReadOnly = true;
-            // 
-            // dgcCidade
-            // 
-            dgcCidade.FillWeight = 200F;
-            dgcCidade.HeaderText = "Cidade";
-            dgcCidade.MinimumWidth = 8;
-            dgcCidade.Name = "dgcCidade";
-            dgcCidade.ReadOnly = true;
-            // 
-            // dgcUF
-            // 
-            dgcUF.FillWeight = 27.27273F;
-            dgcUF.HeaderText = "UF";
-            dgcUF.MinimumWidth = 8;
-            dgcUF.Name = "dgcUF";
-            dgcUF.ReadOnly = true;
-            // 
-            // dgcProvedor
-            // 
-            dgcProvedor.FillWeight = 50F;
-            dgcProvedor.HeaderText = "Provedor";
-            dgcProvedor.MinimumWidth = 8;
-            dgcProvedor.Name = "dgcProvedor";
-            dgcProvedor.ReadOnly = true;
-            // 
-            // dgcVersao
-            // 
-            dgcVersao.FillWeight = 30F;
-            dgcVersao.HeaderText = "Versão";
-            dgcVersao.MinimumWidth = 8;
-            dgcVersao.Name = "dgcVersao";
-            dgcVersao.ReadOnly = true;
             // 
             // FormMain
             // 

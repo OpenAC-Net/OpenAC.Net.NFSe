@@ -43,9 +43,6 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -417,6 +414,21 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     }
 
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    protected override void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    protected override void AssinarGerarNfse(RetornoGerarNfse retornoWebservice)
+    {
+        throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+    }
+
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
     {
         throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
     }

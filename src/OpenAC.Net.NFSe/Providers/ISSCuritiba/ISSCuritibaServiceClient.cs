@@ -36,9 +36,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -57,6 +54,21 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
     #endregion Constructors
 
     #region Methods
+
+    public string Enviar(string cabec, string msg)
+    {
+        return Execute("https://www.e-governeapps2.com.br/RecepcionarLoteRps", msg, "RecepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
 
     public string CancelarNFSe(string cabec, string msg)
     {
@@ -93,16 +105,7 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
         return Execute("https://www.e-governeapps2.com.br/ConsultarSituacaoLoteRps", msg, "ConsultarSituacaoLoteRpsResult");
     }
 
-    public string Enviar(string cabec, string msg)
-    {
-        return Execute("https://www.e-governeapps2.com.br/RecepcionarLoteRps", msg, "RecepcionarLoteRpsResponse");
-    }
-
-    public string EnviarSincrono(string cabec, string msg)
-    {
-        throw new NotImplementedException();
-    }
-
+   
     public string SubstituirNFSe(string cabec, string msg)
     {
         throw new NotImplementedException();

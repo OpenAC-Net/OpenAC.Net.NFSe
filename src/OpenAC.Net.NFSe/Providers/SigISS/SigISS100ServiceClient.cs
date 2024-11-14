@@ -36,9 +36,6 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -64,6 +61,10 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
 
         return Execute("urn:sigiss_ws#GerarNota", request.ToString(), "", ["GerarNotaResponse", "RetornoNota"], ["xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:urn=\"urn: sigiss_ws\""]);
     }
+
+    public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException();
+
+    public string GerarNfse(string cabec, string msg) => throw new NotImplementedException();
 
     public string ConsultarSituacao(string cabec, string msg)
     {
@@ -106,9 +107,7 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
 
     public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
-    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
-
-    public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException();
+    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();    
 
     public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 

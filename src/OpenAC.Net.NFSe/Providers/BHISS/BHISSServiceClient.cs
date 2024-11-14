@@ -35,9 +35,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -70,6 +67,23 @@ internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
     }
 
     public string EnviarSincrono(string cabec, string msg)
+    {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
+        var message = new StringBuilder();
+        message.Append("<ws:GerarNfseRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</ws:GerarNfseRequest>");
+
+        return Execute("http://ws.bhiss.pbh.gov.br/GerarNfse", message.ToString(), "GerarNfseResponse");
+    }
+
+    public string GerarNfse(string cabec, string msg)
     {
         var message = new StringBuilder();
         message.Append("<ws:GerarNfseRequest>");

@@ -34,7 +34,7 @@ using OpenAC.Net.DFe.Core.Attributes;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Serializer;
-using OpenAC.Net.NFSe.Commom.Types;
+//using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Commom.Model;

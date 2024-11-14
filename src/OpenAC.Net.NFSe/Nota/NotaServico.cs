@@ -43,14 +43,10 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Nota;
 
-/// <summary>
-/// 
-/// </summary>
 public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChanged
 {
     #region Events
 
-    /// <inheritdoc />
     public event PropertyChangedEventHandler PropertyChanged;
 
     #endregion Events
@@ -177,8 +173,6 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public DFeSignature Signature { get; set; }
 
     public string XmlOriginal { get; set; }
-    
-    public string LinkNFSe { get; set; }
 
     public EventoRps? Evento { get; set; }
 

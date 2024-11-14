@@ -29,14 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -82,6 +80,11 @@ internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClie
 
         return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(),
             "RecepcionarLoteRpsSincronoResponse");
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
     }
 
     public string ConsultarSituacao(string cabec, string msg)

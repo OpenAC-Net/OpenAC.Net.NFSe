@@ -37,9 +37,6 @@ using OpenAC.Net.Core.Extensions;
 using System.Xml.Linq;
 using System.Xml;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -73,6 +70,20 @@ internal class SigepServiceClient : NFSeSoapServiceClient, IServiceClient
     }
 
     public string EnviarSincrono(string cabec, string msg)
+    {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
+        var message = new StringBuilder();
+        message.Append("<ws:gerarNfse>");
+        message.Append("<GerarNfseEnvio>");
+        message.AppendCData(msg);
+        message.Append("</GerarNfseEnvio>");
+        message.Append("</ws:gerarNfse>");
+
+        return Execute("gerarNfse", message.ToString(), "gerarNfseResponse");
+    }
+
+    public string GerarNfse(string cabec, string msg)
     {
         var message = new StringBuilder();
         message.Append("<ws:gerarNfse>");

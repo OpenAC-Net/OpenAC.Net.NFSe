@@ -35,9 +35,6 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -67,6 +64,11 @@ internal sealed class CittaServiceClient : NFSeSoapServiceClient, IServiceClient
     {
         return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", msg,
             "RecepcionarLoteRpsSincronoResposta");
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
     }
 
     public string ConsultarSituacao(string cabec, string msg)

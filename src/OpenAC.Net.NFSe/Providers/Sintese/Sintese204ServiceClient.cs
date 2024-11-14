@@ -37,9 +37,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -55,11 +52,7 @@ internal sealed class Sintese204ServiceClient : NFSeSoapServiceClient, IServiceC
     #endregion Constructors
 
     #region Methods
-
-    private string EmpacotaXml(string conteudo)
-    {
-        return string.Concat("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", conteudo);
-    }
+    
     public string Enviar(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
 
     public string EnviarSincrono(string cabec, string msg)
@@ -75,6 +68,11 @@ internal sealed class Sintese204ServiceClient : NFSeSoapServiceClient, IServiceC
         message.Append("</nfse:EnviarLoteRpsSincronoEnvio>");
 
         return Execute("http://nfsews.sintesetecnologia.com.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse ");
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
     }
 
     public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
@@ -125,6 +123,11 @@ internal sealed class Sintese204ServiceClient : NFSeSoapServiceClient, IServiceC
 
         var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
         throw new OpenDFeCommunicationException(exMessage);
+    }
+
+    private string EmpacotaXml(string conteudo)
+    {
+        return string.Concat("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", conteudo);
     }
 
     #endregion Methods

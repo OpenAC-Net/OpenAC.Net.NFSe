@@ -32,9 +32,6 @@ using System.Net.Http;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -70,6 +67,8 @@ public class SigISSWebServiceClient : NFSeRestServiceClient, IServiceClient
     }
 
     public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+
+    public string GerarNfse(string cabec, string msg) => throw new NotImplementedException();
 
     public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
 

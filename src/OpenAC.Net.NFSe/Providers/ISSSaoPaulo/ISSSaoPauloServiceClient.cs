@@ -35,9 +35,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -91,6 +88,11 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
         message.Append("</nfe:EnvioRPSRequest>");
 
         return Execute("http://www.prefeitura.sp.gov.br/nfe/ws/envioRPS", message.ToString(), "EnvioRPSResponse");
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        throw new NotImplementedException();
     }
 
     public string ConsultarSituacao(string cabec, string msg)

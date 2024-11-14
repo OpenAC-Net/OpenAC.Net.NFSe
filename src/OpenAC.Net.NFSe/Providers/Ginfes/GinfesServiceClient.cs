@@ -35,9 +35,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -70,6 +67,9 @@ internal sealed class GinfesServiceClient : NFSeSoapServiceClient, IServiceClien
 
     public string EnviarSincrono(string cabec, string msg) =>
         throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
+
+    public string GerarNfse(string cabec, string msg) =>
+        throw new NotImplementedException("Função não suportada neste Provedor!");
 
     public string ConsultarSituacao(string cabecalho, string dados)
     {

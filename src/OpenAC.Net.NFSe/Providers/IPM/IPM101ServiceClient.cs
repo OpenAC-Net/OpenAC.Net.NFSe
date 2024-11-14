@@ -36,9 +36,6 @@ using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -58,15 +55,17 @@ public sealed class IPM101ServiceClient : NFSeMultiPartClient, IServiceClient
 
     #region Methods
 
+    public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+
     public string EnviarSincrono(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
+
+    public string GerarNfse(string cabec, string msg) => throw new NotImplementedException();
 
     public string ConsultarLoteRps(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
     
     public string CancelarNFSe(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
 
     public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
-
-    public string Enviar(string cabec, string msg) => throw new NotImplementedException();
 
     public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
 

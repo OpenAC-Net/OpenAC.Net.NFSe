@@ -32,9 +32,6 @@
 using System;
 using System.Net.Http;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -53,6 +50,8 @@ internal class AgiliServiceClient : NFSeHttpServiceClient, IServiceClient
     public string Enviar(string cabec, string msg) => Execute(msg);
 
     public string EnviarSincrono(string cabec, string msg) => Execute(msg);
+
+    public string GerarNfse(string cabec, string msg) => Execute(msg);
 
     public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
 

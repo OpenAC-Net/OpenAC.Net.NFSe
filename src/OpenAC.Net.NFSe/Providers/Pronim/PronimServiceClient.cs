@@ -37,9 +37,6 @@ using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -74,6 +71,8 @@ internal sealed class PronimServiceClient : NFSeSoapServiceClient, IServiceClien
 
     public string EnviarSincrono(string cabec, string msg)
     {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
         var message = new StringBuilder();
         message.Append("<tem:GerarNfse>");
         message.Append("<tem:xmlEnvio>");
@@ -82,6 +81,19 @@ internal sealed class PronimServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("</tem:GerarNfse>");
 
         return Execute("INFSEGeracao/GerarNfse", cabec, message.ToString(), 
+            ["GerarNfseResponse", "GerarNfseResponseResult"]);
+    }
+
+    public string GerarNfse(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<tem:GerarNfse>");
+        message.Append("<tem:xmlEnvio>");
+        message.AppendCData(msg);
+        message.Append("</tem:xmlEnvio>");
+        message.Append("</tem:GerarNfse>");
+
+        return Execute("INFSEGeracao/GerarNfse", cabec, message.ToString(),
             ["GerarNfseResponse", "GerarNfseResponseResult"]);
     }
 

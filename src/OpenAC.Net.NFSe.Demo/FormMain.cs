@@ -89,6 +89,17 @@ public partial class FormMain : Form, IOpenLog
         });
     }
 
+    private void btnGerarEnviarRps_Click(object sender, EventArgs e)
+    {
+        ExecuteSafe(() =>
+        {
+            GerarRps();
+
+            var ret = openNFSe.GerarNfse();
+            ProcessarRetorno(ret);
+        });
+    }
+
     private void btnConsultarSituacao_Click(object sender, EventArgs e)
     {
         ExecuteSafe(() =>
@@ -553,7 +564,7 @@ public partial class FormMain : Form, IOpenLog
         }
 
         nfSe.IdentificacaoRps.Tipo = TipoRps.RPS;
-        nfSe.IdentificacaoRps.DataEmissao = DateTime.Now;
+        nfSe.IdentificacaoRps.DataEmissao = DateTime.Now.AddMinutes(-1);
         nfSe.Competencia = DateTime.Now;
         nfSe.Situacao = SituacaoNFSeRps.Normal;
         nfSe.OptanteSimplesNacional = NFSeSimNao.Sim;
@@ -583,7 +594,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.CodigoCnae = cnae;
 
         var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SiapNet, NFSeProvider.ABase) ? "5211701" :
-            municipio.Provedor.IsIn(NFSeProvider.Sigep) ? "1" : "01.07.00 / 00010700";
+            municipio.Provedor.IsIn(NFSeProvider.Sigep) ? "1" : "1.07.00 / 1869";
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
@@ -656,6 +667,7 @@ public partial class FormMain : Form, IOpenLog
             NFSeProvider.SigISS when municipio.Versao == VersaoNFSe.ve103 => "5211701",
             NFSeProvider.Ginfes => "5211701",
             NFSeProvider.Tiplan => "5211701",
+            NFSeProvider.Giss => "5211701",
             _ => "861010101"
         };
     }
@@ -844,7 +856,9 @@ public partial class FormMain : Form, IOpenLog
 
     private void UpdateCidades()
     {
+        cmbCidades.SelectedValueChanged -= cmbCidades_SelectedValueChanged;
         cmbCidades.MunicipiosDataSource();
+        cmbCidades.SelectedValueChanged += cmbCidades_SelectedValueChanged;
     }
 
     private void InitializeLog()
@@ -973,5 +987,6 @@ public partial class FormMain : Form, IOpenLog
         }
     }
 
-    #endregion Methods
+    #endregion Methods    
+
 }

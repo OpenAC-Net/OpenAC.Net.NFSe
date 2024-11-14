@@ -38,9 +38,6 @@ using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -61,6 +58,8 @@ internal class ProviderMegasoft : ProviderABRASF200
 
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
         switch (notas.Count)
         {
             case 0:
@@ -84,6 +83,25 @@ internal class ProviderMegasoft : ProviderABRASF200
                 $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml",
                 nota.IdentificacaoRps.DataEmissao);
         }
+
+        var xmlLote = new StringBuilder();
+        xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xmlLote.Append($"<GerarNfseEnvio {GetNamespace()}>");
+        xmlLote.Append(xmlLoteRps);
+
+        xmlLote.Append("</GerarNfseEnvio>");
+        retornoWebservice.XmlEnvio = xmlLote.ToString();
+    }
+
+    protected override void PrepararGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        var xmlLoteRps = new StringBuilder();
+
+        var xmlRps = WriteXmlRps(nota, false, false);
+        xmlLoteRps.Append(xmlRps);
+        GravarRpsEmDisco(xmlRps,
+            $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml",
+            nota.IdentificacaoRps.DataEmissao);
 
         var xmlLote = new StringBuilder();
         xmlLote.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -127,6 +145,18 @@ internal class ProviderMegasoft : ProviderABRASF200
         retornoWebservice.XmlEnvio = xmlConsulta.ToString();
     }
 
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {   
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps",
+            "InfDeclaracaoPrestacaoServico", Certificado);
+    }
+
+    protected override void AssinarGerarNfse(RetornoGerarNfse retornoWebservice)
+    {
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps",
+            "InfDeclaracaoPrestacaoServico", Certificado);
+    }
+
     protected override XElement WriteIdentificacaoRps(NotaServico nota)
     {
         var indRps = new XElement("IdentificacaoRps");
@@ -166,12 +196,6 @@ internal class ProviderMegasoft : ProviderABRASF200
         infServico.AddChild(WriteConstrucaoCivilRps(nota));
 
         return rootRps;
-    }
-
-    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
-    {
-        retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps",
-            "InfDeclaracaoPrestacaoServico", Certificado);
     }
 
     protected override XElement? WriteTomadorRps(NotaServico nota)
@@ -350,6 +374,8 @@ internal class ProviderMegasoft : ProviderABRASF200
 
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA RETORNO DO LOTE
+
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
         MensagemErro(retornoWebservice, xmlRet.Root, "GerarNfseResposta");
         if (retornoWebservice.Erros.Count != 0) return;
@@ -373,6 +399,31 @@ internal class ProviderMegasoft : ProviderABRASF200
             nota.IdentificacaoNFSe.Chave = chaveNfSe;
             nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
         }
+
+        retornoWebservice.Sucesso = true;
+    }
+
+    protected override void TratarRetornoGerarNfse(RetornoGerarNfse retornoWebservice, NotaServico nota)
+    {
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        MensagemErro(retornoWebservice, xmlRet.Root, "GerarNfseResposta");
+        if (retornoWebservice.Erros.Count != 0) return;
+
+        var infNfse = xmlRet.ElementAnyNs("GerarNfseResposta")?.ElementAnyNs("ListaNfse")?.ElementAnyNs("CompNfse")
+            ?.ElementAnyNs("Nfse")?.ElementAnyNs("InfNfse");
+        var numeroNfSe = infNfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+        var chaveNfSe = infNfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+        var dataNfSe = infNfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+        var numeroRps =
+            infNfse?.ElementAnyNs("DeclaracaoPrestacaoServico")?.ElementAnyNs("InfDeclaracaoPrestacaoServico")
+                ?.ElementAnyNs("Rps")?.ElementAnyNs("IdentificacaoRps")?.ElementAnyNs("Numero")?.GetValue<string>() ??
+            string.Empty;
+
+        GravarNFSeEmDisco(infNfse.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
+
+        nota.IdentificacaoNFSe.Numero = numeroNfSe;
+        nota.IdentificacaoNFSe.Chave = chaveNfSe;
+        nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
 
         retornoWebservice.Sucesso = true;
     }

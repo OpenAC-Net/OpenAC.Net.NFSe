@@ -78,6 +78,7 @@ public static class Extensions
 
     public static void MunicipiosDataSource(this ComboBox cmb)
     {
+        cmb.DataSource = null;
         cmb.Items.Clear();
         cmb.DataSource = (from OpenMunicipioNFSe value in ProviderManager.Municipios
             select new ItemData<OpenMunicipioNFSe>($"{value.Nome} - {value.UF}", value)).ToArray();

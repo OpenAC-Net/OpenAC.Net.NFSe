@@ -34,9 +34,6 @@ using System.Linq;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -59,6 +56,11 @@ internal sealed class FissLexServiceClient : NFSeSoapServiceClient, IServiceClie
     }
 
     public string EnviarSincrono(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GerarNfse(string cabec, string msg)
     {
         throw new NotImplementedException();
     }

@@ -36,8 +36,6 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -195,8 +193,7 @@ public abstract class ProviderABRASF204 : ProviderABRASF203
 
         if(nota.Evento != null) 
             info.AddChild(WriteEvento(nota));
-
-        info.AddChild(AddTag(TipoCampo.Str, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
+        info.AddChild(AddTag(TipoCampo.Int, "", "InformacoesComplementares", 1, 2000, Ocorrencia.NaoObrigatoria, nota.InformacoesComplementares));
         
         if(nota.Servico.Deducoes.Count > 0)
             info.AddChild(WriteDeducoes(nota));

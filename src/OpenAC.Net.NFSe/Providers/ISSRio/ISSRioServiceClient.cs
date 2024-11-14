@@ -35,9 +35,6 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.Commom;
-using OpenAC.Net.NFSe.Commom.Client;
-using OpenAC.Net.NFSe.Commom.Interface;
-using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -67,6 +64,20 @@ internal sealed class ISSRioServiceClient : NFSeSoapServiceClient, IServiceClien
     }
 
     public string EnviarSincrono(string cabec, string msg)
+    {
+        //*****CONSIDERAR ALTERAR ESSE MÉTODO PARA ENVIO DO LOTE
+
+        var message = new StringBuilder();
+        message.Append("<not:GerarNfseRequest>");
+        message.Append("<not:inputXML>");
+        message.AppendCData(msg);
+        message.Append("</not:inputXML>");
+        message.Append("</not:GerarNfseRequest>");
+
+        return Execute("http://notacarioca.rio.gov.br/GerarNfse", message.ToString(), "GerarNfseResponse");
+    }
+
+    public string GerarNfse(string cabec, string msg)
     {
         var message = new StringBuilder();
         message.Append("<not:GerarNfseRequest>");
