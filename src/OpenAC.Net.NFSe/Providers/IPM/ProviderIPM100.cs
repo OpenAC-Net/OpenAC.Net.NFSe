@@ -191,7 +191,7 @@ internal class ProviderIPM100 : ProviderBase
         prestador.AddChild(AddTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria,
             nota.Prestador.CpfCnpj.OnlyNumbers()));
         prestador.AddChild(AddTag(TipoCampo.Str, "", "cidade", 1, 14, Ocorrencia.Obrigatoria,
-            nota.Prestador.Endereco.CodigoMunicipio));
+            CodigoTOM.FromIBGE(nota.Prestador.Endereco.CodigoMunicipio)));
 
         return prestador;
     }
@@ -492,7 +492,7 @@ internal class ProviderIPM100 : ProviderBase
 
         var codSituacaoTributaria = notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
             ?.ElementAnyNs("situacao_tributaria")?.GetValue<string>();
-        nota.Servico.Valores.IssRetido = codSituacaoTributaria == "2" || codSituacaoTributaria == "5"
+        nota.Servico.Valores.IssRetido = codSituacaoTributaria is "2" or "5"
             ? SituacaoTributaria.Retencao
             : SituacaoTributaria.Normal;
 
@@ -703,12 +703,12 @@ internal class ProviderIPM100 : ProviderBase
         message.Append("<nf>");
         message.Append($"<numero>{retornoWebservice.NumeroNFSe}</numero>");
         message.Append($"<serie_nfse>{retornoWebservice.SerieNFSe}</serie_nfse>");
-        message.Append($"<situacao>C</situacao>");
+        message.Append("<situacao>C</situacao>");
         message.Append($"<observacao>{retornoWebservice.Motivo}</observacao>");
         message.Append("</nf>");
         message.Append("<prestador>");
         message.Append($"<cpfcnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</cpfcnpj>");
-        message.Append($"<cidade>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio.ZeroFill(9)}</cidade>");
+        message.Append($"<cidade>{CodigoTOM.FromIBGE(Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio)?.ZeroFill(9)}</cidade>");
         message.Append("</prestador>");
         message.Append("</nfse>");
 
