@@ -3,8 +3,8 @@
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 03-29-2023
 //
-// Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 03-29-2023
+// Last Modified By : Leandro Rossi
+// Last Modified On : 19-11-2024
 //
 // ***********************************************************************
 // <copyright file="ProviderIPM2.cs" company="OpenAC .Net">
@@ -30,18 +30,17 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using OpenAC.Net.Core;
-using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
@@ -66,7 +65,7 @@ internal class ProviderIPM100 : ProviderBase
 
     #region Properties
 
-    protected bool GerarId { get; set; } = false;
+    protected bool GerarId { get; set; }
 
     protected bool NaoGerarGrupoRps { get; set; }
 
@@ -112,15 +111,20 @@ internal class ProviderIPM100 : ProviderBase
         }
 
         var identificacao = GerarIdentificacaoRps(nota);
+
         if (identificacao != null)
             nfse.AddChild(identificacao);
+
         nfse.AddChild(GerarValoresServico(nota));
         nfse.AddChild(GerarPrestador(nota));
         nfse.AddChild(GerarTomador(nota));
-        nfse.AddChild(GerarItens(nota));
 
-        // Removido a condição da versão para gerar o grupo Forma de Pagamento para
-        // a cidade de Panambi/RS
+        // Fallback caso a lista não seja preenchida
+        if (nota.Servico.ItemsServico.Count > 0)
+            nfse.AddChild(GerarListaItem(nota));
+        else
+            nfse.AddChild(GerarItem(nota));
+
         if (nota.Situacao == SituacaoNFSeRps.Normal)
             nfse.AddChild(GerarFormaPagamento(nota));
 
@@ -133,15 +137,13 @@ internal class ProviderIPM100 : ProviderBase
             return null;
 
         var rps = new XElement("rps");
+
         rps.AddChild(AddTag(TipoCampo.Str, "#1", "nro_recibo_provisorio", 1, 12, Ocorrencia.Obrigatoria,
             nota.IdentificacaoRps.Numero));
-
         rps.AddChild(AddTag(TipoCampo.Str, "#1", "serie_recibo_provisorio", 1, 2, Ocorrencia.Obrigatoria,
             nota.IdentificacaoRps.Serie));
-
         rps.AddChild(AddTag(TipoCampo.Str, "#1", "data_emissao_recibo_provisorio", 1, 10, Ocorrencia.Obrigatoria,
             FormataData(nota.IdentificacaoRps.DataEmissao)));
-
         rps.AddChild(AddTag(TipoCampo.Str, "#1", "hora_emissao_recibo_provisorio", 1, 8, Ocorrencia.Obrigatoria,
             FormataHora(nota.IdentificacaoRps.DataEmissao)));
 
@@ -155,37 +157,27 @@ internal class ProviderIPM100 : ProviderBase
         {
             valor.AddChild(AddTag(TipoCampo.Str, "#1", "numero", 0, 9, Ocorrencia.Obrigatoria,
                 nota.IdentificacaoNFSe.Numero));
-
             valor.AddChild(AddTag(TipoCampo.Str, "#1", "situacao", 1, 1, Ocorrencia.Obrigatoria, "C"));
         }
 
         valor.AddChild(AddTag(TipoCampo.Str, "#1", "data_fato_gerador", 1, 10, Ocorrencia.NaoObrigatoria,
             FormataData(nota.Competencia)));
-
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_total", 1, 15, Ocorrencia.Obrigatoria,
-            nota.Servico.Valores.ValorServicos));
-
+            (nota.Servico.Valores.ValorServicos)));
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_desconto", 1, 15, Ocorrencia.NaoObrigatoria,
-            nota.Servico.Valores.DescontoIncondicionado));
-
+            (nota.Servico.Valores.DescontoIncondicionado)));
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_ir", 1, 15, Ocorrencia.Obrigatoria,
-            nota.Servico.Valores.ValorIr));
-
+            (nota.Servico.Valores.ValorIr)));
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_inss", 1, 15, Ocorrencia.NaoObrigatoria,
-            nota.Servico.Valores.ValorInss));
-
+            (nota.Servico.Valores.ValorInss)));
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_contribuicao_social", 1, 15, 0,
-            nota.Servico.Valores.ValorCsll));
-
+            (nota.Servico.Valores.ValorCsll)));
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_rps", 1, 15, Ocorrencia.NaoObrigatoria,
-            nota.Servico.Valores.OutrasRetencoes));
-
+            (nota.Servico.Valores.OutrasRetencoes)));
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_pis", 1, 15, Ocorrencia.NaoObrigatoria,
-            nota.Servico.Valores.ValorPis));
-
+            (nota.Servico.Valores.ValorPis)));
         valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_cofins", 1, 15, Ocorrencia.NaoObrigatoria,
-            nota.Servico.Valores.ValorCofins));
-
+            (nota.Servico.Valores.ValorCofins)));
         valor.AddChild(AddTag(TipoCampo.Str, "#1", "observacao", 1, 1000, Ocorrencia.NaoObrigatoria,
             nota.OutrasInformacoes));
 
@@ -277,36 +269,65 @@ internal class ProviderIPM100 : ProviderBase
         return tomador;
     }
 
-    private XElement GerarItens(NotaServico nota)
+    private XElement GerarItem(NotaServico nota)
+    {
+        var itens = new XElement("itens");
+
+        var lista = new XElement("lista");
+        lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_local_prestacao_servico", 1, 7, Ocorrencia.Obrigatoria,
+            nota.Servico.MunicipioIncidencia));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_item_lista_servico", 1, 5, Ocorrencia.Obrigatoria,
+            nota.Servico.ItemListaServico.OnlyNumbers()));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "descritivo", 1, 2000, Ocorrencia.Obrigatoria,
+            nota.Servico.Discriminacao));
+        lista.AddChild(AddTag(TipoCampo.De4, "", "aliquota_item_lista_servico", 1, 6, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.Aliquota)));
+
+        if (nota.Servico.Valores.ValorDeducoes <= 0)
+        {
+            lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                    nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "01" : "00")
+                : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
+        }
+        else
+        {
+            lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                    nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "04" : "03")
+                : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
+        }
+
+        lista.AddChild(AddTag(TipoCampo.De2, "", "valor_tributavel", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.ValorLiquidoNfse)));
+        lista.AddChild(AddTag(TipoCampo.De2, "", "valor_deducao", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.ValorDeducoes)));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.IssRetido != SituacaoTributaria.Normal ? nota.Servico.Valores.ValorIss : 0)));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "tributa_municipio_prestador", 1, 15, Ocorrencia.Obrigatoria,
+            nota.Servico.MunicipioIncidencia == nota.Prestador.Endereco.CodigoMunicipio ? "S" : "N"));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_codigo", 1, 15, Ocorrencia.Obrigatoria, ""));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_quantidade", 1, 15, Ocorrencia.Obrigatoria, ""));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_valor_unitario", 1, 15, Ocorrencia.Obrigatoria, ""));
+
+        itens.Add(lista);
+
+        return itens;
+    }
+
+    private XElement GerarListaItem(NotaServico nota)
     {
         var itens = new XElement("itens");
 
         foreach (var item in nota.Servico.ItemsServico)
         {
             var lista = new XElement("lista");
-            itens.AddChild(lista);
-
-            lista.AddChild(AddTag(TipoCampo.Str, "#", "tributa_municipio_prestador", 1, 1, Ocorrencia.Obrigatoria,
-                item.Tributavel == NFSeSimNao.Sim ? "S" : "N"));
-
-            lista.AddChild(AddTag(TipoCampo.Str, "#", "codigo_local_prestacao_servico", 1, 9,
-                Ocorrencia.Obrigatoria, item.MunicipioIncidencia));
-
-            lista.AddChild(AddTag(TipoCampo.Str, "#", "unidade_codigo", 1, 9, Ocorrencia.NaoObrigatoria, ""));
-            lista.AddChild(AddTag(TipoCampo.De2, "#", "unidade_quantidade", 1, 15, Ocorrencia.NaoObrigatoria,
-                item.Quantidade));
-
-            lista.AddChild(AddTag(TipoCampo.De10, "#", "unidade_valor_unitario", 1, 15, Ocorrencia.NaoObrigatoria,
-                item.ValorUnitario));
-
-            lista.AddChild(AddTag(TipoCampo.Str, "#", "codigo_item_lista_servico", 1, 9, Ocorrencia.Obrigatoria,
+            lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_local_prestacao_servico", 1, 7, Ocorrencia.Obrigatoria,
+                item.MunicipioIncidencia));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_item_lista_servico", 1, 5, Ocorrencia.Obrigatoria,
                 item.ItemListaServico.OnlyNumbers()));
-
-            lista.AddChild(AddTag(TipoCampo.Str, "#", "codigo_atividade", 1, 9, Ocorrencia.Obrigatoria,
-                item.Codigo.OnlyNumbers()));
-
-            lista.AddChild(AddTag(TipoCampo.Str, "#", "descritivo", 1, 1000, Ocorrencia.Obrigatoria,
-                item.Descricao.IsEmpty() ? nota.Servico.Discriminacao : item.Descricao));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "descritivo", 1, 2000, Ocorrencia.Obrigatoria,
+                item.Discriminacao));
 
             if (item.Aliquota == 0)
                 lista.AddChild(AddTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
@@ -317,33 +338,37 @@ internal class ProviderIPM100 : ProviderBase
                     Ocorrencia.Obrigatoria,
                     item.Aliquota));
 
-            if (nota.Servico.Valores.ValorDeducoes <= 0)
+            if (item.ValorDeducoes <= 0)
             {
-                lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                lista.AddChild(item.IssRetido == SituacaoTributaria.Normal
                     ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
                         nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "01" : "00")
                     : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
             }
             else
             {
-                lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                lista.AddChild(item.IssRetido == SituacaoTributaria.Normal
                     ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
                         nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "04" : "03")
                     : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
             }
 
-            lista.AddChild(AddTag(TipoCampo.De2, "#", "valor_tributavel", 1, 15, Ocorrencia.NaoObrigatoria,
+            lista.AddChild(AddTag(TipoCampo.De2, "", "valor_tributavel", 1, 15, Ocorrencia.Obrigatoria,
                 item.ValorServicos));
-
-            lista.AddChild(AddTag(TipoCampo.De2, "#", "valor_deducao", 1, 15, Ocorrencia.NaoObrigatoria,
+            lista.AddChild(AddTag(TipoCampo.De2, "", "valor_deducao", 1, 15, Ocorrencia.Obrigatoria,
                 item.ValorDeducoes));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
+                (item.IssRetido != SituacaoTributaria.Normal ? item.ValorIss : 0)));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "tributa_municipio_prestador", 1, 15, Ocorrencia.Obrigatoria,
+                item.CodMunicipioIncidencia == nota.Prestador.Endereco.CodigoMunicipio ? "S" : "N"));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_codigo", 1, 15, Ocorrencia.Obrigatoria, item.Codigo));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_quantidade", 1, 15, Ocorrencia.Obrigatoria,
+                item.Quantidade));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_valor_unitario", 1, 15, Ocorrencia.Obrigatoria,
+                item.ValorUnitario));
 
-            lista.AddChild(AddTag(TipoCampo.De2, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
-                nota.Servico.Valores.IssRetido != SituacaoTributaria.Normal ? item.ValorIss : 0));
+            itens.Add(lista);
         }
-
-        if (nota.Servico.ItemsServico.Count > 10)
-            WAlerta("#", "lista", "", MsgMaiorMaximo + "10");
 
         return itens;
     }
@@ -365,8 +390,8 @@ internal class ProviderIPM100 : ProviderBase
             _ => throw new OpenException("Forma de pagamento invalida")
         };
 
-        formaPagamento.AddChild(
-            AddTag(TipoCampo.Str, "#1", "tipo_pagamento", 1, 1, Ocorrencia.Obrigatoria, forma));
+        formaPagamento.AddChild(AddTag(TipoCampo.Str, "#1", "tipo_pagamento", 1, 1, Ocorrencia.Obrigatoria, forma));
+
         if (nota.Pagamento.Parcelas.Count <= 0) return formaPagamento;
 
         var parcelas = new XElement("parcelas");
@@ -377,11 +402,9 @@ internal class ProviderIPM100 : ProviderBase
             var parcela = new XElement("parcela");
             parcelas.AddChild(parcela);
 
-            parcela.AddChild(AddTag(TipoCampo.Str, "#", "numero", 1, 2, Ocorrencia.Obrigatoria,
-                item.Parcela));
+            parcela.AddChild(AddTag(TipoCampo.Str, "#", "numero", 1, 2, Ocorrencia.Obrigatoria, item.Parcela));
 
-            parcela.AddChild(AddTag(TipoCampo.De2, "#", "valor", 1, 15, Ocorrencia.Obrigatoria,
-                item.Valor));
+            parcela.AddChild(AddTag(TipoCampo.De2, "#", "valor", 1, 15, Ocorrencia.Obrigatoria, (item.Valor)));
 
             parcela.AddChild(AddTag(TipoCampo.Str, "#", "data_vencimento", 10, 10, Ocorrencia.Obrigatoria,
                 FormataData(item.DataVencimento)));
@@ -571,15 +594,13 @@ internal class ProviderIPM100 : ProviderBase
             }
 
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade");
-            if (chaveNfSe == null)
+            var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
+            var link = xmlRet.Root?.ElementAnyNs("link_nfse");
+            if (mensagens != null && link == null)
             {
-                var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
-                if (mensagens == null) return;
-                
                 foreach (var item in mensagens.Elements())
                 {
-                    var erro = item.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
+                    var erro = item.GetValue<string>();
                     retornoWebservice.Erros.Add(new EventoRetorno
                     {
                         Codigo = erro.Substring(0, 5),
@@ -590,23 +611,37 @@ internal class ProviderIPM100 : ProviderBase
 
                 return;
             }
-            
-            var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>();
-            var serieNfse = xmlRet.Root?.ElementAnyNs("serie_nfse").GetValue<string>();
-            
-            var data = xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>();
-            var hora = xmlRet.Root?.ElementAnyNs("hora_nfse").GetValue<string>();
-            
-            var dataNfSe = DateTime.ParseExact($"{data} {hora}", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade")
+                .GetValue<string>() ?? string.Empty;
+
+            retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
+
+            retornoWebservice.Data = DateTime.Parse(xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>() ?? "");
+
+            var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>() ?? string.Empty;
+            var dataNfSe = DateTime.Parse(xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>() + " " +
+                                          xmlRet.Root?.ElementAnyNs("hora_nfse")?.GetValue<string>());
+            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ??
+                            string.Empty;
+            var numeroRps = xmlRet.Root?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
+
+            if (string.IsNullOrEmpty(numeroRps))
+                numeroRps = xmlRet.Root?.ElementAnyNs("identificador")?.GetValue<string>();
 
             GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
 
-            var nota = notas.First();
-            nota.IdentificacaoNFSe.Numero = numeroNfSe ?? string.Empty;
-            nota.IdentificacaoNFSe.Serie = serieNfse ?? string.Empty;
-            nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
-            nota.IdentificacaoNFSe.Chave = chaveNfSe.GetValue<string>();
-            nota.LinkNFSe = xmlRet.Root?.ElementAnyNs("link_nfse")?.GetValue<string>() ?? string.Empty;
+            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+            if (nota == null)
+            {
+                notas.Load(retornoWebservice.XmlRetorno);
+            }
+            else
+            {
+                nota.IdentificacaoNFSe.Chave = chaveNfSe;
+                nota.IdentificacaoNFSe.Numero = numeroNfSe;
+                nota.XmlOriginal = retornoWebservice.XmlRetorno;
+            }
         }
         catch (Exception e)
         {
@@ -649,7 +684,7 @@ internal class ProviderIPM100 : ProviderBase
 
             return;
         }
-        
+
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
 
         var numeroNfSe = xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("numero_nfse")?.GetValue<string>() ??

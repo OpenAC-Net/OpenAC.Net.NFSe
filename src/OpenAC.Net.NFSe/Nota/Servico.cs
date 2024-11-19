@@ -80,7 +80,12 @@ public sealed class Servico : GenericClone<Servico>, INotifyPropertyChanged
 
     public string Discriminacao { get; set; }
 
+    public int CodMunicipioIncidencia { get; set; }
+    
     public string MunicipioIncidencia { get; set; }
+    
+    
+    public SituacaoTributaria IssRetido { get; set; }
 
     public NFSeSimNao Tributavel { get; set; }
 
