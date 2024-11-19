@@ -582,26 +582,16 @@ internal class ProviderIPM100 : ProviderBase
     {
         try
         {
-            if (!retornoWebservice.XmlRetorno.IsValidXml())
-            {
-                retornoWebservice.Erros.Add(new EventoRetorno
-                {
-                    Codigo = "999",
-                    Correcao = string.Empty,
-                    Descricao = "Erro no xml de retorno inválido."
-                });
-
-                return;
-            }
-
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
-            var link = xmlRet.Root?.ElementAnyNs("link_nfse");
-            if (mensagens != null && link == null)
+            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade");
+            if (chaveNfSe == null)
             {
+                var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
+                if (mensagens == null) return;
+
                 foreach (var item in mensagens.Elements())
                 {
-                    var erro = item.GetValue<string>();
+                    var erro = item.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
                     retornoWebservice.Erros.Add(new EventoRetorno
                     {
                         Codigo = erro.Substring(0, 5),
@@ -613,36 +603,24 @@ internal class ProviderIPM100 : ProviderBase
                 return;
             }
 
-            retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade")
-                .GetValue<string>() ?? string.Empty;
+            var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>();
+            var serieNfse = xmlRet.Root?.ElementAnyNs("serie_nfse").GetValue<string>();
 
-            retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
+            var data = xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>();
+            var hora = xmlRet.Root?.ElementAnyNs("hora_nfse").GetValue<string>();
 
-            retornoWebservice.Data = DateTime.Parse(xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>() ?? "");
-
-            var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>() ?? string.Empty;
-            var dataNfSe = DateTime.Parse(xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>() + " " +
-                                          xmlRet.Root?.ElementAnyNs("hora_nfse")?.GetValue<string>());
-            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ??
-                            string.Empty;
-            var numeroRps = xmlRet.Root?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
-
-            if (string.IsNullOrEmpty(numeroRps))
-                numeroRps = xmlRet.Root?.ElementAnyNs("identificador")?.GetValue<string>();
+            var dataNfSe = DateTime.ParseExact($"{data} {hora}", "dd/MM/yyyy HH:mm:ss", null);
 
             GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
 
-            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
-            if (nota == null)
-            {
-                notas.Load(retornoWebservice.XmlRetorno);
-            }
-            else
-            {
-                nota.IdentificacaoNFSe.Chave = chaveNfSe;
-                nota.IdentificacaoNFSe.Numero = numeroNfSe;
-                nota.XmlOriginal = retornoWebservice.XmlRetorno;
-            }
+            var nota = notas.First();
+            nota.IdentificacaoNFSe.Numero = numeroNfSe ?? string.Empty;
+            nota.IdentificacaoNFSe.Serie = serieNfse ?? string.Empty;
+            nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
+            nota.IdentificacaoNFSe.Chave = chaveNfSe.GetValue<string>();
+            nota.LinkNFSe = xmlRet.Root?.ElementAnyNs("link_nfse")?.GetValue<string>() ?? string.Empty;
+            nota.XmlOriginal = retornoWebservice.XmlEnvio;
+            retornoWebservice.Sucesso = true;
         }
         catch (Exception e)
         {
@@ -687,43 +665,34 @@ internal class ProviderIPM100 : ProviderBase
         }
 
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade");
-        if (chaveNfSe == null)
+
+        var numeroNfSe = xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("numero_nfse")?.GetValue<string>() ??
+                         string.Empty;
+        var dataNfSe = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")?.GetValue<string>() +
+                                      " " + xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("hora_nfse")
+                                          ?.GetValue<string>());
+        var chaveNfSe =
+            xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ??
+            string.Empty;
+        var numeroRps = xmlRet.Root?.ElementAnyNs("rps")?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
+
+        if (string.IsNullOrEmpty(numeroRps))
+            numeroRps = xmlRet.Root?.ElementAnyNs("identificador")?.GetValue<string>();
+
+        var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+        if (nota == null)
         {
-            var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
-            if (mensagens == null) return;
-
-            foreach (var item in mensagens.Elements())
-            {
-                var erro = item.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-                retornoWebservice.Erros.Add(new EventoRetorno
-                {
-                    Codigo = erro.Substring(0, 5),
-                    Correcao = string.Empty,
-                    Descricao = erro
-                });
-            }
-
-            return;
+            notas.Load(retornoWebservice.XmlRetorno);
+        }
+        else
+        {
+            nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
+            nota.IdentificacaoNFSe.Numero = numeroNfSe;
+            nota.IdentificacaoNFSe.Chave = chaveNfSe;
+            nota.XmlOriginal = retornoWebservice.XmlRetorno;
         }
 
-        var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>();
-        var serieNfse = xmlRet.Root?.ElementAnyNs("serie_nfse").GetValue<string>();
-
-        var data = xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>();
-        var hora = xmlRet.Root?.ElementAnyNs("hora_nfse").GetValue<string>();
-
-        var dataNfSe = DateTime.ParseExact($"{data} {hora}", "dd/MM/yyyy HH:mm:ss", null);
-
-        GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
-
-        var nota = notas.First();
-        nota.IdentificacaoNFSe.Numero = numeroNfSe ?? string.Empty;
-        nota.IdentificacaoNFSe.Serie = serieNfse ?? string.Empty;
-        nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
-        nota.IdentificacaoNFSe.Chave = chaveNfSe.GetValue<string>();
-        nota.LinkNFSe = xmlRet.Root?.ElementAnyNs("link_nfse")?.GetValue<string>() ?? string.Empty;
-        nota.XmlOriginal = retornoWebservice.XmlEnvio;
+        retornoWebservice.Sucesso = true;
     }
 
     protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
