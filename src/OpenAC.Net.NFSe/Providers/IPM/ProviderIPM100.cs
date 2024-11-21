@@ -435,15 +435,11 @@ internal class ProviderIPM100 : ProviderBase
         var nota = new NotaServico(Configuracoes)
         {
             IdentificacaoNFSe =
-            {
-                // Nota Fiscal
-                Numero = notaXml.ElementAnyNs("nf").ElementAnyNs("numero_nfse")?.GetValue<string>() ?? string.Empty,
-                Chave = notaXml.ElementAnyNs("nf").ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ??
-                        string.Empty,
-                DataEmissao = DateTime.Parse(notaXml.ElementAnyNs("nf").ElementAnyNs("data_nfse")?.GetValue<string>() +
-                                             " " + notaXml.ElementAnyNs("nf").ElementAnyNs("hora_nfse")
-                                                 ?.GetValue<string>())
-            }
+          {
+              // Nota Fiscal
+              Numero = notaXml.ElementAnyNs("rps").ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>() ?? string.Empty,
+              DataEmissao = DateTime.Parse(notaXml.ElementAnyNs("rps").ElementAnyNs("data_emissao_recibo_provisorio")?.GetValue<string>() + " " + notaXml.ElementAnyNs("nf").ElementAnyNs("hora_emissao_recibo_provisorio") ?.GetValue<string>())
+          }
         };
 
         if (notaXml.ElementAnyNs("rps") != null)
@@ -583,7 +579,8 @@ internal class ProviderIPM100 : ProviderBase
         try
         {
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade");
+            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade").GetValue<string>();
+            
             if (chaveNfSe == null)
             {
                 var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
@@ -602,7 +599,7 @@ internal class ProviderIPM100 : ProviderBase
 
                 return;
             }
-
+            retornoWebservice.Protocolo = chaveNfSe;
             var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>();
             var serieNfse = xmlRet.Root?.ElementAnyNs("serie_nfse").GetValue<string>();
 
@@ -617,7 +614,8 @@ internal class ProviderIPM100 : ProviderBase
             nota.IdentificacaoNFSe.Numero = numeroNfSe ?? string.Empty;
             nota.IdentificacaoNFSe.Serie = serieNfse ?? string.Empty;
             nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
-            nota.IdentificacaoNFSe.Chave = chaveNfSe.GetValue<string>();
+            nota.IdentificacaoNFSe.Chave = chaveNfSe;
+           
             nota.LinkNFSe = xmlRet.Root?.ElementAnyNs("link_nfse")?.GetValue<string>() ?? string.Empty;
             nota.XmlOriginal = retornoWebservice.XmlEnvio;
             retornoWebservice.Sucesso = true;
