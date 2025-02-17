@@ -55,6 +55,19 @@ public static class ParametrosProvider
                         VersoesAfetadas = [VersaoNFSe.ve100]
                     }
                 ]
+            },
+            {
+                NFSeProvider.SmarAPD,
+                [
+                    new ParametroProvider
+                    {
+                        Nome = "SubVersao",
+                        Descricao = "Indica o tipo de implementação com relação às TAGs do XML do provedor SmarAPD",
+                        Tipo = TipoParametro.Int,
+                        Obrigatoria = false,
+                        VersoesAfetadas = [VersaoNFSe.ve204]
+                    }
+                ]
             }
         };
     }

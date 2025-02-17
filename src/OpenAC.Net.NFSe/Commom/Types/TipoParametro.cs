@@ -3,5 +3,6 @@
 public enum TipoParametro
 {
     Text,
-    Boolean
+    Boolean,
+    Int
 }

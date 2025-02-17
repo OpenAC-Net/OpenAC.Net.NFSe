@@ -46,11 +46,7 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
 {
     #region Fields
 
-    /// <summary>
-    /// Inicializado com 1 para manter o mesmo funcionamento do código anterior
-    /// Também para ter uma lógica de configuração semelhante ao projeto ACBr
-    /// </summary>
-    private int _subVersao = 1;
+    private int _subVersao;
 
     #endregion
 
@@ -58,8 +54,7 @@ internal sealed class SmarAPD204ServiceClient : NFSeSoapServiceClient, IServiceC
 
     public SmarAPD204ServiceClient(ProviderSmarAPD204 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
-        if (provider.Municipio.Parametros.TryGetValue("SubVersao", out string? value))
-            int.TryParse(value, out this._subVersao);
+        this._subVersao = provider.SubVersao;
     }
 
     #endregion Constructors
