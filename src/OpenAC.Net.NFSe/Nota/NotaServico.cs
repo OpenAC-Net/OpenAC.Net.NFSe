@@ -137,12 +137,12 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public RegimeEspecialTributacao RegimeEspecialTributacao { get; set; }
 
     public NFSeSimNao OptanteSimplesNacional { get; set; }
-    
+
     public NFSeSimNao OptanteMEISimei { get; set; }
 
     public DateTime DataOptanteSimplesNacional { get; set; }
 
-    public NFSeSimNao IncentivadorCultural { get; set; }
+    public NFSeSimNao? IncentivadorCultural { get; set; }
 
     public NFSeSimNao Producao { get; set; }
 
@@ -151,7 +151,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public TipoLocalServico LocalServico { get; set; }
 
     public int NumeroLote { get; set; }
-    
+
     public string Protocolo { get; set; }
 
     public DateTime Competencia { get; set; }
@@ -159,7 +159,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public string OutrasInformacoes { get; set; }
 
     public string DiscriminacaoImpostos { get; set; }
-    
+
     public string InformacoesComplementares { get; set; }
 
     public string DescricaoCodigoTributacaoMunicipio { get; set; }
@@ -177,7 +177,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public DFeSignature Signature { get; set; }
 
     public string XmlOriginal { get; set; }
-    
+
     public string LinkNFSe { get; set; }
 
     public EventoRps? Evento { get; set; }
