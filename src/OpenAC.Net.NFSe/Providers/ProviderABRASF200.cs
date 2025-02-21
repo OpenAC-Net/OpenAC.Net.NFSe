@@ -253,11 +253,6 @@ public abstract class ProviderABRASF200 : ProviderBase
             case 2:
                 nota.IncentivadorCultural = NFSeSimNao.Nao;
                 break;
-
-            // como o campo IncentivadorCultural não é nullable, caso não esteja presente no XML, por padrão ele ficaria como NÃO
-            default:
-                nota.IncentivadorCultural = NFSeSimNao.Nao;
-                break;
         }
     }
 
