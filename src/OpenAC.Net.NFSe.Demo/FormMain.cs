@@ -548,6 +548,10 @@ public partial class FormMain : Form, IOpenLog
                 nfSe.IdentificacaoRps.Serie = "NF";
                 nfSe.IdentificacaoRps.SeriePrestacao = "99";
                 break;
+            
+            case NFSeProvider.GISS:
+                nfSe.IdentificacaoRps.Serie = "NFT";
+                break;
 
             default:
                 nfSe.IdentificacaoRps.Serie = "1";
@@ -574,7 +578,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.RegimeEspecialTributacao = RegimeEspecialTributacao.SimplesNacional;
         nfSe.IncentivadorCultural = NFSeSimNao.Nao;
 
-        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba) ? "0107" : "01.07";
+        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba) ? "0107" : "17.05";
         if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
         // Setar o cnae de acordo com o schema aceito pelo provedor.
@@ -596,7 +600,7 @@ public partial class FormMain : Form, IOpenLog
             nfSe.Servico.MunicipioIncidencia = nfSe.Servico.CodigoMunicipio;
         }
 
-        nfSe.Servico.Valores.ValorServicos = 100;
+        nfSe.Servico.Valores.ValorServicos = 1;
         nfSe.Servico.Valores.ValorDeducoes = 0;
         nfSe.Servico.Valores.ValorPis = 0;
         nfSe.Servico.Valores.ValorCofins = 0;
@@ -604,11 +608,11 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.Valores.ValorIr = 0;
         nfSe.Servico.Valores.ValorCsll = 0;
         nfSe.Servico.Valores.IssRetido = SituacaoTributaria.Normal;
-        nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SiapNet ? 2 : 0;
+        nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SiapNet ? 2 : 0.20m;
         nfSe.Servico.Valores.ValorOutrasRetencoes = 0;
-        nfSe.Servico.Valores.BaseCalculo = 100;
+        nfSe.Servico.Valores.BaseCalculo = 1;
         nfSe.Servico.Valores.Aliquota = 2;
-        nfSe.Servico.Valores.ValorLiquidoNfse = 100;
+        nfSe.Servico.Valores.ValorLiquidoNfse = 1;
         nfSe.Servico.Valores.ValorIssRetido = 0;
         nfSe.Servico.Valores.DescontoCondicionado = 0;
         nfSe.Servico.Valores.DescontoIncondicionado = 0;
@@ -619,11 +623,11 @@ public partial class FormMain : Form, IOpenLog
             var servico = nfSe.Servico.ItensServico.AddNew();
             servico.Descricao = "Teste";
             servico.Quantidade = 1M;
-            servico.ValorTotal = 100;
+            servico.ValorTotal = 1;
             servico.Tributavel = NFSeSimNao.Sim;
         }
 
-        nfSe.Tomador.CpfCnpj = "44854962283";
+        nfSe.Tomador.CpfCnpj = "11656919000154";
         nfSe.Tomador.InscricaoMunicipal = "";
         nfSe.Tomador.RazaoSocial = "Nome";
 
