@@ -1,5 +1,6 @@
 ﻿using OpenAC.Net.DFe.Core;
 using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
@@ -32,15 +33,50 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             var message = new StringBuilder();
             message.Append("<nfse:RecepcionarLoteRpsRequest>");
             message.Append("<nfseCabecMsg>");
-            message.AppendCData("<cabecalho versao=\"2.00\"><versaoDados>2.00</versaoDados></cabecalho>");
+            message.Append("<ns4:cabecalho versao=\"2.04\" xmlns:ns2=\"http://www.giss.com.br/tipos-v2_04.xsd\" xmlns:ns4=\"http://www.giss.com.br/enviar-lote-rps-envio-v2_04.xsd\" xmlns:nss03=\"http://www.w3.org/2000/09/xmldsig#\"><ns4:versaoDados>2.04</ns4:versaoDados></ns4:cabecalho>");
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
-            message.AppendCData(msg);
+
+            msg = msg.Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
+            XDocument doc = XDocument.Parse(msg);
+            XNamespace nsRoot = "http://www.giss.com.br/enviar-lote-rps-envio-v2_04.xsd";
+            XNamespace nsChild = "http://www.giss.com.br/tipos-v2_04.xsd";
+            
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+            
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "nss03", "http://www.w3.org/2000/09/xmldsig#");
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "ns4", nsRoot);
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "ns2", nsChild);
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            
+            foreach (var element in doc.Descendants().ToList())
+            {
+                if (element.Name.LocalName == "Signature")
+                {
+                    break;
+                }
+                element.Name = nsChild + element.Name.LocalName;
+            }
+            
+            var loteRps = doc.Descendants().First(x=>x.Name.LocalName == "LoteRps");
+            loteRps.Name = nsRoot + loteRps.Name.LocalName;
+            loteRps.RemoveAttributes();
+            loteRps.SetAttributeValue("versao", "1.00");
+
+            var infDeclaracaoPrestacaoServico =
+                doc.Descendants().First(x => x.Name.LocalName == "InfDeclaracaoPrestacaoServico");
+            infDeclaracaoPrestacaoServico.RemoveAttributes();
+            
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+
+            var xml = /*"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +*/ doc.ToString();
+
+            message.Append(xml);
             message.Append("</nfseDadosMsg>");
 
             message.Append("</nfse:RecepcionarLoteRpsRequest>");
 
-            return Execute("RecepcionarLoteRpsRequest", message.ToString(), "EnviarLoteRpsResposta");
+            return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", message.ToString(), "EnviarLoteRpsResposta");
         }
 
         public string EnviarSincrono(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
@@ -103,16 +139,15 @@ namespace OpenAC.Net.NFSe.Providers.GISS
 
         protected override string TratarRetorno(XElement xElement, string[] responseTag)
         {
-            var reader = xElement.ElementAnyNs(responseTag[0]).CreateReader();
+            var xmlValue = XDocument.Parse(xElement.Value);
+            var reader = xmlValue.ElementAnyNs(responseTag[0]).CreateReader();
             reader.MoveToContent();
             var xml = reader.ReadInnerXml().Replace("ns2:", string.Empty);
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);
 
-            XmlDocument xmlMensagem = new XmlDocument();
-            xmlMensagem.LoadXml(xmlDoc.LastChild.InnerText);
-            var mensagem = xmlMensagem.GetElementsByTagName("Mensagem");
+            var mensagem = xmlDoc.GetElementsByTagName("Mensagem");
             if (mensagem.Count == 0)
                 return xElement.ToString();
             else

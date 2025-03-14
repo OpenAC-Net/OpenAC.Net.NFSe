@@ -2609,6 +2609,7 @@
 			</Item>
 			<Item>
 				<TipoUrl>EnviarSincrono</TipoUrl>
+				<Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 			</Item>
 			<Item>
 				<TipoUrl>CancelarNFSe</TipoUrl>

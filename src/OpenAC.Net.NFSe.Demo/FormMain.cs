@@ -578,7 +578,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.RegimeEspecialTributacao = RegimeEspecialTributacao.SimplesNacional;
         nfSe.IncentivadorCultural = NFSeSimNao.Nao;
 
-        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba) ? "0107" : "17.05";
+        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba, NFSeProvider.GISS) ? "1705" : "01.07";
         if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
         // Setar o cnae de acordo com o schema aceito pelo provedor.
@@ -587,11 +587,12 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.CodigoCnae = cnae;
 
         var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SiapNet, NFSeProvider.ABase) ? "5211701" :
+            municipio.Provedor.IsIn(NFSeProvider.GISS) ? "88888888" :
             municipio.Provedor.IsIn(NFSeProvider.Sigep) ? "1" : "01.07.00 / 00010700";
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
-        nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA / VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
+        nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICO";
         nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.ISSDSF ? municipio.CodigoSiafi : municipio.Codigo;
         nfSe.Servico.Municipio = municipio.Nome;
         if (municipio.Provedor.IsIn(NFSeProvider.SiapNet))
@@ -611,7 +612,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SiapNet ? 2 : 0.20m;
         nfSe.Servico.Valores.ValorOutrasRetencoes = 0;
         nfSe.Servico.Valores.BaseCalculo = 1;
-        nfSe.Servico.Valores.Aliquota = 2;
+        nfSe.Servico.Valores.Aliquota =  municipio.Provedor == NFSeProvider.GISS ? 0.0200m : 2;
         nfSe.Servico.Valores.ValorLiquidoNfse = 1;
         nfSe.Servico.Valores.ValorIssRetido = 0;
         nfSe.Servico.Valores.DescontoCondicionado = 0;
@@ -627,8 +628,13 @@ public partial class FormMain : Form, IOpenLog
             servico.Tributavel = NFSeSimNao.Sim;
         }
 
+        if (municipio.Provedor == NFSeProvider.GISS)
+        {
+            nfSe.Servico.MunicipioIncidencia = nfSe.Servico.CodigoMunicipio;
+        }
+
         nfSe.Tomador.CpfCnpj = "11656919000154";
-        nfSe.Tomador.InscricaoMunicipal = "";
+        nfSe.Tomador.InscricaoMunicipal = "1233653";
         nfSe.Tomador.RazaoSocial = "Nome";
 
         nfSe.Tomador.Endereco.TipoLogradouro = "";

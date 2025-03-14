@@ -15,7 +15,7 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers.GISS
 {
-    internal class ProviderGISS : ProviderABRASF203
+    internal class ProviderGISS : ProviderABRASF204
     {
         #region Constructors
 
@@ -31,74 +31,39 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         #region Methods
 
         #region Protected Methods
-
+        
         #region RPS
         
-        protected override XElement WriteTomadorRps(NotaServico nota)
+        
+        protected override XElement WriteValoresRps(NotaServico nota)
         {
-            if (nota.Tomador.CpfCnpj.IsEmpty()) return null;
+            var valores = new XElement("Valores");
 
-            var tomador = new XElement("TomadorServico");
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.OutrasRetencoes));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValTotTributos));
 
-            var idTomador = new XElement("IdentificacaoTomador");
-            tomador.Add(idTomador);
+            var valorISS = nota.Servico.Valores.ValorIss;
 
-            var cpfCnpjTomador = new XElement("CpfCnpj");
-            idTomador.Add(cpfCnpjTomador);
+            if (valorISS <= 0 && nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao && nota.Servico.Valores.ValorIssRetido > 0)
+                valorISS = nota.Servico.Valores.ValorIssRetido;
 
-            cpfCnpjTomador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Tomador.CpfCnpj));
+            if (nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
+                valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.Obrigatoria, valorISS));
 
-            idTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 150, Ocorrencia.NaoObrigatoria,
-                nota.Tomador.InscricaoMunicipal));
+            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional || nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
+                valores.AddChild(AdicionarTag(TipoCampo.De4, "", "Aliquota", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
 
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "NifTomador", 1, 150, Ocorrencia.NaoObrigatoria,
-                nota.Tomador.DocTomadorEstrangeiro));
-            tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 150, Ocorrencia.Obrigatoria,
-                nota.Tomador.RazaoSocial));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoIncondicionado));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoCondicionado));
 
-            if (nota.Tomador.EnderecoExterior.CodigoPais > 0)
-            {
-                var enderecoExt = new XElement("EnderecoExterior");
-                tomador.Add(enderecoExt);
-
-                enderecoExt.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 8, 8, Ocorrencia.Obrigatoria,
-                    nota.Tomador.EnderecoExterior.CodigoPais));
-                enderecoExt.AddChild(AdicionarTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 8, 8,
-                    Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
-            }
-            else if (nota.Tomador.Endereco.CodigoMunicipio > 0)
-            {
-                var endereco = new XElement("Endereco");
-                tomador.Add(endereco);
-
-                endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Endereco", 1, 125, Ocorrencia.Obrigatoria,
-                    nota.Tomador.Endereco.Logradouro));
-                endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.Obrigatoria,
-                    nota.Tomador.Endereco.Numero));
-                endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Complemento", 1, 60, Ocorrencia.NaoObrigatoria,
-                    nota.Tomador.Endereco.Complemento));
-                endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.Obrigatoria,
-                    nota.Tomador.Endereco.Bairro));
-                endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.Obrigatoria,
-                    nota.Tomador.Endereco.CodigoMunicipio));
-                endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.Obrigatoria,
-                    nota.Tomador.Endereco.Uf));
-                endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.Obrigatoria,
-                    nota.Tomador.Endereco.Cep));
-            }
-
-            if (nota.Tomador.DadosContato.Email.IsEmpty() && nota.Tomador.DadosContato.Telefone.IsEmpty())
-                return tomador;
-
-            var contato = new XElement("Contato");
-            tomador.Add(contato);
-
-            contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Telefone", 8, 8, Ocorrencia.NaoObrigatoria,
-                nota.Tomador.DadosContato.Telefone));
-            contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Email", 8, 8, Ocorrencia.NaoObrigatoria,
-                nota.Tomador.DadosContato.Email));
-
-            return tomador;
+            return valores;
         }
 
         #endregion RPS
@@ -283,6 +248,7 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         protected override IServiceClient GetClient(TipoUrl tipo) => new GISSServiceClient(this, tipo, Certificado);
 
         protected override string GetSchema(TipoUrl tipo) => "nfse_v2-04.xsd";
+        protected override string GetNamespace() => "";
         
         #endregion Protected Methods
 
