@@ -33,7 +33,7 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             var message = new StringBuilder();
             message.Append("<nfse:RecepcionarLoteRpsRequest>");
             message.Append("<nfseCabecMsg>");
-            message.Append("<ns4:cabecalho versao=\"2.04\" xmlns:ns2=\"http://www.giss.com.br/tipos-v2_04.xsd\" xmlns:ns4=\"http://www.giss.com.br/enviar-lote-rps-envio-v2_04.xsd\" xmlns:nss03=\"http://www.w3.org/2000/09/xmldsig#\"><ns4:versaoDados>2.04</ns4:versaoDados></ns4:cabecalho>");
+            message.AppendCData("<ns4:cabecalho versao=\"2.00\" xmlns:ns2=\"http://www.giss.com.br/tipos-v2_04.xsd\" xmlns:ns4=\"http://www.giss.com.br/cabecalho-v2_04.xsd\" xmlns:nss03=\"http://www.w3.org/2000/09/xmldsig#\"><ns4:versaoDados>2.00</ns4:versaoDados></ns4:cabecalho>");
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
 
@@ -60,18 +60,13 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             
             var loteRps = doc.Descendants().First(x=>x.Name.LocalName == "LoteRps");
             loteRps.Name = nsRoot + loteRps.Name.LocalName;
-            loteRps.RemoveAttributes();
             loteRps.SetAttributeValue("versao", "1.00");
-
-            var infDeclaracaoPrestacaoServico =
-                doc.Descendants().First(x => x.Name.LocalName == "InfDeclaracaoPrestacaoServico");
-            infDeclaracaoPrestacaoServico.RemoveAttributes();
             
             doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
 
-            var xml = /*"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +*/ doc.ToString();
+            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc;
 
-            message.Append(xml);
+            message.AppendCData(xml);
             message.Append("</nfseDadosMsg>");
 
             message.Append("</nfse:RecepcionarLoteRpsRequest>");
@@ -132,11 +127,6 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
         }
 
-        public bool ValidarUsernamePassword()
-        {
-            return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
-        }
-
         protected override string TratarRetorno(XElement xElement, string[] responseTag)
         {
             var xmlValue = XDocument.Parse(xElement.Value);
@@ -151,7 +141,13 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             if (mensagem.Count == 0)
                 return xElement.ToString();
             else
-                return mensagem[0].InnerText;
+            {
+                var correcao = xmlDoc.GetElementsByTagName("Correcao");
+                var correcaoText = "";
+                if (correcao.Count > 0)
+                    correcaoText = " - Correção: " + correcao[0].InnerText;
+                return mensagem[0].InnerText + correcaoText;
+            }
         }
 
         #endregion Methods
