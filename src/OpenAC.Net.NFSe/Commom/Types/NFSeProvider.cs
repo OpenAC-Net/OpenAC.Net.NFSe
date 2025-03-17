@@ -40,7 +40,7 @@ public enum NFSeProvider : sbyte
     Abaco = 0,
 
     ABase = 39,
-    
+
     Agili = 49,
 
     AssessorPublico = 33,
@@ -138,5 +138,6 @@ public enum NFSeProvider : sbyte
     [Description("ISS Integra - Nobe Sistemas")]
     ISSIntegra = 47,
 
-    ISSRecife = 48
+    ISSRecife = 48,
+    Fintel = 51,
 }

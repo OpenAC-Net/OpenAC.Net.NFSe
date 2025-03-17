@@ -103,6 +103,7 @@ public static class ProviderManager
             {NFSeProvider.Sigep, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigep) }, {VersaoNFSe.ve202, typeof(ProviderSigep) }}},
             {NFSeProvider.ISSIntegra, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSIntegra)}}},
             {NFSeProvider.ISSRecife, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSRecife)}}},
+            {NFSeProvider.Fintel, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderFintel204)}}},
         };
 
         Load();
@@ -136,7 +137,7 @@ public static class ProviderManager
     /// <param name="path">Caminho para salvar o arquivo</param>
     public static void Save(string path = "Municipios.nfse")
     {
-        if(path == null) throw new ArgumentNullException(nameof(path));
+        if (path == null) throw new ArgumentNullException(nameof(path));
 
         if (File.Exists(path)) File.Delete(path);
 
@@ -186,7 +187,7 @@ public static class ProviderManager
             buffer = File.ReadAllBytes(path);
         }
 
-        if(buffer == null) throw new ArgumentException("Arquivo de cidades não encontrado");
+        if (buffer == null) throw new ArgumentException("Arquivo de cidades não encontrado");
         using var stream = new MemoryStream(buffer);
         Load(stream, clean);
     }
@@ -198,7 +199,7 @@ public static class ProviderManager
     /// <param name="clean">if set to <c>true</c> [clean].</param>
     public static void Load(Stream stream, bool clean = true)
     {
-        if(stream == null) throw new ArgumentException("Arquivo de cidades não encontrado");
+        if (stream == null) throw new ArgumentException("Arquivo de cidades não encontrado");
 
         var municipiosNFSe = MunicipiosNFSe.Load(stream);
         if (clean) Municipios.Clear();
@@ -213,12 +214,12 @@ public static class ProviderManager
     public static ProviderBase GetProvider(ConfigNFSe config)
     {
         var municipio = Municipios.SingleOrDefault(x => x.Codigo == config.WebServices.CodigoMunicipio);
-        if(municipio == null) throw new OpenException("Provedor para esta cidade não implementado ou não especificado!");
+        if (municipio == null) throw new OpenException("Provedor para esta cidade não implementado ou não especificado!");
 
         // ReSharper disable once PossibleNullReferenceException
         var providerType = Providers[municipio.Provedor][municipio.Versao];
-        if(providerType == null) throw new OpenException("Provedor não encontrado!");
-        if(!CheckBaseType(providerType)) throw new OpenException("Classe base do provedor incorreta!");
+        if (providerType == null) throw new OpenException("Provedor não encontrado!");
+        if (!CheckBaseType(providerType)) throw new OpenException("Classe base do provedor incorreta!");
 
         // ReSharper disable once AssignNullToNotNullAttribute
         return (ProviderBase)Activator.CreateInstance(providerType, config, municipio);

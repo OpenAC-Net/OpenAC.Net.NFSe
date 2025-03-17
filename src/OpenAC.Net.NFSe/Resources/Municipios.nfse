@@ -10045,90 +10045,98 @@
       <Codigo>3534708</Codigo>
       <Nome>Ourinhos</Nome>
       <UF>SP</UF>
-      <Provedor>SmarAPD</Provedor>
+      <Provedor>Fintel</Provedor>
       <Versao>2.04</Versao>
-      <Parametros>
-        <Parametro Id="SubVersao">0</Parametro>
-      </Parametros>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
         </Item>
       </UrlHomologacao>
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
-          <Url>https://e-gov.ourinhos.sp.gov.br:8443/tb/services/nfseSOAP?wsdl</Url>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
         </Item>
       </UrlProducao>
     </Municipio>
