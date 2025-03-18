@@ -23,12 +23,16 @@ internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceCl
 
     public string CancelarNFSe(string? cabec, string msg)
     {
-        var sb = new StringBuilder();
-        sb.Append("<nfse:CancelarNfse>");
-        sb.Append($"<nfseCabecMsg>{cabec}</nfseCabecMsg>");
-        sb.Append($"<nfseDadosMsg>{msg}</nfseDadosMsg>");
-        sb.Append("</nfse:CancelarNfse>");
-        return this.Execute("http://nfse.abrasf.org.br/CancelarNfse", sb.ToString(), ["CancelarNfseResult", "CancelarNfseResposta"]);
+        var message = new StringBuilder();
+        message.Append("<nfse:CancelarNfse>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(EmpacotaXml(cabec));
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(EmpacotaXml(msg));
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:CancelarNfse>");
+        return this.Execute("http://nfse.abrasf.org.br/CancelarNfse", message.ToString(), ["CancelarNfseResponse"]);
     }
 
     public string CancelarNFSeLote(string? cabec, string msg)
@@ -38,22 +42,36 @@ internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceCl
 
     public string ConsultarLoteRps(string? cabec, string msg)
     {
-        var sb = new StringBuilder();
-        sb.Append("<nfse:ConsultarLoteRps>");
-        sb.Append($"<nfseCabecMsg>{cabec}</nfseCabecMsg>");
-        sb.Append($"<nfseDadosMsg>{msg}</nfseDadosMsg>");
-        sb.Append("</nfse:ConsultarLoteRps>");
-        return this.Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", sb.ToString(), ["ConsultarLoteRpsResult", "ConsultarLoteRpsResposta"]);
+        // metodo nao testado
+        var message = new StringBuilder();
+        message.Append("<nfse:ConsultarLoteRps>");
+
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(EmpacotaXml(cabec));
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(EmpacotaXml(msg));
+        message.Append("</nfseDadosMsg>");
+
+        message.Append("</nfse:ConsultarLoteRps>");
+        return this.Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", message.ToString(), ["ConsultarLoteRpsResponse"]);
     }
 
     public string ConsultarNFSe(string? cabec, string msg)
     {
-        var sb = new StringBuilder();
-        sb.Append("<nfse:ConsultarNfseFaixa>");
-        sb.Append($"<nfse:nfseCabecMsg>{cabec}</nfse:nfseCabecMsg>");
-        sb.Append($"<nfse:nfseDadosMsg>{msg}</nfse:nfseDadosMsg>");
-        sb.Append("</nfse:ConsultarNfseFaixa>");
-        return this.Execute("http://nfse.abrasf.org.br/ConsultarNfseFaixa", sb.ToString(), ["ConsultarNfseFaixaResult", "ConsultarNfseFaixaResposta"]);
+        // metodo nao testado
+        var message = new StringBuilder();
+        message.Append("<nfse:ConsultarNfseFaixa>");
+
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(EmpacotaXml(cabec));
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(EmpacotaXml(msg));
+        message.Append("</nfseDadosMsg>");
+
+        message.Append("</nfse:ConsultarNfseFaixa>");
+        return this.Execute("http://nfse.abrasf.org.br/ConsultarNfseFaixa", message.ToString(), ["ConsultarNfseFaixaResponse"]);
     }
 
     private string EmpacotaXml(string conteudo)
@@ -74,7 +92,7 @@ internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</nfseDadosMsg>");
 
         message.Append("</nfse:ConsultarNfsePorRps>");
-        return this.Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(), ["ConsultarNfsePorRpsResult", "ConsultarNfseRpsResposta"]);
+        return this.Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(), ["ConsultarNfsePorRpsResponse"]);
     }
 
     public string ConsultarSequencialRps(string? cabec, string msg)
@@ -89,12 +107,19 @@ internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceCl
 
     public string Enviar(string? cabec, string msg)
     {
-        var sb = new StringBuilder();
-        sb.Append("<nfse:RecepcionarLoteRps>");
-        sb.Append($"<nfseCabecMsg>{cabec}</nfseCabecMsg>");
-        sb.Append($"<nfseDadosMsg>{msg}</nfseDadosMsg>");
-        sb.Append("</nfse:RecepcionarLoteRps>");
-        return this.Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", sb.ToString(), ["RecepcionarLoteRpsResult", "EnviarLoteRpsResposta"]);
+        // metodo nao testado
+        var message = new StringBuilder();
+        message.Append("<nfse:RecepcionarLoteRps>");
+
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(EmpacotaXml(cabec));
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(EmpacotaXml(msg));
+        message.Append("</nfseDadosMsg>");
+
+        message.Append("</nfse:RecepcionarLoteRps>");
+        return this.Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", message.ToString(), ["RecepcionarLoteRpsResponse"]);
     }
 
     public string EnviarSincrono(string? cabec, string msg)
@@ -110,11 +135,12 @@ internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</nfseDadosMsg>");
 
         message.Append("</nfse:RecepcionarLoteRpsSincrono>");
-        return this.Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), ["RecepcionarLoteRpsSincronoResult", "EnviarLoteRpsSincronoResposta", "RecepcionarLoteRpsSincronoResponse"]);
+        return this.Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), ["RecepcionarLoteRpsSincronoResponse"]);
     }
 
     public string SubstituirNFSe(string? cabec, string msg)
     {
+        // método não testado
         var message = new StringBuilder();
         message.Append("<nfse:SubstituirNfse>");
         message.Append("<nfseCabecMsg>");
@@ -124,12 +150,11 @@ internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceCl
         message.AppendCData(EmpacotaXml(msg));
         message.Append("</nfseDadosMsg>");
         message.Append("</nfse:SubstituirNfse>");
-        return this.Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), ["SubstituirNfseResult", "SubstituirNfseResposta"]);
+        return this.Execute("http://nfse.abrasf.org.br/SubstituirNfse", message.ToString(), ["SubstituirNfseResponse"]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
-        //return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
     }
 }
