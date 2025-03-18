@@ -5,16 +5,16 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderFintel204 : ProviderABRASF204
+internal sealed class ProviderFintelISS204 : ProviderABRASF204
 {
-    public ProviderFintel204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public ProviderFintelISS204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "Fintel";
+        Name = "FintelISS";
     }
 
     protected override IServiceClient GetClient(TipoUrl tipo)
     {
-        return new Fintel204ServiceClient(this, tipo, this.Certificado);
+        return new FintelISS204ServiceClient(this, tipo, this.Certificado);
     }
 
     //protected override bool PrecisaValidarSchema(TipoUrl tipo) => false;

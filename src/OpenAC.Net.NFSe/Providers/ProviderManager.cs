@@ -103,7 +103,7 @@ public static class ProviderManager
             {NFSeProvider.Sigep, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigep) }, {VersaoNFSe.ve202, typeof(ProviderSigep) }}},
             {NFSeProvider.ISSIntegra, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSIntegra)}}},
             {NFSeProvider.ISSRecife, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSRecife)}}},
-            {NFSeProvider.Fintel, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderFintel204)}}},
+            {NFSeProvider.FintelISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderFintelISS204)}}},
         };
 
         Load();

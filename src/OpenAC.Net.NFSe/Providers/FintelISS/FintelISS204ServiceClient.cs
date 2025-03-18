@@ -10,9 +10,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceClient
+internal sealed class FintelISS204ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    public Fintel204ServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2? certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public FintelISS204ServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2? certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
@@ -140,7 +140,7 @@ internal sealed class Fintel204ServiceClient : NFSeSoapServiceClient, IServiceCl
 
     public string SubstituirNFSe(string? cabec, string msg)
     {
-        // método não testado
+        // mï¿½todo nï¿½o testado
         var message = new StringBuilder();
         message.Append("<nfse:SubstituirNfse>");
         message.Append("<nfseCabecMsg>");
