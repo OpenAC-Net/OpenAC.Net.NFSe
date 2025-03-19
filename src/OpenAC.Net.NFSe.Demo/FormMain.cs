@@ -529,7 +529,7 @@ public partial class FormMain : Form, IOpenLog
         var municipio = cmbCidades.GetSelectedValue<OpenMunicipioNFSe>();
         if (municipio == null) return;
 
-        var numeroRps = "1";
+        var numeroRps = "475";
         if (InputBox.Show("Nº RPS", "Informe o número do RPS.", ref numeroRps).Equals(DialogResult.Cancel)) return;
 
         openNFSe.NotasServico.Clear();
@@ -578,7 +578,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.RegimeEspecialTributacao = RegimeEspecialTributacao.SimplesNacional;
         nfSe.IncentivadorCultural = NFSeSimNao.Nao;
 
-        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba) ? "1705" : "17.05";
+        var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba) ? "1705" : "07.10";
         if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
         // Setar o cnae de acordo com o schema aceito pelo provedor.
@@ -587,12 +587,12 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.CodigoCnae = cnae;
 
         var CodigoTributacaoMunicipio = municipio.Provedor.IsIn(NFSeProvider.SiapNet, NFSeProvider.ABase) ? "5211701" :
-            municipio.Provedor.IsIn(NFSeProvider.GISS) ? "88888888" :
+            municipio.Provedor.IsIn(NFSeProvider.GISS) ? "0710" :
             municipio.Provedor.IsIn(NFSeProvider.Sigep) ? "1" : "01.07.00 / 00010700";
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
-        nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICO";
+        nfSe.Servico.Discriminacao = "MANUTENCAO";
         nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.ISSDSF ? municipio.CodigoSiafi : municipio.Codigo;
         nfSe.Servico.Municipio = municipio.Nome;
         if (municipio.Provedor.IsIn(NFSeProvider.SiapNet))
@@ -600,6 +600,9 @@ public partial class FormMain : Form, IOpenLog
             nfSe.Servico.ResponsavelRetencao = ResponsavelRetencao.Prestador;
             nfSe.Servico.MunicipioIncidencia = nfSe.Servico.CodigoMunicipio;
         }
+
+        if (municipio.Provedor.IsIn(NFSeProvider.GISS))
+            nfSe.Servico.CodigoPais = 1058;
 
         nfSe.Servico.Valores.ValorServicos = 1;
         nfSe.Servico.Valores.ValorDeducoes = 0;
@@ -612,7 +615,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.Servico.Valores.ValorIss = municipio.Provedor == NFSeProvider.SiapNet ? 2 : 0.20m;
         nfSe.Servico.Valores.ValorOutrasRetencoes = 0;
         nfSe.Servico.Valores.BaseCalculo = 1;
-        nfSe.Servico.Valores.Aliquota =  municipio.Provedor == NFSeProvider.GISS ? 0.0200m : 2;
+        nfSe.Servico.Valores.Aliquota =  /*municipio.Provedor == NFSeProvider.GISS ? 0.0200m :*/ 2;
         nfSe.Servico.Valores.ValorLiquidoNfse = 1;
         nfSe.Servico.Valores.ValorIssRetido = 0;
         nfSe.Servico.Valores.DescontoCondicionado = 0;
@@ -633,8 +636,8 @@ public partial class FormMain : Form, IOpenLog
             nfSe.Servico.MunicipioIncidencia = nfSe.Servico.CodigoMunicipio;
         }
 
-        nfSe.Tomador.CpfCnpj = "11656919000154";
-        nfSe.Tomador.InscricaoMunicipal = "1233653";
+        nfSe.Tomador.CpfCnpj = "49413978867";
+        nfSe.Tomador.InscricaoMunicipal = "";
         nfSe.Tomador.RazaoSocial = "Nome";
 
         nfSe.Tomador.Endereco.TipoLogradouro = "";

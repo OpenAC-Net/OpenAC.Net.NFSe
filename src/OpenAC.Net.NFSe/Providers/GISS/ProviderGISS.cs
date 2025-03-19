@@ -34,11 +34,11 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         
         #region RPS
         
-        protected override XElement WriteRps(NotaServico nota)
+        /*protected override XElement WriteRps(NotaServico nota)
         {
             var rootRps = new XElement("Rps");
 
-            var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"Id_RPS{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
+            var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"Rps{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
             rootRps.Add(infServico);
 
             infServico.Add(WriteRpsRps(nota));
@@ -71,20 +71,21 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
 
             return rootRps;
-        }
+        }*/
+        
         protected override XElement WriteValoresRps(NotaServico nota)
         {
             var valores = new XElement("Valores");
 
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.OutrasRetencoes));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValTotTributos));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorPis));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorCofins));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorInss));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIr));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorCsll));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.OutrasRetencoes));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValTotTributos", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValTotTributos));
 
             var valorISS = nota.Servico.Valores.ValorIss;
 
@@ -92,13 +93,13 @@ namespace OpenAC.Net.NFSe.Providers.GISS
                 valorISS = nota.Servico.Valores.ValorIssRetido;
 
             if (nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
-                valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.Obrigatoria, valorISS));
+                valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, valorISS));
 
             if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional || nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
-                valores.AddChild(AdicionarTag(TipoCampo.De4, "", "Aliquota", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
+                valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 5, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
 
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoIncondicionado));
-            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.DescontoCondicionado));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
+            valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoCondicionado));
 
             return valores;
         }
@@ -124,7 +125,7 @@ namespace OpenAC.Net.NFSe.Providers.GISS
 
             var xmlLote = new StringBuilder();
             xmlLote.Append($"<EnviarLoteRpsEnvio {GetNamespace()}>");
-            xmlLote.Append($"<LoteRps Id=\"ID_lote{retornoWebservice.Lote}\" {GetVersao()}>");
+            xmlLote.Append($"<LoteRps Id=\"lote{retornoWebservice.Lote}\" {GetVersao()}>");
             xmlLote.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
             if (UsaPrestadorEnvio) xmlLote.Append("<Prestador>");
             xmlLote.Append("<CpfCnpj>");
@@ -140,16 +141,39 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             xmlLote.Append("</ListaRps>");
             xmlLote.Append("</LoteRps>");
             xmlLote.Append("</EnviarLoteRpsEnvio>");
+            
+            var xmlstring = xmlLote.ToString().Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
+            XDocument doc = XDocument.Parse(xmlstring);
+            XNamespace nsRoot = "http://www.giss.com.br/enviar-lote-rps-envio-v2_04.xsd";
+            XNamespace nsChild = "http://www.giss.com.br/tipos-v2_04.xsd";
+            
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+            
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "ds", "http://www.w3.org/2000/09/xmldsig#");
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "ns4", nsRoot);
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "ns2", nsChild);
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            
+            foreach (var element in doc.Descendants().ToList())
+                element.Name = nsChild + element.Name.LocalName;
+            
+            var loteRps = doc.Descendants().First(x=>x.Name.LocalName == "LoteRps");
+            loteRps.Name = nsRoot + loteRps.Name.LocalName;
+            loteRps.SetAttributeValue("versao", "1.00");
+            
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
 
-            retornoWebservice.XmlEnvio = xmlLote.ToString();
+            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc;
+
+            retornoWebservice.XmlEnvio = xml;
         }
         
         protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
         {
-            //retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "ns2:Rps", "ns2:InfDeclaracaoPrestacaoServico", Certificado);
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "ns4:EnviarLoteRpsEnvio", "ns4:LoteRps", Certificado);
         }
-
+        
         /// <inheritdoc />
         protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice,
             NotaServicoCollection notas)

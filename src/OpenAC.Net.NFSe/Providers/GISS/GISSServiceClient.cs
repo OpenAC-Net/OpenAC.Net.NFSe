@@ -36,37 +36,7 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             message.AppendCData("<ns4:cabecalho versao=\"2.00\" xmlns:ns2=\"http://www.giss.com.br/tipos-v2_04.xsd\" xmlns:ns4=\"http://www.giss.com.br/cabecalho-v2_04.xsd\" xmlns:nss03=\"http://www.w3.org/2000/09/xmldsig#\"><ns4:versaoDados>2.00</ns4:versaoDados></ns4:cabecalho>");
             message.Append("</nfseCabecMsg>");
             message.Append("<nfseDadosMsg>");
-
-            msg = msg.Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
-            XDocument doc = XDocument.Parse(msg);
-            XNamespace nsRoot = "http://www.giss.com.br/enviar-lote-rps-envio-v2_04.xsd";
-            XNamespace nsChild = "http://www.giss.com.br/tipos-v2_04.xsd";
-            
-            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
-            
-            doc.Root.SetAttributeValue(XNamespace.Xmlns + "nss03", "http://www.w3.org/2000/09/xmldsig#");
-            doc.Root.SetAttributeValue(XNamespace.Xmlns + "ns4", nsRoot);
-            doc.Root.SetAttributeValue(XNamespace.Xmlns + "ns2", nsChild);
-            doc.Root.SetAttributeValue(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            
-            foreach (var element in doc.Descendants().ToList())
-            {
-                if (element.Name.LocalName == "Signature")
-                {
-                    break;
-                }
-                element.Name = nsChild + element.Name.LocalName;
-            }
-            
-            var loteRps = doc.Descendants().First(x=>x.Name.LocalName == "LoteRps");
-            loteRps.Name = nsRoot + loteRps.Name.LocalName;
-            loteRps.SetAttributeValue("versao", "1.00");
-            
-            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
-
-            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc;
-
-            message.AppendCData(xml);
+            message.AppendCData(msg);
             message.Append("</nfseDadosMsg>");
 
             message.Append("</nfse:RecepcionarLoteRpsRequest>");
@@ -132,14 +102,14 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             var xmlValue = XDocument.Parse(xElement.Value);
             var reader = xmlValue.ElementAnyNs(responseTag[0]).CreateReader();
             reader.MoveToContent();
-            var xml = reader.ReadInnerXml().Replace("ns2:", string.Empty);
+            var xml = reader.ReadOuterXml().Replace("ns2:", string.Empty).Replace("ns3:", string.Empty);
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);
 
             var mensagem = xmlDoc.GetElementsByTagName("Mensagem");
             if (mensagem.Count == 0)
-                return xElement.ToString();
+                return xml;
             else
             {
                 var correcao = xmlDoc.GetElementsByTagName("Correcao");
