@@ -174,6 +174,109 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "ns4:EnviarLoteRpsEnvio", "ns4:LoteRps", Certificado);
         }
         
+        protected override void PrepararConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
+        {
+            var loteBuilder = new StringBuilder();
+            loteBuilder.Append($"<ConsultarLoteRpsEnvio {GetNamespace()}>");
+            loteBuilder.Append("<Prestador>");
+            loteBuilder.Append("<CpfCnpj>");
+            loteBuilder.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
+                ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
+                : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+            loteBuilder.Append("</CpfCnpj>");
+            if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+            loteBuilder.Append("</Prestador>");
+            loteBuilder.Append($"<Protocolo>{retornoWebservice.Protocolo}</Protocolo>");
+            loteBuilder.Append("</ConsultarLoteRpsEnvio>");
+            
+            var xmlstring = loteBuilder.ToString().Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
+            XDocument doc = XDocument.Parse(xmlstring);
+            XNamespace nsRoot = "http://www.giss.com.br/consultar-lote-rps-envio-v2_04.xsd";
+            XNamespace nsChild = "http://www.giss.com.br/tipos-v2_04.xsd";
+            
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+            
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "con", nsRoot);
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "tip", nsChild);
+            
+            foreach (var element in doc.Descendants().ToList())
+                element.Name = nsChild + element.Name.LocalName;
+            
+            var loteRps = doc.Descendants().First(x=>x.Name.LocalName == "Prestador");
+            loteRps.Name = nsRoot + loteRps.Name.LocalName;
+            var protocolo = doc.Descendants().First(x=>x.Name.LocalName == "Protocolo");
+            protocolo.Name = nsRoot + protocolo.Name.LocalName;
+            
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+
+            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc;
+            
+            retornoWebservice.XmlEnvio = xml;
+        }
+
+        /// <inheritdoc />
+        protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
+        {
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "con:ConsultarLoteRpsEnvio", "", Certificado);
+        }
+        
+        protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
+        {
+            if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "AC0001", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
+                return;
+            }
+
+            var loteBuilder = new StringBuilder();
+
+            loteBuilder.Append($"<CancelarNfseEnvio {GetNamespace()}>");
+            loteBuilder.Append("<Pedido>");
+            loteBuilder.Append($"<InfPedidoCancelamento Id=\"N{retornoWebservice.NumeroNFSe}\">");
+            loteBuilder.Append("<IdentificacaoNfse>");
+            loteBuilder.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");
+            loteBuilder.Append("<CpfCnpj>");
+            loteBuilder.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
+                ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
+                : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
+            loteBuilder.Append("</CpfCnpj>");
+            if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+            loteBuilder.Append($"<CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</CodigoMunicipio>");
+            loteBuilder.Append("</IdentificacaoNfse>");
+            loteBuilder.Append($"<CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</CodigoCancelamento>");
+            loteBuilder.Append("</InfPedidoCancelamento>");
+            loteBuilder.Append("</Pedido>");
+            loteBuilder.Append("</CancelarNfseEnvio>");
+            var xmlstring = loteBuilder.ToString().Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
+            XDocument doc = XDocument.Parse(xmlstring);
+            
+            XNamespace nsRoot = "http://www.giss.com.br/cancelar-nfse-envio-v2_04.xsd";
+            XNamespace nsChild = "http://www.giss.com.br/tipos-v2_04.xsd";
+                
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+                
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "can", nsRoot);
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "tip", nsChild);
+                
+            foreach (var element in doc.Descendants().ToList())
+                element.Name = nsChild + element.Name.LocalName;
+                
+            var pedido = doc.Descendants().First(x=>x.Name.LocalName == "Pedido");
+            pedido.Name = nsRoot + pedido.Name.LocalName;
+                
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+
+            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc;
+                
+            retornoWebservice.XmlEnvio = xml;
+        }
+
+        /// <inheritdoc />
+        protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
+        {
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "can:Pedido", "tip:InfPedidoCancelamento", Certificado);
+        }
+        
         /// <inheritdoc />
         protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice,
             NotaServicoCollection notas)

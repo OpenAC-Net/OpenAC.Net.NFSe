@@ -51,13 +51,17 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         public string ConsultarLoteRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<nfse:ConsultarLoteRps>");
-            message.Append("<ConsultarLoteRpsEnvio>");
+            message.Append("<nfse:ConsultarLoteRpsRequest>");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData("<ns4:cabecalho versao=\"2.00\" xmlns:ns2=\"http://www.giss.com.br/tipos-v2_04.xsd\" xmlns:ns4=\"http://www.giss.com.br/cabecalho-v2_04.xsd\" xmlns:nss03=\"http://www.w3.org/2000/09/xmldsig#\"><ns4:versaoDados>2.00</ns4:versaoDados></ns4:cabecalho>");
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
             message.AppendCData(msg);
-            message.Append("</ConsultarLoteRpsEnvio>");
-            message.Append("</nfse:ConsultarLoteRps>");
+            message.Append("</nfseDadosMsg>");
 
-            return Execute("ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResposta");
+            message.Append("</nfse:ConsultarLoteRpsRequest>");
+
+            return Execute("http://nfse.abrasf.org.br/ConsultarLoteRps", message.ToString(), "ConsultarLoteRpsResposta");
         }
 
         public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
@@ -79,13 +83,17 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         public string CancelarNFSe(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<nfse:cancelarNfse>");
-            message.Append("<CancelarNfseEnvio>");
+            message.Append("<nfse:CancelarNfseRequest>");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData("<ns4:cabecalho versao=\"2.00\" xmlns:ns2=\"http://www.giss.com.br/tipos-v2_04.xsd\" xmlns:ns4=\"http://www.giss.com.br/cabecalho-v2_04.xsd\" xmlns:nss03=\"http://www.w3.org/2000/09/xmldsig#\"><ns4:versaoDados>2.00</ns4:versaoDados></ns4:cabecalho>");
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
             message.AppendCData(msg);
-            message.Append("</CancelarNfseEnvio>");
-            message.Append("</nfse:cancelarNfse>");
+            message.Append("</nfseDadosMsg>");
 
-            return Execute("cancelarNfse", message.ToString(), "CancelarNfseResposta");
+            message.Append("</nfse:CancelarNfseRequest>");
+
+            return Execute("http://nfse.abrasf.org.br/CancelarNfse", message.ToString(), "CancelarNfseResposta");
         }
 
         public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
@@ -104,7 +112,8 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             reader.MoveToContent();
             var xml = reader.ReadOuterXml().Replace("ns2:", string.Empty).Replace("ns3:", string.Empty);
 
-            XmlDocument xmlDoc = new XmlDocument();
+            return xml;
+            /*XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);
 
             var mensagem = xmlDoc.GetElementsByTagName("Mensagem");
@@ -117,7 +126,7 @@ namespace OpenAC.Net.NFSe.Providers.GISS
                 if (correcao.Count > 0)
                     correcaoText = " - Correção: " + correcao[0].InnerText;
                 return mensagem[0].InnerText + correcaoText;
-            }
+            }*/
         }
 
         #endregion Methods
