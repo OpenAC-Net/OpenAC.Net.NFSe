@@ -181,6 +181,69 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "con:ConsultarLoteRpsEnvio", "", Certificado);
         }
         
+        protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
+        {
+            // Analisa mensagem de retorno
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+
+            retornoWebservice.Lote = xmlRet.Root?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
+
+            var retornoLote = xmlRet.ElementAnyNs("ConsultarLoteRpsResposta");
+            var situacao = retornoLote?.ElementAnyNs("Situacao");
+            if (situacao != null)
+                retornoWebservice.Situacao = situacao.GetValue<string>();
+            
+            MensagemErro(retornoWebservice, xmlRet, "ConsultarLoteRpsResposta");
+            if (retornoWebservice.Erros.Any()) return;
+
+            retornoWebservice.Sucesso = true;
+
+            if (notas == null) return;
+
+            var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
+
+            if (listaNfse == null)
+            {
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
+                return;
+            }
+
+            var notasFiscais = new List<NotaServico>();
+
+            foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
+            {
+                var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
+                var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+                var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+                var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+                var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
+                    .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
+                    .ElementAnyNs("Rps")?
+                    .ElementAnyNs("IdentificacaoRps")?
+                    .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
+
+                GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+
+                var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+                if (nota == null)
+                {
+                    nota = notas.Load(compNfse.ToString());
+                }
+                else
+                {
+                    nota.IdentificacaoNFSe.Numero = numeroNFSe;
+                    nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                    nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                    nota.XmlOriginal = compNfse.ToString();
+                }
+
+                nota.Protocolo = retornoWebservice.Protocolo;
+                notasFiscais.Add(nota);
+            }
+
+            retornoWebservice.Notas = notasFiscais.ToArray();
+        }
+        
         protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
         {
             if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
