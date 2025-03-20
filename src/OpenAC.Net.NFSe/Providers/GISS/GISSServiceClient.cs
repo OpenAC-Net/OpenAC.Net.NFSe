@@ -69,13 +69,16 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         public string ConsultarNFSeRps(string cabec, string msg)
         {
             var message = new StringBuilder();
-            message.Append("<nfse:ConsultarNfseRpsEnvio>");
-            message.Append("<ConsultarNfseRpsEnvio>");
+            message.Append("<nfse:ConsultarNfsePorRpsRequest>");
+            message.Append("<nfseCabecMsg>");
+            message.AppendCData("<ns4:cabecalho versao=\"2.00\" xmlns:ns2=\"http://www.giss.com.br/tipos-v2_04.xsd\" xmlns:ns4=\"http://www.giss.com.br/cabecalho-v2_04.xsd\" xmlns:nss03=\"http://www.w3.org/2000/09/xmldsig#\"><ns4:versaoDados>2.00</ns4:versaoDados></ns4:cabecalho>");
+            message.Append("</nfseCabecMsg>");
+            message.Append("<nfseDadosMsg>");
             message.AppendCData(msg);
-            message.Append("</ConsultarNfseRpsEnvio>");
-            message.Append("</nfse:consultarNfseRps>");
+            message.Append("</nfseDadosMsg>");
+            message.Append("</nfse:ConsultarNfsePorRpsRequest>");
 
-            return Execute("ConsultarNfseRpsEnvio", message.ToString(), "ConsultarNfseRpsEnvioResponse");
+            return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfseRpsResposta");
         }
 
         public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException("Função não implementada/suportada neste Provedor !");

@@ -34,45 +34,6 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         
         #region RPS
         
-        /*protected override XElement WriteRps(NotaServico nota)
-        {
-            var rootRps = new XElement("Rps");
-
-            var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"Rps{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
-            rootRps.Add(infServico);
-
-            infServico.Add(WriteRpsRps(nota));
-
-            infServico.AddChild(AdicionarTag(TipoCampo.Dat, "", "Competencia", 10, 10, Ocorrencia.Obrigatoria, nota.Competencia));
-
-            infServico.AddChild(WriteServicosRps(nota));
-            infServico.AddChild(WritePrestadorRps(nota));
-            infServico.AddChild(WriteTomadorRps(nota));
-            infServico.AddChild(WriteIntermediarioRps(nota));
-            infServico.AddChild(WriteConstrucaoCivilRps(nota));
-
-            string regimeEspecialTributacao;
-            string optanteSimplesNacional;
-            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
-            {
-                regimeEspecialTributacao = "6";
-                optanteSimplesNacional = "1";
-            }
-            else
-            {
-                regimeEspecialTributacao = ((int)nota.RegimeEspecialTributacao).ToString();
-                optanteSimplesNacional = "2";
-            }
-
-            if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
-                infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
-
-            infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
-            infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
-
-            return rootRps;
-        }*/
-        
         protected override XElement WriteValoresRps(NotaServico nota)
         {
             var valores = new XElement("Valores");
@@ -278,93 +239,19 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         }
         
         /// <inheritdoc />
-        protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice,
-            NotaServicoCollection notas)
-        {
-            // Analisa mensagem de retorno
-            var xmlDocument = XElement.Parse(retornoWebservice.XmlRetorno);
-            var reader = xmlDocument.ElementAnyNs("gerarNfseResponse").CreateReader();
-            reader.MoveToContent();
-            var xml = reader.ReadInnerXml().Replace("ns2:", string.Empty);
-
-            XmlDocument XmlRetorno = new XmlDocument();
-            XmlRetorno.LoadXml(xml);
-
-            XmlDocument xmlMensagem = new XmlDocument();
-            var xmlRet = XDocument.Parse(XmlRetorno.LastChild.InnerText);
-
-            MensagemErro(retornoWebservice, xmlRet, "GerarNfseResposta");
-            if (retornoWebservice.Erros.Any()) return;
-
-            retornoWebservice.Sucesso = xmlRet.Root.ElementAnyNs("ListaNfse") != null;
-
-            if (!retornoWebservice.Sucesso) return;
-
-            retornoWebservice.Data =
-                xmlRet.Root.ElementAnyNs("ListaNfse").ElementAnyNs("CompNfse").ElementAnyNs("Nfse")
-                    .ElementAnyNs("InfNfse").ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.MinValue;
-            retornoWebservice.Protocolo = xmlRet.Root.ElementAnyNs("ListaNfse").ElementAnyNs("CompNfse")
-                                              .ElementAnyNs("Nfse").ElementAnyNs("InfNfse")
-                                              .ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ??
-                                          "";
-
-            var listaNfse = xmlRet.Root.ElementAnyNs("ListaNfse");
-
-            if (listaNfse == null)
-            {
-                retornoWebservice.Erros.Add(new Evento
-                    { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
-                return;
-            }
-
-            foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
-            {
-                var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
-                var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
-                var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
-                var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
-                var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
-                    .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
-                    .ElementAnyNs("Rps")?
-                    .ElementAnyNs("IdentificacaoRps")?
-                    .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
-
-                GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
-
-                var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
-                if (nota == null)
-                {
-                    nota = notas.Load(compNfse.ToString());
-                }
-                else
-                {
-                    nota.IdentificacaoNFSe.Numero = numeroNFSe;
-                    nota.IdentificacaoNFSe.Chave = chaveNFSe;
-                }
-
-                nota.Protocolo = retornoWebservice.Protocolo;
-            }
-        }
-        
-        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice,
-            NotaServicoCollection notas)
+        protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
         {
             if (retornoWebservice.NumeroRps < 1)
             {
-                retornoWebservice.Erros.Add(new Evento
-                    { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
+                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
                 return;
             }
 
             var loteBuilder = new StringBuilder();
             loteBuilder.Append($"<ConsultarNfseRpsEnvio {GetNamespace()}>");
-            loteBuilder.Append($"<credenciais>");
-            loteBuilder.Append($"<usuario>{Configuracoes.WebServices.Usuario}</usuario>");
-            loteBuilder.Append($"<senha>{Configuracoes.WebServices.Senha}</senha>");
-            loteBuilder.Append($"<chavePrivada>{Configuracoes.WebServices.ChavePrivada}</chavePrivada>");
-            loteBuilder.Append($"</credenciais>");
             loteBuilder.Append("<IdentificacaoRps>");
             loteBuilder.Append($"<Numero>{retornoWebservice.NumeroRps}</Numero>");
+            loteBuilder.Append($"<Serie>{retornoWebservice.Serie}</Serie>");
             loteBuilder.Append($"<Tipo>{(int)retornoWebservice.Tipo + 1}</Tipo>");
             loteBuilder.Append("</IdentificacaoRps>");
             loteBuilder.Append("<Prestador>");
@@ -373,12 +260,40 @@ namespace OpenAC.Net.NFSe.Providers.GISS
                 ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
                 : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
             loteBuilder.Append("</CpfCnpj>");
-            if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty())
-                loteBuilder.Append(
-                    $"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+            if (!Configuracoes.PrestadorPadrao.InscricaoMunicipal.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
             loteBuilder.Append("</Prestador>");
             loteBuilder.Append("</ConsultarNfseRpsEnvio>");
-            retornoWebservice.XmlEnvio = loteBuilder.ToString();
+            
+            var xmlstring = loteBuilder.ToString().Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
+            XDocument doc = XDocument.Parse(xmlstring);
+            
+            XNamespace nsRoot = "http://www.giss.com.br/consultar-nfse-rps-envio-v2_04.xsd";
+            XNamespace nsChild = "http://www.giss.com.br/tipos-v2_04.xsd";
+                
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+                
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "con", nsRoot);
+            doc.Root.SetAttributeValue(XNamespace.Xmlns + "tip", nsChild);
+                
+            foreach (var element in doc.Descendants().ToList())
+                element.Name = nsChild + element.Name.LocalName;
+                
+            var identificador = doc.Descendants().First(x=>x.Name.LocalName == "IdentificacaoRps");
+            identificador.Name = nsRoot + identificador.Name.LocalName;  
+            
+            var prestador = doc.Descendants().First(x=>x.Name.LocalName == "Prestador");
+            prestador.Name = nsRoot + prestador.Name.LocalName;
+                
+            doc.Root.Name = nsRoot + doc.Root.Name.LocalName;
+
+            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc;
+            retornoWebservice.XmlEnvio = xml;
+        }
+
+        /// <inheritdoc />
+        protected override void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice)
+        {
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "con:ConsultarNfseRpsEnvio", "", Certificado);
         }
 
         protected override void MensagemErro(RetornoWebservice retornoWs, XContainer xmlRet, string xmlTag)
@@ -411,13 +326,19 @@ namespace OpenAC.Net.NFSe.Providers.GISS
         {
             // Analisa mensagem de retorno
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+            retornoWebservice.Sucesso = true;
             MensagemErro(retornoWebservice, xmlRet, "ConsultarNfseRpsResposta");
-            if (retornoWebservice.Erros.Any()) return;
+            if (retornoWebservice.Erros.Any())
+            {
+                retornoWebservice.Sucesso = false;
+                return;
+            }
 
             var compNfse = xmlRet.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
 
             if (compNfse == null)
             {
+                retornoWebservice.Sucesso = false;
                 retornoWebservice.Erros.Add(new Evento
                     { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (CompNfse)" });
                 return;
@@ -428,6 +349,8 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
             var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
             var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
+                .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
+                .ElementAnyNs("Rps")?
                 .ElementAnyNs("IdentificacaoRps")?
                 .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
 
