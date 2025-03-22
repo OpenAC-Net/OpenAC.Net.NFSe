@@ -30,7 +30,6 @@
 // ***********************************************************************
 
 using System;
-using System.ServiceModel;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;

@@ -31,7 +31,6 @@
 
 using System;
 using System.Linq;
-using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;

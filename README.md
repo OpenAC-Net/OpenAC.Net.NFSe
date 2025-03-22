@@ -7,15 +7,13 @@ Se *OpenNFSe* for um componente vital em sua aplicação comercial ou de código
 
 # OpenAC.Net.NFSe
 
-Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrônica).
+Biblioteca para emissão e transmissão de NFSe (Nota Fiscal de Serviço Eletrônica).
 
 # Situação
 
 ![Alt](https://repobeats.axiom.co/api/embed/86dd7e67ae35b516fb5d1e569a5e040cee3704e3.svg "Situação do Projeto")
 
 # Provedores Implementados
-
-## Provedores Testados
 
 - Americana
 - Assessor Publico
@@ -24,6 +22,7 @@ Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrôn
 - DSF
 - Equiplano
 - Fiorilli
+- FintelISS
 - Ginfes
 - Goiânia
 - IPM
@@ -41,9 +40,6 @@ Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrôn
 - SystemPro
 - WebISS
 - WebIss2
-
-## Provedores Em Teste
-
 - Abaco
 - ABase
 - Betha v1
