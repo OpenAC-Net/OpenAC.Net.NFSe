@@ -53,10 +53,10 @@ namespace OpenAC.Net.NFSe.Providers.GISS
             if (valorISS <= 0 && nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao && nota.Servico.Valores.ValorIssRetido > 0)
                 valorISS = nota.Servico.Valores.ValorIssRetido;
 
-            if (nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
+            if (nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao)
                 valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, valorISS));
 
-            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional || nota.Prestador.Endereco.CodigoMunicipio != nota.Servico.MunicipioIncidencia)
+            if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional || nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao)
                 valores.AddChild(AdicionarTag(TipoCampo.De2, "", "Aliquota", 1, 5, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
 
             valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
