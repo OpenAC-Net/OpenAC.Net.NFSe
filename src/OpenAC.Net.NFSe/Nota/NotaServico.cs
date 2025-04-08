@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="NotaServico.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -43,10 +43,14 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Nota;
 
+/// <summary>
+/// 
+/// </summary>
 public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChanged
 {
     #region Events
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler PropertyChanged;
 
     #endregion Events
@@ -134,9 +138,11 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
 
     public NFSeSimNao OptanteSimplesNacional { get; set; }
 
+    public NFSeSimNao OptanteMEISimei { get; set; }
+
     public DateTime DataOptanteSimplesNacional { get; set; }
 
-    public NFSeSimNao IncentivadorCultural { get; set; }
+    public NFSeSimNao? IncentivadorCultural { get; set; }
 
     public NFSeSimNao Producao { get; set; }
 
@@ -145,7 +151,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public TipoLocalServico LocalServico { get; set; }
 
     public int NumeroLote { get; set; }
-    
+
     public string Protocolo { get; set; }
 
     public DateTime Competencia { get; set; }
@@ -153,7 +159,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public string OutrasInformacoes { get; set; }
 
     public string DiscriminacaoImpostos { get; set; }
-    
+
     public string InformacoesComplementares { get; set; }
 
     public string DescricaoCodigoTributacaoMunicipio { get; set; }
@@ -171,6 +177,10 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public DFeSignature Signature { get; set; }
 
     public string XmlOriginal { get; set; }
+
+    public string LinkNFSe { get; set; }
+
+    public EventoRps? Evento { get; set; }
 
     #endregion Propriedades
 

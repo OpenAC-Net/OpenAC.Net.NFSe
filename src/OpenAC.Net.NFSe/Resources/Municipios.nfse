@@ -3,8 +3,6 @@
   <Municipios>
     <Municipio>
       <Codigo>5100201</Codigo>
-      <CodigoSiafi>9191</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Água Boa</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -100,42 +98,50 @@
     </Municipio>
     <Municipio>
       <Codigo>4300604</Codigo>
-      <CodigoSiafi>85111</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Alvorada</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
-      <Versao>1.01</Versao>
+      <Versao>1.00</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -144,53 +150,51 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
-          <Url>https://alvorada.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
         </Item>
       </UrlProducao>
     </Municipio>
     <Municipio>
       <Codigo>3501608</Codigo>
-      <CodigoSiafi>6131</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Americana</Nome>
       <UF>SP</UF>
       <Provedor>Tiplan</Provedor>
@@ -282,8 +286,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1500800</Codigo>
-      <CodigoSiafi>415</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Ananindeua</Nome>
       <UF>PA</UF>
       <Provedor>Ginfes</Provedor>
@@ -379,8 +381,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3102605</Codigo>
-      <CodigoSiafi>4051</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Andradas</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -475,9 +475,99 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>5201405</Codigo>
+      <Nome>Aparecida de Goiânia</Nome>
+      <UF>GO</UF>
+      <Provedor>ISSNet</Provedor>
+      <Versao>2.04</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/aparecidadegoiania/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>1702109</Codigo>
-      <CodigoSiafi>9241</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Araguaína</Nome>
       <UF>TO</UF>
       <Provedor>Betha</Provedor>
@@ -573,8 +663,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3103504</Codigo>
-      <CodigoSiafi>4069</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Araguari</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -670,8 +758,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3503208</Codigo>
-      <CodigoSiafi>6163</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Araraquara</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -767,8 +853,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4101804</Codigo>
-      <CodigoSiafi>7435</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Araucaria</Nome>
       <UF>PR</UF>
       <Provedor>IPM</Provedor>
@@ -857,8 +941,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4301057</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Arroio do Sal</Nome>
       <UF>RS</UF>
       <Provedor>Pronim</Provedor>
@@ -946,8 +1028,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1501402</Codigo>
-      <CodigoSiafi>427</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Belém</Nome>
       <UF>MT</UF>
       <Provedor>ISSDSF</Provedor>
@@ -1034,8 +1114,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3106200</Codigo>
-      <CodigoSiafi>4123</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Belo Horizonte</Nome>
       <UF>MG</UF>
       <Provedor>BHISS</Provedor>
@@ -1131,8 +1209,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3106309</Codigo>
-      <CodigoSiafi>4125</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Belo Oriente</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -1228,8 +1304,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3506359</Codigo>
-      <CodigoSiafi>2965</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Bertioga</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -1325,8 +1399,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3106705</Codigo>
-      <CodigoSiafi>4133</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Betim</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -1422,8 +1494,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4202404</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Blumenau</Nome>
       <UF>SC</UF>
       <Provedor>SimplISS</Provedor>
@@ -1521,8 +1591,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2201903</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Bom Jesus</Nome>
       <UF>PI</UF>
       <Provedor>Fisco</Provedor>
@@ -1710,8 +1778,6 @@
 	</Municipio>
     <Municipio>
       <Codigo>3507605</Codigo>
-      <CodigoSiafi>6251</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Bragança Paulista</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
@@ -1806,9 +1872,106 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>5300108</Codigo>
+      <Nome>Brasilia</Nome>
+      <UF>DF</UF>
+      <Provedor>ISSNet</Provedor>
+      <Versao>2.04</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://df.issnetonline.com.br/webservicenfse204/nfse.asmx</Url>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3507803</Codigo>
-      <CodigoSiafi>6257</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Brodowski</Nome>
       <UF>SP</UF>
       <Provedor>Fiorilli</Provedor>
@@ -1861,43 +2024,43 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://143.0.0.116:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+          <Url>http://181.191.53.69:8083/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -1906,8 +2069,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4202909</Codigo>
-      <CodigoSiafi>80551</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Brusque</Nome>
       <UF>SC</UF>
       <Provedor>IPM</Provedor>
@@ -1996,8 +2157,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4303103</Codigo>
-      <CodigoSiafi>8561</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Cachoeirinha</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
@@ -2086,8 +2245,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1100049</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Cacoal</Nome>
       <UF>RO</UF>
       <Provedor>WebIss</Provedor>
@@ -2185,8 +2342,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2504009</Codigo>
-      <CodigoSiafi>1981</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Campina Grande</Nome>
       <UF>PB</UF>
       <Provedor>WebIss</Provedor>
@@ -2284,8 +2439,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3509502</Codigo>
-      <CodigoSiafi>6291</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Campinas</Nome>
       <UF>SP</UF>
       <Provedor>ISSDSF</Provedor>
@@ -2374,8 +2527,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5002704</Codigo>
-      <CodigoSiafi>9051</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Campo Grande</Nome>
       <UF>MS</UF>
       <Provedor>ISSDSF</Provedor>
@@ -2383,34 +2534,43 @@
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>http://issdigital.pmcg.ms.gov.br/WsNFe2/LoteRps.jws</Url>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://issdigital-h.pmcg.ms.gov.br/WsNFe2/LoteRps.jws?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -2463,9 +2623,95 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>4104204</Codigo>
+      <Nome>Campo Largo</Nome>
+      <UF>PR</UF>
+      <Provedor>IPM</Provedor>
+      <Versao>1.01</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>5102637</Codigo>
-      <CodigoSiafi>9777</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Campo Novo do Parecis</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -2559,97 +2805,8 @@
         </Item>
       </UrlProducao>
     </Municipio>
-	<Municipio>
-		<Codigo>3524303</Codigo>
-		<CodigoSiafi>6587</CodigoSiafi>
-		<IdEntidade>0</IdEntidade>
-		<Nome>Jaboticabal</Nome>
-		<UF>SP</UF>
-		<Provedor>GISS</Provedor>
-		<Versao>2.04</Versao>
-		<UrlHomologacao>
-			<Item>
-				<TipoUrl>Enviar</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>EnviarSincrono</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>CancelarNFSe</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>CancelarNFSeLote</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarNFSe</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarNFSeRps</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarLoteRps</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarSituacao</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarSequencialRps</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>SubstituirNFSe</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>Autenticacao</TipoUrl>
-			</Item>
-		</UrlHomologacao>
-		<UrlProducao>
-			<Item>
-				<TipoUrl>Enviar</TipoUrl>
-				<Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>EnviarSincrono</TipoUrl>
-				<Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>CancelarNFSe</TipoUrl>
-				<Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>CancelarNFSeLote</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarNFSe</TipoUrl>
-				<Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarNFSeRps</TipoUrl>
-				<Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarLoteRps</TipoUrl>
-				<Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarSituacao</TipoUrl>
-				<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>ConsultarSequencialRps</TipoUrl>
-				<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
-			</Item>
-			<Item>
-				<TipoUrl>SubstituirNFSe</TipoUrl>
-			</Item>
-			<Item>
-				<TipoUrl>Autenticacao</TipoUrl>
-			</Item>
-		</UrlProducao>
-	</Municipio>
     <Municipio>
       <Codigo>5102678</Codigo>
-      <CodigoSiafi>9779</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Campo Verde</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -2745,8 +2902,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3301009</Codigo>
-      <CodigoSiafi>5819</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Campos dos Goytacazes</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
@@ -2842,8 +2997,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4304408</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Canela</Nome>
       <UF>RS</UF>
       <Provedor>SystemPro</Provedor>
@@ -2941,8 +3094,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4304606</Codigo>
-      <CodigoSiafi>8589</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Canoas</Nome>
       <UF>RS</UF>
       <Provedor>Abaco</Provedor>
@@ -3032,8 +3183,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3112604</Codigo>
-      <CodigoSiafi>4251</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Capinópolis</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -3129,8 +3278,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3510401</Codigo>
-      <CodigoSiafi>6309</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Capivari</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -3226,8 +3373,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4304705</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Carazinho</Nome>
       <UF>RS</UF>
       <Provedor>DBSeller</Provedor>
@@ -3325,8 +3470,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2604106</Codigo>
-      <CodigoSiafi>2381</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Caruaru</Nome>
       <UF>PE</UF>
       <Provedor>Ginfes</Provedor>
@@ -3422,8 +3565,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4304903</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Casca</Nome>
       <UF>RS</UF>
       <Provedor>Citta</Provedor>
@@ -3521,8 +3662,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3115300</Codigo>
-      <CodigoSiafi>4305</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Cataguases</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -3617,9 +3756,299 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>3511102</Codigo>
+      <Nome>Catanduva</Nome>
+      <UF>SP</UF>
+      <Provedor>Fiorilli</Provedor>
+      <Versao>2.00</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://nfse.catanduva.sp.gov.br/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
+      <Codigo>3511300</Codigo>
+      <Nome>Cedral</Nome>
+      <UF>SP</UF>
+      <Provedor>Fiorilli</Provedor>
+      <Versao>2.00</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>http://187.120.209.20:8080/IssWeb-ejb/IssWebWS/IssWebWS</Url>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
+      <Codigo>1100056</Codigo>
+      <Nome>Cerejeiras</Nome>
+      <UF>RO</UF>
+      <Provedor>Fiorilli</Provedor>
+      <Versao>2.00</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>4204202</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Chapeco</Nome>
       <UF>SC</UF>
       <Provedor>SigISS</Provedor>
@@ -3707,8 +4136,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5103205</Codigo>
-      <CodigoSiafi>8979</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Colider</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -3804,8 +4231,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3512001</Codigo>
-      <CodigoSiafi>6341</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Colina</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -3901,8 +4326,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3117504</Codigo>
-      <CodigoSiafi>4349</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Conceicao do Mato Dentro</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -3998,8 +4421,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3119401</Codigo>
-      <CodigoSiafi>4387</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Coronel Fabriciano</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -4095,8 +4516,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3513405</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Cruzeiro</Nome>
       <UF>SP</UF>
       <Provedor>SiapNet</Provedor>
@@ -4183,8 +4602,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1200203</Codigo>
-      <CodigoSiafi>107</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Cruzeiro do Sul</Nome>
       <UF>AC</UF>
       <Provedor>Betha</Provedor>
@@ -4274,8 +4691,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4106902</Codigo>
-      <CodigoSiafi>7535</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Curitiba</Nome>
       <UF>PR</UF>
       <Provedor>ISSCuritiba</Provedor>
@@ -4367,8 +4782,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3513801</Codigo>
-      <CodigoSiafi>6377</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Diadema</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -4464,8 +4877,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5103502</Codigo>
-      <CodigoSiafi>9069</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Diamantino</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -4561,8 +4972,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3122306</Codigo>
-      <CodigoSiafi>4445</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Divinópolis</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -4658,8 +5067,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3514106</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Dois Corregos</Nome>
       <UF>SP</UF>
       <Provedor>SimplISS</Provedor>
@@ -4759,8 +5166,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4306601</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Dom Pedrito</Nome>
       <UF>RS</UF>
       <Provedor>Pronim</Provedor>
@@ -4856,8 +5261,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3123205</Codigo>
-      <CodigoSiafi>4463</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Dores do Indaiá</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -4951,10 +5354,105 @@
         </Item>
       </UrlProducao>
     </Municipio>
+	<Municipio>
+		<Codigo>3514601</Codigo>
+		<Nome>Dumont</Nome>
+		<UF>SP</UF>
+		<Provedor>Fiorilli</Provedor>
+		<Versao>2.01</Versao>
+		<UrlHomologacao>
+			<Item>
+				<TipoUrl>Enviar</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>EnviarSincrono</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>CancelarNFSe</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>CancelarNFSeLote</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarNFSe</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarNFSeRps</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarLoteRps</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarSituacao</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarSequencialRps</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>SubstituirNFSe</TipoUrl>
+				<Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>Autenticacao</TipoUrl>
+			</Item>
+		</UrlHomologacao>
+		<UrlProducao>
+			<Item>
+				<TipoUrl>Enviar</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>EnviarSincrono</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>CancelarNFSe</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>CancelarNFSeLote</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarNFSe</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarNFSeRps</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarLoteRps</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarSituacao</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>ConsultarSequencialRps</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>SubstituirNFSe</TipoUrl>
+				<Url>https://pmdumont.djp.com.br:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+			</Item>
+			<Item>
+				<TipoUrl>Autenticacao</TipoUrl>
+			</Item>
+		</UrlProducao>
+	</Municipio>
     <Municipio>
       <Codigo>1200252</Codigo>
-      <CodigoSiafi>651</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Epitaciolândia</Nome>
       <UF>AC</UF>
       <Provedor>Betha</Provedor>
@@ -5044,8 +5542,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2104057</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Estreito</Nome>
       <UF>MA</UF>
       <Provedor>Fiorilli</Provedor>
@@ -5141,8 +5637,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4307807</Codigo>
-      <CodigoSiafi>86533</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Estrela</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
@@ -5230,8 +5724,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3516200</Codigo>
-      <CodigoSiafi>6425</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Franca</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -5327,8 +5819,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5208707</Codigo>
-      <CodigoSiafi>9373</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Goiânia</Nome>
       <UF>GO</UF>
       <Provedor>ISSGoiania</Provedor>
@@ -5410,8 +5900,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4309209</Codigo>
-      <CodigoSiafi>8683</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Gravatai</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
@@ -5511,8 +5999,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4309308</Codigo>
-      <CodigoSiafi>86851</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Guaiba</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
@@ -5601,8 +6087,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5104104</Codigo>
-      <CodigoSiafi>9887</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Guarantã Do Norte</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -5698,8 +6182,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3518305</Codigo>
-      <CodigoSiafi>6467</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Guararema</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -5792,11 +6274,9 @@
           <TipoUrl>Autenticacao</TipoUrl>
         </Item>
       </UrlProducao>
-    </Municipio>    
+    </Municipio>
     <Municipio>
       <Codigo>3518602</Codigo>
-      <CodigoSiafi>6473</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Guariba</Nome>
       <UF>SP</UF>
       <Provedor>ISSIntegra</Provedor>
@@ -5896,8 +6376,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3518701</Codigo>
-      <CodigoSiafi>6475</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Guaruja</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -5993,8 +6471,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3518800</Codigo>
-      <CodigoSiafi>6477</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Guarulhos</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -6090,8 +6566,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3128709</Codigo>
-      <CodigoSiafi>4573</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Guaxupé</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -6187,8 +6661,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4309605</Codigo>
-      <CodigoSiafi>86916</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Horizontina</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
@@ -6276,8 +6748,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3519071</Codigo>
-      <CodigoSiafi>2951</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Hortolandia</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -6373,8 +6843,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3130101</Codigo>
-      <CodigoSiafi>4601</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Igarapé</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -6470,8 +6938,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3130309</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Iguatama</Nome>
       <UF>MG</UF>
       <Provedor>SimplISS</Provedor>
@@ -6569,8 +7035,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2913606</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Ilheus</Nome>
       <UF>BA</UF>
       <Provedor>MetropolisWeb</Provedor>
@@ -6668,8 +7132,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3301900</Codigo>
-      <CodigoSiafi>5837</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Itaborai</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
@@ -6765,8 +7227,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2306256</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Itaitinga</Nome>
       <UF>CE</UF>
       <Provedor>SpeedGov</Provedor>
@@ -6864,8 +7324,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3132404</Codigo>
-      <CodigoSiafi>4647</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Itajubá</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -6961,8 +7419,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5104542</Codigo>
-      <CodigoSiafi>1186</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Itanhangá</Nome>
       <UF>MT</UF>
       <Provedor>WebIss</Provedor>
@@ -7058,8 +7514,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3133600</Codigo>
-      <CodigoSiafi>9241</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Itapeva</Nome>
       <UF>MG</UF>
       <Provedor>Fiorilli</Provedor>
@@ -7157,8 +7611,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3523909</Codigo>
-      <CodigoSiafi>6579</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Itu</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -7253,9 +7705,94 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+        <Codigo>3524303</Codigo>
+        <CodigoSiafi>6587</CodigoSiafi>
+        <IdEntidade>0</IdEntidade>
+        <Nome>Jaboticabal</Nome>
+        <UF>SP</UF>
+        <Provedor>GISS</Provedor>
+        <Versao>2.04</Versao>
+        <UrlHomologacao>
+            <Item>
+                <TipoUrl>Enviar</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>EnviarSincrono</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>CancelarNFSe</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>CancelarNFSeLote</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarNFSe</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarNFSeRps</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarLoteRps</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarSituacao</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarSequencialRps</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>SubstituirNFSe</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>Autenticacao</TipoUrl>
+            </Item>
+        </UrlHomologacao>
+        <UrlProducao>
+            <Item>
+                <TipoUrl>Enviar</TipoUrl>
+                <Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>EnviarSincrono</TipoUrl>
+                <Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>CancelarNFSe</TipoUrl>
+                <Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>CancelarNFSeLote</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarNFSe</TipoUrl>
+                <Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarNFSeRps</TipoUrl>
+                <Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarLoteRps</TipoUrl>
+                <Url>https://ws-jaboticabal.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarSituacao</TipoUrl>
+                <Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>ConsultarSequencialRps</TipoUrl>
+                <Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
+            </Item>
+            <Item>
+                <TipoUrl>SubstituirNFSe</TipoUrl>
+            </Item>
+            <Item>
+                <TipoUrl>Autenticacao</TipoUrl>
+            </Item>
+        </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3524709</Codigo>
-      <CodigoSiafi>6595</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Jaguariúna</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
@@ -7351,8 +7888,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3525102</Codigo>
-      <CodigoSiafi>6603</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Jardinopolis</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -7448,8 +7983,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3525300</Codigo>
-      <CodigoSiafi>6607</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Jaú</Nome>
       <UF>SP</UF>
       <Provedor>Fiorilli</Provedor>
@@ -7547,8 +8080,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2307304</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Juazeiro do Norte</Nome>
       <UF>CE</UF>
       <Provedor>SpeedGov</Provedor>
@@ -7636,8 +8167,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3137601</Codigo>
-      <CodigoSiafi>4751</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Lagoa Santa</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -7733,8 +8262,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4311403</Codigo>
-      <CodigoSiafi>8729</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Lajeado</Nome>
       <UF>RS</UF>
       <Provedor>Thema</Provedor>
@@ -7824,8 +8351,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3138203</Codigo>
-      <CodigoSiafi>4763</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Lavras</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -7921,8 +8446,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2704302</Codigo>
-      <CodigoSiafi>2785</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Maceió</Nome>
       <UF>AL</UF>
       <Provedor>Ginfes</Provedor>
@@ -8018,8 +8541,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1100130</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Machadinho do Oeste</Nome>
       <UF>RO</UF>
       <Provedor>Fiorilli</Provedor>
@@ -8117,8 +8638,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4311775</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Maquine</Nome>
       <UF>RS</UF>
       <Provedor>DBSeller</Provedor>
@@ -8216,8 +8735,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2704708</Codigo>
-      <CodigoSiafi>2793</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Marechal Deodoro</Nome>
       <UF>AL</UF>
       <Provedor>Ginfes</Provedor>
@@ -8313,8 +8830,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3302700</Codigo>
-      <CodigoSiafi>5853</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Marica</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
@@ -8410,8 +8925,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3529005</Codigo>
-      <CodigoSiafi>6681</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Marília</Nome>
       <UF>SP</UF>
       <Provedor>SigISS</Provedor>
@@ -8492,8 +9005,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4115200</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Maringá</Nome>
       <UF>PR</UF>
       <Provedor>ISSe</Provedor>
@@ -8591,8 +9102,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5105606</Codigo>
-      <CodigoSiafi>9929</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Matupá</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -8688,8 +9197,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3143906</Codigo>
-      <CodigoSiafi>4877</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Muriae</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -8785,57 +9292,55 @@
     </Municipio>
     <Municipio>
       <Codigo>3303302</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Niteroi</Nome>
       <UF>RJ</UF>
       <Provedor>Tiplan</Provedor>
       <Versao>2.03</Versao>
-			<UrlHomologacao>
-				<Item>
-					<TipoUrl>Enviar</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>EnviarSincrono</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>CancelarNFSe</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>CancelarNFSeLote</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>ConsultarNFSe</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>ConsultarNFSeRps</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>ConsultarLoteRps</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>ConsultarSituacao</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>ConsultarSequencialRps</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>SubstituirNFSe</TipoUrl>
-					<Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
-				</Item>
-				<Item>
-					<TipoUrl>Autenticacao</TipoUrl>
-				</Item>
-			</UrlHomologacao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://niteroihomologacao.nfe.com.br/nfse/WSNacional2/nfse.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -8884,8 +9389,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5105903</Codigo>
-      <CodigoSiafi>9117</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Nobres</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -8981,8 +9484,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5106208</Codigo>
-      <CodigoSiafi>8981</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Nova Brasilândia</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -9078,8 +9579,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3303500</Codigo>
-      <CodigoSiafi>5869</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Nova Iguaçu</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
@@ -9174,9 +9673,98 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>3144805</Codigo>
+      <Nome>Nova Lima</Nome>
+      <UF>MG</UF>
+      <Provedor>Abaco</Provedor>
+      <Versao>2.04</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://enfs-hom.abaco.com.br/novalima/servlet/aa24_recepcionarloterps</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://enfs-hom.abaco.com.br/novalima/servlet/aa24_recepcionarloterpssincrono</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://enfs-hom.abaco.com.br/novalima/servlet/aa24_cancelarnfse</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://enfs-hom.abaco.com.br/novalima/servlet/aa24_consultarnfse</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>=https://enfs-hom.abaco.com.br/novalima/servlet/aa24_consultarnfseporrps</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://enfs-hom.abaco.com.br/novalima/servlet/aa24_consultarloterps</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://enfs-hom.abaco.com.br/novalima/servlet/aa24_substituirnfse</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://www.e-nfs.com.br/e-nfs_novalima/servlet/aa24_recepcionarloterps</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://www.e-nfs.com.br/e-nfs_novalima/servlet/aa24_recepcionarloterpssincrono</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://www.e-nfs.com.br/e-nfs_novalima/servlet/aa24_cancelarnfse</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://www.e-nfs.com.br/e-nfs_novalima/servlet/aa24_consultarnfse</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://www.e-nfs.com.br/e-nfs_novalima/servlet/aa24_consultarnfseporrps</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://www.e-nfs.com.br/e-nfs_novalima/servlet/aa24_consultarloterps</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://www.e-nfs.com.br/e-nfs_novalima/servlet/aa24_substituirnfse</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>5106224</Codigo>
-      <CodigoSiafi>9937</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Nova Mutum</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -9272,8 +9860,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4313409</Codigo>
-      <CodigoSiafi>8771</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Novo Hamburgo</Nome>
       <UF>RS</UF>
       <Provedor>IPM</Provedor>
@@ -9358,8 +9944,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3533908</Codigo>
-      <CodigoSiafi>6779</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Olimpia</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -9455,8 +10039,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3145604</Codigo>
-      <CodigoSiafi>4911</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Oliveira</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -9551,9 +10133,106 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>3534708</Codigo>
+      <Nome>Ourinhos</Nome>
+      <UF>SP</UF>
+      <Provedor>FintelISS</Provedor>
+      <Versao>2.04</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Homologacao/Services/Nfse204.asmx</Url>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://iss.ourinhos.sp.gov.br:4431/Services/Nfse204.asmx</Url>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3146107</Codigo>
-      <CodigoSiafi>4921</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Ouro Preto</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -9649,8 +10328,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3147105</Codigo>
-      <CodigoSiafi>4941</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Para de Minas</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -9746,8 +10423,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3147006</Codigo>
-      <CodigoSiafi>4939</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Paracatu</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -9842,9 +10517,94 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>3535804</Codigo>
+      <Nome>Paranapanema</Nome>
+      <UF>SP</UF>
+      <Provedor>Pronim</Provedor>
+      <Versao>1.00</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://paranapanema.govbr.cloud/NFSe.Portal.Integracao/Services.svc</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3149309</Codigo>
-      <CodigoSiafi>4985</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Pedro Leopoldo</Nome>
       <UF>AC</UF>
       <Provedor>NFeCidades</Provedor>
@@ -9940,8 +10700,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4314407</Codigo>
-      <CodigoSiafi>8791</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Pelotas</Nome>
       <UF>RS</UF>
       <Provedor>NFeCidades</Provedor>
@@ -10037,8 +10795,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3538709</Codigo>
-      <CodigoSiafi>6875</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Piracicaba</Nome>
       <UF>SP</UF>
       <Provedor>SimplISS</Provedor>
@@ -10138,8 +10894,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5106455</Codigo>
-      <CodigoSiafi>91</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Planalto da Serra</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -10235,8 +10989,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3151800</Codigo>
-      <CodigoSiafi>5035</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Poços de Caldas</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -10332,8 +11084,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4314902</Codigo>
-      <CodigoSiafi>8801</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Porto Alegre</Nome>
       <UF>RS</UF>
       <Provedor>BHISS</Provedor>
@@ -10429,8 +11179,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3152501</Codigo>
-      <CodigoSiafi>5049</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Pouso Alegre</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -10524,11 +11272,8 @@
         </Item>
       </UrlProducao>
     </Municipio>
-
     <Municipio>
       <Codigo>3540903</Codigo>
-      <CodigoSiafi>6919</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Pradopolis</Nome>
       <UF>SP</UF>
       <Provedor>Fiorilli</Provedor>
@@ -10624,11 +11369,8 @@
         </Item>
       </UrlProducao>
     </Municipio>
-
     <Municipio>
       <Codigo>3152808</Codigo>
-      <CodigoSiafi>5055</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Prata</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -10724,8 +11466,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5107040</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Primavera do Leste</Nome>
       <UF>MT</UF>
       <Provedor>AssessorPublico</Provedor>
@@ -10823,8 +11563,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5107065</Codigo>
-      <CodigoSiafi>97</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Querencia</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -10919,9 +11657,104 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>2611606</Codigo>
+      <Nome>Recife</Nome>
+      <UF>PE</UF>
+      <Provedor>ISSRecife</Provedor>
+      <Versao>1.00</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3543402</Codigo>
-      <CodigoSiafi>6969</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Ribeirão Preto</Nome>
       <UF>SP</UF>
       <Provedor>ISSNet</Provedor>
@@ -11014,8 +11847,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3304300</Codigo>
-      <CodigoSiafi>5885</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Rio Bonito</Nome>
       <UF>RJ</UF>
       <Provedor>Ginfes</Provedor>
@@ -11111,8 +11942,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1200401</Codigo>
-      <CodigoSiafi>139</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Rio Branco</Nome>
       <UF>AC</UF>
       <Provedor>Abaco</Provedor>
@@ -11202,8 +12031,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3304557</Codigo>
-      <CodigoSiafi>6001</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Rio de Janeiro</Nome>
       <UF>RJ</UF>
       <Provedor>ISSRio</Provedor>
@@ -11299,8 +12126,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5107602</Codigo>
-      <CodigoSiafi>9151</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Rondonopolis</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -11396,8 +12221,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3156908</Codigo>
-      <CodigoSiafi>5137</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Sacramento</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -11493,8 +12316,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3545803</Codigo>
-      <CodigoSiafi>7017</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Santa Bárbara D'Oeste</Nome>
       <UF>SP</UF>
       <Provedor>SigISSWeb</Provedor>
@@ -11580,8 +12401,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4316907</Codigo>
-      <CodigoSiafi>8841</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Santa Maria</Nome>
       <UF>RS</UF>
       <Provedor>ISSNet</Provedor>
@@ -11593,6 +12412,7 @@
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
@@ -11600,6 +12420,7 @@
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
@@ -11619,60 +12440,66 @@
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
         </Item>
       </UrlHomologacao>
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://abrasf.issnetonline.com.br/webserviceabrasf/santamaria/servicos.asmx</Url>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
+          <Url>https://nfse.issnetonline.com.br/abrasf204/santamaria/nfse.asmx</Url>
         </Item>
       </UrlProducao>
     </Municipio>
     <Municipio>
       <Codigo>3159803</Codigo>
-      <CodigoSiafi>5195</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Santa Vitória</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -11768,8 +12595,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1506807</Codigo>
-      <CodigoSiafi>535</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Santarem</Nome>
       <UF>PA</UF>
       <Provedor>Ginfes</Provedor>
@@ -11865,8 +12690,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2513653</Codigo>
-      <CodigoSiafi>514</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Santarem</Nome>
       <UF>PB</UF>
       <Provedor>Ginfes</Provedor>
@@ -11962,8 +12785,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3548906</Codigo>
-      <CodigoSiafi>7079</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>São Carlos</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -12059,8 +12880,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3162922</Codigo>
-      <CodigoSiafi>722</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>São Joaquim de Bicas</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -12156,8 +12975,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3162955</Codigo>
-      <CodigoSiafi>2649</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>São José da Lapa</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -12253,8 +13070,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3549805</Codigo>
-      <CodigoSiafi>7097</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>São José do Rio Preto</Nome>
       <UF>SP</UF>
       <Provedor>Ginfes</Provedor>
@@ -12350,8 +13165,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3549904</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Sao Jose dos Campos</Nome>
       <UF>SP</UF>
       <Provedor>DSF</Provedor>
@@ -12448,9 +13261,100 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>4125506</Codigo>
+      <Nome>São José dos Pinhais</Nome>
+      <UF>PR</UF>
+      <Provedor>ISSSJP</Provedor>
+      <Versao>1.00</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdlhttps://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdlhttps://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>4319208</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Sao Nicolau</Nome>
       <UF>RS</UF>
       <Provedor>ABase</Provedor>
@@ -12546,104 +13450,8 @@
         </Item>
       </UrlProducao>
     </Municipio>
-	<Municipio>
-	  <Codigo>4125506</Codigo>
-	  <CodigoSiafi>7885</CodigoSiafi>
-	  <IdEntidade>0</IdEntidade>
-	  <Nome>São José dos Pinhais</Nome>
-	  <UF>PR</UF>
-	  <Provedor>ISSSJP</Provedor>
-	  <UrlHomologacao>
-	    <Item>
-		  <TipoUrl>Enviar</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>EnviarSincrono</TipoUrl>
-		</Item>
-		<Item>
-		  <TipoUrl>CancelarNFSe</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>CancelarNFSeLote</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdlhttps://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarNFSe</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarNFSeRps</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarLoteRps</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarSituacao</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarSequencialRps</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/homologacao/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>SubstituirNFSe</TipoUrl>
-		</Item>
-		<Item>
-		  <TipoUrl>Autenticacao</TipoUrl>
-		</Item>
-	  </UrlHomologacao>
-	  <UrlProducao>
-	    <Item>
-		  <TipoUrl>Enviar</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>EnviarSincrono</TipoUrl>
-		</Item>
-		<Item>
-		  <TipoUrl>CancelarNFSe</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>CancelarNFSeLote</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdlhttps://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarNFSe</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarNFSeRps</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarLoteRps</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarSituacao</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>ConsultarSequencialRps</TipoUrl>
-		  <Url>https://nfe.sjp.pr.gov.br/servicos/issOnline2/ws/index.php?wsdl</Url>
-		</Item>
-		<Item>
-		  <TipoUrl>SubstituirNFSe</TipoUrl>
-		</Item>
-		<Item>
-		  <TipoUrl>Autenticacao</TipoUrl>
-	    </Item>
-	  </UrlProducao>
-    </Municipio>
     <Municipio>
       <Codigo>3550308</Codigo>
-      <CodigoSiafi>7107</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>São Paulo</Nome>
       <UF>SP</UF>
       <Provedor>ISSSaoPaulo</Provedor>
@@ -12728,8 +13536,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3550605</Codigo>
-      <CodigoSiafi>7113</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>São Roque</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
@@ -12825,8 +13631,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4320404</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Serafina Correa</Nome>
       <UF>RS</UF>
       <Provedor>Fiorilli</Provedor>
@@ -12922,8 +13726,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3551702</Codigo>
-      <CodigoSiafi>7135</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Sertaozinho</Nome>
       <UF>SP</UF>
       <Provedor>SmarAPD</Provedor>
@@ -13019,8 +13821,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5107909</Codigo>
-      <CodigoSiafi>8985</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Sinop</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -13116,8 +13916,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5107958</Codigo>
-      <CodigoSiafi>9185</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Tangará da Serra</Nome>
       <UF>MT</UF>
       <Provedor>RLZ</Provedor>
@@ -13213,8 +14011,6 @@
     </Municipio>
     <Municipio>
       <Codigo>5108006</Codigo>
-      <CodigoSiafi>9763</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Tapurah</Nome>
       <UF>MT</UF>
       <Provedor>Coplan</Provedor>
@@ -13310,8 +14106,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2931350</Codigo>
-      <CodigoSiafi>3993</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Teixeira de Freitas</Nome>
       <UF>BA</UF>
       <Provedor>NFeCidades</Provedor>
@@ -13407,8 +14201,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3168606</Codigo>
-      <CodigoSiafi>5371</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Teófilo Otoni</Nome>
       <UF>AC</UF>
       <Provedor>NFeCidades</Provedor>
@@ -13504,8 +14296,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2211001</Codigo>
-      <CodigoSiafi>1219</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Teresina</Nome>
       <UF>PI</UF>
       <Provedor>ISSDSF</Provedor>
@@ -13592,12 +14382,13 @@
     </Municipio>
     <Municipio>
       <Codigo>4127700</Codigo>
-      <CodigoSiafi>7927</CodigoSiafi>
-      <IdEntidade>136</IdEntidade>
       <Nome>Toledo</Nome>
       <UF>PR</UF>
       <Provedor>Equiplano</Provedor>
       <Versao>1.00</Versao>
+      <Parametros>
+        <Parametro Id="IdEntidade">136</Parametro>
+      </Parametros>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
@@ -13689,8 +14480,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4321600</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Tramandai</Nome>
       <UF>RS</UF>
       <Provedor>DBSeller</Provedor>
@@ -13788,8 +14577,6 @@
     </Municipio>
     <Municipio>
       <Codigo>4322301</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Tuparendi</Nome>
       <UF>RS</UF>
       <Provedor>ABase</Provedor>
@@ -13877,8 +14664,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3170206</Codigo>
-      <CodigoSiafi>5403</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Uberlândia</Nome>
       <UF>MG</UF>
       <Provedor>ISSDSF</Provedor>
@@ -13965,8 +14750,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3170404</Codigo>
-      <CodigoSiafi>5407</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Unaí</Nome>
       <UF>MG</UF>
       <Provedor>NFeCidades</Provedor>
@@ -14062,8 +14845,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3556453</Codigo>
-      <CodigoSiafi>7273</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Vargem Grande Paulista</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
@@ -14159,8 +14940,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3170701</Codigo>
-      <CodigoSiafi>5413</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Varginha</Nome>
       <UF>MG</UF>
       <Provedor>Ginfes</Provedor>
@@ -14256,8 +15035,6 @@
     </Municipio>
     <Municipio>
       <Codigo>3556503</Codigo>
-      <CodigoSiafi>7233</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Várzea Paulista</Nome>
       <UF>SP</UF>
       <Provedor>NFeCidades</Provedor>
@@ -14353,51 +15130,49 @@
     </Municipio>
     <Municipio>
       <Codigo>3205200</Codigo>
-      <CodigoSiafi>5703</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Vila Velha</Nome>
       <UF>ES</UF>
-      <Provedor>ISSVitoria</Provedor>
-      <Versao>2.00</Versao>
+      <Provedor>SmarAPD</Provedor>
+      <Versao>2.04</Versao>
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebServiceHomologa/NotaFiscalService.asmx</Url>
+          <Url>https://201.72.16.150/tbwhomolog/services/nfseSOAP?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -14406,42 +15181,42 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://issonline.vilavelha.es.gov.br/SistemaISS/WebService/NotaFiscalService.asmx</Url>
+          <Url>https://tributacao.vilavelha.es.gov.br/tbw/services/Abrasf24?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>
@@ -14450,8 +15225,6 @@
     </Municipio>
     <Municipio>
       <Codigo>1100304</Codigo>
-      <CodigoSiafi>13</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Vilhena</Nome>
       <UF>RO</UF>
       <Provedor>WebIss</Provedor>
@@ -14546,9 +15319,104 @@
       </UrlProducao>
     </Municipio>
     <Municipio>
+      <Codigo>3556800</Codigo>
+      <Nome>Viradouro</Nome>
+      <UF>SP</UF>
+      <Provedor>Fiorilli</Provedor>
+      <Versao>2.01</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>http://191.5.98.25:5661/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
+        </Item>
+        <Item>
+          <TipoUrl>Autenticacao</TipoUrl>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3205309</Codigo>
-      <CodigoSiafi>5705</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Vitória</Nome>
       <UF>ES</UF>
       <Provedor>ISSVitoria</Provedor>
@@ -14644,8 +15512,6 @@
     </Municipio>
     <Municipio>
       <Codigo>2933307</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
       <Nome>Vitoria da Conquista</Nome>
       <UF>BA</UF>
       <Provedor>WebIss</Provedor>
@@ -14733,292 +15599,6 @@
         <Item>
           <TipoUrl>SubstituirNFSe</TipoUrl>
           <Url>https://www4.webiss.com.br/vitoriadaconquistaba_wsnfse/NfseServices.svc</Url>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-        </Item>
-      </UrlProducao>
-    </Municipio>
-	<Municipio>
-      <Codigo>1100056</Codigo>
-      <CodigoSiafi>27</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
-      <Nome>Cerejeiras</Nome>
-      <UF>RO</UF>
-      <Provedor>Fiorilli</Provedor>
-	    <Versao>2.00</Versao>
-      <UrlHomologacao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://fi1.fiorilli.com.br:5663/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-        </Item>
-      </UrlHomologacao>
-      <UrlProducao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>http://nfse.cerejeiras.ro.gov.br:5660/IssWeb-ejb/IssWebWS/IssWebWS?wsdl</Url>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-        </Item>
-      </UrlProducao>
-    </Municipio>
-    <Municipio>
-      <Codigo>4104204</Codigo>
-      <CodigoSiafi>7481</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
-      <Nome>Campo Largo</Nome>
-      <UF>PR</UF>
-      <Provedor>IPM</Provedor>
-      <Versao>1.01</Versao>
-      <UrlHomologacao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-        </Item>
-      </UrlHomologacao>
-      <UrlProducao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-          <Url>https://campolargo.atende.net:7443/?pg=rest&amp;service=WNERestServiceNFSe&amp;cidade=padrao</Url>
-        </Item>
-      </UrlProducao>
-    </Municipio>
-	<Municipio>
-      <Codigo>2611606</Codigo>
-      <CodigoSiafi>0</CodigoSiafi>
-      <IdEntidade>0</IdEntidade>
-      <Nome>Recife</Nome>
-      <UF>PE</UF>
-      <Provedor>ISSRecife</Provedor>
-      <Versao>1.00</Versao>
-      <UrlHomologacao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>Autenticacao</TipoUrl>
-        </Item>
-      </UrlHomologacao>
-      <UrlProducao>
-        <Item>
-          <TipoUrl>Enviar</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>EnviarSincrono</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>CancelarNFSeLote</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>ConsultarSequencialRps</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
-        </Item>
-        <Item>
-          <TipoUrl>SubstituirNFSe</TipoUrl>
-          <Url>https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx</Url>
         </Item>
         <Item>
           <TipoUrl>Autenticacao</TipoUrl>

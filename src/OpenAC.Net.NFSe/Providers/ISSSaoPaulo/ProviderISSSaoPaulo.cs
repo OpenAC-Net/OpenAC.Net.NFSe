@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderSaoPaulo.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -42,6 +42,10 @@ using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -251,30 +255,30 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         xmlDoc.Add(rps);
 
         var hashRps = GetHashRps(nota);
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "Assinatura", 1, 2000, Ocorrencia.Obrigatoria, hashRps));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "Assinatura", 1, 2000, Ocorrencia.Obrigatoria, hashRps));
 
         var chaveRPS = new XElement("ChaveRPS");
         rps.Add(chaveRPS);
-        chaveRPS.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoPrestador", 1, 15, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal));
-        chaveRPS.AddChild(AdicionarTag(TipoCampo.Str, "", "SerieRPS", 1, 5, Ocorrencia.NaoObrigatoria, nota.IdentificacaoRps.Serie));
-        chaveRPS.AddChild(AdicionarTag(TipoCampo.Int, "", "NumeroRPS", 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
+        chaveRPS.AddChild(AddTag(TipoCampo.StrNumber, "", "InscricaoPrestador", 1, 15, Ocorrencia.Obrigatoria, nota.Prestador.InscricaoMunicipal));
+        chaveRPS.AddChild(AddTag(TipoCampo.Str, "", "SerieRPS", 1, 5, Ocorrencia.NaoObrigatoria, nota.IdentificacaoRps.Serie));
+        chaveRPS.AddChild(AddTag(TipoCampo.Int, "", "NumeroRPS", 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
 
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoRPS", 1, 1, Ocorrencia.Obrigatoria, tipoRps));
-        rps.AddChild(AdicionarTag(TipoCampo.Dat, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "StatusRPS", 1, 1, Ocorrencia.Obrigatoria, situacao));
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "TributacaoRPS", 1, 1, Ocorrencia.Obrigatoria, tipoTributacao));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "TipoRPS", 1, 1, Ocorrencia.Obrigatoria, tipoRps));
+        rps.AddChild(AddTag(TipoCampo.Dat, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "StatusRPS", 1, 1, Ocorrencia.Obrigatoria, situacao));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "TributacaoRPS", 1, 1, Ocorrencia.Obrigatoria, tipoTributacao));
 
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPIS", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorPis));
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCOFINS", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCofins));
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorINSS", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorInss));
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIR", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorIr));
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCSLL", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCsll));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorPIS", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorPis));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorCOFINS", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCofins));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorINSS", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorInss));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorIR", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorIr));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorCSLL", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCsll));
 
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoServico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
-        rps.AddChild(AdicionarTag(TipoCampo.De4, "", "AliquotaServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota / 100));  // Valor Percentual - Exemplos: 1% => 0.01   /   25,5% => 0.255   /   100% => 1
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "ISSRetido", 1, 4, Ocorrencia.Obrigatoria, issRetido));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "CodigoServico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
+        rps.AddChild(AddTag(TipoCampo.De4, "", "AliquotaServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota / 100));  // Valor Percentual - Exemplos: 1% => 0.01   /   25,5% => 0.255   /   100% => 1
+        rps.AddChild(AddTag(TipoCampo.Str, "", "ISSRetido", 1, 4, Ocorrencia.Obrigatoria, issRetido));
 
         if (!nota.Tomador.CpfCnpj.IsEmpty())
         {
@@ -283,25 +287,25 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
             tomadorCpfCnpj.AddChild(AdicionarTagCNPJCPF("", "CPF", "CNPJ", nota.Tomador.CpfCnpj));
         }
 
-        rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoMunicipalTomador", 1, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
-        rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "InscricaoEstadualTomador", 1, 19, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoEstadual));
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialTomador", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
+        rps.AddChild(AddTag(TipoCampo.StrNumber, "", "InscricaoMunicipalTomador", 1, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
+        rps.AddChild(AddTag(TipoCampo.StrNumber, "", "InscricaoEstadualTomador", 1, 19, Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoEstadual));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "RazaoSocialTomador", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
 
         if (!nota.Tomador.Endereco.Logradouro.IsEmpty())
         {
             var endereco = new XElement("EnderecoTomador");
             rps.AddChild(endereco);
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "TipoLogradouro", 1, 3, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.TipoLogradouro));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Logradouro", 1, 125, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Logradouro));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "NumeroEndereco", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "ComplementoEndereco", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
-            endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cidade", 1, 7, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.CodigoMunicipio));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "UF", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
-            endereco.AddChild(AdicionarTag(TipoCampo.StrNumberFill, "", "CEP", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "TipoLogradouro", 1, 3, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.TipoLogradouro));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "Logradouro", 1, 125, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Logradouro));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "NumeroEndereco", 1, 10, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.Numero));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "ComplementoEndereco", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
+            endereco.AddChild(AddTag(TipoCampo.StrNumber, "", "Cidade", 1, 7, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.CodigoMunicipio));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "UF", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
+            endereco.AddChild(AddTag(TipoCampo.StrNumberFill, "", "CEP", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
         }
 
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "EmailTomador", 1, 75, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "EmailTomador", 1, 75, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
 
         if (!nota.Intermediario.CpfCnpj.IsEmpty())
         {
@@ -309,23 +313,23 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
             rps.Add(intermediarioCpfCnpj);
             intermediarioCpfCnpj.AddChild(AdicionarTagCNPJCPF("", "CPF", "CNPJ", nota.Intermediario.CpfCnpj));
 
-            rps.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipalIntermediario", 1, 8, 0, nota.Intermediario.InscricaoMunicipal));
-            rps.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocialIntermediario", 1, 115, 0, nota.Intermediario.RazaoSocial));
+            rps.AddChild(AddTag(TipoCampo.Str, "", "InscricaoMunicipalIntermediario", 1, 8, 0, nota.Intermediario.InscricaoMunicipal));
+            rps.AddChild(AddTag(TipoCampo.Str, "", "RazaoSocialIntermediario", 1, 115, 0, nota.Intermediario.RazaoSocial));
 
             var issRetidoIntermediario = nota.Intermediario.IssRetido == SituacaoTributaria.Retencao ? "true" : "false";
-            rps.AddChild(AdicionarTag(TipoCampo.Str, "", "ISSRetidoIntermediario", 1, 4, Ocorrencia.Obrigatoria, issRetidoIntermediario));
-            rps.AddChild(AdicionarTag(TipoCampo.Str, "", "EmailIntermediario", 1, 75, Ocorrencia.NaoObrigatoria, nota.Intermediario.EMail));
+            rps.AddChild(AddTag(TipoCampo.Str, "", "ISSRetidoIntermediario", 1, 4, Ocorrencia.Obrigatoria, issRetidoIntermediario));
+            rps.AddChild(AddTag(TipoCampo.Str, "", "EmailIntermediario", 1, 75, Ocorrencia.NaoObrigatoria, nota.Intermediario.EMail));
         }
 
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
 
-        rps.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCargaTributaria", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCargaTributaria));
-        rps.AddChild(AdicionarTag(TipoCampo.De4, "", "PercentualCargaTributaria", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.AliquotaCargaTributaria / 100));
-        rps.AddChild(AdicionarTag(TipoCampo.Str, "", "FonteCargaTributaria", 1, 10, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.FonteCargaTributaria));
+        rps.AddChild(AddTag(TipoCampo.De2, "", "ValorCargaTributaria", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.ValorCargaTributaria));
+        rps.AddChild(AddTag(TipoCampo.De4, "", "PercentualCargaTributaria", 1, 15, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.AliquotaCargaTributaria / 100));
+        rps.AddChild(AddTag(TipoCampo.Str, "", "FonteCargaTributaria", 1, 10, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.FonteCargaTributaria));
 
-        rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "CodigoCEI", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoCEI));
-        rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "MatriculaObra", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.Matricula));
-        rps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "NumeroEncapsulamento", 1, 7, Ocorrencia.NaoObrigatoria, nota.Material.NumeroEncapsulamento));
+        rps.AddChild(AddTag(TipoCampo.StrNumber, "", "CodigoCEI", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoCEI));
+        rps.AddChild(AddTag(TipoCampo.StrNumber, "", "MatriculaObra", 1, 12, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.Matricula));
+        rps.AddChild(AddTag(TipoCampo.StrNumber, "", "NumeroEncapsulamento", 1, 7, Ocorrencia.NaoObrigatoria, nota.Material.NumeroEncapsulamento));
 
         return xmlDoc.AsString(identado, showDeclaration, Encoding.UTF8);
     }
@@ -343,10 +347,10 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         if (retornoWebservice.Lote == 0)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
 
         if (notas.Count == 0)
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
 
         if (retornoWebservice.Erros.Count > 0)
             return;
@@ -527,7 +531,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
             return;
         }
 
@@ -577,7 +581,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     {
         if (retornoWebservice.NumeroNFse < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número do RPS/NFSe não informado para a consulta." });
             return;
         }
 
@@ -608,7 +612,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe não informado para cancelamento." });
             return;
         }
 
@@ -829,7 +833,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
         foreach (var mensagem in mensagens.ElementsAnyNs("Alerta"))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Descricao")?.GetValue<string>() ?? string.Empty
@@ -845,7 +849,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
         foreach (var mensagem in mensagens.ElementsAnyNs("Erro"))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("Codigo")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("Descricao")?.GetValue<string>() ?? string.Empty

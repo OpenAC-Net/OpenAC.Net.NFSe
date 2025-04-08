@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ISSCuritibaServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,10 +31,12 @@
 
 using System;
 using System.Security.Cryptography.X509Certificates;
-using System.ServiceModel;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -56,7 +58,7 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
 
     public string CancelarNFSe(string cabec, string msg)
     {
-        return Execute("https://www.e-governeapps2.com.br/CancelarNfse", msg.ToString(), "CancelarNfseResponse");
+        return Execute("https://www.e-governeapps2.com.br/CancelarNfse", msg, "CancelarNfseResponse");
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -66,17 +68,17 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
 
     public string ConsultarLoteRps(string cabec, string msg)
     {
-        return Execute("https://www.e-governeapps2.com.br/ConsultarLoteRps", msg.ToString(), "ConsultarLoteRpsResponse");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarLoteRps", msg, "ConsultarLoteRpsResponse");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
     {
-        return Execute("https://www.e-governeapps2.com.br/ConsultarNfse", msg.ToString(), "ConsultarNfseResponse");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarNfse", msg, "ConsultarNfseResponse");
     }
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {
-        return Execute("https://www.e-governeapps2.com.br/ConsultarNfsePorRps", msg.ToString(), "ConsultarNfsePorRpsResponse");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarNfsePorRps", msg, "ConsultarNfsePorRpsResponse");
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -86,12 +88,12 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
 
     public string ConsultarSituacao(string cabec, string msg)
     {
-        return Execute("https://www.e-governeapps2.com.br/ConsultarSituacaoLoteRps", msg.ToString(), "ConsultarSituacaoLoteRpsResult");
+        return Execute("https://www.e-governeapps2.com.br/ConsultarSituacaoLoteRps", msg, "ConsultarSituacaoLoteRpsResult");
     }
 
     public string Enviar(string cabec, string msg)
     {
-        return Execute("https://www.e-governeapps2.com.br/RecepcionarLoteRps", msg.ToString(), "RecepcionarLoteRpsResponse");
+        return Execute("https://www.e-governeapps2.com.br/RecepcionarLoteRps", msg, "RecepcionarLoteRpsResponse");
     }
 
     public string EnviarSincrono(string cabec, string msg)
@@ -106,7 +108,7 @@ internal sealed class ISSCuritibaServiceClient : NFSeSoapServiceClient, IService
 
     private string Execute(string action, string message, string responseTag)
     {
-        return Execute(action, message, responseTag, new string[0]);
+        return Execute(action, message, "", [responseTag], []);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

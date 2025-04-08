@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="OpenNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,7 @@ using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;
+using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;
@@ -60,7 +61,13 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
 
     public OpenNFSe()
     {
-        Configuracoes = new ConfigNFSe();
+        Configuracoes = ConfigNFSe.Default;
+        NotasServico = new NotaServicoCollection(Configuracoes);
+    }
+    
+    public OpenNFSe(ConfigNFSe configuracoes)
+    {
+        Configuracoes = configuracoes;
         NotasServico = new NotaServicoCollection(Configuracoes);
     }
 
@@ -102,7 +109,7 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         finally
         {
             ServicePointManager.SecurityProtocol = oldProtocol;
-            provider?.Dispose();
+            provider.Dispose();
         }
     }
 
@@ -235,15 +242,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
 
     /// <summary>
     /// Consulta a NFSe/RPS que atende os filtros informados.
-    ///
+    /// 
     /// Obs.: Nem todos provedores suportam este metodo.
     /// </summary>
     /// <param name="numero">The numero.</param>
     /// <param name="serie">The serie.</param>
     /// <param name="tipo">The tipo.</param>
+    /// <param name="mesCompetencia"></param>
+    /// <param name="anoCompetencia"></param>
     /// <returns>RetornoWebservice.</returns>
     /// <exception cref="NotImplementedException"></exception>
-    public RetornoConsultarNFSeRps ConsultaNFSeRps(int numero, string serie, TipoRps tipo, int mesCompetencia, int anoCompetencia)
+    public RetornoConsultarNFSeRps ConsultaNFSeRps(int numero, string serie, TipoRps tipo, int mesCompetencia,
+        int anoCompetencia)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
         var oldProtocol = ServicePointManager.SecurityProtocol;
@@ -300,10 +310,11 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
 
     /// <summary>
     /// Consulta as NFSe de acordo com os filtros.
-    ///
+    /// 
     /// Obs.: Nem todos provedores suportam este metodo.
     /// </summary>
     /// <param name="numeroNfse">The numero nfse.</param>
+    /// <param name="serieNfse"></param>
     /// <returns>RetornoWebservice.</returns>
     /// <exception cref="NotImplementedException"></exception>
     public RetornoConsultarNFSe ConsultaNFSe(int numeroNfse, string serieNfse)
@@ -408,7 +419,8 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     /// <param name="imInter"></param>
     /// <param name="pagina"></param>
     /// <returns></returns>
-    public RetornoConsultarNFSe ConsultaNFSeIntermediario(string nomeInter, string cnpjInter, string imInter, int pagina = 0)
+    public RetornoConsultarNFSe ConsultaNFSeIntermediario(string nomeInter, string cnpjInter, string imInter,
+        int pagina = 0)
     {
         Guard.Against<OpenException>(nomeInter.IsEmpty(), "O Nome do intermediário não pode ser vazio.");
         Guard.Against<OpenException>(cnpjInter.IsEmpty(), "O CNPJ/CPF do intermediário não pode ser vazio.");
@@ -419,7 +431,8 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         try
         {
             ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-            return provider.ConsultaNFSe(NotasServico, nomeInter: nomeInter, cnpjInter: cnpjInter, imInter: imInter, pagina: pagina);
+            return provider.ConsultaNFSe(NotasServico, nomeInter: nomeInter, cnpjInter: cnpjInter, imInter: imInter,
+                pagina: pagina);
         }
         catch (Exception exception)
         {
@@ -447,53 +460,58 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         var provider = ProviderManager.GetProvider(Configuracoes);
         var oldProtocol = ServicePointManager.SecurityProtocol;
 
-            try
-            {
-                ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, "", 0, motivo, "", NotasServico);
-            }
-            catch (Exception exception)
-            {
-                this.Log().Error("[CancelarNFSe]", exception);
-                throw;
-            }
-            finally
-            {
-                ServicePointManager.SecurityProtocol = oldProtocol;
-                provider.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Cancela uma NFSe
-        ///
-        /// Obs.: Nem todos provedores suportam este metodo.
-        /// </summary>
-        /// <param name="codigoCancelamento">O codigo de cancelamento.</param>
-        /// <param name="numeroNFSe">O numero da NFSe.</param>
-        /// <param name="motivo">O motivo.</param>
-        /// <returns>RetornoWebservice.</returns>
-        public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serie, decimal valor, string motivo, string codigoVerificacao = null)
+        try
         {
-            var provider = ProviderManager.GetProvider(Configuracoes);
-            var oldProtocol = ServicePointManager.SecurityProtocol;
-
-            try
-            {
-                ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
-                return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, serie, valor, motivo, codigoVerificacao, NotasServico);
-            }
-            catch (Exception exception)
-            {
-                this.Log().Error("[CancelarNFSe]", exception);
-                throw;
-            }
-            finally
-            {
-                ServicePointManager.SecurityProtocol = oldProtocol;
-                provider.Dispose();
-            }
+            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+            return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, "", 0, motivo, "", NotasServico);
         }
+        catch (Exception exception)
+        {
+            this.Log().Error("[CancelarNFSe]", exception);
+            throw;
+        }
+        finally
+        {
+            ServicePointManager.SecurityProtocol = oldProtocol;
+            provider.Dispose();
+        }
+    }
+
+    /// <summary>
+    /// Cancela uma NFSe
+    /// 
+    /// Obs.: Nem todos provedores suportam este metodo.
+    /// </summary>
+    /// <param name="codigoCancelamento">O codigo de cancelamento.</param>
+    /// <param name="numeroNFSe">O numero da NFSe.</param>
+    /// <param name="serie"></param>
+    /// <param name="valor"></param>
+    /// <param name="motivo">O motivo.</param>
+    /// <param name="codigoVerificacao"></param>
+    /// <returns>RetornoWebservice.</returns>
+    public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string serie, decimal valor,
+        string motivo, string? codigoVerificacao = null)
+    {
+        var provider = ProviderManager.GetProvider(Configuracoes);
+        var oldProtocol = ServicePointManager.SecurityProtocol;
+
+        try
+        {
+            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+            return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, serie, valor, motivo, codigoVerificacao,
+                NotasServico);
+        }
+        catch (Exception exception)
+        {
+            this.Log().Error("[CancelarNFSe]", exception);
+            throw;
+        }
+        finally
+        {
+            ServicePointManager.SecurityProtocol = oldProtocol;
+            provider.Dispose();
+        }
+    }
 
     /// <summary>
     /// Cancela as NFSe que estão carregadas na lista.

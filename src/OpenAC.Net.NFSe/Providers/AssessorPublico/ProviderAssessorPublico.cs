@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderAssessorPublico.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -108,10 +112,10 @@ internal sealed class ProviderAssessorPublico : ProviderABRASF201
         switch (notas.Count)
         {
             case 0:
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Nenhuma RPS informada." });
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nenhuma RPS informada." });
                 break;
             case > 1:
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Apenas uma RPS pode ser enviada em modo Sincrono." });
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Apenas uma RPS pode ser enviada em modo Sincrono." });
                 break;
         }
 
@@ -193,7 +197,7 @@ internal sealed class ProviderAssessorPublico : ProviderABRASF201
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
             return;
         }
 

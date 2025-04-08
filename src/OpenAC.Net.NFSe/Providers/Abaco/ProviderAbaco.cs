@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderAbaco.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -30,12 +30,16 @@
 // ***********************************************************************
 
 using System;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderAbaco : ProviderABRASF
+internal class ProviderAbaco : ProviderABRASF
 {
     #region Constructors
 
@@ -53,20 +57,14 @@ internal sealed class ProviderAbaco : ProviderABRASF
         throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
     }
 
-    protected override string GetNamespace()
-    {
-        return string.Empty;
-    }
+    protected override IServiceClient GetClient(TipoUrl tipo) => new AbacoServiceClient(this, tipo);
 
-    protected override IServiceClient GetClient(TipoUrl tipo)
-    {
-        return new AbacoServiceClient(this, tipo);
-    }
+    protected override string GetNamespace() => "http://www.e-nfs.com.br";
 
-    protected override string GetSchema(TipoUrl tipo)
-    {
-        return "nfse_v2010.xsd";
-    }
+    protected override string GerarCabecalho() =>
+        "<cabecalho versao=\"201001\" xmlns=\"http://www.e-nfs.com.br\"><versaoDados>V2010</versaoDados></cabecalho>";
+
+    protected override string GetSchema(TipoUrl tipo) => "nfse_v2010.xsd";
 
     #endregion Methods
 }

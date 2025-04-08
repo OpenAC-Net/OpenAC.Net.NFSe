@@ -31,11 +31,14 @@
 
 using System;
 using System.Linq;
-using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -65,8 +68,8 @@ internal sealed class FiscoServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</ser:xml>");
         message.Append("</ser:recepcionarLoteRpsSincrono>");
 
-        string SoapAction = GetUrlWsProvedor + "/recepcionarLoteRpsSincrono";
-        return Execute(SoapAction, message.ToString(), "RecepcionarLoteRpsSincronoResponse", GetNamespaceSer);
+        var soapAction = GetUrlWsProvedor + "/recepcionarLoteRpsSincrono";
+        return Execute(soapAction, message.ToString(), "", ["RecepcionarLoteRpsSincronoResponse"], GetNamespaceSer);
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -74,10 +77,10 @@ internal sealed class FiscoServiceClient : NFSeSoapServiceClient, IServiceClient
         throw new NotImplementedException("Função não implementada");
     }
 
-    private string GetUrlWsProvedor { get { return Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", ""); } }
+    private string GetUrlWsProvedor => Provider.GetUrl(TipoUrl.ConsultarLoteRps)?.Replace("?wsdl", "");
 
-    private string[] GetNamespaceSer { get { return new[] { "xmlns:ser=\"" + GetUrlWsProvedor + "\"" }; } }
-        
+    private string[] GetNamespaceSer => ["xmlns:ser=\"" + GetUrlWsProvedor + "\""];
+
     public string ConsultarLoteRps(string cabec, string msg)
     {
         var message = new StringBuilder();
@@ -87,8 +90,8 @@ internal sealed class FiscoServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</ser:xml>");
         message.Append("</ser:consultarLoteRps>");
 
-        string SoapAction = GetUrlWsProvedor + "/consultarLoteRps";
-        return Execute(SoapAction, message.ToString(), "consultarLoteRpsResult", GetNamespaceSer);
+        var soapAction = GetUrlWsProvedor + "/consultarLoteRps";
+        return Execute(soapAction, message.ToString(), "", ["consultarLoteRpsResult"], GetNamespaceSer);
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -99,19 +102,16 @@ internal sealed class FiscoServiceClient : NFSeSoapServiceClient, IServiceClient
     public string ConsultarNFSeRps(string cabec, string msg)
     {
         throw new NotImplementedException("Função não implementada");
-        //return Execute("Execute", msg, new string[0]);
     }
 
     public string ConsultarNFSe(string cabec, string msg)
     {
         throw new NotImplementedException("Função não implementada");
-        //return Execute("Execute", msg, new string[0]);
     }
 
     public string CancelarNFSe(string cabec, string msg)
     {
         throw new NotImplementedException("Função não implementada");
-        //return Execute("Execute", msg, new[] { "WS_CancelarNfse.ExecuteResponse", "Cancelarnfseresposta" });
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -130,10 +130,7 @@ internal sealed class FiscoServiceClient : NFSeSoapServiceClient, IServiceClient
         if (element == null)
         {
             element = responseTag.Aggregate(xmlDocument, (current, tag) => current.ElementAnyNs(tag));
-            if (element == null)
-                return xmlDocument.ToString();
-
-            return element.ToString();
+            return element == null ? xmlDocument.ToString() : element.ToString();
         }
 
         var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";

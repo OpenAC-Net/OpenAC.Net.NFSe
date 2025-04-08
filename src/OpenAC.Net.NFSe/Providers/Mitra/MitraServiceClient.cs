@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="SystemProServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -35,6 +35,10 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -111,7 +115,7 @@ internal sealed class MitraServiceClient : NFSeSoapServiceClient, IServiceClient
 
     private string Execute(string action, string message, params string[] responseTag)
     {
-        return Execute(action, message, responseTag, new string[0]);
+        return Execute(action, message, "", responseTag, []);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderBetha.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,6 +33,10 @@ using System;
 using System.Linq;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -55,8 +59,8 @@ internal sealed class ProviderBetha : ProviderABRASF
 
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
         if (retornoWebservice.Erros.Any()) return;
 
         var xmlLoteRps = new StringBuilder();
@@ -93,7 +97,7 @@ internal sealed class ProviderBetha : ProviderABRASF
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
             return;
         }
 
@@ -146,7 +150,7 @@ internal sealed class ProviderBetha : ProviderABRASF
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da NFSe não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe não informado para a consulta." });
             return;
         }
 
@@ -222,13 +226,13 @@ internal sealed class ProviderBetha : ProviderABRASF
 
     protected override IServiceClient GetClient(TipoUrl tipo)
     {
-        switch (tipo)
+        return tipo switch
         {
-            case TipoUrl.CancelarNFSe: return new BethaServiceClient(this, tipo, null);
-            case TipoUrl.ConsultarNFSeRps: return new BethaServiceClient(this, tipo, null);
-            case TipoUrl.ConsultarNFSe: return new BethaServiceClient(this, tipo, null);
-            default: return new BethaServiceClient(this, tipo);
-        }
+            TipoUrl.CancelarNFSe => new BethaServiceClient(this, tipo, null),
+            TipoUrl.ConsultarNFSeRps => new BethaServiceClient(this, tipo, null),
+            TipoUrl.ConsultarNFSe => new BethaServiceClient(this, tipo, null),
+            _ => new BethaServiceClient(this, tipo)
+        };
     }
 
     protected override string GetNamespace()

@@ -1,6 +1,11 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -34,7 +39,7 @@ internal sealed class ConamServiceClient : NFSeSoapServiceClient, IServiceClient
 
     public string EnviarSincrono(string cabecalho, string dados)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public string ConsultarSituacao(string cabecalho, string dados)
@@ -155,12 +160,13 @@ internal sealed class ConamServiceClient : NFSeSoapServiceClient, IServiceClient
         var result = ValidarUsernamePassword();
         if (!result) throw new DFe.Core.OpenDFeCommunicationException("Faltou informar username e/ou password");
 
-        return Execute("", message, "", responseTag);
+        return Execute("", message, "", [responseTag], []);
     }
 
     private bool ValidarUsernamePassword()
     {
-        return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
+        return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) &&
+               !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

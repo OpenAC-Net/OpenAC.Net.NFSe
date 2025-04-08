@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="AssessorPublicoServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -36,6 +36,10 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -43,7 +47,8 @@ internal sealed class AssessorPublicoServiceClient : NFSeSoapServiceClient, ISer
 {
     #region Constructors
 
-    public AssessorPublicoServiceClient(ProviderAssessorPublico provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, SoapVersion.Soap12)
+    public AssessorPublicoServiceClient(ProviderAssessorPublico provider, TipoUrl tipoUrl, X509Certificate2 certificado)
+        : base(provider, tipoUrl, SoapVersion.Soap12)
     {
         //MessageVersion = SoapVersion.Soap11;
     }
@@ -65,12 +70,14 @@ internal sealed class AssessorPublicoServiceClient : NFSeSoapServiceClient, ISer
 
         for (var intI = 0; intI <= btyRes.Length - 1; intI++)
             strRes.Append(BitConverter.ToString(btyRes, intI, 1));
-            
+
         objMd5?.Dispose();
-        return strRes.ToString().TrimEnd(' ').ToLowerInvariant(); ;
+        return strRes.ToString().TrimEnd(' ').ToLowerInvariant();
+        ;
     }
 
-    public string Enviar(string cabec, string msg) => throw new NotImplementedException("Enviar nao implementada/suportada para este provedor.");
+    public string Enviar(string cabec, string msg) =>
+        throw new NotImplementedException("Enviar nao implementada/suportada para este provedor.");
 
     public string EnviarSincrono(string cabec, string msg)
     {
@@ -88,11 +95,14 @@ internal sealed class AssessorPublicoServiceClient : NFSeSoapServiceClient, ISer
         return Execute("", message.ToString(), "EnviarLoteRpsSincronoResponse");
     }
 
-    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException("ConsultarSituacao nao implementada/suportada para este provedor.");
+    public string ConsultarSituacao(string cabec, string msg) =>
+        throw new NotImplementedException("ConsultarSituacao nao implementada/suportada para este provedor.");
 
-    public string ConsultarLoteRps(string cabec, string msg) => throw new NotImplementedException("ConsultarLoteRps nao implementada/suportada para este provedor.");
+    public string ConsultarLoteRps(string cabec, string msg) =>
+        throw new NotImplementedException("ConsultarLoteRps nao implementada/suportada para este provedor.");
 
-    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException("ConsultarSequencialRps nao implementada/suportada para este provedor.");
+    public string ConsultarSequencialRps(string cabec, string msg) =>
+        throw new NotImplementedException("ConsultarSequencialRps nao implementada/suportada para este provedor.");
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {
@@ -109,7 +119,8 @@ internal sealed class AssessorPublicoServiceClient : NFSeSoapServiceClient, ISer
         return Execute("", message.ToString(), "EnviarLoteRpsSincronoResponse");
     }
 
-    public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException("ConsultarNFSe nao implementada/suportada para este provedor.");
+    public string ConsultarNFSe(string cabec, string msg) =>
+        throw new NotImplementedException("ConsultarNFSe nao implementada/suportada para este provedor.");
 
     public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
 
@@ -122,15 +133,16 @@ internal sealed class AssessorPublicoServiceClient : NFSeSoapServiceClient, ISer
         var result = ValidarUsernamePassword();
         if (!result) throw new OpenDFeCommunicationException("Faltou informar username e/ou password");
 
-        return Execute(action, message, responseTag, new string[0]);
+        return Execute(action, message, "", responseTag, []);
     }
 
     private bool ValidarUsernamePassword()
     {
-        return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) && !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
+        return !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Usuario) &&
+               !string.IsNullOrEmpty(Provider.Configuracoes.WebServices.Senha);
     }
 
-    protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, params string[] soapNamespaces)
+    protected override string Execute(string soapAction, string message, string soapHeader, string[] responseTag, string[] soapNamespaces)
     {
         var contetType = $"application/soap+xml; charset={CharSet};action={soapAction}";
         var envelope = new StringBuilder();
@@ -147,7 +159,8 @@ internal sealed class AssessorPublicoServiceClient : NFSeSoapServiceClient, ISer
 
         var xmlDocument = XDocument.Parse(EnvelopeRetorno);
         var body = xmlDocument.ElementAnyNs("Envelope");
-        var envelopeBody = xmlDocument.ElementAnyNs("Envelope")?.ElementAnyNs("Body")?.ElementAnyNs("Nfse.ExecuteResponse");
+        var envelopeBody = xmlDocument.ElementAnyNs("Envelope")?.ElementAnyNs("Body")
+            ?.ElementAnyNs("Nfse.ExecuteResponse");
         if (envelopeBody != null)
             body = envelopeBody;
 

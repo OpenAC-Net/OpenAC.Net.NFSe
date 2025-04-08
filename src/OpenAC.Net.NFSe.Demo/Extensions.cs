@@ -1,9 +1,12 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Demo;
@@ -62,12 +65,12 @@ public static class Extensions
         cmb.SelectedItem = list.SingleOrDefault(x => x.Content.Equals(valorPadrao));
     }
 
-    public static T GetSelectedValue<T>(this ComboBox cmb)
+    public static T? GetSelectedValue<T>(this ComboBox cmb)
     {
         return ((ItemData<T>)cmb.SelectedItem).Content;
     }
 
-    public static void SetSelectedValue<T>(this ComboBox cmb, T valor) where T : struct
+    public static void SetSelectedValue<T>(this ComboBox cmb, T valor)
     {
         var dataSource = (ItemData<T>[])cmb.DataSource;
         cmb.SelectedItem = dataSource.SingleOrDefault(x => x.Content.Equals(valor));
@@ -80,9 +83,8 @@ public static class Extensions
             select new ItemData<OpenMunicipioNFSe>($"{value.Nome} - {value.UF}", value)).ToArray();
     }
 
-    public static void SetSelectedValue(this ComboBox cmb, OpenMunicipioNFSe valor)
+    public static string ToFriendlyCase(this string PascalString)
     {
-        var dataSource = (ItemData<OpenMunicipioNFSe>[])cmb.DataSource;
-        cmb.SelectedItem = dataSource.SingleOrDefault(x => x.Content.Codigo == valor.Codigo);
+        return Regex.Replace(PascalString, "(?!^)([A-Z])", " $1");
     }
 }

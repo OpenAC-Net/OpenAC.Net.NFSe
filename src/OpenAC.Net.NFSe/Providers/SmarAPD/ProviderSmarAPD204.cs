@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderSmarAPDABRASF.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,6 +31,10 @@
 
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -43,9 +47,24 @@ internal sealed class ProviderSmarAPD204 : ProviderABRASF204
     public ProviderSmarAPD204(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "SmarAPD";
+        if (this.Municipio.Parametros.TryGetValue(nameof(SubVersao), out string? value))
+        {
+            if (int.TryParse(value, out var subversao))
+                this.SubVersao = subversao;
+        }
     }
 
     #endregion Constructors
+
+    #region Properties
+
+    /// <summary>
+    /// Inicializado com 1 para manter o mesmo funcionamento do código anterior
+    /// Também para ter uma lógica de configuração semelhante ao projeto ACBr
+    /// </summary>
+    public int SubVersao { get; } = 1;
+
+    #endregion
 
     #region Methods
 

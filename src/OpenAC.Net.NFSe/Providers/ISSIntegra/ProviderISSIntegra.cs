@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderISSIntegra.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -75,7 +79,7 @@ internal sealed class ProviderISSIntegra : ProviderABRASF
 
         if (confirmacaoCancelamento == null)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
             return;
         }
 
@@ -104,7 +108,7 @@ internal sealed class ProviderISSIntegra : ProviderABRASF
 
         foreach (var mensagem in listaMenssagens.ElementsAnyNs(messageElement))
         {
-            var evento = new Evento
+            var evento = new EventoRetorno
             {
                 Codigo = mensagem?.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty,
                 Descricao = mensagem?.ElementAnyNs("mensagem")?.GetValue<string>() ?? string.Empty,

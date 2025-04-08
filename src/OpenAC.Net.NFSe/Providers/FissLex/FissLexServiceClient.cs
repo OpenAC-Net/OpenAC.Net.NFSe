@@ -33,6 +33,10 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -50,8 +54,8 @@ internal sealed class FissLexServiceClient : NFSeSoapServiceClient, IServiceClie
 
     public string Enviar(string cabec, string msg)
     {
-        return Execute("FISS-LEXaction/AWS_RECEPCIONARLOTERPS.Execute", msg,
-            new[] { "WS_RecepcionarLoteRps.ExecuteResponse", "Enviarloterpsresposta" });
+        return Execute("FISS-LEXaction/AWS_RECEPCIONARLOTERPS.Execute", msg, 
+            "WS_RecepcionarLoteRps.ExecuteResponse", "Enviarloterpsresposta");
     }
 
     public string EnviarSincrono(string cabec, string msg)
@@ -61,13 +65,13 @@ internal sealed class FissLexServiceClient : NFSeSoapServiceClient, IServiceClie
 
     public string ConsultarSituacao(string cabec, string msg)
     {
-        return Execute("FISS-LEXaction/AWS_CONSULTARSITUACAOLOTERPS.Execute", msg,
-            new[] { "WS_ConsultarSituacaoLoteRps.ExecuteResponse" });
+        return Execute("FISS-LEXaction/AWS_CONSULTARSITUACAOLOTERPS.Execute", msg, 
+            "WS_ConsultarSituacaoLoteRps.ExecuteResponse");
     }
 
     public string ConsultarLoteRps(string cabec, string msg)
     {
-        return Execute("FISS-LEXaction/AWS_CONSULTALOTERPS.Execute", msg, new string[0]);
+        return Execute("FISS-LEXaction/AWS_CONSULTALOTERPS.Execute", msg);
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -77,18 +81,18 @@ internal sealed class FissLexServiceClient : NFSeSoapServiceClient, IServiceClie
 
     public string ConsultarNFSeRps(string cabec, string msg)
     {
-        return Execute("FISS-LEXaction/AWS_CONSULTANFSEPORRPS.Execute", msg, new string[0]);
+        return Execute("FISS-LEXaction/AWS_CONSULTANFSEPORRPS.Execute", msg);
     }
 
     public string ConsultarNFSe(string cabec, string msg)
     {
-        return Execute("FISS-LEXaction/AWS_CONSULTANFSE.Execute", msg, new string[0]);
+        return Execute("FISS-LEXaction/AWS_CONSULTANFSE.Execute", msg);
     }
 
     public string CancelarNFSe(string cabec, string msg)
     {
-        return Execute("FISS-LEXaction/AWS_CANCELARNFSE.Execute", msg,
-            new[] { "WS_CancelarNfse.ExecuteResponse", "Cancelarnfseresposta" });
+        return Execute("FISS-LEXaction/AWS_CANCELARNFSE.Execute", msg, 
+            "WS_CancelarNfse.ExecuteResponse", "Cancelarnfseresposta");
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -100,6 +104,9 @@ internal sealed class FissLexServiceClient : NFSeSoapServiceClient, IServiceClie
     {
         throw new NotImplementedException();
     }
+
+    private string Execute(string soapAction, string msg, params string[] responseTag) =>
+        Execute(soapAction, msg, "", responseTag, []);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {

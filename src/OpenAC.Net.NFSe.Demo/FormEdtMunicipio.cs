@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Demo;
@@ -26,6 +30,29 @@ public partial class FormEdtMunicipio : Form
     #region Methods
 
     #region Event Handlers
+
+    private void cmbProvedor_SelectedValueChanged(object sender, EventArgs e)
+    {
+        tbpParametros.Controls.Clear();
+
+        var provider = ((ComboBox)sender).GetSelectedValue<NFSeProvider>();
+        if (provider != null && ParametrosProvider.Parametros.ContainsKey(provider))
+        {
+            foreach(var parametro in ParametrosProvider.Parametros[provider])
+            {
+                var controls = CreateControl(parametro);
+
+                toolTip1.SetToolTip(controls.Last(), parametro.Descricao);
+
+                tbpParametros.SuspendLayout();
+
+                tbpParametros.Controls.AddRange(controls);
+
+                tbpParametros.ResumeLayout();
+                tbpParametros.PerformLayout();
+            }
+        }
+    }
 
     private void btnCancelar_Click(object sender, EventArgs e)
     {
@@ -56,8 +83,6 @@ public partial class FormEdtMunicipio : Form
         txtMunicipio.Text = target.Nome;
         cmbUf.EnumDataSource(target.UF);
         nudCodIBGE.Value = target.Codigo;
-        nudCodSiafi.Value = target.CodigoSiafi;
-        nudIdEntidade.Value = target.IdEntidade;
         cmbProvedor.EnumDataSourceSorted(target.Provedor);
         cmbVersao.EnumDataSource(target.Versao);
 
@@ -84,6 +109,18 @@ public partial class FormEdtMunicipio : Form
         txtHConsultarSequencialRps.Text = target.UrlHomologacao[TipoUrl.ConsultarSequencialRps];
         txtHSubstituirNFSe.Text = target.UrlHomologacao[TipoUrl.SubstituirNFSe];
         txtHAutenticacao.Text = target.UrlHomologacao[TipoUrl.Autenticacao];
+
+        var controls = tbpParametros.Controls.Cast<Control>().Where(x => x.Tag != null);
+
+        foreach (var param in target.Parametros)
+        {
+            var control = controls.SingleOrDefault(x => ((ParametroProvider)x.Tag).Nome == param.Key);
+            if (control == null) continue;
+            if (control is CheckBox checkBox)
+                checkBox.Checked = true;
+            else
+                control.Text = param.Value;
+        }
     }
 
     private void Salvar()
@@ -91,11 +128,9 @@ public partial class FormEdtMunicipio : Form
         target.Nome = txtMunicipio.Text;
         target.UF = cmbUf.GetSelectedValue<DFeSiglaUF>();
         target.Codigo = (int)nudCodIBGE.Value;
-        target.CodigoSiafi = (int)nudCodSiafi.Value;
 
         target.Provedor = cmbProvedor.GetSelectedValue<NFSeProvider>();
         target.Versao = cmbVersao.GetSelectedValue<VersaoNFSe>();
-        target.IdEntidade = (int)nudIdEntidade.Value;
 
         target.UrlProducao[TipoUrl.Enviar] = txtPEnviar.Text;
         target.UrlProducao[TipoUrl.EnviarSincrono] = txtPEnviarSincrono.Text;
@@ -120,25 +155,73 @@ public partial class FormEdtMunicipio : Form
         target.UrlHomologacao[TipoUrl.ConsultarSequencialRps] = txtHConsultarSequencialRps.Text;
         target.UrlHomologacao[TipoUrl.SubstituirNFSe] = txtHSubstituirNFSe.Text;
         target.UrlHomologacao[TipoUrl.Autenticacao] = txtHAutenticacao.Text;
+        
+        foreach(var control in tbpParametros.Controls.Cast<Control>())
+        {
+            var parametro = control.Tag as ParametroProvider;
+            if (parametro == null) continue;
+
+            if (control is CheckBox checkBox)
+                if (checkBox.Checked)
+                    target.Parametros.TryAdd(parametro.Nome, "TRUE");
+                else
+                    target.Parametros.Remove(parametro.Nome);
+            else
+            {
+                if(target.Parametros.ContainsKey(parametro.Nome))
+                    target.Parametros[parametro.Nome] = control.Text;
+                else
+                    target.Parametros.TryAdd(parametro.Nome, control.Text);
+            }
+        }
     }
 
-    private void btnAtualizar_Click(object sender, EventArgs e)
+    private void btnAtualizarProd_Click(object sender, EventArgs e)
     {
-        string novoLink = "";
+        var novoLink = "";
         if (InputBox.Show("Atualização de todos os endereços de produção", "Digite o link, se quiser alterar em tela, todos os campos com dados", ref novoLink).Equals(DialogResult.Cancel)) return;
 
-        if (!string.IsNullOrWhiteSpace(txtPEnviar.Text)) txtPEnviar.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPCancelaNFSe.Text)) txtPCancelaNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPCancelaNFSeLote.Text)) txtPCancelaNFSeLote.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultaNFSeRps.Text)) txtPConsultaNFSeRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultarSituacao.Text)) txtPConsultarSituacao.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPEnviarSincrono.Text)) txtPEnviarSincrono.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultaNFSe.Text)) txtPConsultaNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultrLoteRps.Text)) txtPConsultrLoteRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPConsultarSequencialRps.Text)) txtPConsultarSequencialRps.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPSubstituirNFSe.Text)) txtPSubstituirNFSe.Text = novoLink;
-        if (!string.IsNullOrWhiteSpace(txtPAutenticacao.Text)) txtPAutenticacao.Text = novoLink;
+        txtPEnviar.Text = novoLink;
+        txtPCancelaNFSe.Text = novoLink;
+        txtPCancelaNFSeLote.Text = novoLink;
+        txtPConsultaNFSeRps.Text = novoLink;
+        txtPConsultarSituacao.Text = novoLink;
+        txtPEnviarSincrono.Text = novoLink;
+        txtPConsultaNFSe.Text = novoLink;
+        txtPConsultrLoteRps.Text = novoLink;
+        txtPConsultarSequencialRps.Text = novoLink;
+        txtPSubstituirNFSe.Text = novoLink;
+        txtPAutenticacao.Text = novoLink;
     }
 
-    #endregion Methods
+    private void btnAtualizarHom_Click(object sender, EventArgs e)
+    {
+        var novoLink = "";
+        if (InputBox.Show("Atualização de todos os endereços de homologação", "Digite o link, se quiser alterar em tela, todos os campos com dados", ref novoLink).Equals(DialogResult.Cancel)) return;
+
+        txtHEnviar.Text = novoLink;
+        txtHCancelaNFSe.Text = novoLink;
+        txtHCancelaNFSeLote.Text = novoLink;
+        txtHConsultaNFSeRps.Text = novoLink;
+        txtHConsultarSituacao.Text = novoLink;
+        txtHEnviarSincrono.Text = novoLink;
+        txtHConsultaNFSe.Text = novoLink;
+        txtHConsultrLoteRps.Text = novoLink;
+        txtHConsultarSequencialRps.Text = novoLink;
+        txtHSubstituirNFSe.Text = novoLink;
+        txtHAutenticacao.Text = novoLink;
+    }
+
+    private Control[] CreateControl(ParametroProvider parametro)
+    {
+        return parametro.Tipo switch
+        {
+            TipoParametro.Text => [new TextBox { Tag = parametro, Dock = DockStyle.Top},
+                                   new Label { Text = parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, }],
+            TipoParametro.Boolean => [new CheckBox { Text= parametro.Nome.ToFriendlyCase(), Dock = DockStyle.Top, Tag = parametro }],
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    #endregion Methods    
 }

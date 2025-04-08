@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="VitoriaServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -41,7 +45,8 @@ internal sealed class ISSVitoriaServiceClient : NFSeSoapServiceClient, IServiceC
 {
     #region Constructors
 
-    public ISSVitoriaServiceClient(ProviderISSVitoria provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap12)
+    public ISSVitoriaServiceClient(ProviderISSVitoria provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(
+        provider, tipoUrl, certificado, SoapVersion.Soap12)
     {
     }
 
@@ -58,7 +63,8 @@ internal sealed class ISSVitoriaServiceClient : NFSeSoapServiceClient, IServiceC
         message.Append("</mensagemXML>");
         message.Append("</RecepcionarLoteRps>");
 
-        return Execute("http://www.abrasf.org.br/nfse.xsd/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRps");
+        return Execute("http://www.abrasf.org.br/nfse.xsd/RecepcionarLoteRps", message.ToString(),
+            "RecepcionarLoteRps");
     }
 
     public string EnviarSincrono(string cabec, string msg)
@@ -70,7 +76,8 @@ internal sealed class ISSVitoriaServiceClient : NFSeSoapServiceClient, IServiceC
         message.Append("</mensagemXML>");
         message.Append("</RecepcionarLoteRpsSincrono>");
 
-        return Execute("http://www.abrasf.org.br/nfse.xsd/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincrono");
+        return Execute("http://www.abrasf.org.br/nfse.xsd/RecepcionarLoteRpsSincrono", message.ToString(),
+            "RecepcionarLoteRpsSincrono");
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -104,7 +111,8 @@ internal sealed class ISSVitoriaServiceClient : NFSeSoapServiceClient, IServiceC
         message.Append("</mensagemXML>");
         message.Append("</ConsultarNfsePorRps>");
 
-        return Execute("http://www.abrasf.org.br/nfse.xsd/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRps");
+        return Execute("http://www.abrasf.org.br/nfse.xsd/ConsultarNfsePorRps", message.ToString(),
+            "ConsultarNfsePorRps");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
@@ -116,7 +124,8 @@ internal sealed class ISSVitoriaServiceClient : NFSeSoapServiceClient, IServiceC
         message.Append("</mensagemXML>");
         message.Append("</ConsultarNfseServicoPrestado>");
 
-        return Execute("http://www.abrasf.org.br/nfse.xsd/ConsultarNfseServicoPrestado", message.ToString(), "ConsultarNfseServicoPrestado");
+        return Execute("http://www.abrasf.org.br/nfse.xsd/ConsultarNfseServicoPrestado", message.ToString(),
+            "ConsultarNfseServicoPrestado");
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -147,6 +156,9 @@ internal sealed class ISSVitoriaServiceClient : NFSeSoapServiceClient, IServiceC
 
         return Execute("http://www.abrasf.org.br/nfse.xsd/SubstituirNfse", message.ToString(), "SubstituirNfse");
     }
+
+    private string Execute(string soapAction, string message, string responseTag) =>
+        Execute(soapAction, message, "", [responseTag], []);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderISSNet.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -38,6 +38,10 @@ using OpenAC.Net.DFe.Core;
 using System.Linq;
 using System.Xml.Linq;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -73,7 +77,7 @@ internal sealed class ProviderISSNet204 : ProviderABRASF204
     {
         if (retornoWebservice.NumeroRps < 1)
         {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da RPS não informado para a consulta." });
             return;
         }
 
@@ -109,14 +113,14 @@ internal sealed class ProviderISSNet204 : ProviderABRASF204
         var nfseSubstituida = retornoLote?.ElementAnyNs("NfseSubstituida");
         var nfseSubstituidora = retornoLote?.ElementAnyNs("NfseSubstituidora");
 
-        if (nfseSubstituida == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe Substituida não encontrada! (NfseSubstituida)" });
-        if (nfseSubstituidora == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe Substituidora não encontrada! (NfseSubstituidora)" });
+        if (nfseSubstituida == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe Substituida não encontrada! (NfseSubstituida)" });
+        if (nfseSubstituidora == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe Substituidora não encontrada! (NfseSubstituidora)" });
         if (retornoWebservice.Erros.Any()) return;
 
 
         /******* TRATANDO A NOTA SUBSTITUÍDA *******/
         var compNfse = nfseSubstituida.ElementAnyNs("CompNfse");
-        if (compNfse == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
+        if (compNfse == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
         if (retornoWebservice.Erros.Any()) return;
 
         var notaSubistituida = LoadXml(compNfse.ToString());
@@ -137,7 +141,7 @@ internal sealed class ProviderISSNet204 : ProviderABRASF204
 
         /******* TRATANDO A NOTA SUBSTITUIDORA *******/
         compNfse = nfseSubstituidora.ElementAnyNs("CompNfse");
-        if (compNfse == null) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
+        if (compNfse == null) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "NFSe não encontrada! (CompNfse)" });
         if (retornoWebservice.Erros.Any()) return;
 
         var notaSubistituidora = LoadXml(compNfse.ToString());

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="SimplISSServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -36,6 +36,10 @@ using System.Xml.Linq;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -140,8 +144,8 @@ internal sealed class SimplISS100ServiceClient : NFSeSoapServiceClient, IService
     {
         Guard.Against<OpenDFeCommunicationException>(ValidarUsernamePassword(), "Faltou informar username e/ou password");
 
-        return Execute(soapAction, message, "", responseTag, "xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
-            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:sis=\"http://www.sistema.com.br/Sistema.Ws.Nfse\"",
+            "xmlns:sis1=\"http://www.sistema.com.br/Sistema.Ws.Nfse.Cn\""]);
     }
 
     public string AjustarMensagem(string msg, params string[] tags)

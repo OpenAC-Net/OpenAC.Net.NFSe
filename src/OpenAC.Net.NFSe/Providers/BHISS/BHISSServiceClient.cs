@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="BHISSServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -61,7 +65,8 @@ internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</nfseDadosMsg>");
         message.Append("</ws:RecepcionarLoteRpsRequest>");
 
-        return Execute("http://ws.bhiss.pbh.gov.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
+        return Execute("http://ws.bhiss.pbh.gov.br/RecepcionarLoteRps", message.ToString(),
+            "RecepcionarLoteRpsResponse");
     }
 
     public string EnviarSincrono(string cabec, string msg)
@@ -136,7 +141,8 @@ internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</nfseDadosMsg>");
         message.Append("</ws:ConsultarNfsePorRpsRequest>");
 
-        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
+        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarNfsePorRps", message.ToString(),
+            "ConsultarNfsePorRpsResponse");
     }
 
     public string ConsultarSituacao(string nfseCabecMsg, string nfseDadosMsg)
@@ -151,22 +157,26 @@ internal sealed class BHISSServiceClient : NFSeSoapServiceClient, IServiceClient
         message.Append("</nfseDadosMsg>");
         message.Append("</ws:ConsultarSituacaoLoteRpsRequest>");
 
-        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarSituacaoLoteRps", message.ToString(), "ConsultarSituacaoLoteRpsResponse");
+        return Execute("http://ws.bhiss.pbh.gov.br/ConsultarSituacaoLoteRps", message.ToString(),
+            "ConsultarSituacaoLoteRpsResponse");
     }
 
-    public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
+    public string ConsultarSequencialRps(string nfseCabecMsg, string nfseDadosMsg) =>
+        throw new NotImplementedException();
 
     public string CancelarNFSeLote(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
     public string SubstituirNFSe(string nfseCabecMsg, string nfseDadosMsg) => throw new NotImplementedException();
 
-    private string Execute(string action, string message, string responseTag) => Execute(action, message, "", responseTag, "xmlns:ws=\"http://ws.bhiss.pbh.gov.br\"");
+    private string Execute(string action, string message, string responseTag) => Execute(action, message, "",
+        [responseTag], ["xmlns:ws=\"http://ws.bhiss.pbh.gov.br\""]);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
-        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        var exMessage =
+            $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
 
         throw new OpenDFeCommunicationException(exMessage);
     }

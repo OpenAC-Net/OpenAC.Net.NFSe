@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="WebIss2ServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -33,6 +33,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -60,7 +64,8 @@ internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClie
         message.Append("</nfseDadosMsg>");
         message.Append("</e:RecepcionarLoteRpsRequest>");
 
-        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", message.ToString(), "RecepcionarLoteRpsResponse");
+        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRps", message.ToString(),
+            "RecepcionarLoteRpsResponse");
     }
 
     public string EnviarSincrono(string cabec, string msg)
@@ -75,7 +80,8 @@ internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClie
         message.Append("</nfseDadosMsg>");
         message.Append("</e:RecepcionarLoteRpsSincronoRequest>");
 
-        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(), "RecepcionarLoteRpsSincronoResponse");
+        return Execute("http://nfse.abrasf.org.br/RecepcionarLoteRpsSincrono", message.ToString(),
+            "RecepcionarLoteRpsSincronoResponse");
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -115,7 +121,8 @@ internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClie
         message.Append("</nfseDadosMsg>");
         message.Append("</e:ConsultarNfsePorRpsRequest>");
 
-        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(), "ConsultarNfsePorRpsResponse");
+        return Execute("http://nfse.abrasf.org.br/ConsultarNfsePorRps", message.ToString(),
+            "ConsultarNfsePorRpsResponse");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
@@ -130,7 +137,8 @@ internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClie
         message.Append("</nfseDadosMsg>");
         message.Append("</e:ConsultarNfseServicoPrestadoRequest>");
 
-        return Execute("http://nfse.abrasf.org.br/ConsultarNfseServicoPrestado", message.ToString(), "ConsultarNfseServicoPrestadoResponse");
+        return Execute("http://nfse.abrasf.org.br/ConsultarNfseServicoPrestado", message.ToString(),
+            "ConsultarNfseServicoPrestadoResponse");
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -170,19 +178,17 @@ internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClie
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:e=\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:e=\"http://nfse.abrasf.org.br\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");
-        if (element != null)
-        {
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
+        if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
+        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - " +
+                        $"{element.ElementAnyNs("faultstring").GetValue<string>()}";
+        throw new OpenDFeCommunicationException(exMessage);
 
-        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
     }
 
     #endregion Methods

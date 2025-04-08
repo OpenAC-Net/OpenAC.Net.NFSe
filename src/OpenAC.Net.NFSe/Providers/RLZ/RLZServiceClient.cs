@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="RLZServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using OpenAC.Net.DFe.Core;
 using System;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -41,7 +45,7 @@ internal sealed class RLZServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public RLZServiceClient(ProviderRLZ provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    public RLZServiceClient(RLZProvider provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
     }
 
@@ -175,7 +179,7 @@ internal sealed class RLZServiceClient : NFSeSoapServiceClient, IServiceClient
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfse=\"http://nfse.abrasf.org.br\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
     }
 
     #endregion Methods

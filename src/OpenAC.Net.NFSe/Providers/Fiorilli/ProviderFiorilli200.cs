@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,6 +31,12 @@
 
 using OpenAC.Net.NFSe.Configuracao;
 using System.Xml.Linq;
+using OpenAC.Net.DFe.Core;
+using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -48,7 +54,7 @@ internal sealed class ProviderFiorilli200 : ProviderABRASF200
 
     #region Methods
 
-    protected override XElement WriteTomadorRps(NotaServico nota)
+    protected override XElement? WriteTomadorRps(NotaServico nota)
     {
         if (nota.Tomador.Endereco.CodigoMunicipio != 9999999)
             nota.Tomador.Endereco.CodigoPais = 0;
@@ -58,5 +64,33 @@ internal sealed class ProviderFiorilli200 : ProviderABRASF200
 
     protected override IServiceClient GetClient(TipoUrl tipo) => new Fiorilli200ServiceClient(this, tipo);
 
+    protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarEnviar(retornoWebservice);
+        else
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
+    }
+
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarEnviarSincrono(retornoWebservice);
+        else
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
+    }
+    
+    protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarCancelarNFSe(retornoWebservice);
+    }
+    
+    protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice)
+    {
+        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+            base.AssinarSubstituirNFSe(retornoWebservice);
+    }
+    
     #endregion Methods
 }

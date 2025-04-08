@@ -36,6 +36,10 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -63,7 +67,7 @@ internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</nfseDadosMsg>");
         message.Append("</ns2:EnviarLoteRpsSincrono>");
 
-        return Execute("", message.ToString(), "return", "EnviarLoteRpsSincronoResponse");
+        return Execute("", message.ToString(), "EnviarLoteRpsSincronoResponse", "return");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
@@ -93,7 +97,7 @@ internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</nfseDadosMsg>");
         message.Append("</ns2:CancelarNfse>");
 
-        return Execute("", message.ToString(), "return", "CancelarNfseResponse");
+        return Execute("", message.ToString(), "CancelarNfseResponse", "return");
     }
 
     public string SubstituirNFSe(string cabec, string msg)
@@ -108,7 +112,7 @@ internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceCl
         message.Append("</nfseDadosMsg>");
         message.Append("</ns2:SubstituirNfse>");
 
-        return Execute("", message.ToString(), "return", "SubstituirNfseResposta");
+        return Execute("", message.ToString(), "SubstituirNfseResposta", "return");
     }
 
     public string Enviar(string cabec, string msg) => throw new NotImplementedException("Enviar nao implementada/suportada para este provedor.");
@@ -123,7 +127,8 @@ internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceCl
 
     public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException("CancelarNFSeLote nao implementada/suportada para este provedor.");
 
-    private string Execute(string action, string message, params string[] responseTag) => Execute(action, message, responseTag, new string[] { "xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\"" });
+    private string Execute(string action, string message, params string[] responseTag) => 
+        Execute(action, message, "", responseTag, ["xmlns:ns2=\"http://NFSe.wsservices.systempro.com.br/\""]);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {

@@ -1,14 +1,14 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : Felipe Silveira (Transis Software)
-// Created          : 18-04-2022
+// Author           : Rafael Dias
+// Created          : 08-14-2024
 //
-// Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 13-05-2022
+// Last Modified By : Rafael Dias
+// Last Modified On : 08-14-2024
 // ***********************************************************************
-// <copyright file="ProviderSIAPNet.cs" company="OpenAC .Net">
+// <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,6 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;

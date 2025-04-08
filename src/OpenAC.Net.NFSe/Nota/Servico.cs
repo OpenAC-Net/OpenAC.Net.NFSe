@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="Servico.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -78,33 +78,16 @@ public sealed class Servico : GenericClone<Servico>, INotifyPropertyChanged
 
     public decimal BaseCalculo { get; set; }
 
-    public decimal DescontoCondicionado { get; set; }
-
-    public decimal DescontoIncondicionado { get; set; }
-
     public string Discriminacao { get; set; }
 
+    public int CodMunicipioIncidencia { get; set; }
+    
+    public string MunicipioIncidencia { get; set; }
+    
+    
+    public SituacaoTributaria IssRetido { get; set; }
+
     public NFSeSimNao Tributavel { get; set; }
-
-    public decimal ValorPis { get; set; }
-
-    public decimal ValorCofins { get; set; }
-
-    public decimal ValorInss { get; set; }
-
-    public decimal ValorIr { get; set; }
-
-    public decimal ValorCsll { get; set; }
-
-    public string CodServ { get; set; }
-
-    public string CodLcServ { get; set; }
-
-    public string Unidade { get; set; }
-
-    public decimal AlicotaIssst { get; set; }
-
-    public decimal ValorIssst { get; set; }
 
     #endregion Propriedades
 }

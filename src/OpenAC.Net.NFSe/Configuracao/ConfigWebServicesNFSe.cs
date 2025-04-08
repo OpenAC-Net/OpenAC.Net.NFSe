@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ConfigWebServicesNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,7 @@ using System.Linq;
 using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Configuracao;

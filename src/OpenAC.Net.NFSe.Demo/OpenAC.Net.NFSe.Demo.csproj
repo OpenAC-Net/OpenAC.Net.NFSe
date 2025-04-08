@@ -2,21 +2,25 @@
  
  <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>default</LangVersion>
+    <IsPackable>false</IsPackable>
+	 <Nullable>enable</Nullable>
+	 <LangVersion>latest</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.2.8" />
+    <PackageReference Include="NLog" Version="5.4.0" />
     <PackageReference Include="NLog.Windows.Forms" Version="5.2.3" />
-    <PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+    <PackageReference Include="OpenAC.Net.Core" Version="1.6.0" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.2" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.3" />
   </ItemGroup>
   
   <ItemGroup>
 	<ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource\OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource.csproj" />
+	<ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.QuestPdf\OpenAC.Net.NFSe.DANFSe.QuestPdf.csproj" />
 	<ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj" />
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderFiorilli.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,6 +29,11 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.Linq;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -46,7 +51,22 @@ internal sealed class ProviderPronim202 : ProviderABRASF202
 
     #region Methods
 
+    protected override string GerarCabecalho()
+    {
+        return "<tem:cabecalho versao=\"202\">" +
+               "<tem:versaoDados>2.02</tem:versaoDados>" +
+               "</tem:cabecalho>";
+    }
+
     protected override IServiceClient GetClient(TipoUrl tipo) => new Pronim202ServiceClient(this, tipo, null);
+
+    protected override void ValidarSchema(RetornoWebservice retorno, string schema)
+    {
+        base.ValidarSchema(retorno, schema);
+        if(retorno.Erros.Count > 0) return;
+
+        retorno.XmlEnvio = retorno.XmlEnvio.Replace(" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"", "");
+    }
 
     #endregion Methods
 }

@@ -3,8 +3,8 @@
 // Author           : Felipe Silveira (Transis Software)
 // Created          : 03-29-2023
 //
-// Last Modified By : Felipe Silveira (Transis Software)
-// Last Modified On : 03-29-2023
+// Last Modified By : Leandro Rossi
+// Last Modified On : 19-11-2024
 //
 // ***********************************************************************
 // <copyright file="ProviderIPM2.cs" company="OpenAC .Net">
@@ -32,6 +32,7 @@
 
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
@@ -41,332 +42,536 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderIPM100 : ProviderBase
+internal class ProviderIPM100 : ProviderBase
 {
+    #region Constructors
+
     public ProviderIPM100(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "IPM";
         Versao = VersaoNFSe.ve100;
+        NaoGerarGrupoRps = municipio.Parametros.ContainsKey(nameof(NaoGerarGrupoRps));
+        UsarVirgulaDecimais = true;
     }
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new IPM100ServiceClient(this, tipo);
+    #endregion Constructors
+
+    #region Properties
+
+    protected bool GerarId { get; set; }
+
+    protected bool NaoGerarGrupoRps { get; set; }
+
+    #endregion Properties
+
+    #region Methods
+
+    public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true)
+    {
+        return WriteXmlRps(nota, identado, showDeclaration);
+    }
 
     public override string WriteXmlRps(NotaServico nota, bool identado = true, bool showDeclaration = true)
     {
-        var xmlDoc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
+        var xmlDoc = new XDocument(new XDeclaration("1.0", "ISO-8859-1", null));
         xmlDoc.Add(WriteRps(nota));
-        return xmlDoc.AsString(identado, showDeclaration);
+        return xmlDoc.AsString(identado, showDeclaration, encode: OpenEncoding.ISO88591);
     }
 
     private XElement WriteRps(NotaServico nota)
     {
-        var rootRps = new XElement("Rps");
+        var nfse = GerarId
+            ? new XElement("nfse", new XAttribute("id", $"rps:{nota.IdentificacaoRps.Numero}"))
+            : new XElement("nfse");
 
-        var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"RPS_{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
-        rootRps.Add(infServico);
-
-        infServico.Add(WriteRpsRps(nota));
-
-        infServico.AddChild(AdicionarTag(TipoCampo.Dat, "", "Competencia", 10, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
-
-        infServico.AddChild(WriteServicosRps(nota));
-        infServico.AddChild(WritePrestadorRps(nota));
-        infServico.AddChild(WriteTomadorRps(nota));
-        infServico.AddChild(WriteIntermediarioRps(nota));
-        infServico.AddChild(WriteConstrucaoCivilRps(nota));
-
-        string regimeEspecialTributacao;
-        string optanteSimplesNacional;
-        if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
+        if (Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Homologacao)
         {
-            regimeEspecialTributacao = "6";
-            optanteSimplesNacional = "1";
+            if (!NaoGerarGrupoRps)
+            {
+                nfse.AddChild(AddTag(TipoCampo.Str, "#2", "identificador", 1, 80, Ocorrencia.Obrigatoria,
+                    $"nfseh_{nota.IdentificacaoRps.Numero}.{nota.IdentificacaoRps.Serie}"));
+            }
+
+            nfse.AddChild(AddTag(TipoCampo.Str, "#3", "nfse_teste", 1, 1, Ocorrencia.Obrigatoria, "1"));
         }
         else
         {
-            regimeEspecialTributacao = ((int)nota.RegimeEspecialTributacao).ToString();
-            optanteSimplesNacional = "2";
+            if (!NaoGerarGrupoRps)
+            {
+                nfse.AddChild(AddTag(TipoCampo.Str, "#2", "identificador", 1, 80, Ocorrencia.Obrigatoria,
+                    $"nfse_{nota.IdentificacaoRps.Numero}.{nota.IdentificacaoRps.Serie}"));
+            }
         }
 
-        if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
-            infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
+        var identificacao = GerarIdentificacaoRps(nota);
 
-        infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
-        infServico.AddChild(AdicionarTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
+        if (identificacao != null)
+            nfse.AddChild(identificacao);
 
-        return rootRps;
+        nfse.AddChild(GerarValoresServico(nota));
+        nfse.AddChild(GerarPrestador(nota));
+        nfse.AddChild(GerarTomador(nota));
+
+        // Fallback caso a lista não seja preenchida
+        if (nota.Servico.ItemsServico.Count > 0)
+            nfse.AddChild(GerarListaItem(nota));
+        else
+            nfse.AddChild(GerarItem(nota));
+
+        if (nota.Situacao == SituacaoNFSeRps.Normal)
+            nfse.AddChild(GerarFormaPagamento(nota));
+
+        return nfse;
     }
 
-    private XElement WriteRpsRps(NotaServico nota)
+    private XElement? GerarIdentificacaoRps(NotaServico nota)
     {
-        var rps = new XElement("Rps");
+        if (nota.IdentificacaoRps.Numero.ToInt32() == 0 || NaoGerarGrupoRps)
+            return null;
 
-        rps.Add(WriteIdentificacaoRps(nota));
+        var rps = new XElement("rps");
 
-        rps.AddChild(AdicionarTag(TipoCampo.Dat, "", "DataEmissao", 10, 10, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
-        rps.AddChild(AdicionarTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, (int)nota.Situacao + 1));
-
-        rps.AddChild(WriteSubstituidoRps(nota));
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "nro_recibo_provisorio", 1, 12, Ocorrencia.Obrigatoria,
+            nota.IdentificacaoRps.Numero));
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "serie_recibo_provisorio", 1, 2, Ocorrencia.Obrigatoria,
+            nota.IdentificacaoRps.Serie));
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "data_emissao_recibo_provisorio", 1, 10, Ocorrencia.Obrigatoria,
+            FormataData(nota.IdentificacaoRps.DataEmissao)));
+        rps.AddChild(AddTag(TipoCampo.Str, "#1", "hora_emissao_recibo_provisorio", 1, 8, Ocorrencia.Obrigatoria,
+            FormataHora(nota.IdentificacaoRps.DataEmissao)));
 
         return rps;
     }
 
-    private XElement WriteSubstituidoRps(NotaServico nota)
+    private XElement GerarValoresServico(NotaServico nota)
     {
-        if (nota.RpsSubstituido.NumeroRps.IsEmpty()) return null;
-
-        var rpsSubstituto = new XElement("RpsSubstituido");
-
-        rpsSubstituto.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Numero", 1, 15, Ocorrencia.Obrigatoria, nota.RpsSubstituido.NumeroRps));
-        rpsSubstituto.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Serie", 1, 15, Ocorrencia.Obrigatoria, nota.RpsSubstituido.Serie));
-        rpsSubstituto.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Tipo", 1, 15, Ocorrencia.Obrigatoria, (int)nota.RpsSubstituido.Tipo + 1));
-
-        return rpsSubstituto;
-    }
-
-    private XElement WriteIdentificacaoRps(NotaServico nota)
-    {
-        var indRps = new XElement("IdentificacaoRps");
-
-        indRps.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Numero", 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
-
-        var serie = nota.IdentificacaoRps.Serie;
-
-        //Algumas prefeituras não permitem controle de série de RPS
-        switch (Municipio.Codigo)
+        var valor = new XElement("nf");
+        if (nota.Situacao == SituacaoNFSeRps.Cancelado)
         {
-            case 3551702: //Sertãozinho/SP
-                serie = "00000";
-                break;
-
-            case 5208707: //Goiania/GO
-                serie = "UNICA";
-                break;
+            valor.AddChild(AddTag(TipoCampo.Str, "#1", "numero", 0, 9, Ocorrencia.Obrigatoria,
+                nota.IdentificacaoNFSe.Numero));
+            valor.AddChild(AddTag(TipoCampo.Str, "#1", "situacao", 1, 1, Ocorrencia.Obrigatoria, "C"));
         }
 
-        indRps.AddChild(AdicionarTag(TipoCampo.Str, "", "Serie", 1, 5, Ocorrencia.Obrigatoria, serie));
-        indRps.AddChild(AdicionarTag(TipoCampo.Int, "", "Tipo", 1, 1, Ocorrencia.Obrigatoria, (int)nota.IdentificacaoRps.Tipo + 1));
+        valor.AddChild(AddTag(TipoCampo.Str, "#1", "data_fato_gerador", 1, 10, Ocorrencia.NaoObrigatoria,
+            FormataData(nota.Competencia)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_total", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.ValorServicos)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_desconto", 1, 15, Ocorrencia.NaoObrigatoria,
+            (nota.Servico.Valores.DescontoIncondicionado)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_ir", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.ValorIr)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_inss", 1, 15, Ocorrencia.NaoObrigatoria,
+            (nota.Servico.Valores.ValorInss)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_contribuicao_social", 1, 15, 0,
+            (nota.Servico.Valores.ValorCsll)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_rps", 1, 15, Ocorrencia.NaoObrigatoria,
+            (nota.Servico.Valores.OutrasRetencoes)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_pis", 1, 15, Ocorrencia.NaoObrigatoria,
+            (nota.Servico.Valores.ValorPis)));
+        valor.AddChild(AddTag(TipoCampo.De2, "#1", "valor_cofins", 1, 15, Ocorrencia.NaoObrigatoria,
+            (nota.Servico.Valores.ValorCofins)));
+        valor.AddChild(AddTag(TipoCampo.Str, "#1", "observacao", 1, 1000, Ocorrencia.NaoObrigatoria,
+            nota.OutrasInformacoes));
 
-        return indRps;
+        return valor;
     }
 
-    private XElement WriteServicosRps(NotaServico nota)
+    private XElement GerarPrestador(NotaServico nota)
     {
-        var servico = new XElement("Servico");
+        var prestador = new XElement("prestador");
+        prestador.AddChild(AddTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria,
+            nota.Prestador.CpfCnpj.OnlyNumbers()));
+        prestador.AddChild(AddTag(TipoCampo.Str, "", "cidade", 1, 14, Ocorrencia.Obrigatoria,
+            CodigoTOM.FromIBGE(nota.Prestador.Endereco.CodigoMunicipio)));
 
-        servico.Add(WriteValoresRps(nota));
-
-        servico.AddChild(AdicionarTag(TipoCampo.Int, "", "IssRetido", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? 1 : 2));
-
-        if (nota.Servico.ResponsavelRetencao.HasValue)
-            servico.AddChild(AdicionarTag(TipoCampo.Int, "", "ResponsavelRetencao", 1, 1, Ocorrencia.NaoObrigatoria, (int)nota.Servico.ResponsavelRetencao + 1));
-
-        servico.AddChild(AdicionarTag(TipoCampo.Str, "", "ItemListaServico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
-        //servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoCnae", 1, 7, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoCnae));
-        //servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoTributacaoMunicipio", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoTributacaoMunicipio));
-        servico.AddChild(AdicionarTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
-        servico.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoMunicipio", 1, 20, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
-        servico.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.CodigoPais));
-        servico.AddChild(AdicionarTag(TipoCampo.Int, "", "ExigibilidadeISS", 1, 1, Ocorrencia.Obrigatoria, (int)nota.Servico.ExigibilidadeIss + 1));
-        servico.AddChild(AdicionarTag(TipoCampo.Int, "", "MunicipioIncidencia", 7, 7, Ocorrencia.MaiorQueZero, nota.Servico.MunicipioIncidencia));
-        servico.AddChild(AdicionarTag(TipoCampo.Str, "", "NumeroProcesso", 1, 30, Ocorrencia.NaoObrigatoria, nota.Servico.NumeroProcesso));
-
-        return servico;
-    }
-
-    private XElement WriteValoresRps(NotaServico nota)
-    {
-        var valores = new XElement("Valores");
-
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorDeducoes));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorPis));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCofins));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorInss));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorIr));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorCsll));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.OutrasRetencoes));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
-        valores.AddChild(AdicionarTag(TipoCampo.De4, "", "Aliquota", 1, 6, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
-        valores.AddChild(AdicionarTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoCondicionado));
-
-        return valores;
-    }
-
-    private XElement WritePrestadorRps(NotaServico nota)
-    {
-        if (nota.Prestador.CpfCnpj.IsEmpty() && nota.Prestador.InscricaoMunicipal.IsEmpty()) return null;
-
-        var prestador = new XElement("Prestador");
-
-        var cpfCnpjPrestador = new XElement("CpfCnpj");
-        prestador.Add(cpfCnpjPrestador);
-
-        cpfCnpjPrestador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Prestador.CpfCnpj));
-
-        prestador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15, Ocorrencia.NaoObrigatoria, nota.Prestador.InscricaoMunicipal));
         return prestador;
     }
 
-    private XElement WriteTomadorRps(NotaServico nota)
+    private XElement GerarTomador(NotaServico nota)
     {
-        var tomador = new XElement("TomadorServico");
-
-        if (!nota.Tomador.CpfCnpj.IsEmpty())
+        var tomador = new XElement("tomador");
+        if (!nota.Tomador.DocEstrangeiro.IsEmpty())
         {
-            var ideTomador = new XElement("IdentificacaoTomador");
-            tomador.Add(ideTomador);
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "tipo", 1, 14, Ocorrencia.Obrigatoria, "E"));
+            tomador.AddChild(AddTag(TipoCampo.Str, "#1", "identificador", 1, 20, Ocorrencia.Obrigatoria,
+                nota.Tomador.DocEstrangeiro.Trim()));
 
-            var cpfCnpjTomador = new XElement("CpfCnpj");
-            ideTomador.Add(cpfCnpjTomador);
+            tomador.AddChild(AddTag(TipoCampo.Str, "#1", "estado", 1, 100, Ocorrencia.Obrigatoria,
+                nota.Tomador.Endereco.Uf));
 
-            cpfCnpjTomador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Tomador.CpfCnpj));
-
-            ideTomador.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15,
-                Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
+            tomador.AddChild(AddTag(TipoCampo.Str, "#1", "pais", 1, 100, Ocorrencia.Obrigatoria,
+                nota.Tomador.Endereco.Pais));
         }
-
-        tomador.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
-
-        if (!nota.Tomador.Endereco.Logradouro.IsEmpty() ||
-            !nota.Tomador.Endereco.Numero.IsEmpty() ||
-            !nota.Tomador.Endereco.Complemento.IsEmpty() ||
-            !nota.Tomador.Endereco.Bairro.IsEmpty() ||
-            nota.Tomador.Endereco.CodigoMunicipio > 0 ||
-            !nota.Tomador.Endereco.Uf.IsEmpty() ||
-            nota.Tomador.Endereco.CodigoPais > 0 ||
-            !nota.Tomador.Endereco.Cep.IsEmpty())
+        else
         {
-            var endereco = new XElement("Endereco");
-            tomador.Add(endereco);
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "tipo", 1, 14, Ocorrencia.Obrigatoria,
+                nota.Tomador.CpfCnpj.IsCNPJ() ? "J" : "F"));
 
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Endereco", 1, 125, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Logradouro));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Numero));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Complemento", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
-            endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
-            endereco.AddChild(AdicionarTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
-            //endereco.AddChild(AdicionarTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoPais));
-            endereco.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
-        }
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "cpfcnpj", 1, 14, Ocorrencia.Obrigatoria,
+                nota.Tomador.CpfCnpj.OnlyNumbers()));
 
-        if (!nota.Tomador.DadosContato.Telefone.IsEmpty() ||
-            !nota.Tomador.DadosContato.Email.IsEmpty())
-        {
-            var contato = new XElement("Contato");
-            tomador.Add(contato);
+            if (nota.Tomador.CpfCnpj.IsCNPJ())
+                tomador.AddChild(AddTag(TipoCampo.Str, "", "ie", 1, 20, Ocorrencia.Obrigatoria,
+                    nota.Tomador.InscricaoEstadual.OnlyNumbers()));
 
-            contato.AddChild(AdicionarTag(TipoCampo.StrNumber, "", "Telefone", 1, 11, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.DDD + nota.Tomador.DadosContato.Telefone));
-            contato.AddChild(AdicionarTag(TipoCampo.Str, "", "Email", 1, 80, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "nome_razao_social", 1, 115, Ocorrencia.Obrigatoria,
+                nota.Tomador.RazaoSocial));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "sobrenome_nome_fantasia", 1, 115, Ocorrencia.Obrigatoria,
+                nota.Tomador.NomeFantasia));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "logradouro", 1, 125, Ocorrencia.Obrigatoria,
+                nota.Tomador.Endereco.Logradouro));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "email", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.DadosContato.Email));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "numero_residencia", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.Endereco.Numero));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "complemento", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.Endereco.Complemento));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "ponto_referencia", 1, 120, Ocorrencia.Obrigatoria, ""));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "bairro", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.Endereco.Bairro));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "cidade", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.DocEstrangeiro.IsEmpty()
+                    ? nota.Tomador.Endereco.CodigoMunicipio
+                    : nota.Tomador.Endereco.Municipio));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "cep", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.Endereco.Cep.OnlyNumbers()));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "ddd_fone_comercial", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.DadosContato.DDD));
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "fone_comercial", 1, 120, Ocorrencia.Obrigatoria,
+                nota.Tomador.DadosContato.Telefone));
+
+            tomador.AddChild(
+                AddTag(TipoCampo.Str, "", "ddd_fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "fone_residencial", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "ddd_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "fone_fax", 1, 120, Ocorrencia.Obrigatoria, ""));
         }
 
         return tomador;
     }
 
-    private XElement WriteIntermediarioRps(NotaServico nota)
+    private XElement GerarItem(NotaServico nota)
     {
-        if (nota.Intermediario.CpfCnpj.IsEmpty()) return null;
+        var itens = new XElement("itens");
 
-        var intermediario = new XElement("Intermediario");
-        var ideIntermediario = new XElement("IdentificacaoIntermediario");
-        intermediario.Add(ideIntermediario);
+        var lista = new XElement("lista");
+        lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_local_prestacao_servico", 1, 7, Ocorrencia.Obrigatoria,
+            nota.Servico.MunicipioIncidencia));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_item_lista_servico", 1, 5, Ocorrencia.Obrigatoria,
+            nota.Servico.ItemListaServico.OnlyNumbers()));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "descritivo", 1, 2000, Ocorrencia.Obrigatoria,
+            nota.Servico.Discriminacao));
+        lista.AddChild(AddTag(TipoCampo.De4, "", "aliquota_item_lista_servico", 1, 6, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.Aliquota)));
 
-        var cpfCnpj = new XElement("CpfCnpj");
-        ideIntermediario.Add(cpfCnpj);
+        if (nota.Servico.Valores.ValorDeducoes <= 0)
+        {
+            lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                    nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "01" : "00")
+                : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
+        }
+        else
+        {
+            lista.AddChild(nota.Servico.Valores.IssRetido == SituacaoTributaria.Normal
+                ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                    nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "04" : "03")
+                : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
+        }
 
-        cpfCnpj.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Intermediario.CpfCnpj));
+        lista.AddChild(AddTag(TipoCampo.De2, "", "valor_tributavel", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.ValorLiquidoNfse)));
+        lista.AddChild(AddTag(TipoCampo.De2, "", "valor_deducao", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.ValorDeducoes)));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
+            (nota.Servico.Valores.IssRetido != SituacaoTributaria.Normal ? nota.Servico.Valores.ValorIss : 0)));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "tributa_municipio_prestador", 1, 15, Ocorrencia.Obrigatoria,
+            nota.Servico.MunicipioIncidencia == nota.Prestador.Endereco.CodigoMunicipio ? "S" : "N"));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_codigo", 1, 15, Ocorrencia.Obrigatoria, ""));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_quantidade", 1, 15, Ocorrencia.Obrigatoria, ""));
+        lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_valor_unitario", 1, 15, Ocorrencia.Obrigatoria, ""));
 
-        ideIntermediario.AddChild(AdicionarTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15, Ocorrencia.NaoObrigatoria, nota.Intermediario.InscricaoMunicipal));
-        intermediario.AddChild(AdicionarTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Intermediario.RazaoSocial));
+        itens.Add(lista);
 
-        return intermediario;
+        return itens;
     }
 
-    private XElement WriteConstrucaoCivilRps(NotaServico nota)
+    private XElement GerarListaItem(NotaServico nota)
     {
-        if (nota.ConstrucaoCivil.ArtObra.IsEmpty()) return null;
+        var itens = new XElement("itens");
 
-        var construcao = new XElement("ConstrucaoCivil");
-        construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "CodigoObra", 1, 15, Ocorrencia.NaoObrigatoria, nota.ConstrucaoCivil.CodigoObra));
-        construcao.AddChild(AdicionarTag(TipoCampo.Str, "", "Art", 1, 15, Ocorrencia.Obrigatoria, nota.ConstrucaoCivil.ArtObra));
+        foreach (var item in nota.Servico.ItemsServico)
+        {
+            var lista = new XElement("lista");
+            lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_local_prestacao_servico", 1, 7, Ocorrencia.Obrigatoria,
+                item.MunicipioIncidencia));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "codigo_item_lista_servico", 1, 5, Ocorrencia.Obrigatoria,
+                item.ItemListaServico.OnlyNumbers()));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "descritivo", 1, 2000, Ocorrencia.Obrigatoria,
+                item.Discriminacao));
 
-        return construcao;
+            if (item.Aliquota == 0)
+                lista.AddChild(AddTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
+                    Ocorrencia.Obrigatoria,
+                    nota.Servico.Valores.Aliquota));
+            else
+                lista.AddChild(AddTag(TipoCampo.De4, "#", "aliquota_item_lista_servico", 1, 15,
+                    Ocorrencia.Obrigatoria,
+                    item.Aliquota));
+
+            if (item.ValorDeducoes <= 0)
+            {
+                lista.AddChild(item.IssRetido == SituacaoTributaria.Normal
+                    ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                        nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "01" : "00")
+                    : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "02"));
+            }
+            else
+            {
+                lista.AddChild(item.IssRetido == SituacaoTributaria.Normal
+                    ? AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria,
+                        nota.Tomador.Tipo == TipoTomador.OrgaoPublicoMunicipal ? "04" : "03")
+                    : AddTag(TipoCampo.Str, "", "situacao_tributaria", 1, 2, Ocorrencia.Obrigatoria, "05"));
+            }
+
+            lista.AddChild(AddTag(TipoCampo.De2, "", "valor_tributavel", 1, 15, Ocorrencia.Obrigatoria,
+                item.ValorServicos));
+            lista.AddChild(AddTag(TipoCampo.De2, "", "valor_deducao", 1, 15, Ocorrencia.Obrigatoria,
+                item.ValorDeducoes));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "valor_issrf", 1, 15, Ocorrencia.Obrigatoria,
+                (item.IssRetido != SituacaoTributaria.Normal ? item.ValorIss : 0)));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "tributa_municipio_prestador", 1, 15, Ocorrencia.Obrigatoria,
+                item.CodMunicipioIncidencia == nota.Prestador.Endereco.CodigoMunicipio ? "S" : "N"));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_codigo", 1, 15, Ocorrencia.Obrigatoria, item.Codigo));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_quantidade", 1, 15, Ocorrencia.Obrigatoria,
+                item.Quantidade));
+            lista.AddChild(AddTag(TipoCampo.Str, "", "unidade_valor_unitario", 1, 15, Ocorrencia.Obrigatoria,
+                item.ValorUnitario));
+
+            itens.Add(lista);
+        }
+
+        return itens;
+    }
+
+    private XElement GerarFormaPagamento(NotaServico nota)
+    {
+        var formaPagamento = new XElement("forma_pagamento");
+
+        var forma = nota.Pagamento.Forma switch
+        {
+            FormaPagamento.AVista => "1",
+            FormaPagamento.APrazo => "2",
+            FormaPagamento.Deposito => "3",
+            FormaPagamento.NaApresentacao => "4",
+            FormaPagamento.CartaoDebito => "5",
+            FormaPagamento.CartaoCredito => "6",
+            FormaPagamento.Cheque => "7",
+            FormaPagamento.PIX => "8",
+            _ => throw new OpenException("Forma de pagamento invalida")
+        };
+
+        formaPagamento.AddChild(AddTag(TipoCampo.Str, "#1", "tipo_pagamento", 1, 1, Ocorrencia.Obrigatoria, forma));
+
+        if (nota.Pagamento.Parcelas.Count <= 0) return formaPagamento;
+
+        var parcelas = new XElement("parcelas");
+        formaPagamento.AddChild(parcelas);
+
+        foreach (var item in nota.Pagamento.Parcelas)
+        {
+            var parcela = new XElement("parcela");
+            parcelas.AddChild(parcela);
+
+            parcela.AddChild(AddTag(TipoCampo.Str, "#", "numero", 1, 2, Ocorrencia.Obrigatoria, item.Parcela));
+
+            parcela.AddChild(AddTag(TipoCampo.De2, "#", "valor", 1, 15, Ocorrencia.Obrigatoria, (item.Valor)));
+
+            parcela.AddChild(AddTag(TipoCampo.Str, "#", "data_vencimento", 10, 10, Ocorrencia.Obrigatoria,
+                FormataData(item.DataVencimento)));
+        }
+
+        return formaPagamento;
+    }
+
+    private static string FormataData(DateTime valor) => valor.ToString("dd/MM/yyyy");
+
+    private static string FormataHora(DateTime valor) => valor.ToString("HH:mm:ss");
+
+    protected override IServiceClient GetClient(TipoUrl tipo) => new IPM100ServiceClient(this, tipo);
+
+    protected override string GerarCabecalho() => "";
+
+    protected override string GetSchema(TipoUrl tipo) => "";
+
+    protected override bool PrecisaValidarSchema(TipoUrl tipo) => false;
+
+    public override NotaServico LoadXml(XDocument? xml)
+    {
+        Guard.Against<XmlException>(xml == null, "Xml invalido.");
+        var notaXml = xml?.ElementAnyNs("nfse");
+        Guard.Against<XmlException>(notaXml == null, "Xml de RPS ou NFSe invalido.");
+
+        var nota = new NotaServico(Configuracoes)
+        {
+            IdentificacaoNFSe =
+          {
+              // Nota Fiscal
+              Numero = notaXml.ElementAnyNs("rps").ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>() ?? string.Empty,
+              DataEmissao = DateTime.Parse(notaXml.ElementAnyNs("rps").ElementAnyNs("data_emissao_recibo_provisorio")?.GetValue<string>() + " " + notaXml.ElementAnyNs("nf").ElementAnyNs("hora_emissao_recibo_provisorio") ?.GetValue<string>())
+          }
+        };
+
+        if (notaXml.ElementAnyNs("rps") != null)
+        {
+            // RPS
+            nota.IdentificacaoRps.Numero =
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>() ?? string.Empty;
+            nota.IdentificacaoRps.Serie =
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("serie_recibo_provisorio")?.GetValue<string>() ??
+                string.Empty;
+            nota.IdentificacaoRps.Tipo = TipoRps.RPS;
+            nota.IdentificacaoRps.DataEmissao = DateTime.Parse(
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("data_emissao_recibo_provisorio")?.GetValue<string>() + " " +
+                notaXml.ElementAnyNs("rps")?.ElementAnyNs("hora_emissao_recibo_provisorio")?.GetValue<string>());
+        }
+
+        if (string.IsNullOrEmpty(nota.IdentificacaoRps.Numero))
+        {
+            nota.IdentificacaoRps.Numero = notaXml.ElementAnyNs("identificacao")?.GetValue<string>() ?? string.Empty;
+            nota.IdentificacaoRps.Serie = notaXml.ElementAnyNs("nf")?.ElementAnyNs("serie_nfse")?.GetValue<string>() ??
+                                          string.Empty;
+            nota.IdentificacaoRps.DataEmissao = nota.IdentificacaoNFSe.DataEmissao;
+        }
+
+        // Situação do RPS
+        nota.Situacao =
+            (notaXml.ElementAnyNs("nf")?.ElementAnyNs("situacao_codigo_nfse")?.GetValue<string>() ?? string.Empty) ==
+            "2"
+                ? SituacaoNFSeRps.Cancelado
+                : SituacaoNFSeRps.Normal;
+
+        // Serviços e Valores
+        nota.Servico.Valores.ValorDeducoes = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("valor_deducao")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorPis =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_pis")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorCofins =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_cofins")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorInss =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_inss")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorIr =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_ir")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorCsll =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_contribuicao_social")?.GetValue<string>() ??
+                          "0");
+
+        var codSituacaoTributaria = notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("situacao_tributaria")?.GetValue<string>();
+        nota.Servico.Valores.IssRetido = codSituacaoTributaria is "2" or "5"
+            ? SituacaoTributaria.Retencao
+            : SituacaoTributaria.Normal;
+
+        nota.Servico.Valores.ValorIss = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("valor_issrf")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.BaseCalculo = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("valor_tributavel")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.Aliquota = decimal.Parse(notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")
+            ?.ElementAnyNs("aliquota_item_lista_servico")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorLiquidoNfse =
+            decimal.Parse(notaXml.ElementAnyNs("nf")?.ElementAnyNs("valor_total")?.GetValue<string>() ?? "0");
+        nota.Servico.Valores.ValorIssRetido = nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao
+            ? nota.Servico.Valores.ValorIss
+            : 0;
+        nota.Servico.ItemListaServico =
+            notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("codigo_item_lista_servico")
+                ?.GetValue<string>() ?? string.Empty;
+        nota.Servico.Discriminacao =
+            notaXml.ElementAnyNs("itens")?.ElementAnyNs("lista")?.ElementAnyNs("descritivo")?.GetValue<string>() ??
+            string.Empty;
+
+        nota.Servico.Valores.ValorServicos = nota.Servico.Valores.BaseCalculo + nota.Servico.Valores.ValorDeducoes;
+
+        // Prestador
+        nota.Prestador.CpfCnpj = notaXml.ElementAnyNs("prestador")?.ElementAnyNs("cpfcnpj")?.GetValue<string>() ??
+                                 string.Empty;
+
+        // Tomador
+        nota.Tomador.CpfCnpj =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cpfcnpj")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.RazaoSocial =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("nome_razao_social")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.NomeFantasia =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("sobrenome_nome_fantasia")?.GetValue<string>() ??
+            string.Empty;
+        nota.Tomador.Endereco.Logradouro =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("logradouro")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Numero =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("numero_residencia")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Complemento =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("complemento")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Bairro =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("bairro")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Cep =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cep")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Municipio = notaXml.ElementAnyNs("tomador")?.ElementAnyNs("cidade")?.GetValue<string>() ??
+                                          string.Empty;
+        nota.Tomador.Endereco.Uf =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("estado")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Pais =
+            notaXml.ElementAnyNs("tomador")?.ElementAnyNs("pais")?.GetValue<string>() ?? string.Empty;
+
+        return nota;
     }
 
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
-        foreach (var nota in notas)
+        switch (notas.Count)
         {
-            if (!nota.IdentificacaoRps.Serie.IsNumeric())
-                retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "A serie da nota precisa ser numérica. Serie informada: " + nota.IdentificacaoRps.Serie });
+            case 0:
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
+                break;
+
+            case > 1:
+                retornoWebservice.Erros.Add(new EventoRetorno
+                    { Codigo = "0", Descricao = "Este provedor aceita apenas uma RPS por vez" });
+                break;
         }
+
         if (retornoWebservice.Erros.Count > 0) return;
-        var xmlLoteRps = new StringBuilder();
 
-        foreach (var nota in notas)
-        {
-            var xmlRps = WriteXmlRps(nota, false, false);
-            xmlLoteRps.Append(xmlRps);
-            GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml", nota.IdentificacaoRps.DataEmissao);
-        }
+        var nota = notas[0];
+        var xmlRps = WriteXmlRps(nota);
 
-        var xmlLote = new StringBuilder();
-        xmlLote.Append($"<GerarNfseEnvio>");
-        xmlLote.Append(xmlLoteRps);
-        xmlLote.Append("</GerarNfseEnvio>");
+        GravarRpsEmDisco(xmlRps, $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml",
+            nota.IdentificacaoRps.DataEmissao);
 
-        retornoWebservice.XmlEnvio = AdicionaEnvelope(xmlLote.ToString());
+        retornoWebservice.XmlEnvio = xmlRps;
     }
 
-    private string AdicionaEnvelope(string message)
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
     {
-        var envelope = new StringBuilder();
-        envelope.Append("<soapenv:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:net=\"net.atende\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">");
-
-        envelope.Append("<soapenv:Header/>");
-        envelope.Append("<soapenv:Body>");
-        envelope.Append(message);
-        envelope.Append("</soapenv:Body>");
-        envelope.Append("</soapenv:Envelope>");
-        return envelope.ToString();
-    }
-
-    protected override void PrepararConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
-    {
-        var message = new StringBuilder();
-        message.Append("<net:ConsultarNfseServicoPrestadoEnvio>");
-        message.Append("<pesquisa>");
-        message.Append($"<codigo_autenticidade>{retornoWebservice.Protocolo}</codigo_autenticidade>");
-        message.Append("</pesquisa>");
-        message.Append("</net:ConsultarNfseServicoPrestadoEnvio>");
-        retornoWebservice.XmlEnvio = message.ToString();
-    }
-
-    protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
-    {
-        var message = new StringBuilder();
-        message.Append("<Cancela>");
-        message.Append($"<NumeroNFSe>{retornoWebservice.NumeroNFSe}</NumeroNFSe>");
-        message.Append($"<SerieNFSe>{retornoWebservice.SerieNFSe}</SerieNFSe>");
-        message.Append($"<Motivo>{retornoWebservice.Motivo}</Motivo>");
-        message.Append("</Cancela>");
-        retornoWebservice.XmlEnvio = message.ToString();
-    }
-
-    protected override bool PrecisaValidarSchema(TipoUrl tipo)
-    {
-        return false;
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "nfse", "", Certificado);
     }
 
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
@@ -374,298 +579,263 @@ internal sealed class ProviderIPM100 : ProviderBase
         try
         {
             var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-
-            retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
-            retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-            retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
-
-            if (!retornoWebservice.Sucesso) return;
-
-            var numeroNFSe = xmlRet.Root.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
-            var chaveNFSe = xmlRet.Root.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-            var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.Now;
-            var numeroRps = xmlRet.Root.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
-
-            GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
-
-            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
-            if (nota == null)
+            var chaveNfSe = xmlRet.Root?.ElementAnyNs("cod_verificador_autenticidade").GetValue<string>();
+            
+            if (chaveNfSe == null)
             {
-                notas.Load(retornoWebservice.XmlRetorno);
+                var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
+                if (mensagens == null) return;
+
+                foreach (var item in mensagens.Elements())
+                {
+                    var erro = item.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
+                    retornoWebservice.Erros.Add(new EventoRetorno
+                    {
+                        Codigo = erro.Substring(0, 5),
+                        Correcao = string.Empty,
+                        Descricao = erro
+                    });
+                }
+
+                return;
             }
-            else
-            {
-                nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
-                nota.IdentificacaoNFSe.Numero = numeroNFSe;
-                nota.IdentificacaoNFSe.Chave = chaveNFSe;
-                nota.XmlOriginal = retornoWebservice.XmlRetorno;
-            }
+            retornoWebservice.Protocolo = chaveNfSe;
+            var numeroNfSe = xmlRet.Root?.ElementAnyNs("numero_nfse").GetValue<string>();
+            var serieNfse = xmlRet.Root?.ElementAnyNs("serie_nfse").GetValue<string>();
+
+            var data = xmlRet.Root?.ElementAnyNs("data_nfse").GetValue<string>();
+            var hora = xmlRet.Root?.ElementAnyNs("hora_nfse").GetValue<string>();
+
+            var dataNfSe = DateTime.ParseExact($"{data} {hora}", "dd/MM/yyyy HH:mm:ss", null);
+
+            GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNfSe}-{chaveNfSe}-.xml", dataNfSe);
+
+            var nota = notas.First();
+            nota.IdentificacaoNFSe.Numero = numeroNfSe ?? string.Empty;
+            nota.IdentificacaoNFSe.Serie = serieNfse ?? string.Empty;
+            nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
+            nota.IdentificacaoNFSe.Chave = chaveNfSe;
+           
+            nota.LinkNFSe = xmlRet.Root?.ElementAnyNs("link_nfse")?.GetValue<string>() ?? string.Empty;
+            nota.XmlOriginal = retornoWebservice.XmlEnvio;
+            retornoWebservice.Sucesso = true;
         }
-        catch { }
+        catch (Exception e)
+        {
+            retornoWebservice.Erros.Add(new EventoRetorno
+            {
+                Codigo = $"999 - {nameof(e)}",
+                Correcao = "",
+                Descricao = e.Message
+            });
+        }
     }
 
-    protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
+    protected override void PrepararConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
     {
+        var message = new StringBuilder();
+        message.Append("<nfse>");
+        message.Append("<pesquisa>");
+        message.Append($"<codigo_autenticidade>{retornoWebservice.Protocolo}</codigo_autenticidade>");
+        message.Append("</pesquisa>");
+        message.Append("</nfse>");
+        retornoWebservice.XmlEnvio = message.ToString();
+    }
+
+    protected override void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice)
+    {
+        // Ignore
+    }
+
+    protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice,
+        NotaServicoCollection notas)
+    {
+        if (!retornoWebservice.XmlRetorno.IsValidXml())
+        {
+            retornoWebservice.Erros.Add(new EventoRetorno
+            {
+                Codigo = "999",
+                Correcao = string.Empty,
+                Descricao = "Erro xml de retorno inválido."
+            });
+
+            return;
+        }
+
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
 
-        var numeroNFSe = xmlRet.Root.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
-        var chaveNFSe = xmlRet.Root.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-        var dataNFSe = xmlRet.Root.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.Now;
-        var numeroRps = xmlRet.Root.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
+        var numeroNfSe = xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("numero_nfse")?.GetValue<string>() ??
+                         string.Empty;
+        var dataNfSe = DateTime.Parse(xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("data_nfse")?.GetValue<string>() +
+                                      " " + xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("hora_nfse")
+                                          ?.GetValue<string>());
+        var chaveNfSe =
+            xmlRet.Root?.ElementAnyNs("nf")?.ElementAnyNs("cod_verificador_autenticidade")?.GetValue<string>() ??
+            string.Empty;
+        var numeroRps = xmlRet.Root?.ElementAnyNs("rps")?.ElementAnyNs("nro_recibo_provisorio")?.GetValue<string>();
 
-        GravarNFSeEmDisco(xmlRet.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+        if (string.IsNullOrEmpty(numeroRps))
+            numeroRps = xmlRet.Root?.ElementAnyNs("identificador")?.GetValue<string>();
 
         var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
         if (nota == null)
         {
-            nota = notas.Load(retornoWebservice.XmlRetorno);
+            notas.Load(retornoWebservice.XmlRetorno);
         }
         else
         {
-            nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
-            nota.IdentificacaoNFSe.Numero = numeroNFSe;
-            nota.IdentificacaoNFSe.Chave = chaveNFSe;
+            nota.IdentificacaoNFSe.DataEmissao = dataNfSe;
+            nota.IdentificacaoNFSe.Numero = numeroNfSe;
+            nota.IdentificacaoNFSe.Chave = chaveNfSe;
             nota.XmlOriginal = retornoWebservice.XmlRetorno;
         }
 
-        retornoWebservice.Nota = nota;
         retornoWebservice.Sucesso = true;
+    }
+
+    protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
+    {
+        var message = new StringBuilder();
+
+        message.Append("<nfse>");
+        message.Append("<nf>");
+        message.Append($"<numero>{retornoWebservice.NumeroNFSe}</numero>");
+        message.Append($"<serie_nfse>{retornoWebservice.SerieNFSe}</serie_nfse>");
+        message.Append("<situacao>C</situacao>");
+        message.Append($"<observacao>{retornoWebservice.Motivo}</observacao>");
+        message.Append("</nf>");
+        message.Append("<prestador>");
+        message.Append($"<cpfcnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</cpfcnpj>");
+        message.Append($"<cidade>{CodigoTOM.FromIBGE(Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio)?.ZeroFill(9)}</cidade>");
+        message.Append("</prestador>");
+        message.Append("</nfse>");
+
+        retornoWebservice.XmlEnvio = message.ToString();
+    }
+
+    protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
+    {
+        // Ignore
     }
 
     protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
     {
-        var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == retornoWebservice.NumeroNFSe);
+        if (!retornoWebservice.XmlRetorno.IsValidXml())
+        {
+            retornoWebservice.Erros.Add(new EventoRetorno
+            {
+                Codigo = "999",
+                Correcao = string.Empty,
+                Descricao = "Erro xml de retorno inválido."
+            });
 
+            return;
+        }
+
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno.RemoverDeclaracaoXml()!);
+        var mensagens = xmlRet.Root?.ElementAnyNs("mensagem");
+        if (mensagens != null)
+        {
+            foreach (var item in mensagens.Elements())
+            {
+                var erro = item.GetValue<string>();
+
+                var codigo = erro.Substring(0, 5);
+
+                if (int.Parse(codigo) == 1)
+                    continue;
+
+                var mensagemErro = erro;
+
+                retornoWebservice.Erros.Add(new EventoRetorno
+                {
+                    Codigo = codigo,
+                    Correcao = null,
+                    Descricao = mensagemErro
+                });
+            }
+
+            if (retornoWebservice.Erros.Any())
+                return;
+        }
+
+        retornoWebservice.Data = DateTime.Now;
         retornoWebservice.Sucesso = true;
+
+        var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == retornoWebservice.NumeroNFSe);
+        if (nota == null) return;
+
         nota.Situacao = SituacaoNFSeRps.Cancelado;
         nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
         nota.Cancelamento.DataHora = retornoWebservice.Data;
     }
 
-    public override NotaServico LoadXml(XDocument xml)
-    {
-        Guard.Against<XmlException>(xml == null, "Xml invalido.");
-        XElement notaXml = xml.ElementAnyNs("notafiscal");
-        Guard.Against<XmlException>(notaXml == null, "Xml de RPS ou NFSe invalido.");
+    #region Não Implementados
 
-        var nota = new NotaServico(Configuracoes);
+    protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) =>
+        throw new NotImplementedException();
 
-        // Nota Fiscal
-        nota.IdentificacaoNFSe.Numero = notaXml.ElementAnyNs("numero_nf")?.GetValue<string>() ?? string.Empty;
-        nota.IdentificacaoNFSe.Chave = notaXml.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
-        nota.IdentificacaoNFSe.DataEmissao = notaXml.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
+    protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice) =>
+        throw new NotImplementedException();
 
-        // RPS
-        nota.IdentificacaoRps.Numero = notaXml.ElementAnyNs("rps")?.GetValue<string>() ?? string.Empty;
-        nota.IdentificacaoRps.Serie = notaXml.ElementAnyNs("serie_rps")?.GetValue<string>() ?? string.Empty;
-        nota.IdentificacaoRps.Tipo = TipoRps.RPS;
-        nota.IdentificacaoRps.DataEmissao = notaXml.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
+    protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) =>
+        throw new NotImplementedException();
 
-        // Situação do RPS
-        nota.Situacao = (notaXml.ElementAnyNs("cancelada")?.GetValue<string>() ?? string.Empty) == "S" ? SituacaoNFSeRps.Cancelado : SituacaoNFSeRps.Normal;
+    protected override void PrepararConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice,
+        NotaServicoCollection notas) => throw new NotImplementedException();
 
-        // Serviços e Valores
-        nota.Servico.Valores.ValorServicos = notaXml.ElementAnyNs("valor_servico")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorDeducoes = notaXml.ElementAnyNs("deducao")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorPis = notaXml.ElementAnyNs("valor_pis")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorCofins = notaXml.ElementAnyNs("valor_cofins")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorInss = notaXml.ElementAnyNs("valor_inss")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorIr = notaXml.ElementAnyNs("valor_irrf")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorCsll = notaXml.ElementAnyNs("valor_csll")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.IssRetido = (notaXml.ElementAnyNs("iss_retido")?.GetValue<string>() ?? string.Empty) == "S" ? SituacaoTributaria.Retencao : SituacaoTributaria.Normal;
-        nota.Servico.Valores.ValorIss = notaXml.ElementAnyNs("valor_iss")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.BaseCalculo = notaXml.ElementAnyNs("valor_servico")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.Aliquota = notaXml.ElementAnyNs("aliq_iss")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorLiquidoNfse = notaXml.ElementAnyNs("valor_nf")?.GetValue<decimal>() ?? 0;
-        nota.Servico.Valores.ValorIssRetido = nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? nota.Servico.Valores.ValorIss : 0;
-        nota.Servico.ItemListaServico = notaXml.ElementAnyNs("id_codigo_servico")?.GetValue<string>() ?? string.Empty;
-        nota.Servico.Discriminacao = notaXml.ElementAnyNs("descricao")?.GetValue<string>() ?? string.Empty;
+    protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice) =>
+        throw new NotImplementedException();
 
-        // Prestador
-        nota.Prestador.CpfCnpj = notaXml.ElementAnyNs("cnpj_cpf_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.InscricaoMunicipal = notaXml.ElementAnyNs("im_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.RazaoSocial = notaXml.ElementAnyNs("razao_social_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.Endereco.Logradouro = notaXml.ElementAnyNs("endereco_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.Endereco.Numero = notaXml.ElementAnyNs("numero_ende_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.Endereco.Complemento = notaXml.ElementAnyNs("complemento_ende_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.Endereco.Bairro = notaXml.ElementAnyNs("bairro_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.Endereco.Municipio = notaXml.ElementAnyNs("cidade_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.Endereco.Uf = notaXml.ElementAnyNs("uf_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.Endereco.Cep = notaXml.ElementAnyNs("cep_prestador")?.GetValue<string>() ?? string.Empty;
-        nota.Prestador.DadosContato.Email = notaXml.ElementAnyNs("email_prestador")?.GetValue<string>() ?? string.Empty;
+    protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice,
+        NotaServicoCollection notas) => throw new NotImplementedException();
 
-        // Tomador
-        nota.Tomador.CpfCnpj = notaXml.ElementAnyNs("cnpj_cpf_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.InscricaoMunicipal = notaXml.ElementAnyNs("im_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.RazaoSocial = notaXml.ElementAnyNs("razao_social_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Logradouro = notaXml.ElementAnyNs("endereco_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Numero = notaXml.ElementAnyNs("numero_ende_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Complemento = notaXml.ElementAnyNs("complemento_ende_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Bairro = notaXml.ElementAnyNs("bairro_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Cep = notaXml.ElementAnyNs("cep_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Municipio = notaXml.ElementAnyNs("cidade_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Uf = notaXml.ElementAnyNs("uf_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.Endereco.Pais = notaXml.ElementAnyNs("pais_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.DadosContato.Telefone = notaXml.ElementAnyNs("fone_destinatario")?.GetValue<string>() ?? string.Empty;
-        nota.Tomador.DadosContato.Email = notaXml.ElementAnyNs("email_destinatario")?.GetValue<string>() ?? string.Empty;
-
-        return nota;
-    }
-
-    protected override string GerarCabecalho()
-    {
-        return string.Empty;
-    }
-
-    protected override void AssinarConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice)
-    {
-        return;
-    }
-
-    protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
-    {
-        return;
-    }
-
-    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
-    {
-        //NAO PRECISA ASSINAR
-        //retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "nfse", "", Certificado);
-    }
-
-    protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
-    {
-        var loteBuilder = new StringBuilder();
-
-        loteBuilder.Append($"<net:ConsultarNfseServicoPrestadoEnvio>");
-        loteBuilder.Append("<Prestador>");
-        loteBuilder.Append("<CpfCnpj>");
-        loteBuilder.Append(Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ()
-            ? $"<Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj>"
-            : $"<Cpf>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(11)}</Cpf>");
-        loteBuilder.Append("</CpfCnpj>");
-        loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
-        loteBuilder.Append("</Prestador>");
-
-        if (retornoWebservice.NumeroNFse > 0)
-            loteBuilder.Append($"<NumeroNfse>{retornoWebservice.NumeroNFse}</NumeroNfse>");
-
-        //if (retornoWebservice.Inicio.HasValue && retornoWebservice.Fim.HasValue)
-        //{
-        //    loteBuilder.Append("<PeriodoEmissao>");
-        //    loteBuilder.Append($"<DataInicial>{retornoWebservice.Inicio:yyyy-MM-dd}</DataInicial>");
-        //    loteBuilder.Append($"<DataFinal>{retornoWebservice.Fim:yyyy-MM-dd}</DataFinal>");
-        //    loteBuilder.Append("</PeriodoEmissao>");
-        //}
-
-        if (!retornoWebservice.CPFCNPJTomador.IsEmpty())
-        {
-            loteBuilder.Append("<Tomador>");
-            loteBuilder.Append("<CpfCnpj>");
-            loteBuilder.Append(retornoWebservice.CPFCNPJTomador.IsCNPJ()
-                ? $"<Cnpj>{retornoWebservice.CPFCNPJTomador.ZeroFill(14)}</Cnpj>"
-                : $"<Cpf>{retornoWebservice.CPFCNPJTomador.ZeroFill(11)}</Cpf>");
-            loteBuilder.Append("</CpfCnpj>");
-            if (!retornoWebservice.IMTomador.IsEmpty()) loteBuilder.Append($"<InscricaoMunicipal>{retornoWebservice.IMTomador}</InscricaoMunicipal>");
-            loteBuilder.Append("</Tomador>");
-        }
-
-        //if (!retornoWebservice.NomeIntermediario.IsEmpty() && !retornoWebservice.CPFCNPJIntermediario.IsEmpty())
-        //{
-        //    loteBuilder.Append("<IntermediarioServico>");
-        //    loteBuilder.Append($"<RazaoSocial>{retornoWebservice.NomeIntermediario}</RazaoSocial>");
-        //    loteBuilder.Append("<CpfCnpj>");
-        //    loteBuilder.Append(retornoWebservice.CPFCNPJIntermediario.IsCNPJ()
-        //        ? $"<Cnpj>{retornoWebservice.CPFCNPJIntermediario.ZeroFill(14)}</Cnpj>"
-        //        : $"<Cpf>{retornoWebservice.CPFCNPJIntermediario.ZeroFill(11)}</Cpf>");
-        //    loteBuilder.Append("</CpfCnpj>");
-        //    if (!retornoWebservice.IMIntermediario.IsEmpty())
-        //        loteBuilder.Append($"<InscricaoMunicipal>{retornoWebservice.IMIntermediario}</InscricaoMunicipal>");
-        //    loteBuilder.Append("</IntermediarioServico>");
-        //}
-
-        loteBuilder.Append($"<Pagina>{Math.Max(retornoWebservice.Pagina, 1)}</Pagina>");
-        loteBuilder.Append("</net:ConsultarNfseServicoPrestadoEnvio>");
-        retornoWebservice.XmlEnvio = AdicionaEnvelope(loteBuilder.ToString());
-    }
-
-    protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
-    {
-        try
-        {
-            var xmlDoc = new XmlDocument();
-            //verifica se a mensagem eh xml para exibicao correta do erro
-            xmlDoc.LoadXml(retornoWebservice.XmlRetorno);
-        }
-        catch
-        {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
-            //LIMPA O XML RETORNO PARA NAO DAR ERRO DE PARSE MAIS ADIANTE
-            retornoWebservice.XmlRetorno = null;
-        }
-
-        return;
-    }
-    protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
-    {
-        //NAO PRECISA ASSINAR A CONSULTA
-        return;
-    }
-    protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) { }
-
-    protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice, NotaServicoCollection notas)
-    {
-        try
-        {
-            var xmlDoc = new XmlDocument();
-            //verifica se a mensagem eh xml para exibicao correta do erro
-            xmlDoc.LoadXml(retornoWebservice.XmlRetorno);
-        }
-        catch
-        {
-            retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = retornoWebservice.XmlRetorno });
-            //LIMPA O XML RETORNO PARA NAO DAR ERRO DE PARSE MAIS ADIANTE
-            retornoWebservice.XmlRetorno = null;
-        }
-
-        return;
-    }
-
-    #region Não implementados
-
-    public override string WriteXmlNFSe(NotaServico nota, bool identado = true, bool showDeclaration = true) => throw new NotImplementedException();
-
-    protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
-
-    protected override void PrepararConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
-
-    protected override void PrepararConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
-
-    protected override void PrepararCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
-
-    protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+    protected override void
+        PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) =>
+        throw new NotImplementedException();
 
     protected override void AssinarEnviar(RetornoEnviar retornoWebservice) => throw new NotImplementedException();
 
-    protected override void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarSituacao(RetornoConsultarSituacao retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+    protected override void AssinarCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) => throw new NotImplementedException();
+    protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) => throw new NotImplementedException();
+    protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas) =>
+        throw new NotImplementedException();
 
-    protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+    protected override void TratarRetornoConsultarSituacao(RetornoConsultarSituacao retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas) => throw new NotImplementedException();
+    protected override void TratarRetornoConsultarSequencialRps(RetornoConsultarSequencialRps retornoWebservice) =>
+        throw new NotImplementedException();
 
-    protected override string GetSchema(TipoUrl tipo) => throw new NotImplementedException();
+    protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice,
+        NotaServicoCollection notas) => throw new NotImplementedException();
 
-    #endregion Não implementados
+    protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice,
+        NotaServicoCollection notas) => throw new NotImplementedException();
+
+    protected override void TratarRetornoCancelarNFSeLote(RetornoCancelarNFSeLote retornoWebservice,
+        NotaServicoCollection notas) => throw new NotImplementedException();
+
+    protected override void TratarRetornoSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice,
+        NotaServicoCollection notas) => throw new NotImplementedException();
+
+    #endregion Não Implementados
+
+    #endregion Methods
 }

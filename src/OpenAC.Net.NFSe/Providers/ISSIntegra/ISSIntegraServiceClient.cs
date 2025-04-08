@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ISSIntegraServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -41,7 +45,8 @@ internal sealed class ISSIntegraServiceClient : NFSeSoapServiceClient, IServiceC
 {
     #region Constructors
 
-    private string[] _namespaces = new[] { "xmlns:api=\"https://www.issintegra.com.br/webservices/abrasf/wsdl\"", "xmlns:e=\"http://www.abrasf.org.br/nfse.xsd\"" };
+    private string[] _namespaces = ["xmlns:api=\"https://www.issintegra.com.br/webservices/abrasf/wsdl\"", "xmlns:e=\"http://www.abrasf.org.br/nfse.xsd\""
+    ];
 
     public ISSIntegraServiceClient(ProviderISSIntegra provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
@@ -131,10 +136,13 @@ internal sealed class ISSIntegraServiceClient : NFSeSoapServiceClient, IServiceC
         throw new NotImplementedException();
     }
 
+    private string Execute(string soapAction, string message, string responseTag, string[] namespaces) =>
+        Execute(soapAction, message, "", [responseTag], namespaces);
+
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");
-        if (element == null) return xmlDocument.FirstNode.ToString();
+        if (element == null) return xmlDocument.FirstNode?.ToString(); 
 
         var exMessage = $"{element.ElementAnyNs("Code").GetValue<string>()} - {element.ElementAnyNs("Reason").GetValue<string>()}";
         throw new OpenDFeCommunicationException(exMessage);

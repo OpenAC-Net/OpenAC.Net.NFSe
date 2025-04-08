@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="IdeNFSe.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -60,6 +60,8 @@ public sealed class IdeNFSe : GenericClone<IdeNFSe>, INotifyPropertyChanged
     public string Numero { get; set; }
 
     public string Chave { get; set; }
+    
+    public string Serie { get; set; }
 
     public DateTime DataEmissao { get; set; }
 

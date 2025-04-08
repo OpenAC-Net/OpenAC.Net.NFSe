@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -13,7 +12,11 @@ using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.DFe.Core.Extensions;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource;
+using OpenAC.Net.NFSe.DANFSe.QuestPdf;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;
 
@@ -280,8 +283,7 @@ public partial class FormMain : Form, IOpenLog
             var certificates = store.Certificates.Find(X509FindType.FindByTimeValid, DateTime.Now, true)
                 .Find(X509FindType.FindByKeyUsage, X509KeyUsageFlags.DigitalSignature, false);
 
-            X509Certificate2Collection certificadosSelecionados;
-            certificadosSelecionados = X509Certificate2UI.SelectFromCollection(certificates, "Certificados Digitais",
+            var certificadosSelecionados = X509Certificate2UI.SelectFromCollection(certificates, "Certificados Digitais",
                 "Selecione o Certificado Digital para uso no aplicativo", X509SelectionFlag.SingleSelection);
 
             var certificado = certificadosSelecionados.Count < 1 ? null : certificadosSelecionados[0];
@@ -345,10 +347,6 @@ public partial class FormMain : Form, IOpenLog
 
             case "dgcCodigoIBGE":
                 e.Value = municipio.Codigo.ToString();
-                return;
-
-            case "dgcCodigoSiafi":
-                e.Value = municipio.CodigoSiafi.ToString();
                 return;
 
             case "dgcProvedor":
@@ -425,8 +423,8 @@ public partial class FormMain : Form, IOpenLog
         if (municipio == null) return;
 
         txtCodCidade.Text = municipio.Codigo.ToString();
-        txtCodSiafi.Text = municipio.CodigoSiafi.ToString();
         txtProvedor.Text = municipio.Provedor.ToString();
+        txtVersao.Text = municipio.Versao.GetDFeValue();
 
         openNFSe.Configuracoes.WebServices.CodigoMunicipio = municipio.Codigo;
         openNFSe.Configuracoes.PrestadorPadrao.Endereco.Municipio = municipio.Nome;
@@ -436,7 +434,7 @@ public partial class FormMain : Form, IOpenLog
 
     private void txtCertificado_TextChanged(object sender, EventArgs e)
     {
-        if (txtNumeroSerie.Text.IsEmpty()) return;
+        if (txtCertificado.Text.IsEmpty()) return;
 
         txtNumeroSerie.Text = string.Empty;
         openNFSe.Configuracoes.Certificados.Certificado = txtCertificado.Text;
@@ -562,6 +560,8 @@ public partial class FormMain : Form, IOpenLog
         nfSe.IdentificacaoRps.DataEmissao = DateTime.Now;
         nfSe.Competencia = DateTime.Now;
         nfSe.Situacao = SituacaoNFSeRps.Normal;
+        nfSe.OptanteSimplesNacional = NFSeSimNao.Sim;
+        nfSe.OptanteMEISimei = NFSeSimNao.Nao;
 
         // Setar a natureza de operação de acordo com o provedor.
         switch (municipio.Provedor)
@@ -592,9 +592,10 @@ public partial class FormMain : Form, IOpenLog
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
-        nfSe.Servico.Discriminacao = "MANUTENCAO";
-        nfSe.Servico.CodigoMunicipio = municipio.Provedor == NFSeProvider.ISSDSF ? municipio.CodigoSiafi : municipio.Codigo;
+        nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA";
+        nfSe.Servico.CodigoMunicipio = municipio.Codigo;
         nfSe.Servico.Municipio = municipio.Nome;
+        nfSe.OutrasInformacoes = "VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
         if (municipio.Provedor.IsIn(NFSeProvider.SiapNet))
         {
             nfSe.Servico.ResponsavelRetencao = ResponsavelRetencao.Prestador;
@@ -624,7 +625,7 @@ public partial class FormMain : Form, IOpenLog
 
         if (municipio.Provedor == NFSeProvider.ISSDSF)
         {
-            var servico = nfSe.Servico.ItensServico.AddNew();
+            var servico = nfSe.Servico.ItemsServico.AddNew();
             servico.Descricao = "Teste";
             servico.Quantidade = 1M;
             servico.ValorTotal = 1;

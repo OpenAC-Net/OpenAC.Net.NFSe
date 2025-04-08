@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ProviderSpeedGov.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Model;
+using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 
@@ -62,8 +66,8 @@ internal sealed class ProviderSpeedGov : ProviderABRASF
 
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "Lote não informado." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new Evento { Codigo = "0", Descricao = "RPS não informado." });
+        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
         if (retornoWebservice.Erros.Count > 0) return;
 
         var xmlLoteRps = new StringBuilder();
@@ -117,7 +121,7 @@ internal sealed class ProviderSpeedGov : ProviderABRASF
 
     protected override string GerarCabecalho()
     {
-        var cabecalho = new System.Text.StringBuilder();
+        var cabecalho = new StringBuilder();
         //cabecalho.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         cabecalho.Append("<p:cabecalho versao=\"1\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:p=\"http://ws.speedgov.com.br/cabecalho_v1.xsd\" xmlns:p1=\"http://ws.speedgov.com.br/tipos_v1.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ws.speedgov.com.br/cabecalho_v1.xsd cabecalho_v1.xsd\">");
         cabecalho.Append("<versaoDados>1</versaoDados>");
@@ -135,7 +139,7 @@ internal sealed class ProviderSpeedGov : ProviderABRASF
             case TipoUrl.ConsultarNFSeRps: return "consultar_nfse_rps_envio_v1.xsd";
             case TipoUrl.ConsultarNFSe: return "consultar_nfse_envio_v1.xsd";
             case TipoUrl.CancelarNFSe: return "cancelar_nfse_envio_v1.xsd";
-            default: throw new System.ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou serviço não suportado.");
+            default: throw new ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou serviço não suportado.");
         }
     }
 

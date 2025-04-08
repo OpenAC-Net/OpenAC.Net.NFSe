@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ISSeServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -35,6 +35,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -159,7 +163,7 @@ internal sealed class ISSeServiceClient : NFSeSoapServiceClient, IServiceClient
         var soapNs = $"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
                      $"xmlns:v2=\"{baseUrl}/v2.01\"";
 
-        return Execute($"https://nfse-ws.hom-ecity.maringa.pr.gov.br/v2.01#{action}", message, responseTag, soapNs);
+        return Execute($"https://nfse-ws.hom-ecity.maringa.pr.gov.br/v2.01#{action}", message, "", responseTag, [soapNs]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

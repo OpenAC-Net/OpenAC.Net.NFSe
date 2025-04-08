@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="SaoPauloServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -163,7 +167,7 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
 
     private string Execute(string soapAction, string message, string responseTag)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:nfe=\"http://www.prefeitura.sp.gov.br/nfe\"");
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfe=\"http://www.prefeitura.sp.gov.br/nfe\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

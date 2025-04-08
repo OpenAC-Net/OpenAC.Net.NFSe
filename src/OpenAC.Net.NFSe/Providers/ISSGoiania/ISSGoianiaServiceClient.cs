@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="ISSGoianiaServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -35,6 +35,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -116,7 +120,7 @@ internal sealed class ISSGoianiaServiceClient : NFSeSoapServiceClient, IServiceC
 
     private string Execute(string soapAction, string[] responseTag, string message)
     {
-        return Execute(soapAction, message, "", responseTag, "xmlns:ws=\"http://nfse.goiania.go.gov.br/ws/\"");
+        return Execute(soapAction, message, "", responseTag, ["xmlns:ws=\"http://nfse.goiania.go.gov.br/ws/\""]);
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)

@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DSFServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -41,7 +45,8 @@ internal sealed class ISSDSFServiceClient : NFSeSoapServiceClient, IServiceClien
 {
     #region Constructor
 
-    public ISSDSFServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null, SoapVersion.Soap11)
+    public ISSDSFServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl, null,
+        SoapVersion.Soap11)
     {
     }
 
@@ -156,14 +161,16 @@ internal sealed class ISSDSFServiceClient : NFSeSoapServiceClient, IServiceClien
 
     public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
 
-    private string Execute(string message, params string[] reponseTags) => Execute("", message, reponseTags, "xmlns:proc=\"http://proces.wsnfe2.dsfnet.com.br\"");
+    private string Execute(string message, params string[] reponseTags) => Execute("", message, "", reponseTags,
+        ["xmlns:proc=\"http://proces.wsnfe2.dsfnet.com.br\""]);
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element == null) return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs(responseTag[1]).Value;
 
-        var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+        var exMessage =
+            $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
         throw new OpenDFeCommunicationException(exMessage);
     }
 

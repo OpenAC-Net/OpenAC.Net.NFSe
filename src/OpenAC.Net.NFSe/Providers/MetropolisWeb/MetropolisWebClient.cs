@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="MetropolisWebClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,10 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -162,7 +166,7 @@ internal sealed class MetropolisWebClient : NFSeSoapServiceClient, IServiceClien
 
     private string Execute(string message)
     {
-        return Execute("", message, "", "", "xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\"");
+        return Execute("", message, "", [], ["xmlns:end=\"http://endpoint.nfse.ws.webservicenfse.edza.com.br/\""]);
     }
 
     #endregion Methods

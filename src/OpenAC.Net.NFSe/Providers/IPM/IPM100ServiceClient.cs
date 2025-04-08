@@ -9,7 +9,7 @@
 // ***********************************************************************
 // <copyright file="IPM2ServiceClient.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -31,41 +31,64 @@
 // ***********************************************************************
 
 using System;
+using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Commom.Interface;
+using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// 
+/// </summary>
 public class IPM100ServiceClient : NFSeMultiPartClient, IServiceClient
 {
     #region Constructors
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="provider">Provedor</param>
+    /// <param name="tipoUrl">Tipo de url</param>
     public IPM100ServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
         UseFormAuth = true;
+        FileNameForm = "f1";
     }
 
     #endregion Constructors
 
     #region Methods
 
-    public string EnviarSincrono(string cabec, string msg) => Upload(msg);
+    /// <inheritdoc />
+    public string EnviarSincrono(string? cabec, string msg) => Upload(msg);
 
-    public string ConsultarLoteRps(string cabec, string msg) => Upload(msg);
+    /// <inheritdoc />
+    public string ConsultarLoteRps(string? cabec, string msg) => Upload(msg);
+    
+    /// <inheritdoc />
+    public string ConsultarNFSe(string? cabec, string msg) => Upload(msg);
 
-    public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string ConsultarNFSeRps(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string CancelarNFSe(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string CancelarNFSe(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string Enviar(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string ConsultarSituacao(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string ConsultarSequencialRps(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string ConsultarNFSe(string cabec, string msg) => Upload(msg);
+    /// <inheritdoc />
+    public string CancelarNFSeLote(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
-
-    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string SubstituirNFSe(string? cabec, string msg) => throw new NotImplementedException();
 
     #endregion Methods
 }

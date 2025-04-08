@@ -10,19 +10,20 @@
     <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
     <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2024</Copyright>
     <Company>OpenAC .Net - Automação Comercial em .Net</Company>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Projeto OpenAC .Net</Authors>
     <PackageProjectUrl>https://openac-net.github.io/</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>https://avatars.githubusercontent.com/u/90476515?s=200&amp;v=4</PackageIconUrl>
     <RepositoryUrl>https://github.com/OpenAC-Net/OpenAC.Net.NFSe</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>OpenAC.Net NFSe OpenNFSe DANFSe</PackageTags>
     <Description>Biblioteca de impressão de DANFSe usando o FastReport OpenSource.</Description>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <AssemblyVersion>1.5.0.2</AssemblyVersion>
-    <FileVersion>1.5.0.2</FileVersion>
-    <Version>1.5.0.2</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyVersion>1.6.0</AssemblyVersion>
+    <FileVersion>1.6.0</FileVersion>
+    <Version>1.6.1</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
@@ -30,6 +31,7 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageId>OpenAC.Net.NFSe.DANFSe.FastReport.OpenSource</PackageId>
+    <PackageIcon>nuget.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
@@ -41,23 +43,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.Compat" Version="2024.1.8" />
-    <PackageReference Include="FastReport.OpenSource" Version="2024.1.7" />
-    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2024.1.7" />
+    <PackageReference Include="FastReport.OpenSource" Version="2025.1.0" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2025.1.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-	<PackageReference Include="OpenAC.Net.Core" Version="1.5.0.1" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.5.0.2" />
+	<PackageReference Include="OpenAC.Net.Core" Version="1.6.0" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.2" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
     <Reference Include="System.Drawing" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows' or '$(TargetFramework)' == 'net8.0-windows'">
-    <PackageReference Include="System.Drawing.Common" Version="8.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,10 +63,27 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="..\..\nuget.png">
+      <Pack>True</Pack>
+      <PackagePath/>
+      <Link>nuget.png</Link>
+    </None>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>/</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Report\DANFSe.frx" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <PackageReference Include="System.Drawing.Common" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <PackageReference Include="System.Drawing.Common" Version="9.0.3" />
   </ItemGroup>
 
 </Project>

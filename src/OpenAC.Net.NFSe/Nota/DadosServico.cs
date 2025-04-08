@@ -8,7 +8,7 @@
 // ***********************************************************************
 // <copyright file="DadosServico.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		    Copyright (c) 2014 - 2023 Projeto OpenAC .Net
+//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -53,7 +53,7 @@ public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyCh
         Discriminacao = string.Empty;
         NumeroProcesso = string.Empty;
         ExigibilidadeIss = ExigibilidadeIss.Exigivel;
-        ItensServico = new ServicosCollection();
+        ItemsServico = new ServicosCollection();
         Deducoes = new DeducoesCollection();
     }
 
@@ -89,7 +89,7 @@ public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyCh
 
     public string NumeroProcesso { get; set; }
 
-    public ServicosCollection ItensServico { get; }
+    public ServicosCollection ItemsServico { get; }
 
     public ResponsavelRetencao? ResponsavelRetencao { get; set; }
 
