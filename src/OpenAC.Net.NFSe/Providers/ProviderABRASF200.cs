@@ -1106,9 +1106,7 @@ public abstract class ProviderABRASF200 : ProviderBase
     /// <inheritdoc />
     protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
     {
-        //Bug Botucatu que não está validando com a assinatura do XML
-        if (!Municipio.Codigo.IsIn(3507506))//Botucatu
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Pedido", "InfPedidoCancelamento", Certificado);
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "Pedido", "InfPedidoCancelamento", Certificado);
     }
 
     /// <inheritdoc />

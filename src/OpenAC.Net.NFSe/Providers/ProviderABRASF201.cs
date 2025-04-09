@@ -208,23 +208,15 @@ public abstract class ProviderABRASF201 : ProviderABRASF200
     /// <inheritdoc />
     protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
     {
-        //Bug Botucatu que não está validando com a assinatura do XML
-        if (!Municipio.Codigo.IsIn(3507506))//Botucatu
-        {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
-        }
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
     }
 
     /// <inheritdoc />
     protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
     {
-        //Bug Botucatu que não está validando com a assinatura do XML
-        if (!Municipio.Codigo.IsIn(3507506))//Botucatu
-        {
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
-            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
-        }
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
     }
 
     #endregion Services
