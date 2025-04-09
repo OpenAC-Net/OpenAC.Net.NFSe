@@ -119,24 +119,36 @@ internal sealed class ProviderFiorilli201 : ProviderABRASF201
 
     protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
     {
-        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
-            base.AssinarEnviar(retornoWebservice);
+        if (Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+        {
+            //Bug Botucatu que não está validando com a assinatura do XML
+            if (!Municipio.Codigo.IsIn(3507506))//Botucatu
+                base.AssinarEnviar(retornoWebservice);
+        }
         else
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
     }
 
     protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
     {
-        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
-            base.AssinarEnviarSincrono(retornoWebservice);
+        if (Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+        {
+            //Bug Botucatu que não está validando com a assinatura do XML
+            if (!Municipio.Codigo.IsIn(3507506))//Botucatu
+                base.AssinarEnviarSincrono(retornoWebservice);
+        }
         else
             retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "", Certificado);
     }
     
     protected override void AssinarCancelarNFSe(RetornoCancelar retornoWebservice)
     {
-        if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
-            base.AssinarCancelarNFSe(retornoWebservice);
+        if (Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
+        {
+            //Bug Botucatu que não está validando com a assinatura do XML
+            if (!Municipio.Codigo.IsIn(3507506))//Botucatu
+                base.AssinarCancelarNFSe(retornoWebservice);
+        }
     }
     
     protected override void AssinarSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice)
