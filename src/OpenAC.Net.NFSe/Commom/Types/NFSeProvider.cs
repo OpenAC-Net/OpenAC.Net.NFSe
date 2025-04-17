@@ -139,5 +139,8 @@ public enum NFSeProvider : sbyte
     ISSIntegra = 47,
 
     ISSRecife = 48,
+    
     FintelISS = 51,
+    
+    GISS = 49
 }
