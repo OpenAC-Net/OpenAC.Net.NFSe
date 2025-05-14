@@ -128,7 +128,7 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
         {
             case SoapVersion.Soap11:
                 content = new StringContent(EnvelopeEnvio, CharSet, "text/xml");
-                if (Provider.Name != NFSeProvider.Sigep.ToString())
+                if (Provider.Name != NFSeProvider.Sigep.ToString() && Provider.Name != NFSeProvider.GISS.ToString())
                     content.Headers.Add("SOAPAction", $"\"{soapAction}\"");
                 break;
 
