@@ -42,10 +42,18 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de serviço para o provedor IPM na versão 1.01.
+/// </summary>
 public sealed class IPM101ServiceClient : NFSeMultiPartClient, IServiceClient
 {
     #region Constructors
 
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="IPM101ServiceClient"/>.
+    /// </summary>
+    /// <param name="provider">Instância do provedor base.</param>
+    /// <param name="tipoUrl">Tipo de URL do serviço.</param>
     public IPM101ServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
         Charset = OpenEncoding.CP1252;
@@ -58,36 +66,38 @@ public sealed class IPM101ServiceClient : NFSeMultiPartClient, IServiceClient
 
     #region Methods
 
-    public string EnviarSincrono(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
+    /// <inheritdoc />
+    public string EnviarSincrono(string? cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
 
-    public string ConsultarLoteRps(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
+    /// <inheritdoc />
+    public string ConsultarLoteRps(string? cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
     
-    public string CancelarNFSe(string cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
+    /// <inheritdoc />
+    public string CancelarNFSe(string? cabec, string msg) => Upload(msg, sendFormat: SendFormat.Binary);
 
-    public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string ConsultarNFSeRps(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string Enviar(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string Enviar(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string ConsultarSituacao(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string ConsultarSituacao(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string ConsultarSequencialRps(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string ConsultarSequencialRps(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string ConsultarNFSe(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string CancelarNFSeLote(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string CancelarNFSeLote(string? cabec, string msg) => throw new NotImplementedException();
 
-    public string SubstituirNFSe(string cabec, string msg) => throw new NotImplementedException();
+    /// <inheritdoc />
+    public string SubstituirNFSe(string? cabec, string msg) => throw new NotImplementedException();
 
-    protected override string Authentication()
-    {
-        var usuarioWeb = Provider.Configuracoes.WebServices.Usuario.Trim();
-        Guard.Against<OpenDFeException>(usuarioWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Usuario seja informada.");
-
-        var senhaWeb = Provider.Configuracoes.WebServices.Senha.Trim();
-        Guard.Against<OpenDFeException>(senhaWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Senha seja informada.");
-        
-        return (usuarioWeb + ":" + senhaWeb.HtmlEncode()).Base64Encode();
-    }
+    /// <inheritdoc />
+    protected override string Authentication() => (Provider.Configuracoes.WebServices.Usuario.Trim() + ":" + Provider.Configuracoes.WebServices.Senha.Trim()).Base64Encode();
 
     #endregion Methods
 }

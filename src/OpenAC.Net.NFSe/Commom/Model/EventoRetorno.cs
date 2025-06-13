@@ -33,6 +33,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno de um evento relacionado à NFSe, contendo informações de identificação e descrição.
+/// </summary>
 public class EventoRetorno
 {
     #region Constructor
