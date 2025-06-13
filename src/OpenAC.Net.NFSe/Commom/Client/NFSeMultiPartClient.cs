@@ -43,14 +43,31 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Commom.Client;
 
+/// <summary>
+/// Classe base abstrata para clientes HTTP que realizam upload de arquivos multipart para serviços NFSe.
+/// </summary>
 public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 {
     #region Inner Types
 
+    /// <summary>
+    /// Formatos de envio suportados para upload multipart.
+    /// </summary>
     protected enum SendFormat
     {
+        /// <summary>
+        /// Envia o conteúdo como texto.
+        /// </summary>
         Text,
+        
+        /// <summary>
+        /// Envia o conteúdo como binário.
+        /// </summary>
         Binary,
+        
+        /// <summary>
+        /// Envia o conteúdo como arquivo.
+        /// </summary>
         File
     }
 
@@ -58,10 +75,21 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
     
     #region Constructors
 
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="NFSeMultiPartClient"/>.
+    /// </summary>
+    /// <param name="provider">Instância do provedor de serviços.</param>
+    /// <param name="tipoUrl">Tipo da URL do serviço.</param>
     protected NFSeMultiPartClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
     }
 
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="NFSeMultiPartClient"/> com certificado digital.
+    /// </summary>
+    /// <param name="provider">Instância do provedor de serviços.</param>
+    /// <param name="tipoUrl">Tipo da URL do serviço.</param>
+    /// <param name="certificado">Certificado digital a ser utilizado na requisição.</param>
     protected NFSeMultiPartClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
     {
     }
@@ -70,18 +98,37 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
 
     #region Properties
 
+    /// <summary>
+    /// Nome do campo de formulário utilizado para o arquivo no envio multipart.
+    /// </summary>
     protected string FileNameForm { get; set; } = "file";
     
+    /// <summary>
+    /// Nome do campo de formulário utilizado para o usuário no envio multipart.
+    /// </summary>
     protected string UsuarioForm { get; set; } = "login";
-    
+
+    /// <summary>
+    /// Nome do campo de formulário utilizado para a senha no envio multipart.
+    /// </summary>
     protected string SenhaForm { get; set; } = "senha";
 
+    /// <summary>
+    /// Indica se a autenticação via formulário deve ser utilizada.
+    /// </summary>
     protected bool UseFormAuth { get; set; } = true;
 
     #endregion Properties
 
     #region Methods
 
+    /// <summary>
+    /// Realiza o upload de um arquivo ou mensagem para o serviço NFSe utilizando multipart/form-data.
+    /// </summary>
+    /// <param name="message">Conteúdo a ser enviado (texto ou caminho do arquivo, dependendo do formato).</param>
+    /// <param name="contentType">Tipo de conteúdo do arquivo (padrão: text/xml).</param>
+    /// <param name="sendFormat">Formato de envio do conteúdo (Texto, Binário ou Arquivo).</param>
+    /// <returns>Resposta do serviço como string.</returns>
     protected string Upload(string message, string contentType = "text/xml", SendFormat sendFormat = SendFormat.Text)
     {
         var url = Url;
@@ -98,27 +145,29 @@ public abstract class NFSeMultiPartClient : NFSeHttpServiceClient
             };
             
             content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-
-            using var form = new MultipartFormDataContent();
-            form.Add(new StringContent(EnvelopeEnvio), FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
-
+            
             if (content is ByteArrayContent arrayContent)
             {
                 arrayContent.Headers.Add("Content-Transfer-Encoding", "binary");
                 arrayContent.Headers.ContentEncoding.Add("Cp1252");
             }
 
-            if (UseFormAuth)
+            using var form = new MultipartFormDataContent();
+            form.Add(content, FileNameForm, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
+
+            if (AuthenticationScheme != AuthScheme.None)
             {
                 var usuarioWeb = Provider.Configuracoes.WebServices.Usuario.Trim();
                 Guard.Against<OpenDFeException>(usuarioWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Usuario seja informada.");
 
                 var senhaWeb = Provider.Configuracoes.WebServices.Senha.Trim();
                 Guard.Against<OpenDFeException>(senhaWeb.IsEmpty(), "O provedor necessita que a propriedade: Configuracoes.WebServices.Senha seja informada.");
-
                 
-                form.Add(new StringContent(usuarioWeb), UsuarioForm);
-                form.Add(new StringContent(senhaWeb), SenhaForm);
+                if (UseFormAuth)
+                {
+                    form.Add(new StringContent(usuarioWeb), UsuarioForm);
+                    form.Add(new StringContent(senhaWeb), SenhaForm);
+                }
             }
 
             Execute(form, HttpMethod.Post);

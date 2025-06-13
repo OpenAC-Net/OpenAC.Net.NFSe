@@ -47,21 +47,46 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Commom.Client;
 
+/// <summary>
+/// Classe base abstrata para clientes de serviço HTTP utilizados na comunicação com provedores de NFSe.
+/// Responsável por gerenciar requisições HTTP, autenticação, manipulação de certificados digitais,
+/// gravação de arquivos de envio e retorno, além de permitir customizações para validação de certificados
+/// e autenticação.
+/// </summary>
+/// <remarks>
+/// Deve ser herdada por classes concretas que implementam a comunicação HTTP específica de cada provedor de NFSe,
+/// podendo sobrescrever métodos para autenticação e validação de certificados conforme necessário.
+/// </remarks>
 public abstract class NFSeHttpServiceClient : IDisposable
 {
     #region Inner Types
 
+    /// <summary>
+    /// Esquemas de autenticação suportados para requisições HTTP.
+    /// </summary>
     public enum AuthScheme
     {
-        [DFeEnum("Basic")]
+        /// <summary>
+        /// Sem autenticação.
+        /// </summary>
+        [DFeEnum("None")] 
+        None,
+
+        /// <summary>
+        /// Autenticação Basic.
+        /// </summary>
+        [DFeEnum("Basic")] 
         Basic,
-        
-        [DFeEnum("Bearer")]
+
+        /// <summary>
+        /// Autenticação Bearer (Token).
+        /// </summary>
+        [DFeEnum("Bearer")] 
         Bearer,
     }
 
     #endregion Inner Types
-    
+
     #region Constructors
 
     /// <summary>
@@ -69,7 +94,8 @@ public abstract class NFSeHttpServiceClient : IDisposable
     /// </summary>
     /// <param name="provider"></param>
     /// <param name="tipoUrl"></param>
-    protected NFSeHttpServiceClient(ProviderBase provider, TipoUrl tipoUrl) : this(provider, tipoUrl, provider.Certificado)
+    protected NFSeHttpServiceClient(ProviderBase provider, TipoUrl tipoUrl) : this(provider, tipoUrl,
+        provider.Certificado)
     {
     }
 
@@ -141,7 +167,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
                 PrefixoEnvio = "aut-nfse";
                 PrefixoResposta = "aut-nfse";
                 break;
-            
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(tipoUrl), tipoUrl, null);
         }
@@ -153,47 +179,93 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
     #region Properties
 
+    /// <summary>
+    /// Prefixo utilizado para gerar o nome do arquivo de envio.
+    /// </summary>
     public string PrefixoEnvio { get; }
 
+    /// <summary>
+    /// Prefixo utilizado para gerar o nome do arquivo de resposta.
+    /// </summary>
     public string PrefixoResposta { get; }
 
+    /// <summary>
+    /// Envelope XML que será enviado na requisição HTTP.
+    /// </summary>
     public string EnvelopeEnvio { get; protected set; } = "";
 
+    /// <summary>
+    /// Envelope XML que será recebido na resposta da requisição HTTP.
+    /// </summary>
     public string EnvelopeRetorno { get; protected set; } = "";
 
+    /// <summary>
+    /// Instância do provedor de NFSe associado a este cliente HTTP.
+    /// </summary>
     public ProviderBase Provider { get; set; }
 
+    /// <summary>
+    /// Indica se o ambiente configurado para o provedor é de homologação.
+    /// </summary>
     public bool EhHomologacao => Provider.Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Homologacao;
 
+    /// <summary>
+    /// URL do serviço HTTP utilizado para comunicação com o provedor de NFSe.
+    /// </summary>
     protected string Url { get; set; }
 
+    /// <summary>
+    /// Certificado digital utilizado para autenticação do cliente HTTP, se necessário.
+    /// </summary>
     protected X509Certificate2? Certificado { get; set; }
 
+    /// <summary>
+    /// Indica se o objeto já foi descartado (disposed).
+    /// </summary>
     protected bool IsDisposed { get; private set; }
 
-    protected AuthScheme AuthenticationScheme { get; set; } = AuthScheme.Basic;
+    /// <summary>
+    /// Esquema de autenticação utilizado nas requisições HTTP.
+    /// </summary>
+    protected AuthScheme AuthenticationScheme { get; set; } = AuthScheme.None;
 
+    /// <summary>
+    /// Define o encoding (conjunto de caracteres) utilizado nas requisições HTTP.
+    /// O padrão é UTF-8, mas pode ser alterado conforme a necessidade do provedor ou integração.
+    /// </summary>
     protected Encoding Charset { get; set; } = Encoding.UTF8;
 
     #endregion Properties
 
     #region Methods
 
+    /// <summary>
+    /// Executa uma requisição HTTP GET utilizando as configurações do cliente.
+    /// </summary>
     protected void ExecuteGet()
     {
         Execute(null, HttpMethod.Get);
     }
-    
+
+    /// <summary>
+    /// Executa uma requisição HTTP POST utilizando as configurações do cliente.
+    /// </summary>
+    /// <param name="content">Conteúdo HTTP a ser enviado na requisição POST.</param>
     protected void ExecutePost(HttpContent content)
     {
         Execute(content, HttpMethod.Post);
     }
 
+    /// <summary>
+    /// Executa uma requisição HTTP utilizando o método e conteúdo especificados.
+    /// </summary>
+    /// <param name="content">Conteúdo HTTP a ser enviado na requisição (pode ser nulo para métodos que não enviam corpo).</param>
+    /// <param name="method">Método HTTP a ser utilizado (GET, POST, etc).</param>
     protected void Execute(HttpContent? content, HttpMethod method)
     {
         try
         {
-            if(content == null && method == HttpMethod.Post) throw new ArgumentNullException(nameof(content));
+            if (content == null && method == HttpMethod.Post) throw new ArgumentNullException(nameof(content));
 
             if (!EnvelopeEnvio.IsEmpty())
                 GravarEnvio(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
@@ -228,9 +300,12 @@ public abstract class NFSeHttpServiceClient : IDisposable
             request.Headers.UserAgent.Add(productValue);
             request.Headers.UserAgent.Add(commentValue);
 
-            var auth = Authentication();
-            if (!auth.IsEmpty())
-                request.Headers.Authorization = new AuthenticationHeaderValue(AuthenticationScheme.GetDFeValue(), auth);
+            request.Headers.Authorization = AuthenticationScheme switch
+            {
+                AuthScheme.Basic or AuthScheme.Bearer => new AuthenticationHeaderValue(
+                    AuthenticationScheme.GetDFeValue(), Authentication()),
+                _ => request.Headers.Authorization
+            };
 
             if (content != null)
                 request.Content = content;
@@ -247,8 +322,20 @@ public abstract class NFSeHttpServiceClient : IDisposable
         }
     }
 
+    /// <summary>
+    /// Retorna a string de autenticação para ser utilizada no cabeçalho da requisição HTTP.
+    /// Pode ser sobrescrito em classes derivadas para fornecer o token ou credencial apropriada,
+    /// dependendo do esquema de autenticação configurado.
+    /// </summary>
+    /// <returns>String de autenticação ou vazia se não houver autenticação.</returns>
     protected virtual string Authentication() => "";
 
+    /// <summary>
+    /// Valida o certificado do servidor durante a comunicação HTTP.
+    /// Pode ser sobrescrito para implementar validação personalizada do certificado.
+    /// Retorna <c>true</c> para validar normalmente, ou <c>false</c> para ignorar a validação.
+    /// </summary>
+    /// <returns><c>true</c> se a validação do certificado do servidor deve ser realizada; caso contrário, <c>false</c>.</returns>
     protected virtual bool ValidarCertificadoServidor() => true;
 
     /// <summary>
@@ -261,7 +348,8 @@ public abstract class NFSeHttpServiceClient : IDisposable
     {
         if (Provider.Configuracoes.WebServices.Salvar == false) return;
 
-        var path = Provider.Configuracoes.Arquivos.GetPathSoap(DateTime.Now, Provider.Configuracoes.PrestadorPadrao.CpfCnpj);
+        var path = Provider.Configuracoes.Arquivos.GetPathSoap(DateTime.Now,
+            Provider.Configuracoes.PrestadorPadrao.CpfCnpj);
         nomeArquivo = Path.Combine(path, nomeArquivo);
         File.WriteAllText(nomeArquivo, conteudoArquivo, Encoding.UTF8);
     }

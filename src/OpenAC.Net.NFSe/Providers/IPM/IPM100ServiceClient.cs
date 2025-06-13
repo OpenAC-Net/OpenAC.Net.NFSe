@@ -31,6 +31,9 @@
 // ***********************************************************************
 
 using System;
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.Core;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
@@ -39,20 +42,21 @@ using OpenAC.Net.NFSe.Commom.Types;
 namespace OpenAC.Net.NFSe.Providers;
 
 /// <summary>
-/// 
+/// Cliente de serviço para o provedor IPM 1.00, responsável por operações de envio e consulta de NFSe.
 /// </summary>
 public class IPM100ServiceClient : NFSeMultiPartClient, IServiceClient
 {
     #region Constructors
 
     /// <summary>
-    /// 
+    /// Inicializa uma nova instância da classe <see cref="IPM100ServiceClient"/>.
     /// </summary>
-    /// <param name="provider">Provedor</param>
-    /// <param name="tipoUrl">Tipo de url</param>
+    /// <param name="provider">Instância do provedor.</param>
+    /// <param name="tipoUrl">Tipo de URL a ser utilizado.</param>
     public IPM100ServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
-        UseFormAuth = true;
+        AuthenticationScheme = AuthScheme.Basic;
+        UseFormAuth = false;
         FileNameForm = "f1";
     }
 
@@ -68,7 +72,7 @@ public class IPM100ServiceClient : NFSeMultiPartClient, IServiceClient
     
     /// <inheritdoc />
     public string ConsultarNFSe(string? cabec, string msg) => Upload(msg);
-
+    
     /// <inheritdoc />
     public string ConsultarNFSeRps(string? cabec, string msg) => throw new NotImplementedException();
 
@@ -89,6 +93,9 @@ public class IPM100ServiceClient : NFSeMultiPartClient, IServiceClient
 
     /// <inheritdoc />
     public string SubstituirNFSe(string? cabec, string msg) => throw new NotImplementedException();
+    
+    /// <inheritdoc />
+    protected override string Authentication() => (Provider.Configuracoes.WebServices.Usuario.Trim() + ":" + Provider.Configuracoes.WebServices.Senha.Trim()).Base64Encode();
 
     #endregion Methods
 }
