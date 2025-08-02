@@ -124,6 +124,11 @@ public enum NFSeProvider : sbyte
     Ginfes = 5,
 
     /// <summary>
+    /// Provedor GIAP.
+    /// </summary>
+    GIAP = 53,
+
+    /// <summary>
     /// Provedor GISS.
     /// </summary>
     GISS = 52,

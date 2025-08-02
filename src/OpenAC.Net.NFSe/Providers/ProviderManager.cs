@@ -104,6 +104,7 @@ public static class ProviderManager
             {NFSeProvider.ISSRecife, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSRecife)}}},
             {NFSeProvider.FintelISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderFintelISS204)}}},
             {NFSeProvider.GISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderGISS)}}},
+            {NFSeProvider.GIAP, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderGIAP)}}},
         };
 
         Load();
