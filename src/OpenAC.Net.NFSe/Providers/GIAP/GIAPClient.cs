@@ -29,24 +29,27 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Text;
-using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Types;
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class GIAPClient : NFSeSoapServiceClient, IServiceClient
+internal sealed class GIAPClient : NFSeHttpServiceClient, IServiceClient
 {
     #region Constructors
 
-    public GIAPClient(ProviderGIAP provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
+    public GIAPClient(ProviderGIAP provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
+        AuthenticationScheme = AuthScheme.Custom;
     }
 
     #endregion Constructors
@@ -60,10 +63,7 @@ internal sealed class GIAPClient : NFSeSoapServiceClient, IServiceClient
 
     public string EnviarSincrono(string cabec, string msg)
     {
-        var message = new StringBuilder();
-        message.Append(msg);
-
-        return Execute("", message.ToString(), "EnvioRPSResponse");
+        return Execute(msg);
     }
 
     public string ConsultarSituacao(string cabec, string msg)
@@ -73,7 +73,7 @@ internal sealed class GIAPClient : NFSeSoapServiceClient, IServiceClient
 
     public string ConsultarLoteRps(string cabec, string msg)
     {
-        throw new NotImplementedException();
+        return Execute(msg);
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -93,10 +93,7 @@ internal sealed class GIAPClient : NFSeSoapServiceClient, IServiceClient
 
     public string CancelarNFSe(string cabec, string msg)
     {
-        var message = new StringBuilder();
-        message.Append(msg);
-
-        return Execute("http://www.prefeitura.sp.gov.br/nfe/ws/cancelamentoNFe", message.ToString(), "CancelamentoNFeResponse");
+        return Execute(msg);
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -109,23 +106,38 @@ internal sealed class GIAPClient : NFSeSoapServiceClient, IServiceClient
         throw new NotImplementedException();
     }
 
-    private string Execute(string soapAction, string message, string responseTag)
+    protected override void CustomAuthentication(HttpRequestHeaders requestHeaders)
     {
-        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfe=\"http://www.prefeitura.sp.gov.br/nfe\""]);
+        requestHeaders.Add("Authorization", $"{Provider.Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(6)}-{(
+            !string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.ChaveAcesso) ? Provider.Configuracoes.WebServices.ChaveAcesso :
+            !string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.ChavePrivada) ? Provider.Configuracoes.WebServices.ChavePrivada :
+            Provider.Configuracoes.WebServices.Usuario
+        )}");
     }
 
-    protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    private string Execute(string message)
     {
-        var element = xmlDocument.ElementAnyNs("Fault");
-        if (element != null)
-        {
-            var exMessage = $"{element.ElementAnyNs("Code")?.ElementAnyNs("Value")?.GetValue<string>()} - " +
-                            $"{element.ElementAnyNs("Reason")?.ElementAnyNs("Text")?.GetValue<string>()}";
-            throw new OpenDFeCommunicationException(exMessage);
-        }
+        var content = new StringContent(message);
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
 
-        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("RetornoXML").Value;
+        ExecutePost(content);
+
+        return EnvelopeRetorno;
     }
+
+    //public string TratarRetorno(XElement xmlDocument, string[] responseTag)
+    //{
+    //    var element = xmlDocument.ElementAnyNs("Fault");
+    //    if (element != null)
+    //    {
+    //        var exMessage = $"{element.ElementAnyNs("Code")?.ElementAnyNs("Value")?.GetValue<string>()} - " +
+    //                        $"{element.ElementAnyNs("Reason")?.ElementAnyNs("Text")?.GetValue<string>()}";
+
+    //        throw new OpenDFeCommunicationException(exMessage);
+    //    }
+
+    //    return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("nfeResposta").Value;
+    //}
 
     #endregion Methods
 }
