@@ -12784,47 +12784,39 @@
 			<Codigo>3548906</Codigo>
 			<Nome>São Carlos</Nome>
 			<UF>SP</UF>
-			<Provedor>Ginfes</Provedor>
+			<Provedor>GIAP</Provedor>
 			<Versao>1.00</Versao>
 			<UrlHomologacao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
+					<Url>https://scarlos.giap.com.br/ords/scarlos02/nfe/emitir/simula</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSequencialRps</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
-					<Url>https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>
@@ -12833,42 +12825,36 @@
 			<UrlProducao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
+					<Url>https://scarlos.giap.com.br/ords/scarlos02/nfe/emitir/nota</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
+					<Url>https://scarlos.giap.com.br/ords/scarlos02/nfe/cancelar/cancelarNfe</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
+					<Url>https://scarlos.giap.com.br/ords/scarlos02/nfe/consulta/consultaNfe</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSequencialRps</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
-					<Url>https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>
