@@ -52,13 +52,13 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderGIAP : ProviderBase
+public class ProviderGIAP100 : ProviderBase
 {
     private int _numeroLote;
 
     #region Constructors
 
-    public ProviderGIAP(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public ProviderGIAP100(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "GIAP";
         Versao = VersaoNFSe.ve100;
@@ -392,37 +392,6 @@ internal sealed class ProviderGIAP : ProviderBase
 
     #region Private Methods
 
-    private string ConsultarRPSNFSe(int numeroRPS, string serieRPS, int numeroNFSe)
-    {
-        var loteBuilder = new StringBuilder();
-        loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        loteBuilder.Append("<p1:PedidoConsultaNFe xmlns:p1=\"http://www.prefeitura.sp.gov.br/nfe\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
-        loteBuilder.Append("<Cabecalho Versao=\"1\">");
-        loteBuilder.Append($"<CPFCNPJRemetente><CNPJ>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CNPJ></CPFCNPJRemetente>");
-        loteBuilder.Append("</Cabecalho>");
-        loteBuilder.Append("<Detalhe>");
-        if (numeroRPS > 0)
-        {
-            // RPS
-            loteBuilder.Append("<ChaveRPS>");
-            loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8)}</InscricaoPrestador>");
-            loteBuilder.Append($"<SerieRPS>{serieRPS}</SerieRPS>");
-            loteBuilder.Append($"<NumeroRPS>{numeroRPS}</NumeroRPS>");
-            loteBuilder.Append("</ChaveRPS>");
-        }
-        else
-        {
-            // NFSe
-            loteBuilder.Append("<ChaveNFe>");
-            loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8)}</InscricaoPrestador>");
-            loteBuilder.Append($"<NumeroNFe>{numeroNFSe}</NumeroNFe>");
-            loteBuilder.Append("</ChaveNFe>");
-        }
-        loteBuilder.Append("</Detalhe>");
-        loteBuilder.Append("</p1:PedidoConsultaNFe>");
-        return loteBuilder.ToString();
-    }
-
     protected override string GetSchema(TipoUrl tipo)
     {
         return tipo switch
@@ -441,7 +410,7 @@ internal sealed class ProviderGIAP : ProviderBase
         };
     }
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new GIAPClient(this, tipo);
+    protected override IServiceClient GetClient(TipoUrl tipo) => new GIAPServiceClient100(this, tipo);
 
     protected override string GerarCabecalho() => "";
 
