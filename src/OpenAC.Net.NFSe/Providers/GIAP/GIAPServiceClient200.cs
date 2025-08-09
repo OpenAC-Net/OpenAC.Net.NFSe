@@ -43,11 +43,11 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class GIAPClient : NFSeHttpServiceClient, IServiceClient
+internal sealed class GIAPServiceClient200 : NFSeHttpServiceClient, IServiceClient
 {
     #region Constructors
 
-    public GIAPClient(ProviderGIAP provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
+    public GIAPServiceClient200(ProviderGIAP200 provider, TipoUrl tipoUrl) : base(provider, tipoUrl)
     {
         AuthenticationScheme = AuthScheme.Custom;
     }
