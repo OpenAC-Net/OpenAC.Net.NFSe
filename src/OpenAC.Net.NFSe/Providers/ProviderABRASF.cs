@@ -464,7 +464,7 @@ public abstract class ProviderABRASF : ProviderBase
 
         var ideRps = new XElement("IdentificacaoRps");
         ideRps.AddChild(AddTag(TipoCampo.Int, "", "Numero", 1, 15, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Numero));
-        ideRps.AddChild(AddTag(TipoCampo.Int, "", "Serie", 1, 5, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
+        ideRps.AddChild(AddTag(TipoCampo.Str, "", "Serie", 1, 5, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.Serie));
         ideRps.AddChild(AddTag(TipoCampo.Int, "", "Tipo", 1, 1, Ocorrencia.Obrigatoria, tipoRps));
 
         return ideRps;
