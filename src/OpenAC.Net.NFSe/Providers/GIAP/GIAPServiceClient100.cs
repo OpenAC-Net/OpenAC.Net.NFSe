@@ -108,7 +108,7 @@ internal sealed class GIAPServiceClient100 : NFSeHttpServiceClient, IServiceClie
 
     protected override void CustomAuthentication(HttpRequestHeaders requestHeaders)
     {
-        requestHeaders.Add("Authorization", $"{Provider.Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(6)}-{(
+        requestHeaders.Add("Authorization", $"{Provider.Configuracoes.PrestadorPadrao.InscricaoMunicipal}-{(
             !string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.ChaveAcesso) ? Provider.Configuracoes.WebServices.ChaveAcesso :
             !string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.ChavePrivada) ? Provider.Configuracoes.WebServices.ChavePrivada :
             Provider.Configuracoes.WebServices.Usuario
