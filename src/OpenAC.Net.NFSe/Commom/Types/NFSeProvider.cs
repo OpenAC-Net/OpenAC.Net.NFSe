@@ -132,6 +132,12 @@ public enum NFSeProvider : sbyte
     /// Provedor GISS.
     /// </summary>
     GISS = 52,
+    
+    /// <summary>
+    /// ISS govbr.cloud
+    /// </summary>
+    [Description("ISS govbr.cloud")]
+    GovBR = 54,
 
     /// <summary>
     /// Provedor IISPortoVelho.
