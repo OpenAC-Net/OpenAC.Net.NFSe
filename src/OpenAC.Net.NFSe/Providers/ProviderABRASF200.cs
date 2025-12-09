@@ -267,6 +267,7 @@ public abstract class ProviderABRASF200 : ProviderBase
         {
             nota.Tomador.CpfCnpj = tomadorIdentificacao.ElementAnyNs("CpfCnpj")?.GetCPF_CNPJ();
             nota.Tomador.InscricaoMunicipal = tomadorIdentificacao.ElementAnyNs("InscricaoMunicipal")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.InscricaoEstadual = tomadorIdentificacao.ElementAnyNs("InscricaoEstadual")?.GetValue<string>() ?? string.Empty;
         }
 
         nota.Tomador.RazaoSocial = rootTomador.ElementAnyNs("RazaoSocial")?.GetValue<string>() ?? string.Empty;
@@ -554,6 +555,9 @@ public abstract class ProviderABRASF200 : ProviderBase
 
             ideTomador.AddChild(AddTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15,
                 Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
+
+            ideTomador.AddChild(AddTag(TipoCampo.Str, "", "InscricaoEstadual", 1, 9,
+                Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoEstadual));
         }
 
         tomador.AddChild(AddTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
