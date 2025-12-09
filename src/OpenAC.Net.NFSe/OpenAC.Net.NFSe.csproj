@@ -20,9 +20,9 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
-		<AssemblyVersion>1.6.0.1</AssemblyVersion>
-		<FileVersion>1.6.0.1</FileVersion>
-		<Version>1.6.2</Version>
+		<AssemblyVersion>1.6.3</AssemblyVersion>
+		<FileVersion>1.6.3</FileVersion>
+		<Version>1.6.3</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
@@ -59,11 +59,13 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
 		<PackageReference Include="System.ServiceModel.Primitives" Version="8.1.2" />
 		<PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
+        <PackageReference Include="System.Drawing.Common" Version="9.0.10" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net9.0'">
 		<PackageReference Include="System.ServiceModel.Primitives" Version="8.1.2" />
 		<PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
+        <PackageReference Include="System.Drawing.Common" Version="9.0.10" />        
 	</ItemGroup>
 
 	<!-- Itens do pacote nuget -->
@@ -257,13 +259,12 @@
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Megasoft</PackagePath>
 		</None>
-		<None Remove="Commom\Model\Interfaces\**" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<None Remove="Resources\Municipios.nfse" />
 		<EmbeddedResource Include="Resources\Municipios.nfse" />
-		
+        
 		<None Update="Schemas\Abaco\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -402,23 +403,6 @@
 		<None Update="Schemas\Megasoft\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<EmbeddedResource Remove="Commom\Model\Interfaces\**" />
-	</ItemGroup>
-	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="9.0.6" />
-	</ItemGroup>
-	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="9.0.6" />
-	</ItemGroup>
-	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="9.0.6" />
-	</ItemGroup>
-	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="9.0.6" />
 	</ItemGroup>
 
 </Project>

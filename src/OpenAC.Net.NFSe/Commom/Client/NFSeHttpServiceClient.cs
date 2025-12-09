@@ -69,20 +69,23 @@ public abstract class NFSeHttpServiceClient : IDisposable
         /// <summary>
         /// Sem autenticação.
         /// </summary>
-        [DFeEnum("None")] 
+        [DFeEnum("None")]
         None,
 
         /// <summary>
         /// Autenticação Basic.
         /// </summary>
-        [DFeEnum("Basic")] 
+        [DFeEnum("Basic")]
         Basic,
 
         /// <summary>
         /// Autenticação Bearer (Token).
         /// </summary>
-        [DFeEnum("Bearer")] 
+        [DFeEnum("Bearer")]
         Bearer,
+
+        [DFeEnum("Custom")]
+        Custom
     }
 
     #endregion Inner Types
@@ -300,12 +303,15 @@ public abstract class NFSeHttpServiceClient : IDisposable
             request.Headers.UserAgent.Add(productValue);
             request.Headers.UserAgent.Add(commentValue);
 
-            request.Headers.Authorization = AuthenticationScheme switch
+            switch (AuthenticationScheme)
             {
-                AuthScheme.Basic or AuthScheme.Bearer => new AuthenticationHeaderValue(
-                    AuthenticationScheme.GetDFeValue(), Authentication()),
-                _ => request.Headers.Authorization
-            };
+                case AuthScheme.Basic or AuthScheme.Bearer:
+                    request.Headers.Authorization = new AuthenticationHeaderValue(AuthenticationScheme.GetDFeValue(), Authentication());
+                    break;
+                case AuthScheme.Custom:
+                    CustomAuthentication(request.Headers);
+                    break;
+            }
 
             if (content != null)
                 request.Content = content;
@@ -329,6 +335,12 @@ public abstract class NFSeHttpServiceClient : IDisposable
     /// </summary>
     /// <returns>String de autenticação ou vazia se não houver autenticação.</returns>
     protected virtual string Authentication() => "";
+
+    /// <summary>
+    /// Rotina customizada para Autenticação.
+    /// Deve ser sobrescrita no caso de autenticação personalizada.
+    /// </summary>
+    protected virtual void CustomAuthentication(HttpRequestHeaders requestHeaders) {  }
 
     /// <summary>
     /// Valida o certificado do servidor durante a comunicação HTTP.

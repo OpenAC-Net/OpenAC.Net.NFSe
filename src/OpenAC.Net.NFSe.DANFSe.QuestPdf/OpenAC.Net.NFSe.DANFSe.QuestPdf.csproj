@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net462;net470;net48;net6.0-windows;net7.0-windows;net8.0-windows</TargetFrameworks>
+        <TargetFrameworks>net462;net470;net48;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
         <AssemblyName>OpenAC.Net.NFSe.DANFSe.QuestPdf</AssemblyName>
         <RootNamespace>OpenAC.Net.NFSe.DANFSe.QuestPdf</RootNamespace>
         <SignAssembly>true</SignAssembly>
         <LangVersion>latest</LangVersion>
-        <UseWindowsForms>true</UseWindowsForms>
         <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
-        <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2024</Copyright>
+        <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2025</Copyright>
         <Company>OpenAC .Net - Automação Comercial em .Net</Company>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Authors>Projeto OpenAC .Net</Authors>
@@ -17,13 +16,13 @@
         <RepositoryUrl>https://github.com/OpenAC-Net/OpenAC.Net.NFSe</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>OpenAC.Net NFSe OpenNFSe DANFSe</PackageTags>
-        <Description>Biblioteca de impressão de DANFSe usando o FastReport OpenSource.</Description>
+        <Description>Biblioteca de impressão de DANFSe usando o QuestPdf.</Description>
         <NeutralLanguage>pt-BR</NeutralLanguage>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
-        <Version>1.0.0</Version>
+        <AssemblyVersion>1.6.3</AssemblyVersion>
+        <FileVersion>1.6.3</FileVersion>
+        <Version>1.6.3</Version>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <DebugType>embedded</DebugType>
@@ -55,7 +54,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="QuestPDF" Version="2025.5.1" />
+      <PackageReference Include="QuestPDF" Version="2025.7.3" />
     </ItemGroup>
 
     <ItemGroup>

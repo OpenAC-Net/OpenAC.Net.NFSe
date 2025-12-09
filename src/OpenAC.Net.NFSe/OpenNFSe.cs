@@ -252,8 +252,7 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     /// <param name="anoCompetencia"></param>
     /// <returns>RetornoWebservice.</returns>
     /// <exception cref="NotImplementedException"></exception>
-    public RetornoConsultarNFSeRps ConsultaNFSeRps(int numero, string serie, TipoRps tipo, int mesCompetencia,
-        int anoCompetencia)
+    public RetornoConsultarNFSeRps ConsultaNFSeRps(int numero, string serie, TipoRps tipo, int mesCompetencia, int anoCompetencia)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
         var oldProtocol = ServicePointManager.SecurityProtocol;

@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -159,19 +159,19 @@ public partial class FormMain : Form, IOpenLog
         ExecuteSafe(() =>
         {
             var codigo = "0001";
-            if (InputBox.Show("CÃ³digo de cancelamento", "CÃ³digo de cancelamento.", ref codigo).Equals(DialogResult.Cancel)) return;
+            if (InputBox.Show("Código de cancelamento", "Código de cancelamento.", ref codigo).Equals(DialogResult.Cancel)) return;
 
             var numeroNFSe = "0";
             if (InputBox.Show("Numero NFSe", "Digite o numero da NFSe.", ref numeroNFSe).Equals(DialogResult.Cancel)) return;
 
             var serieNFSe = "0";
-            if (InputBox.Show("SÃ©rie NFSe", "Digite a sÃ©rie da NFSe.", ref serieNFSe).Equals(DialogResult.Cancel)) return;
+            if (InputBox.Show("Série NFSe", "Digite a série da NFSe.", ref serieNFSe).Equals(DialogResult.Cancel)) return;
 
             var motivo = "";
             if (InputBox.Show("Motivo Cancelamento", "Digite o motivo do cancelamento.", ref motivo).Equals(DialogResult.Cancel)) return;
 
             var codigoVerificacao = "";
-            if (InputBox.Show("CÃ³digo VerificaÃ§Ã£o", "Digite o CÃ³digo VerificaÃ§Ã£o.", ref codigoVerificacao).Equals(DialogResult.Cancel)) return;
+            if (InputBox.Show("Código Verificação", "Digite o Código Verificação.", ref codigoVerificacao).Equals(DialogResult.Cancel)) return;
 
             var ret = openNFSe.CancelarNFSe(codigo, numeroNFSe, serieNFSe, 0, motivo, codigoVerificacao);
             ProcessarRetorno(ret);
@@ -230,7 +230,7 @@ public partial class FormMain : Form, IOpenLog
         {
             if (dgvCidades.SelectedRows.Count < 1) return;
 
-            if (MessageBox.Show(@"VocÃª tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
+            if (MessageBox.Show(@"Você tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
 
             var municipio = ((OpenMunicipioNFSe)dgvCidades.SelectedRows[0].DataBoundItem).Clone();
             if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
@@ -245,7 +245,7 @@ public partial class FormMain : Form, IOpenLog
         {
             if (dgvCidades.SelectedRows.Count < 1) return;
 
-            if (MessageBox.Show(@"VocÃª tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
+            if (MessageBox.Show(@"Você tem certeza?", @"ACBrNFSe Demo", MessageBoxButtons.YesNo).Equals(DialogResult.No)) return;
 
             var cidade = (OpenMunicipioNFSe)dgvCidades.SelectedRows[0].DataBoundItem;
             ProviderManager.Municipios.Remove(cidade);
@@ -528,7 +528,7 @@ public partial class FormMain : Form, IOpenLog
         if (municipio == null) return;
 
         var numeroRps = "162";
-        if (InputBox.Show("NÂº RPS", "Informe o nÃºmero do RPS.", ref numeroRps).Equals(DialogResult.Cancel)) return;
+        if (InputBox.Show("Nº RPS", "Informe o número do RPS.", ref numeroRps).Equals(DialogResult.Cancel)) return;
 
         openNFSe.NotasServico.Clear();
         var nfSe = openNFSe.NotasServico.AddNew();
@@ -563,7 +563,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.OptanteSimplesNacional = NFSeSimNao.Sim;
         nfSe.OptanteMEISimei = NFSeSimNao.Nao;
 
-        // Setar a natureza de operaÃ§Ã£o de acordo com o provedor.
+        // Setar a natureza de operação de acordo com o provedor.
         switch (municipio.Provedor)
         {
             case NFSeProvider.ISSDSF:
@@ -579,7 +579,7 @@ public partial class FormMain : Form, IOpenLog
         nfSe.IncentivadorCultural = NFSeSimNao.Nao;
 
         var itemListaServico = municipio.Provedor.IsIn(NFSeProvider.Betha, NFSeProvider.ISSe, NFSeProvider.ISSCuritiba) ? "1705" : "07.10";
-        if (InputBox.Show("Item na lista de serviÃ§o", "Informe o item na lista de serviÃ§o.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
+        if (InputBox.Show("Item na lista de serviço", "Informe o item na lista de serviço.", ref itemListaServico).Equals(DialogResult.Cancel)) return;
 
         // Setar o cnae de acordo com o schema aceito pelo provedor.
         var cnae = GetCnae(municipio);
@@ -592,10 +592,10 @@ public partial class FormMain : Form, IOpenLog
 
         nfSe.Servico.ItemListaServico = itemListaServico;
         nfSe.Servico.CodigoTributacaoMunicipio = CodigoTributacaoMunicipio;
-        nfSe.Servico.Discriminacao = "MANUTENCAO TÃ‰CNICA";
+        nfSe.Servico.Discriminacao = "MANUTENCAO TÉCNICA";
         nfSe.Servico.CodigoMunicipio = municipio.Codigo;
         nfSe.Servico.Municipio = municipio.Nome;
-        nfSe.OutrasInformacoes = "VOCÃŠ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
+        nfSe.OutrasInformacoes = "VOCÊ PAGOU APROXIMADAMENTE R$ 41,15 DE TRIBUTOS FEDERAIS, R$ 8,26 DE TRIBUTOS MUNICIPAIS, R$ 256,57 PELOS PRODUTOS/SERVICOS, FONTE: IBPT.";
         if (municipio.Provedor.IsIn(NFSeProvider.SiapNet))
         {
             nfSe.Servico.ResponsavelRetencao = ResponsavelRetencao.Prestador;
@@ -688,10 +688,10 @@ public partial class FormMain : Form, IOpenLog
                 break;
 
             case RetornoConsultarSituacao ret:
-                rtLogResposta.AppendLine("Metodo : Consultar SituaÃ§Ã£o Lote RPS");
+                rtLogResposta.AppendLine("Metodo : Consultar Situação Lote RPS");
                 rtLogResposta.AppendLine($"Lote : {ret.Lote}");
                 rtLogResposta.AppendLine($"Protocolo : {ret.Protocolo}");
-                rtLogResposta.AppendLine($"SituaÃ§Ã£o : {ret.Situacao}");
+                rtLogResposta.AppendLine($"Situação : {ret.Situacao}");
                 rtLogResposta.AppendLine($"Sucesso : {ret.Sucesso}");
                 break;
 
@@ -699,7 +699,7 @@ public partial class FormMain : Form, IOpenLog
                 rtLogResposta.AppendLine("Metodo : Consultar Lote RPS");
                 rtLogResposta.AppendLine($"Lote : {ret.Lote}");
                 rtLogResposta.AppendLine($"Protocolo : {ret.Protocolo}");
-                rtLogResposta.AppendLine($"SituaÃ§Ã£o : {ret.Situacao}");
+                rtLogResposta.AppendLine($"Situação : {ret.Situacao}");
                 rtLogResposta.AppendLine($"Sucesso : {ret.Sucesso}");
 
                 if (!ret.Notas.IsNullOrEmpty())
@@ -708,7 +708,7 @@ public partial class FormMain : Form, IOpenLog
                     {
                         rtLogResposta.AppendLine($"NFSe : {nota.IdentificacaoNFSe.Numero}");
                         rtLogResposta.AppendLine($"Chave : {nota.IdentificacaoNFSe.Chave}");
-                        rtLogResposta.AppendLine($"Data EmissÃ£o : {nota.IdentificacaoNFSe.DataEmissao:G}");
+                        rtLogResposta.AppendLine($"Data Emissão : {nota.IdentificacaoNFSe.DataEmissao:G}");
                     }
                 }
                 break;
@@ -719,14 +719,14 @@ public partial class FormMain : Form, IOpenLog
                 rtLogResposta.AppendLine($"Serie : {ret.Serie}");
                 rtLogResposta.AppendLine($"RPS : {ret.NumeroRps}");
                 rtLogResposta.AppendLine($"Ano : {ret.AnoCompetencia}");
-                rtLogResposta.AppendLine($"MÃªs : {ret.MesCompetencia}");
+                rtLogResposta.AppendLine($"Mês : {ret.MesCompetencia}");
                 rtLogResposta.AppendLine($"Sucesso : {ret.Sucesso}");
 
                 if (ret.Nota != null)
                 {
                     rtLogResposta.AppendLine($"NFSe : {ret.Nota.IdentificacaoNFSe.Numero}");
                     rtLogResposta.AppendLine($"Chave : {ret.Nota.IdentificacaoNFSe.Chave}");
-                    rtLogResposta.AppendLine($"Data EmissÃ£o : {ret.Nota.IdentificacaoNFSe.DataEmissao:G}");
+                    rtLogResposta.AppendLine($"Data Emissão : {ret.Nota.IdentificacaoNFSe.DataEmissao:G}");
                 }
                 break;
 
@@ -751,7 +751,7 @@ public partial class FormMain : Form, IOpenLog
                     {
                         rtLogResposta.AppendLine($"NFSe : {nota.IdentificacaoNFSe.Numero}");
                         rtLogResposta.AppendLine($"Chave : {nota.IdentificacaoNFSe.Chave}");
-                        rtLogResposta.AppendLine($"Data EmissÃ£o : {nota.IdentificacaoNFSe.DataEmissao:G}");
+                        rtLogResposta.AppendLine($"Data Emissão : {nota.IdentificacaoNFSe.DataEmissao:G}");
                     }
                 }
                 break;
@@ -759,7 +759,7 @@ public partial class FormMain : Form, IOpenLog
             case RetornoConsultarSequencialRps ret:
                 rtLogResposta.AppendLine("Metodo : Consultar Sequencial RPS");
                 rtLogResposta.AppendLine($"Serie : {ret.Serie}");
-                rtLogResposta.AppendLine($"Ã¹ltimo RPS : {ret.UltimoNumero}");
+                rtLogResposta.AppendLine($"ùltimo RPS : {ret.UltimoNumero}");
                 rtLogResposta.AppendLine($"Sucesso : {ret.Sucesso}");
                 break;
 
@@ -791,7 +791,7 @@ public partial class FormMain : Form, IOpenLog
                 {
                     rtLogResposta.AppendLine($"NFSe : {ret.Nota.IdentificacaoNFSe.Numero}");
                     rtLogResposta.AppendLine($"Chave : {ret.Nota.IdentificacaoNFSe.Chave}");
-                    rtLogResposta.AppendLine($"Data EmissÃ£o : {ret.Nota.IdentificacaoNFSe.DataEmissao:G}");
+                    rtLogResposta.AppendLine($"Data Emissão : {ret.Nota.IdentificacaoNFSe.DataEmissao:G}");
                 }
                 break;
         }
@@ -804,7 +804,7 @@ public partial class FormMain : Form, IOpenLog
             {
                 rtLogResposta.AppendLine($"Codigo : {erro.Codigo}");
                 rtLogResposta.AppendLine($"Mensagem : {erro.Descricao}");
-                rtLogResposta.AppendLine($"CorreÃ§Ã£o : {erro.Correcao}");
+                rtLogResposta.AppendLine($"Correção : {erro.Correcao}");
                 rtLogResposta.AppendLine("----------------------------------------------------");
             }
         }
@@ -817,7 +817,7 @@ public partial class FormMain : Form, IOpenLog
             {
                 rtLogResposta.AppendLine($"Codigo : {erro.Codigo}");
                 rtLogResposta.AppendLine($"Mensagem : {erro.Descricao}");
-                rtLogResposta.AppendLine($"CorreÃ§Ã£o : {erro.Correcao}");
+                rtLogResposta.AppendLine($"Correção : {erro.Correcao}");
                 rtLogResposta.AppendLine("----------------------------------------------------");
             }
         }
@@ -884,9 +884,8 @@ public partial class FormMain : Form, IOpenLog
             Encoding = Encoding.UTF8,
             MaxArchiveFiles = 93,
             ArchiveEvery = FileArchivePeriod.Day,
-            ArchiveNumbering = ArchiveNumberingMode.Date,
             ArchiveFileName = "${basedir}/Logs/Archive/${date:format=yyyy}/${date:format=MM}/NFSe_{{#}}.log",
-            ArchiveDateFormat = "dd.MM.yyyy"
+            ArchiveSuffixFormat = "dd.MM.yyyy"
         };
 
         config.AddTarget("infoFile", infoTarget);
