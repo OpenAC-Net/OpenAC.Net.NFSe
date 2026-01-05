@@ -108,6 +108,8 @@ public sealed class ValoresServico : GenericClone<ValoresServico>, INotifyProper
     public decimal AliquotaCargaTributaria { get; set; }
 
     public string FonteCargaTributaria { get; set; }
+    
+    public InfoIBSCBS? IBSCBS { get; set; }
 
     #endregion Propriedades
 }
