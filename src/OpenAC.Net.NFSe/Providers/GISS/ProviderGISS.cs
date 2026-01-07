@@ -63,7 +63,7 @@ internal class ProviderGISS : ProviderABRASF204
 
         var IBSCBS = WriteIBSCBSRps(nota);
         
-        if(IBSCBS is not null)
+        if(IBSCBS != null)
             valores.AddChild(IBSCBS);
         
 
