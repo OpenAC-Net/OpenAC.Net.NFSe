@@ -7698,24 +7698,30 @@
 			<UrlHomologacao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
@@ -7725,6 +7731,7 @@
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>

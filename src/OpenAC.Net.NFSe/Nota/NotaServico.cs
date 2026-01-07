@@ -165,6 +165,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public string DescricaoCodigoTributacaoMunicipio { get; set; }
 
     public decimal ValorCredito { get; set; }
+    
+    public IBSCBSTotal? IBSCBSTotal { get; set; }
 
     public TipoEmissao TipoEmissao { get; set; }
 
