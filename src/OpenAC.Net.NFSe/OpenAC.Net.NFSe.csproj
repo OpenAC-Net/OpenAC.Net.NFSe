@@ -20,9 +20,9 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
-		<AssemblyVersion>1.6.4</AssemblyVersion>
-		<FileVersion>1.6.4</FileVersion>
-		<Version>1.6.4</Version>
+		<AssemblyVersion>1.6.5</AssemblyVersion>
+		<FileVersion>1.6.5</FileVersion>
+		<Version>1.6.5</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
