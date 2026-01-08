@@ -356,7 +356,15 @@ internal sealed class ProviderSigISS100 : ProviderBase
 
         if (dadosNota == null)
         {
+            retornoWebservice.Sucesso = false;
             retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "", Descricao = "dadosNota = null" });
+            return;
+        }
+
+        if(!dadosNota.HasElements)
+        {
+            retornoWebservice.Sucesso = false;
+            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "", Descricao = "Nota não retornada completa. DadosNota não possui elementos." });
             return;
         }
 
