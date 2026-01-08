@@ -132,7 +132,7 @@ internal sealed class ProviderTiplan203 : ProviderABRASF203
     protected override IServiceClient GetClient(TipoUrl tipo) => new Tiplan203ServiceClient(this, tipo);
 
     /// <inheritdoc />
-    protected override string GetSchema(TipoUrl tipo) => "nfse.03.xsd";
+    protected override string GetSchema(TipoUrl tipo) => "nfse.xsd";
 
     /// <inheritdoc />
     protected override string GetNamespace() => "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"";
