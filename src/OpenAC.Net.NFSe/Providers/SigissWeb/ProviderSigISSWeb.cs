@@ -45,7 +45,7 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderSigISSWeb : ProviderBase
+internal class ProviderSigISSWeb : ProviderBase
 {
     public ProviderSigISSWeb(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
