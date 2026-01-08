@@ -90,7 +90,7 @@ public static class ProviderManager
             {NFSeProvider.RLZ, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(RLZProvider)}}},
             {NFSeProvider.SiapNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderSiapNet)}}},
             {NFSeProvider.SigISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISS100)}, {VersaoNFSe.ve103, typeof(ProviderSigISS103)}}},
-            {NFSeProvider.SigISSWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISSWeb)}}},
+            {NFSeProvider.SigISSWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISSWeb)}, {VersaoNFSe.ve102, typeof(ProviderSigISSWeb102)}}},
             {NFSeProvider.SimplISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSimplISS100)}, {VersaoNFSe.ve203, typeof(ProviderSimplISS203)}}},
             {NFSeProvider.Sintese, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderSintese204)}}},
             {NFSeProvider.SmarAPD, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderSmarAPD204)}}},
