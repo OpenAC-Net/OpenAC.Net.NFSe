@@ -12401,11 +12401,11 @@
                 </Item>
                 <Item>
                     <TipoUrl>EnviarSincrono</TipoUrl>
-                    <Url>https://wshml.sigissweb.com/rest/</Url>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
                 </Item>
                 <Item>
                     <TipoUrl>CancelarNFSe</TipoUrl>
-                    <Url>https://wshml.sigissweb.com/rest/</Url>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
                 </Item>
                 <Item>
                     <TipoUrl>CancelarNFSeLote</TipoUrl>
@@ -12415,7 +12415,7 @@
                 </Item>
                 <Item>
                     <TipoUrl>ConsultarNFSeRps</TipoUrl>
-                    <Url>https://wshml.sigissweb.com/rest/</Url>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
                 </Item>
                 <Item>
                     <TipoUrl>ConsultarLoteRps</TipoUrl>
@@ -12431,7 +12431,7 @@
                 </Item>
                 <Item>
                     <TipoUrl>Autenticacao</TipoUrl>
-                    <Url>https://wshml.sigissweb.com/rest/</Url>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
                 </Item>
             </UrlHomologacao>
             <UrlProducao>
