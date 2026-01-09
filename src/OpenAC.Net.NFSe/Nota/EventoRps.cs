@@ -29,6 +29,7 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System;
 using OpenAC.Net.Core.Generics;
 
 namespace OpenAC.Net.NFSe.Nota;
@@ -40,6 +41,16 @@ public sealed class EventoRps : GenericClone<EventoRps>
     public string IdentificacaoEvento { get; set; } = "";
 
     public string? DescricaoEvento { get; set; }
+
+    public DateTime? DataInicio { get; set; }
+
+    public DateTime? DataFim { get; set; }
+
+    public Endereco Endereco { get; } = new Endereco();
+
+    public string CidadeExterior { get; set; } = "";
+
+    public string EstadoRegiaoExterior { get; set; } = "";
 
     #endregion Propriedades
 }
