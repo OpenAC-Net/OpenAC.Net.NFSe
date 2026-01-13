@@ -10,6 +10,9 @@ public enum VersaoNFSe
     [DFeEnum("1.01")]
     ve101,
 
+    [DFeEnum("1.02")]
+    ve102,
+
     [DFeEnum("1.03")]
     ve103,
 
