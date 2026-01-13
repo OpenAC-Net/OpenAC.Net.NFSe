@@ -28,6 +28,7 @@
 // ***********************************************************************
 
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
@@ -43,6 +44,8 @@ namespace OpenAC.Net.NFSe.Providers;
 public class SigISSWeb102ServiceClient : NFSeRestServiceClient, IServiceClient
 {
     private string? authToken;
+
+    public HttpStatusCode? LastStatusCode => StatusCode;
 
     #region Constructors
 
