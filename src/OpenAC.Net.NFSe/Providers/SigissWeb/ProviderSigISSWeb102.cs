@@ -30,6 +30,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
@@ -45,12 +46,18 @@ namespace OpenAC.Net.NFSe.Providers;
 
 internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
 {
+    private SigISSWeb102ServiceClient? client;
+
     public ProviderSigISSWeb102(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Versao = VersaoNFSe.ve102;
     }
     
-    protected override IServiceClient GetClient(TipoUrl tipo) => new SigISSWeb102ServiceClient(this, tipo);
+    protected override IServiceClient GetClient(TipoUrl tipo)
+    {
+        client = new SigISSWeb102ServiceClient(this, tipo);
+        return client;
+    }
 
     public override string WriteXmlRps(NotaServico nota, bool identado = true, bool showDeclaration = true)
     {
@@ -480,24 +487,60 @@ internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "exterior_op", 1, 1, Ocorrencia.NaoObrigatoria, GetIndicadorExteriorOperacao(nota)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "cidade_local_op", 1, 100, Ocorrencia.NaoObrigatoria, GetCidadeLocalOperacao(nota)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "uf_local_op", 1, 2, Ocorrencia.NaoObrigatoria, GetUfLocalOperacao(nota)));
+        if (nota.IBSCBSTotal != null)
+        {
+            var tot = nota.IBSCBSTotal.Totalizadores;
+            var valores = nota.IBSCBSTotal.Valores;
+            //if (tot.CBS.ValorCBS > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "valor_cbs", 1, 14, Ocorrencia.NaoObrigatoria, FormataDecimal(tot.CBS.ValorCBS)));
+            //if (tot.IBS.TotalIBSUF.ValorIBSUF > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "valor_ibs_est", 1, 14, Ocorrencia.NaoObrigatoria, FormataDecimal(tot.IBS.TotalIBSUF.ValorIBSUF)));
+            //if (tot.IBS.TotalIBSMun.ValorIBSMun > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "valor_ibs_mun", 1, 14, Ocorrencia.NaoObrigatoria, FormataDecimal(tot.IBS.TotalIBSMun.ValorIBSMun)));
+            //if (valores.Federal.PercentualCBS > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "aliq_cbs",  1, 5, Ocorrencia.NaoObrigatoria, FormataDecimal(valores.Federal.PercentualCBS)));
+            //if (valores.UF.PercentualIBSUF > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "aliq_ibs_est",  1, 5, Ocorrencia.NaoObrigatoria, FormataDecimal(valores.UF.PercentualIBSUF)));
+            //if (valores.Municipio.PercentualIBSMun > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "aliq_ibs_mun",  1, 5, Ocorrencia.NaoObrigatoria, FormataDecimal(valores.Municipio.PercentualIBSMun)));
+            if (valores.Federal.PercentualReducaoAliquotaCBS > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "reducao_cbs",  1, 5, Ocorrencia.NaoObrigatoria, FormataDecimal(valores.Federal.PercentualReducaoAliquotaCBS)));
+            if (valores.UF.PercentualReducaoAliquotaUF > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "reducao_ibs_est", 1, 5, Ocorrencia.NaoObrigatoria, FormataDecimal(valores.UF.PercentualReducaoAliquotaUF)));
+            if (valores.Municipio.PercentualReducaoAliquotaMun > 0)
+                notaTag.AddChild(AddTag(TipoCampo.Str, "", "reducao_ibs_mun", 1, 5, Ocorrencia.NaoObrigatoria, FormataDecimal(valores.Municipio.PercentualReducaoAliquotaMun)));
+        }
     }
     
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         // 1. Tentativa segura de parse do XML
-        if (!TryParseXml(retornoWebservice.XmlRetorno, out var xmlRet))
+        var statusCodeValue = GetLastStatusCodeValue();
+        if (statusCodeValue != HttpStatusCode.OK)
         {
             // Retorno NÃO é XML → é mensagem pura
-            retornoWebservice.Sucesso = false;
+            var statusCodeText = statusCodeValue?.ToString(CultureInfo.InvariantCulture) ?? "0";
+            var sucessoHttp = statusCodeValue.HasValue && IsSuccessStatusCode((int)statusCodeValue.Value);
+
+            retornoWebservice.Sucesso = sucessoHttp;
             retornoWebservice.Protocolo = string.Empty;
             retornoWebservice.Data = DateTime.MinValue;
 
             // Preserve a mensagem original para diagnóstico
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = retornoWebservice.XmlRetorno});
+            var descricao = retornoWebservice.XmlRetorno.StartsWith("<!doctype")
+                ? "Ocorreu um erro desconhecido no webservice."
+                : retornoWebservice.XmlRetorno;
+            var evento = new EventoRetorno { Codigo = statusCodeText, Descricao = descricao };
+
+            if (sucessoHttp)
+                retornoWebservice.Alertas.Add(evento);
+            else
+                retornoWebservice.Erros.Add(evento);
 
             return;
         }
-
+        
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
         retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("data_emissao")?.GetValue<DateTime>(new CultureInfo("pt-BR")) ?? DateTime.MinValue;
         retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("codigo")?.GetValue<string>() ?? string.Empty;
         retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
@@ -523,6 +566,43 @@ internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
             nota.IdentificacaoNFSe.Chave = chaveNFSe;
             nota.XmlOriginal = retornoWebservice.XmlRetorno;
         }
+    }
+    
+    protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
+    {
+        var statusCodeValue = GetLastStatusCodeValue();
+        if (statusCodeValue != HttpStatusCode.OK)
+        {
+            // Retorno NÃO é XML → é mensagem pura
+            var statusCodeText = statusCodeValue?.ToString(CultureInfo.InvariantCulture) ?? "0";
+            var sucessoHttp = statusCodeValue.HasValue && IsSuccessStatusCode((int)statusCodeValue.Value);
+
+            retornoWebservice.Sucesso = sucessoHttp;
+            retornoWebservice.Data = DateTime.MinValue;
+
+            // Preserve a mensagem original para diagnóstico
+            var descricao = retornoWebservice.XmlRetorno.StartsWith("<!doctype")
+                ? "Ocorreu um erro desconhecido no webservice."
+                : retornoWebservice.XmlRetorno;
+            var evento = new EventoRetorno { Codigo = statusCodeText, Descricao = descricao };
+
+            if (sucessoHttp)
+                retornoWebservice.Alertas.Add(evento);
+            else
+                retornoWebservice.Erros.Add(evento);
+
+            if (!sucessoHttp)
+                return;
+        }
+        
+        retornoWebservice.Sucesso = true;
+        
+        var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == retornoWebservice.NumeroNFSe);
+        if (nota == null) return;
+        
+        nota.Situacao = SituacaoNFSeRps.Cancelado;
+        nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
+        nota.Cancelamento.DataHora = retornoWebservice.Data;
     }
 
     private bool HasIbsCbsData(NotaServico nota)
@@ -599,6 +679,17 @@ internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
                || notaXml.ElementAnyNs("reducao_cbs") != null
                || notaXml.ElementAnyNs("reducao_ibs_est") != null
                || notaXml.ElementAnyNs("reducao_ibs_mun") != null;
+    }
+
+    private HttpStatusCode? GetLastStatusCodeValue()
+    {
+        var statusCode = client?.LastStatusCode;
+        return statusCode.HasValue ? statusCode.Value : null;
+    }
+
+    private static bool IsSuccessStatusCode(int statusCode)
+    {
+        return statusCode >= 200 && statusCode <= 299;
     }
     
     private bool TryParseXml(string xml, out XDocument document)
