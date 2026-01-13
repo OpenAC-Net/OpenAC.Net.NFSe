@@ -53,7 +53,7 @@ internal class ProviderSigISSWeb : ProviderBase
         Versao = VersaoNFSe.ve100;
     }
 
-    private static string FormataDecimal(decimal valor) => valor.ToString("0.00").Replace(".", ",");
+    protected static string FormataDecimal(decimal valor) => valor.ToString("0.00").Replace(".", ",");
 
     protected override IServiceClient GetClient(TipoUrl tipo) => new SigISSWebServiceClient(this, tipo);
 
