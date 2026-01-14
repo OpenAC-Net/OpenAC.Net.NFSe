@@ -214,7 +214,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
             }
         }
 
-        if (retornoWebservice.Erros.Any())
+        if (retornoWebservice.Erros.Any() || string.IsNullOrEmpty(retornoWebservice.Protocolo))
         {
             retornoWebservice.Sucesso = false;
         }
