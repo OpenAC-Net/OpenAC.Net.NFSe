@@ -2431,43 +2431,43 @@
 			<UrlHomologacao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSequencialRps</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
-					<Url>https://notafiscal.sorocaba.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
+					<Url>https://homolsod.dsfweb.com.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>

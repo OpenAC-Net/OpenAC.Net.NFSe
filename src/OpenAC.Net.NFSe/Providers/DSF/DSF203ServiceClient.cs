@@ -56,13 +56,31 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
 
     #region Methods
 
+    public string Enviar(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:RecepcionarLoteRps>");
+        message.Append(msg);
+        message.Append("</nfse:RecepcionarLoteRps>");
+        return Execute(message.ToString(), "RecepcionarLoteRpsResponse");
+    }
+
+    public string EnviarSincrono(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:RecepcionarLoteRpsSincrono>");
+        message.Append(msg);
+        message.Append("</nfse:RecepcionarLoteRpsSincrono>");
+        return Execute(message.ToString(), "RecepcionarLoteRpsSincronoResponse");
+    }
+
     public string CancelarNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
         message.Append("<nfse:CancelarNfse>");
         message.Append(msg);
         message.Append("</nfse:CancelarNfse>");
-        return Execute("CancelarNfseEnvio", message.ToString(), "CancelarNfseResponse");
+        return Execute(message.ToString(), "CancelarNfseResponse");
     }
 
     public string CancelarNFSeLote(string cabec, string msg)
@@ -76,7 +94,7 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("<nfse:ConsultarLoteRps>");
         message.Append(msg);
         message.Append("</nfse:ConsultarLoteRps>");
-        return Execute("ConsultarLoteRpsEnvio", message.ToString(), "ConsultarLoteRpsResponse");
+        return Execute(message.ToString(), "ConsultarLoteRpsResponse");
     }
 
     public string ConsultarNFSe(string cabec, string msg)
@@ -85,7 +103,7 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("<nfse:ConsultarNfseServicoPrestado>");
         message.Append(msg);
         message.Append("</nfse:ConsultarNfseServicoPrestado>");
-        return Execute("ConsultarNfseServicoPrestadoEnvio", message.ToString(), "ConsultarNfseServicoPrestadoResponse");
+        return Execute(message.ToString(), "ConsultarNfseServicoPrestadoResponse");
     }
 
     public string ConsultarNFSeRps(string cabec, string msg)
@@ -94,7 +112,7 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
         message.Append("<nfse:ConsultarNfsePorRps>");
         message.Append(msg);
         message.Append("</nfse:ConsultarNfsePorRps>");
-        return Execute("ConsultarNfseRpsEnvio", message.ToString(), "ConsultarNfsePorRpsResponse");
+        return Execute(message.ToString(), "ConsultarNfsePorRpsResponse");
     }
 
     public string ConsultarSequencialRps(string cabec, string msg)
@@ -107,31 +125,13 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
         throw new NotImplementedException();
     }
 
-    public string Enviar(string cabec, string msg)
-    {
-        var message = new StringBuilder();
-        message.Append("<nfse:RecepcionarLoteRps>");
-        message.Append(msg);
-        message.Append("</nfse:RecepcionarLoteRps>");
-        return Execute("EnviarLoteRpsEnvio", message.ToString(), "RecepcionarLoteRpsResponse");
-    }
-
-    public string EnviarSincrono(string cabec, string msg)
-    {
-        var message = new StringBuilder();
-        message.Append("<nfse:RecepcionarLoteRpsSincrono>");
-        message.Append(msg);
-        message.Append("</nfse:RecepcionarLoteRpsSincrono>");
-        return Execute("EnviarLoteRpsSincronoEnvio", message.ToString(), "RecepcionarLoteRpsSincronoResponse");
-    }
-
     public string SubstituirNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
         message.Append("<nfse:SubstituirNfse>");
         message.Append(msg);
         message.Append("</nfse:SubstituirNfse>");
-        return Execute("SubstituirNfseEnvio", message.ToString(), "SubstituirNfseResponse");
+        return Execute(message.ToString(), "SubstituirNfseResponse");
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
@@ -144,13 +144,11 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
             throw new OpenDFeCommunicationException(exMessage);
         }
 
-        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
+        return xmlDocument.ElementAnyNs(responseTag[0]).ToString();
     }
 
-    private string Execute(string soapAction, string message, string responseTag)
-    {
-        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
-    }
+    private string Execute(string message, string responseTag) =>
+        Execute("", message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
 
     #endregion Methods
 }
