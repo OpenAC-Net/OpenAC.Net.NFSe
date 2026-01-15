@@ -77,6 +77,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
         EnderecoPrestacao = new Endereco();
         Prestador = new DadosPrestador();
         Tomador = new DadosTomador();
+        DestinatarioCBSIBS = new DadosTomador();
         Intermediario = new DadosIntermediario();
         ConstrucaoCivil = new DadosConstrucaoCivil();
         Material = new DadosMateriais();
@@ -115,6 +116,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public DadosPrestador Prestador { get; internal set; }
 
     public DadosTomador Tomador { get; }
+
+    public DadosTomador DestinatarioCBSIBS { get; }
 
     public DadosIntermediario Intermediario { get; }
 
@@ -165,6 +168,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public string DescricaoCodigoTributacaoMunicipio { get; set; }
 
     public decimal ValorCredito { get; set; }
+    
+    public IBSCBSTotal? IBSCBSTotal { get; set; }
 
     public TipoEmissao TipoEmissao { get; set; }
 

@@ -46,6 +46,9 @@ public sealed class DadosIntermediario : GenericClone<DadosIntermediario>, INoti
 
     internal DadosIntermediario()
     {
+        Endereco = new Endereco();
+        EnderecoExterior = new EnderecoExterior();
+        DadosContato = new DadosContato();
     }
 
     #endregion Contructors
@@ -58,11 +61,19 @@ public sealed class DadosIntermediario : GenericClone<DadosIntermediario>, INoti
 
     public string InscricaoMunicipal { get; set; }
 
+    public string InscricaoEstadual { get; set; }
+
     public string CodigoMunicipio { get; set; }
 
     public SituacaoTributaria IssRetido { get; set; }
 
     public string EMail { get; set; }
+
+    public Endereco Endereco { get; }
+
+    public EnderecoExterior EnderecoExterior { get; }
+
+    public DadosContato DadosContato { get; }
 
     #endregion Propriedades
 }

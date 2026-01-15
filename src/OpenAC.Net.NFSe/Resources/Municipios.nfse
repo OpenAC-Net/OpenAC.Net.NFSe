@@ -5806,40 +5806,45 @@
 			<Codigo>5208707</Codigo>
 			<Nome>Goiânia</Nome>
 			<UF>GO</UF>
-			<Provedor>ISSGoiania</Provedor>
-			<Versao>2.00</Versao>
+			<Provedor>ISSNet</Provedor>
+			<Versao>2.04</Versao>
 			<UrlHomologacao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
+					<Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
-					<Url>https://nfse.goiania.go.gov.br/ws/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
+					<Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
+					<Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
-					<Url>https://nfse.goiania.go.gov.br/ws/nfse.asmx</Url>
+					<Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
+					<Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
+					<Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSequencialRps</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
+					<Url>https://www.issnetonline.com.br/homologaabrasf/webservicenfse204/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>
@@ -5848,35 +5853,41 @@
 			<UrlProducao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
-					<Url>https://nfse.goiania.go.gov.br/ws/nfse.asmx</Url>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
-					<Url>https://nfse.goiania.go.gov.br/ws/nfse.asmx</Url>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSequencialRps</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
+					<Url>https://nfse.issnetonline.com.br/abrasf204/goiania/nfse.asmx</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>
@@ -7698,24 +7709,30 @@
 			<UrlHomologacao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
@@ -7725,6 +7742,7 @@
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
+					<Url>https://ws-homologacao-rtc.giss.com.br/service-ws/nf/nfse-ws?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>
@@ -12382,6 +12400,91 @@
 				</Item>
 			</UrlProducao>
 		</Municipio>
+		<Municipio>
+            <Codigo>3523602</Codigo>
+            <Nome>Itirapina</Nome>
+            <UF>SP</UF>
+            <Provedor>SigISSWeb</Provedor>
+            <Versao>1.02</Versao>
+            <UrlHomologacao>
+                <Item>
+                    <TipoUrl>Enviar</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>EnviarSincrono</TipoUrl>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
+                </Item>
+                <Item>
+                    <TipoUrl>CancelarNFSe</TipoUrl>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
+                </Item>
+                <Item>
+                    <TipoUrl>CancelarNFSeLote</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarNFSe</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarNFSeRps</TipoUrl>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarLoteRps</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarSituacao</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarSequencialRps</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>SubstituirNFSe</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>Autenticacao</TipoUrl>
+                    <Url>https://wshml2.sigissweb.com/rest/</Url>
+                </Item>
+            </UrlHomologacao>
+            <UrlProducao>
+                <Item>
+                    <TipoUrl>Enviar</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>EnviarSincrono</TipoUrl>
+                    <Url>https://wsitirapina.sigissweb.com/rest/</Url>
+                </Item>
+                <Item>
+                    <TipoUrl>CancelarNFSe</TipoUrl>
+                    <Url>https://wsitirapina.sigissweb.com/rest/</Url>
+                </Item>
+                <Item>
+                    <TipoUrl>CancelarNFSeLote</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarNFSe</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarNFSeRps</TipoUrl>
+                    <Url>https://wsitirapina.sigissweb.com/rest/</Url>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarLoteRps</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarSituacao</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>ConsultarSequencialRps</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>SubstituirNFSe</TipoUrl>
+                </Item>
+                <Item>
+                    <TipoUrl>Autenticacao</TipoUrl>
+                    <Url>https://wsitirapina.sigissweb.com/rest/</Url>
+                </Item>
+            </UrlProducao>
+        </Municipio>
 		<Municipio>
 			<Codigo>4316907</Codigo>
 			<Nome>Santa Maria</Nome>
