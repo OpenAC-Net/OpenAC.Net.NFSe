@@ -286,6 +286,31 @@
 			<xsd:pattern value="1|2|3|4|5" />
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="tsCodJustCanc">
+		<xsd:annotation>
+			<xsd:documentation>
+				Código de justificativa de cancelamento:
+				1 - Erro na Emissão;
+				2 - Serviço não Prestado;
+				9 - Outros;
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="9"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsMotivo">
+		<xsd:annotation>
+			<xsd:documentation>Descrição do motivo da substituição da NFS-e</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tsString">
+			<xsd:minLength value="15"/>
+			<xsd:maxLength value="255"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:simpleType name="tsIdTag">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="255" />
@@ -512,6 +537,29 @@
 			<xsd:enumeration value="09"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="tsTipoRetPISCofins">
+		<xsd:annotation>
+			<xsd:documentation>
+				Tipo de retencao do Pis/Cofins:
+				1 - Retido;
+				2 - Não Retido;
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsString">
+		<xsd:annotation>
+			<xsd:documentation>Tipo string genérico</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:pattern value="[!-ÿ]{1}[ -ÿ]{0,}[!-ÿ]{1}|[!-ÿ]{1}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 
 	<!-- definition of complex elements -->
 	<xsd:complexType name="tcCpfCnpj">
@@ -680,6 +728,7 @@
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="CST" type="tsTipoCST"
 						 minOccurs="0" maxOccurs="1" />
+			<xsd:element name="TpRetPisCofins" type="tsTipoRetPISCofins" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -727,7 +776,7 @@
 			<xsd:element name="PaisPrestacao" type="tsCodigoPaisBacen"
 						 minOccurs="0" maxOccurs="1" />
 			<xsd:element name="CodigoNBS" type="tsCodNBS"
-						 minOccurs="1" maxOccurs="1">
+						 minOccurs="0" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>Código NBS (Nomenclatura Brasileira de Serviços, Intangíveis e outras Operações que produzam Variações no Patrimônio) correspondente ao serviço prestado</xsd:documentation>
 				</xsd:annotation>
@@ -986,6 +1035,16 @@
 				minOccurs="1" maxOccurs="1" />
 			<xsd:element name="CodigoCancelamento" type="tsCodigoCancelamentoNfse"
 				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CMotivo" type="tsCodJustCanc">
+				<xsd:annotation>
+					<xsd:documentation>Código de justificativa de cancelamento</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="XMotivo" type="tsMotivo">
+				<xsd:annotation>
+					<xsd:documentation>Descrição para explicitar o motivo do cancelamento</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 		</xsd:sequence>
 		<xsd:attribute name="Id" type="tsIdTag" />
 	</xsd:complexType>
