@@ -133,8 +133,35 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
         servico.AddChild(AddTag(TipoCampo.Str, "", "MunicipioPrestacao", 1, 20, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
         servico.AddChild(AddTag(TipoCampo.Int, "", "PaisPrestacao", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.CodigoPais));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoNBS", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.CodigoNbs));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "CIndOp", 6, 6, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoIndicadorOperacao));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "CClassTribReg", 6, 6, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoClassificacaoTributaria));
 
         return servico;
+    }
+    
+    protected override XElement WriteValoresRps(NotaServico nota)
+    {
+        var valores = new XElement("Valores");
+
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorServicos", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.Valores.ValorServicos));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorDeducoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorDeducoes));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorPis", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorPis));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorCofins", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorCofins));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorInss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorInss));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorIr", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIr));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorCsll", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorCsll));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "OutrasRetencoes", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.OutrasRetencoes));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "ValorIss", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.ValorIss));
+        if (Municipio.Provedor == NFSeProvider.Fiorilli)
+            valores.AddChild(AddTag(TipoCampo.De4, "", "Aliquota", 1, 6, Ocorrencia.Obrigatoria, nota.Servico.Valores.Aliquota));
+        else
+            valores.AddChild(AddTag(TipoCampo.De4, "", "Aliquota", 1, 6, Ocorrencia.MaiorQueZero, nota.Servico.Valores.Aliquota));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoCondicionado));
+        valores.AddChild(AddTag(TipoCampo.Str, "", "CST", 2, 2, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.CstPisCofins));
+        valores.AddChild(AddTag(TipoCampo.Str, "", "TpRetPisCofins", 1, 1, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.TipoRetencaoPisCofins));
+
+        return valores;
     }
 
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
