@@ -30,14 +30,15 @@
 // ***********************************************************************
 
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
-using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Nota;
-using System.Xml.Linq;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
+using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Nota;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -58,12 +59,18 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     {
         return new DSF203ServiceClient(this, tipo, null);
     }
-    
-    protected override string GerarCabecalho()
+
+    protected override void AssinarEnviar(RetornoEnviar retornoWebservice)
     {
-        return "<tem:cabecalho versao=\"203\">" +
-               "<tem:versaoDados>2.03</tem:versaoDados>" +
-               "</tem:cabecalho>";
+        //retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsEnvio", "LoteRps", Certificado);
+    }
+
+    /// <inheritdoc />
+    protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
+    {
+        //retornoWebservice.XmlEnvio = XmlSigning.AssinarXmlTodos(retornoWebservice.XmlEnvio, "Rps", "InfDeclaracaoPrestacaoServico", Certificado);
+        retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "EnviarLoteRpsSincronoEnvio", "LoteRps", Certificado);
     }
 
     //protected override XElement WriteValoresRps(NotaServico nota)
@@ -89,7 +96,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
 
     //    return valores;
     //}
-    
+
     //protected override void ValidarSchema(RetornoWebservice retorno, string schema)
     //{
     //    base.ValidarSchema(retorno, schema);
@@ -97,6 +104,6 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
 
     //    retorno.XmlEnvio = retorno.XmlEnvio.Replace(" xmlns=\"http://www.abrasf.org.br/nfse.xsd\"", "");
     //}
- 
+
     #endregion Methods
 }

@@ -53,7 +53,7 @@ internal sealed class ProviderDSF100 : ProviderABRASF
 
     #region Private Methods
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new DSFServiceClient100(this, tipo);
+    protected override IServiceClient GetClient(TipoUrl tipo) => new DSF100ServiceClient(this, tipo);
 
     protected override string GerarCabecalho()
     {

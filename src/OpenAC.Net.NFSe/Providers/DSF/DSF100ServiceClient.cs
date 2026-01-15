@@ -40,11 +40,11 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class DSFServiceClient100 : NFSeSoapServiceClient, IServiceClient
+internal sealed class DSF100ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
 
-    public DSFServiceClient100(ProviderDSF100 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
+    public DSF100ServiceClient(ProviderDSF100 provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
     }
 
