@@ -40,6 +40,7 @@ using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Providers.ISSCampinas;
 
 namespace OpenAC.Net.NFSe.Providers;
 
