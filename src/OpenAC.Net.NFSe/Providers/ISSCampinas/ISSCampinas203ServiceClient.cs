@@ -43,7 +43,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace OpenAC.Net.NFSe.Providers;
+namespace OpenAC.Net.NFSe.Providers.ISSCampinas;
 
 internal sealed class ISSCampinas203ServiceClient : NFSeSoapServiceClient, IServiceClient
 {

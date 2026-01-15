@@ -47,7 +47,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace OpenAC.Net.NFSe.Providers;
+namespace OpenAC.Net.NFSe.Providers.ISSCampinas;
 
 internal sealed class ProviderISSCampinas203 : ProviderABRASF203
 {
@@ -86,7 +86,7 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(retornoWebservice.XmlEnvio);
 
-        XmlSigning.AssinarDocumento(xmlDoc, "ConsultarLoteRpsEnvio", "ConsultarLoteRpsEnvio", "", Certificado);
+        xmlDoc.AssinarDocumento("ConsultarLoteRpsEnvio", "ConsultarLoteRpsEnvio", "", Certificado);
         retornoWebservice.XmlEnvio = xmlDoc.OuterXml;
     }
 
@@ -95,7 +95,7 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(retornoWebservice.XmlEnvio);
 
-        XmlSigning.AssinarDocumento(xmlDoc, "ConsultarNfseRpsEnvio", "ConsultarNfseRpsEnvio", "", Certificado);
+        xmlDoc.AssinarDocumento("ConsultarNfseRpsEnvio", "ConsultarNfseRpsEnvio", "", Certificado);
         retornoWebservice.XmlEnvio = xmlDoc.OuterXml;
     }
 
@@ -104,7 +104,7 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(retornoWebservice.XmlEnvio);
 
-        XmlSigning.AssinarDocumento(xmlDoc, "Pedido", "InfPedidoCancelamento", "", Certificado);
+        xmlDoc.AssinarDocumento("Pedido", "InfPedidoCancelamento", "", Certificado);
         retornoWebservice.XmlEnvio = xmlDoc.OuterXml;
     }
 
