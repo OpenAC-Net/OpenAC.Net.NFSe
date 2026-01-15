@@ -2426,39 +2426,48 @@
 			<Codigo>3509502</Codigo>
 			<Nome>Campinas</Nome>
 			<UF>SP</UF>
-			<Provedor>ISSDSF</Provedor>
-			<Versao>1.00</Versao>
-			<UrlHomologacao>
+			<Provedor>ISSCampinas</Provedor>
+			<Versao>1.03</Versao>
+		<UrlHomologacao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSequencialRps</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
+          <Url>https://homol-rps.ima.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>
@@ -2467,43 +2476,43 @@
 			<UrlProducao>
 				<Item>
 					<TipoUrl>Enviar</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>EnviarSincrono</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSe</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>CancelarNFSeLote</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarLoteRps</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSituacao</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarSequencialRps</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>SubstituirNFSe</TipoUrl>
-					<Url>http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws</Url>
+					<Url>https://novanfse.campinas.sp.gov.br/notafiscal-abrasfv203-ws/NotaFiscalSoap?wsdl</Url>
 				</Item>
 				<Item>
 					<TipoUrl>Autenticacao</TipoUrl>

@@ -416,5 +416,18 @@
 	  <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
 	  <PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Schemas\ISSCampinas\2.03\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="Schemas\ISSCampinas\2.03\nfse.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Schemas\ISSCampinas\2.03\xmldsig-core-schema20020212.xsd">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 </Project>
