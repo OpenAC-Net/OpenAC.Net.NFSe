@@ -95,7 +95,7 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="tsItemListaServico">
 		<xsd:restriction base="xsd:string">
-			<xsd:maxLength value="5" />
+			<xsd:maxLength value="6" />
 			<xsd:minLength value="1" />
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
