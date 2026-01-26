@@ -89,7 +89,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "valor", 1, 15, Ocorrencia.Obrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorServicos)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "base", 1, 15, Ocorrencia.Obrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.BaseCalculo)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "descricaoNF", 0, 2000, Ocorrencia.NaoObrigatoria, nota.Servico.Descricao.RemoveAccent()));
-        notaTag.AddChild(AddTag(TipoCampo.Str, "", "tomador_tipo", 14, 14, Ocorrencia.NaoObrigatoria, 
+        notaTag.AddChild(AddTag(TipoCampo.Str, "", "tomador_tipo", 14, 14, Ocorrencia.NaoObrigatoria,
             nota.Tomador.Tipo == TipoTomador.NaoIdentificado ? 1 :
                 nota.Tomador.Tipo == TipoTomador.PessoaFisica ? 2 :
                 nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoMunicipio == nota.Prestador.Endereco.CodigoMunicipio ? 3 :
@@ -192,7 +192,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
             foreach (var node in errors.Descendants().Where(x => x.Name.LocalName == "item"))
             {
                 var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
-                
+
                 // Se tem DescricaoErro, é um erro real
                 if (!string.IsNullOrEmpty(errorDescricao))
                 {
@@ -276,12 +276,21 @@ internal sealed class ProviderSigISS100 : ProviderBase
                 var errorId = node.ElementAnyNs("id")?.Value ?? string.Empty;
                 var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
                 var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
+                if (errorDescricao.ToLower().Contains("se encontra cancelada"))
+                {
+                    retornoWebservice.Sucesso = true;
+                }
+                else if (errorProcesso.ToLower().Contains(retornoWebservice.NumeroNFSe + " enviada"))
+                {
+                    retornoWebservice.Sucesso = true;
+                }
                 retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
             }
         }
         else
         {
-            retornoWebservice.Sucesso = true;
+            retornoWebservice.Sucesso = false;
+            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "", Correcao = "", Descricao = "sem retorno" });
         }
     }
 
@@ -348,12 +357,12 @@ internal sealed class ProviderSigISS100 : ProviderBase
                 //var errorId = node.ElementAnyNs("id")?.GetValue<int>() ?? 0;
                 var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
                 var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
-                if(errorDescricao.ToLower().Contains("nota recusada"))
+                if (errorDescricao.ToLower().Contains("nota recusada"))
                 {
                     //recusada
                     retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Correcao = errorProcesso, Descricao = errorDescricao });
                 }
-                else if(errorDescricao.ToLower().Contains("nota aguardando"))
+                else if (errorDescricao.ToLower().Contains("nota aguardando"))
                 {
                     //aguardando
                     retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "aguardando", Correcao = errorProcesso, Descricao = errorDescricao });
@@ -374,7 +383,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
             return;
         }
 
-        if(!dadosNota.HasElements)
+        if (!dadosNota.HasElements)
         {
             retornoWebservice.Sucesso = false;
             retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Descricao = "Nota não retornada completa. DadosNota não possui elementos." });
@@ -385,11 +394,11 @@ internal sealed class ProviderSigISS100 : ProviderBase
 
         //retorno de dados.
         var nota = notas.FirstOrDefault() ?? new NotaServico(Configuracoes);
-        
+
         // Dados da NFSe
         nota.IdentificacaoNFSe.Numero = dadosNota.ElementAnyNs("nota")?.GetValue<string>() ?? string.Empty;
         nota.IdentificacaoNFSe.Chave = dadosNota.ElementAnyNs("autenticidade")?.GetValue<string>() ?? string.Empty;
-        
+
         var dtConversao = dadosNota.ElementAnyNs("dt_conversao")?.GetValue<string>();
         if (!string.IsNullOrEmpty(dtConversao) && DateTime.TryParseExact(dtConversao, "MMM dd yyyy hh:mm:ss:ffftt", CultureInfo.GetCultureInfo("en-US"), DateTimeStyles.AssumeLocal, out var dataEmissao))
         {
@@ -402,7 +411,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
         // Dados do RPS
         nota.IdentificacaoRps.Numero = dadosNota.ElementAnyNs("num_rps")?.GetValue<string>() ?? string.Empty;
         nota.IdentificacaoRps.Serie = dadosNota.ElementAnyNs("serie_rps")?.GetValue<string>() ?? string.Empty;
-        
+
         var emissaoRps = dadosNota.ElementAnyNs("emissao_rps")?.GetValue<string>();
         if (!string.IsNullOrEmpty(emissaoRps) && DateTime.TryParseExact(emissaoRps, "MMM dd yyyy hh:mm:ss:ffftt", CultureInfo.GetCultureInfo("en-US"), DateTimeStyles.AssumeLocal, out var dataEmissaoRps))
         {
@@ -692,12 +701,12 @@ internal sealed class ProviderSigISS100 : ProviderBase
     private decimal ParseDecimalSigiss(string valor)
     {
         if (string.IsNullOrWhiteSpace(valor)) return 0;
-        
+
         // Remove espaços e converte vírgula para ponto
         valor = valor.Trim().Replace(",", ".");
-        
-        return decimal.TryParse(valor, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var result) 
-            ? result 
+
+        return decimal.TryParse(valor, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var result)
+            ? result
             : 0;
     }
 
