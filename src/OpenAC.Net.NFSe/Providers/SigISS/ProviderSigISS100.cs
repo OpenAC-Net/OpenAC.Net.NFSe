@@ -29,11 +29,6 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
@@ -42,6 +37,12 @@ using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -203,12 +204,20 @@ internal sealed class ProviderSigISS100 : ProviderBase
                 {
                     // Sem DescricaoErro = sucesso, extrair ID da nota do DescricaoProcesso
                     var descricaoProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
-                    
+
                     // Extrair o ID da nota da mensagem (ex: "...NFS-e:42161")
-                    var match = System.Text.RegularExpressions.Regex.Match(descricaoProcesso, @"NFS-e:(\d+)");
+                    /*var match = System.Text.RegularExpressions.Regex.Match(descricaoProcesso, @"NFS-e:(\d+)");
                     if (match.Success)
                     {
                         retornoWebservice.Protocolo = match.Groups[1].Value;
+                    }*/
+
+                    //26/01/25 adicionado id da nota no corpo, nao precisa mais extrair comoa cima
+                    var retornoNota = root.ElementAnyNs("RetornoNota");
+                    var notaElement = retornoNota?.ElementAnyNs("Nota");
+                    if (notaElement != null)
+                    {
+                        retornoWebservice.Protocolo = notaElement.GetValue<string>();
                     }
                 }
             }
@@ -336,14 +345,18 @@ internal sealed class ProviderSigISS100 : ProviderBase
         {
             foreach (var node in errors.Descendants().Where(x => x.Name.LocalName == "item"))
             {
-                var errorId = node.ElementAnyNs("id")?.GetValue<int>() ?? 0;
-                
-                // Se o id for 0, é um erro real
-                if (errorId == 0)
+                //var errorId = node.ElementAnyNs("id")?.GetValue<int>() ?? 0;
+                var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
+                var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
+                if(errorDescricao.ToLower().Contains("nota recusada"))
                 {
-                    var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
-                    var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
-                    retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = errorId.ToString(), Correcao = errorProcesso, Descricao = errorDescricao });
+                    //recusada
+                    retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Correcao = errorProcesso, Descricao = errorDescricao });
+                }
+                else if(errorDescricao.ToLower().Contains("nota aguardando"))
+                {
+                    //aguardando
+                    retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "aguardando", Correcao = errorProcesso, Descricao = errorDescricao });
                 }
             }
         }
@@ -357,14 +370,14 @@ internal sealed class ProviderSigISS100 : ProviderBase
         if (dadosNota == null)
         {
             retornoWebservice.Sucesso = false;
-            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "", Descricao = "dadosNota = null" });
+            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Descricao = "dadosNota = null" });
             return;
         }
 
         if(!dadosNota.HasElements)
         {
             retornoWebservice.Sucesso = false;
-            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "", Descricao = "Nota não retornada completa. DadosNota não possui elementos." });
+            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Descricao = "Nota não retornada completa. DadosNota não possui elementos." });
             return;
         }
 
@@ -378,7 +391,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
         nota.IdentificacaoNFSe.Chave = dadosNota.ElementAnyNs("autenticidade")?.GetValue<string>() ?? string.Empty;
         
         var dtConversao = dadosNota.ElementAnyNs("dt_conversao")?.GetValue<string>();
-        if (!string.IsNullOrEmpty(dtConversao) && DateTime.TryParse(dtConversao, out var dataEmissao))
+        if (!string.IsNullOrEmpty(dtConversao) && DateTime.TryParseExact(dtConversao, "MMM dd yyyy hh:mm:ss:ffftt", CultureInfo.GetCultureInfo("en-US"), DateTimeStyles.AssumeLocal, out var dataEmissao))
         {
             nota.IdentificacaoNFSe.DataEmissao = dataEmissao;
         }
@@ -391,7 +404,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
         nota.IdentificacaoRps.Serie = dadosNota.ElementAnyNs("serie_rps")?.GetValue<string>() ?? string.Empty;
         
         var emissaoRps = dadosNota.ElementAnyNs("emissao_rps")?.GetValue<string>();
-        if (!string.IsNullOrEmpty(emissaoRps) && DateTime.TryParse(emissaoRps, out var dataEmissaoRps))
+        if (!string.IsNullOrEmpty(emissaoRps) && DateTime.TryParseExact(emissaoRps, "MMM dd yyyy hh:mm:ss:ffftt", CultureInfo.GetCultureInfo("en-US"), DateTimeStyles.AssumeLocal, out var dataEmissaoRps))
         {
             nota.IdentificacaoRps.DataEmissao = dataEmissaoRps;
         }
