@@ -40,6 +40,7 @@ using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Providers.ISSCampinas;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -65,7 +66,7 @@ public static class ProviderManager
             {NFSeProvider.Conam, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderConam)}}},
             {NFSeProvider.Coplan, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderCoplan)}}},
             {NFSeProvider.DBSeller, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDBSeller)}}},
-            {NFSeProvider.DSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDSF)}}},
+            {NFSeProvider.DSF, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderDSF100)}, {VersaoNFSe.ve203, typeof(ProviderDSF203)}}},
             {NFSeProvider.Equiplano, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderEquiplano)}}},
             {NFSeProvider.Fiorilli, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderFiorilli200)}, {VersaoNFSe.ve201, typeof(ProviderFiorilli201)}}},
             {NFSeProvider.Fisco, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderFisco)}}},
@@ -90,7 +91,7 @@ public static class ProviderManager
             {NFSeProvider.RLZ, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(RLZProvider)}}},
             {NFSeProvider.SiapNet, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderSiapNet)}}},
             {NFSeProvider.SigISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISS100)}, {VersaoNFSe.ve103, typeof(ProviderSigISS103)}}},
-            {NFSeProvider.SigISSWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISSWeb)}}},
+            {NFSeProvider.SigISSWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSigISSWeb)}, {VersaoNFSe.ve102, typeof(ProviderSigISSWeb102)}}},
             {NFSeProvider.SimplISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderSimplISS100)}, {VersaoNFSe.ve203, typeof(ProviderSimplISS203)}}},
             {NFSeProvider.Sintese, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderSintese204)}}},
             {NFSeProvider.SmarAPD, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderSmarAPD204)}}},
@@ -106,6 +107,7 @@ public static class ProviderManager
             {NFSeProvider.GISS, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve204, typeof(ProviderGISS)}}},
             {NFSeProvider.GIAP, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderGIAP100)}, {VersaoNFSe.ve200, typeof(ProviderGIAP200)}}},
             {NFSeProvider.GovBR, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderGovBR)}}},
+            {NFSeProvider.ISSCampinas, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderISSCampinas203) }}},
         };
 
         Load();

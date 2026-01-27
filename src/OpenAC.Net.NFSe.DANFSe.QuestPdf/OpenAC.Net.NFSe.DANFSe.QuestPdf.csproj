@@ -20,9 +20,9 @@
         <NeutralLanguage>pt-BR</NeutralLanguage>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <AssemblyVersion>1.6.3</AssemblyVersion>
-        <FileVersion>1.6.3</FileVersion>
-        <Version>1.6.3</Version>
+        <AssemblyVersion>1.7.0</AssemblyVersion>
+        <FileVersion>1.7.0</FileVersion>
+        <Version>1.7.0</Version>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <DebugType>embedded</DebugType>
@@ -54,7 +54,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="QuestPDF" Version="2025.7.3" />
+      <PackageReference Include="QuestPDF" Version="2025.12.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -306,5 +306,10 @@ public enum NFSeProvider : sbyte
     /// <summary>
     /// Provedor WebIss.
     /// </summary>
-    WebIss = 10
+    WebIss = 10,
+
+   /// <summary>
+   /// Provedor Campinas - SP.
+   /// </summary>
+    ISSCampinas = 55
 }

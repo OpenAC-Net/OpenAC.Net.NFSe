@@ -61,7 +61,128 @@ internal class ProviderGISS : ProviderABRASF204
         valores.AddChild(AddTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
         valores.AddChild(AddTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoCondicionado));
 
+        var IBSCBS = WriteIBSCBSRps(nota);
+        
+        if(IBSCBS != null)
+            valores.AddChild(IBSCBS);
+        
+
         return valores;
+    }
+
+    protected XElement? WriteIBSCBSRps(NotaServico nota)
+    {
+        var info = nota.Servico.Valores.IBSCBS;
+        if (info == null) return null;
+
+        var ibsCbs = new XElement("IBSCBS");
+
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "finNFSe", 1, 1, Ocorrencia.Obrigatoria, info.FinalidadeNFSe));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "indFinal", 1, 1, Ocorrencia.Obrigatoria, info.IndicadorFinal));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "cIndOp", 6, 6, Ocorrencia.Obrigatoria, info.CodigoIndicadorOperacao));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "tpOper", 1, 1, Ocorrencia.NaoObrigatoria, info.TipoOperacao));
+
+        var referencias = info.ReferenciasNFSe.Where(x => !x.IsEmpty()).ToList();
+        if (referencias.Count > 0)
+        {
+            var gRefNFSe = new XElement("gRefNFSe");
+            foreach (var referencia in referencias)
+            {
+                gRefNFSe.AddChild(AddTag(TipoCampo.Str, "", "refNFSe", 1, 50, Ocorrencia.Obrigatoria, referencia));
+            }
+
+            ibsCbs.AddChild(gRefNFSe);
+        }
+
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "tpEnteGov", 1, 1, Ocorrencia.NaoObrigatoria, info.TipoEnteGov));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "indDest", 1, 1, Ocorrencia.Obrigatoria, info.IndicadorDestinatario));
+
+        var valores = new XElement("valores");
+        var reeRepRes = info.Valores.ReembolsoRepasseRessarcimento;
+        if (reeRepRes?.Documentos?.Count > 0)
+        {
+            var gReeRepRes = new XElement("gReeRepRes");
+
+            foreach (var documento in reeRepRes.Documentos)
+            {
+                var documentos = new XElement("documentos");
+                var docAdicionado = false;
+
+                if (documento.DocumentoDFeNacional != null)
+                {
+                    var dFe = new XElement("dFeNacional");
+                    dFe.AddChild(AddTag(TipoCampo.StrNumber, "", "tipoChaveDFe", 1, 1, Ocorrencia.Obrigatoria, documento.DocumentoDFeNacional.TipoChaveDFe));
+                    dFe.AddChild(AddTag(TipoCampo.Str, "", "xTipoChaveDFe", 1, 255, Ocorrencia.NaoObrigatoria, documento.DocumentoDFeNacional.DescricaoTipoChaveDFe));
+                    dFe.AddChild(AddTag(TipoCampo.Str, "", "chaveDFe", 1, 50, Ocorrencia.Obrigatoria, documento.DocumentoDFeNacional.ChaveDFe));
+                    documentos.AddChild(dFe);
+                    docAdicionado = true;
+                }
+                else if (documento.DocumentoFiscalOutro != null)
+                {
+                    var docFiscal = new XElement("docFiscalOutro");
+                    docFiscal.AddChild(AddTag(TipoCampo.StrNumber, "", "cMunDocFiscal", 7, 7, Ocorrencia.Obrigatoria, documento.DocumentoFiscalOutro.CodigoMunicipioDocumentoFiscal));
+                    docFiscal.AddChild(AddTag(TipoCampo.Str, "", "nDocFiscal", 1, 255, Ocorrencia.Obrigatoria, documento.DocumentoFiscalOutro.NumeroDocumentoFiscal));
+                    docFiscal.AddChild(AddTag(TipoCampo.Str, "", "xDocFiscal", 1, 255, Ocorrencia.Obrigatoria, documento.DocumentoFiscalOutro.DescricaoDocumentoFiscal));
+                    documentos.AddChild(docFiscal);
+                    docAdicionado = true;
+                }
+                else if (documento.DocumentoOutro != null)
+                {
+                    var docOutro = new XElement("docOutro");
+                    docOutro.AddChild(AddTag(TipoCampo.Str, "", "nDoc", 1, 255, Ocorrencia.Obrigatoria, documento.DocumentoOutro.NumeroDocumento));
+                    docOutro.AddChild(AddTag(TipoCampo.Str, "", "xDoc", 1, 255, Ocorrencia.Obrigatoria, documento.DocumentoOutro.DescricaoDocumento));
+                    documentos.AddChild(docOutro);
+                    docAdicionado = true;
+                }
+
+                if (!docAdicionado) continue;
+
+                if (documento.Fornecedor != null)
+                {
+                    var fornec = new XElement("fornec");
+
+                    if (!documento.Fornecedor.Cnpj.IsEmpty())
+                        fornec.AddChild(AddTag(TipoCampo.StrNumber, "", "CNPJ", 14, 14, Ocorrencia.Obrigatoria, documento.Fornecedor.Cnpj));
+                    else if (!documento.Fornecedor.Cpf.IsEmpty())
+                        fornec.AddChild(AddTag(TipoCampo.StrNumber, "", "CPF", 11, 11, Ocorrencia.Obrigatoria, documento.Fornecedor.Cpf));
+                    else if (!documento.Fornecedor.Nif.IsEmpty())
+                        fornec.AddChild(AddTag(TipoCampo.Str, "", "NIF", 1, 40, Ocorrencia.Obrigatoria, documento.Fornecedor.Nif));
+                    else if (!documento.Fornecedor.CodigoNaoNif.IsEmpty())
+                        fornec.AddChild(AddTag(TipoCampo.StrNumber, "", "cNaoNIF", 1, 1, Ocorrencia.Obrigatoria, documento.Fornecedor.CodigoNaoNif));
+
+                    fornec.AddChild(AddTag(TipoCampo.Str, "", "xNome", 1, 150, Ocorrencia.Obrigatoria, documento.Fornecedor.Nome));
+
+                    if (fornec.HasElements)
+                        documentos.AddChild(fornec);
+                }
+
+                documentos.AddChild(AddTag(TipoCampo.Dat, "", "dtEmiDoc", 1, 1, Ocorrencia.Obrigatoria, documento.DataEmissaoDocumento));
+                documentos.AddChild(AddTag(TipoCampo.Dat, "", "dtCompDoc", 1, 1, Ocorrencia.Obrigatoria, documento.DataCompetenciaDocumento));
+                documentos.AddChild(AddTag(TipoCampo.StrNumber, "", "tpReeRepRes", 2, 2, Ocorrencia.Obrigatoria, documento.TipoReeRepRes));
+                documentos.AddChild(AddTag(TipoCampo.Str, "", "xTpReeRepRes", 1, 150, Ocorrencia.NaoObrigatoria, documento.DescricaoTipoReeRepRes));
+                documentos.AddChild(AddTag(TipoCampo.De2, "", "vlrReeRepRes", 1, 15, Ocorrencia.Obrigatoria, documento.ValorReeRepRes));
+
+                gReeRepRes.Add(documentos);
+            }
+
+            if (gReeRepRes.HasElements)
+                valores.AddChild(gReeRepRes);
+        }
+
+        var trib = new XElement("trib");
+        var gIbsCbs = new XElement("gIBSCBS");
+        gIbsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "CST", 3, 3, Ocorrencia.Obrigatoria, info.Valores.Tributos.SituacaoClassificacao.CodigoSituacaoTributaria));
+        gIbsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "cClassTrib", 6, 6, Ocorrencia.Obrigatoria, info.Valores.Tributos.SituacaoClassificacao.CodigoClassificacaoTributaria));
+        trib.AddChild(gIbsCbs);
+        valores.AddChild(trib);
+
+        valores.AddChild(AddTag(TipoCampo.StrNumber, "", "cLocalidadeIncid", 7, 7, Ocorrencia.Obrigatoria, info.Valores.CodigoLocalidadeIncidencia));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "pRedutor", 1, 5, Ocorrencia.Obrigatoria, info.Valores.PercentualRedutor));
+        valores.AddChild(AddTag(TipoCampo.De2, "", "vBC", 1, 15, Ocorrencia.MaiorQueZero, info.Valores.ValorBaseCalculo));
+
+        ibsCbs.AddChild(valores);
+
+        return ibsCbs;
     }
 
     #endregion RPS

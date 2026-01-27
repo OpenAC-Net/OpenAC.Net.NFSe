@@ -17,19 +17,43 @@
 			<xsd:maxLength value="9" />
 			<xsd:minLength value="1" />
 			<xsd:whiteSpace value="collapse" />
+      			<xsd:pattern value="[a-zA-Z0-9]{1,9}"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsStatusRps">
+		<xsd:annotation>
+			<xsd:documentation>Situacao do RPS (
+                                               1 - Normal; 
+                                               2 - Cancelado)
+                        </xsd:documentation>
+		</xsd:annotation>
 		<xsd:restriction base="xsd:byte">
 			<xsd:pattern value="1|2" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsStatusNfse">
-		<xsd:restriction base="xsd:byte">
+		<xsd:annotation>
+			<xsd:documentation>Situacao do RPS (
+                                                1 - Normal; 
+                                                2 - Cancelada)
+                        </xsd:documentation>
+		</xsd:annotation>	
+		<xsd:restriction base="xsd:byte">	
 			<xsd:pattern value="1|2" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsExigibilidadeISS">
+		<xsd:annotation>
+			<xsd:documentation>Exigibilidade do ISS da NFS-e (
+						1 - Exigivel; 
+						2 - Nao incidencia; 
+						3 - Isencao; 
+						4 - Exportacao; 
+						5 - Imunidade; 
+						6 - Exigibilidade Suspensa por Decisao Judicial; 
+						7 - Exigibilidade Suspensa por Processo Administrativo)
+                        </xsd:documentation>
+		</xsd:annotation>
 		<xsd:restriction base="xsd:byte">
 			<xsd:pattern value="1|2|3|4|5|6|7" />
 		</xsd:restriction>
@@ -42,16 +66,38 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsRegimeEspecialTributacao">
+		<xsd:annotation>
+			<xsd:documentation>Exigibilidade do ISS da NFS-e (
+						1 - Microempresa Municipal; 
+						2 - Estimativa; 
+						3 - Sociedade de Profissionais; 
+						4 - Cooperativa; 
+						5 - Microempresario Individual (MEI); 
+						6 - Microempresario e Empresa de Pequeno Porte (ME EPP))
+                        </xsd:documentation>
+		</xsd:annotation>
 		<xsd:restriction base="xsd:byte">
 			<xsd:pattern value="1|2|3|4|5|6" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsSimNao">
+		<xsd:annotation>
+			<xsd:documentation>Sim ou Nao (
+                                                1 - Sim; 
+                                                2 - Nao)
+                        </xsd:documentation>
+		</xsd:annotation>
 		<xsd:restriction base="xsd:byte">
 			<xsd:pattern value="1|2" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsResponsavelRetencao">
+		<xsd:annotation>
+			<xsd:documentation>Responsavel pela retencao do ISSQN (
+                                                1 - Tomador; 
+                                                2 - Intermediario)
+                        </xsd:documentation>
+		</xsd:annotation>	
 		<xsd:restriction base="xsd:byte">
 			<xsd:pattern value="1|2" />
 		</xsd:restriction>
@@ -75,6 +121,13 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsTipoRps">
+		<xsd:annotation>
+			<xsd:documentation>Tipo do RPS (
+						1 - Recibo Provisorio de Servicos;
+						2 - RPS Nota Fiscal Conjugada (Mista); 
+						3 - Cupom)
+                        </xsd:documentation>
+		</xsd:annotation>	
 		<xsd:restriction base="xsd:byte">
 			<xsd:pattern value="1|2|3" />
 		</xsd:restriction>
@@ -94,15 +147,209 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsItemListaServico">
+		<xsd:annotation>
+			<xsd:documentation>Tipo Codigo da Lista de Servicos LC 116/2003</xsd:documentation>
+		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
-			<xsd:maxLength value="6" />
-			<xsd:minLength value="1" />
-			<xsd:whiteSpace value="collapse" />
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="01.01"/>
+			<xsd:enumeration value="01.02"/>
+			<xsd:enumeration value="01.03"/>
+			<xsd:enumeration value="01.04"/>
+			<xsd:enumeration value="01.05"/>
+			<xsd:enumeration value="01.06"/>
+			<xsd:enumeration value="01.07"/>
+			<xsd:enumeration value="01.08"/>
+			<xsd:enumeration value="02.01"/>
+			<xsd:enumeration value="03.02"/>
+			<xsd:enumeration value="03.03"/>
+			<xsd:enumeration value="03.04"/>
+			<xsd:enumeration value="03.05"/>
+			<xsd:enumeration value="04.01"/>
+			<xsd:enumeration value="04.02"/>
+			<xsd:enumeration value="04.03"/>
+			<xsd:enumeration value="04.04"/>
+			<xsd:enumeration value="04.05"/>
+			<xsd:enumeration value="04.06"/>
+			<xsd:enumeration value="04.07"/>
+			<xsd:enumeration value="04.08"/>
+			<xsd:enumeration value="04.09"/>
+			<xsd:enumeration value="04.10"/>
+			<xsd:enumeration value="04.11"/>
+			<xsd:enumeration value="04.12"/>
+			<xsd:enumeration value="04.13"/>
+			<xsd:enumeration value="04.14"/>
+			<xsd:enumeration value="04.15"/>
+			<xsd:enumeration value="04.16"/>
+			<xsd:enumeration value="04.17"/>
+			<xsd:enumeration value="04.18"/>
+			<xsd:enumeration value="04.19"/>
+			<xsd:enumeration value="04.20"/>
+			<xsd:enumeration value="04.21"/>
+			<xsd:enumeration value="04.22"/>
+			<xsd:enumeration value="04.23"/>
+			<xsd:enumeration value="05.01"/>
+			<xsd:enumeration value="05.02"/>
+			<xsd:enumeration value="05.03"/>
+			<xsd:enumeration value="05.04"/>
+			<xsd:enumeration value="05.05"/>
+			<xsd:enumeration value="05.06"/>
+			<xsd:enumeration value="05.07"/>
+			<xsd:enumeration value="05.08"/>
+			<xsd:enumeration value="05.09"/>
+			<xsd:enumeration value="06.01"/>
+			<xsd:enumeration value="06.02"/>
+			<xsd:enumeration value="06.03"/>
+			<xsd:enumeration value="06.04"/>
+			<xsd:enumeration value="06.05"/>
+			<xsd:enumeration value="07.01"/>
+			<xsd:enumeration value="07.02"/>
+			<xsd:enumeration value="07.03"/>
+			<xsd:enumeration value="07.04"/>
+			<xsd:enumeration value="07.05"/>
+			<xsd:enumeration value="07.06"/>
+			<xsd:enumeration value="07.07"/>
+			<xsd:enumeration value="07.08"/>
+			<xsd:enumeration value="07.09"/>
+			<xsd:enumeration value="07.10"/>
+			<xsd:enumeration value="07.11"/>
+			<xsd:enumeration value="07.12"/>
+			<xsd:enumeration value="07.13"/>
+			<xsd:enumeration value="07.16"/>
+			<xsd:enumeration value="07.17"/>
+			<xsd:enumeration value="07.18"/>
+			<xsd:enumeration value="07.19"/>
+			<xsd:enumeration value="07.20"/>
+			<xsd:enumeration value="07.21"/>
+			<xsd:enumeration value="07.22"/>
+			<xsd:enumeration value="08.01"/>
+			<xsd:enumeration value="08.02"/>
+			<xsd:enumeration value="09.01"/>
+			<xsd:enumeration value="09.02"/>
+			<xsd:enumeration value="09.03"/>
+			<xsd:enumeration value="10.01"/>
+			<xsd:enumeration value="10.02"/>
+			<xsd:enumeration value="10.03"/>
+			<xsd:enumeration value="10.04"/>
+			<xsd:enumeration value="10.05"/>
+			<xsd:enumeration value="10.06"/>
+			<xsd:enumeration value="10.07"/>
+			<xsd:enumeration value="10.08"/>
+			<xsd:enumeration value="10.09"/>
+			<xsd:enumeration value="10.10"/>
+			<xsd:enumeration value="11.01"/>
+			<xsd:enumeration value="11.02"/>
+			<xsd:enumeration value="11.03"/>
+			<xsd:enumeration value="11.04"/>
+			<xsd:enumeration value="12.01"/>
+			<xsd:enumeration value="12.02"/>
+			<xsd:enumeration value="12.03"/>
+			<xsd:enumeration value="12.04"/>
+			<xsd:enumeration value="12.05"/>
+			<xsd:enumeration value="12.06"/>
+			<xsd:enumeration value="12.07"/>
+			<xsd:enumeration value="12.08"/>
+			<xsd:enumeration value="12.09"/>
+			<xsd:enumeration value="12.10"/>
+			<xsd:enumeration value="12.11"/>
+			<xsd:enumeration value="12.12"/>
+			<xsd:enumeration value="12.13"/>
+			<xsd:enumeration value="12.14"/>
+			<xsd:enumeration value="12.15"/>
+			<xsd:enumeration value="12.16"/>
+			<xsd:enumeration value="12.17"/>
+			<xsd:enumeration value="13.02"/>
+			<xsd:enumeration value="13.03"/>
+			<xsd:enumeration value="13.04"/>
+			<xsd:enumeration value="13.05"/>
+			<xsd:enumeration value="14.01"/>
+			<xsd:enumeration value="14.02"/>
+			<xsd:enumeration value="14.03"/>
+			<xsd:enumeration value="14.04"/>
+			<xsd:enumeration value="14.05"/>
+			<xsd:enumeration value="14.06"/>
+			<xsd:enumeration value="14.07"/>
+			<xsd:enumeration value="14.08"/>
+			<xsd:enumeration value="14.09"/>
+			<xsd:enumeration value="14.10"/>
+			<xsd:enumeration value="14.11"/>
+			<xsd:enumeration value="14.12"/>
+			<xsd:enumeration value="14.13"/>
+			<xsd:enumeration value="15.01"/>
+			<xsd:enumeration value="15.02"/>
+			<xsd:enumeration value="15.03"/>
+			<xsd:enumeration value="15.04"/>
+			<xsd:enumeration value="15.05"/>
+			<xsd:enumeration value="15.06"/>
+			<xsd:enumeration value="15.07"/>
+			<xsd:enumeration value="15.08"/>
+			<xsd:enumeration value="15.09"/>
+			<xsd:enumeration value="15.10"/>
+			<xsd:enumeration value="15.11"/>
+			<xsd:enumeration value="15.12"/>
+			<xsd:enumeration value="15.13"/>
+			<xsd:enumeration value="15.14"/>
+			<xsd:enumeration value="15.15"/>
+			<xsd:enumeration value="15.16"/>
+			<xsd:enumeration value="15.17"/>
+			<xsd:enumeration value="15.18"/>
+			<xsd:enumeration value="16.01"/>
+			<xsd:enumeration value="17.01"/>
+			<xsd:enumeration value="17.02"/>
+			<xsd:enumeration value="17.03"/>
+			<xsd:enumeration value="17.04"/>
+			<xsd:enumeration value="17.05"/>
+			<xsd:enumeration value="17.06"/>
+			<xsd:enumeration value="17.08"/>
+			<xsd:enumeration value="17.09"/>
+			<xsd:enumeration value="17.10"/>
+			<xsd:enumeration value="17.11"/>
+			<xsd:enumeration value="17.12"/>
+			<xsd:enumeration value="17.13"/>
+			<xsd:enumeration value="17.14"/>
+			<xsd:enumeration value="17.15"/>
+			<xsd:enumeration value="17.16"/>
+			<xsd:enumeration value="17.17"/>
+			<xsd:enumeration value="17.18"/>
+			<xsd:enumeration value="17.19"/>
+			<xsd:enumeration value="17.20"/>
+			<xsd:enumeration value="17.21"/>
+			<xsd:enumeration value="17.22"/>
+			<xsd:enumeration value="17.23"/>
+			<xsd:enumeration value="17.24"/>
+			<xsd:enumeration value="18.01"/>
+			<xsd:enumeration value="19.01"/>
+			<xsd:enumeration value="20.01"/>
+			<xsd:enumeration value="20.02"/>
+			<xsd:enumeration value="20.03"/>
+			<xsd:enumeration value="21.01"/>
+			<xsd:enumeration value="22.01"/>
+			<xsd:enumeration value="23.01"/>
+			<xsd:enumeration value="24.01"/>
+			<xsd:enumeration value="25.01"/>
+			<xsd:enumeration value="25.02"/>
+			<xsd:enumeration value="25.03"/>
+			<xsd:enumeration value="25.04"/>
+			<xsd:enumeration value="26.01"/>
+			<xsd:enumeration value="27.01"/>
+			<xsd:enumeration value="28.01"/>
+			<xsd:enumeration value="29.01"/>
+			<xsd:enumeration value="30.01"/>
+			<xsd:enumeration value="31.01"/>
+			<xsd:enumeration value="32.01"/>
+			<xsd:enumeration value="33.01"/>
+			<xsd:enumeration value="34.01"/>
+			<xsd:enumeration value="35.01"/>
+			<xsd:enumeration value="36.01"/>
+			<xsd:enumeration value="37.01"/>
+			<xsd:enumeration value="38.01"/>
+			<xsd:enumeration value="39.01"/>
+			<xsd:enumeration value="40.01"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsCodigoCnae">
 		<xsd:restriction base="xsd:int">
-			<xsd:totalDigits value="7" />
+			<xsd:totalDigits value="9" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsCodigoTributacao">
@@ -112,6 +359,13 @@
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
+        <xsd:simpleType name="tsCodigoNbs">
+                <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="9"/>
+                        <xsd:minLength value="1"/>
+                        <xsd:whiteSpace value="collapse"/>
+                </xsd:restriction>
+        </xsd:simpleType>
 	<xsd:simpleType name="tsAliquota">
 		<xsd:restriction base="xsd:decimal">
 			<xsd:totalDigits value="6" />
@@ -158,6 +412,13 @@
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
+        <xsd:simpleType name="tsNif">
+               <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="40"/>
+                        <xsd:minLength value="0"/>
+                        <xsd:whiteSpace value="collapse"/>
+               </xsd:restriction>
+        </xsd:simpleType>
 	<xsd:simpleType name="tsEndereco">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="125" />
@@ -187,8 +448,67 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsUf">
+                <xsd:annotation>
+			<xsd:documentation>UF (
+                                        AC - Acre;
+                                        AL - Alagoas;
+                                        AM - Amazonas;
+                                        AP - Amapa;
+                                        BA - Bahia;
+                                        CE - Ceara;
+                                        DF - Distrito Federal;
+                                        ES - Espirito Santo;
+                                        GO - Goias;
+                                        MA - Maranhao;
+                                        MG - Minas Gerais;
+                                        MS - Mato Grosso do Sul;
+                                        MT - Mato Grosso;
+                                        PA - Para;
+                                        PB - Paraiba;
+                                        PE - Pernambuco;
+                                        PI - Piaui;
+                                        PR - Parana;
+                                        RJ - Rio de Janeiro;
+                                        RN - Rio Grande do Norte;
+                                        RO - Rondonia;
+                                        RR - Roraima;
+                                        RS - Rio Grande do Sul;
+                                        SC - Santa Catarina;
+                                        SE - Sergipe;
+                                        SP - Sao Paulo;
+                                        TO - Tocantins)
+                        </xsd:documentation>
+		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
 			<xsd:length value="2" fixed="true" />
+			<xsd:whiteSpace value="collapse" />
+			<xsd:enumeration value="AC"/>
+			<xsd:enumeration value="AL"/>
+			<xsd:enumeration value="AM"/>
+			<xsd:enumeration value="AP"/>
+			<xsd:enumeration value="BA"/>
+			<xsd:enumeration value="CE"/>
+			<xsd:enumeration value="DF"/>
+			<xsd:enumeration value="ES"/>
+			<xsd:enumeration value="GO"/>
+			<xsd:enumeration value="MA"/>
+			<xsd:enumeration value="MG"/>
+			<xsd:enumeration value="MS"/>
+			<xsd:enumeration value="MT"/>
+			<xsd:enumeration value="PA"/>
+			<xsd:enumeration value="PB"/>
+			<xsd:enumeration value="PE"/>
+			<xsd:enumeration value="PI"/>
+			<xsd:enumeration value="PR"/>
+			<xsd:enumeration value="RJ"/>
+			<xsd:enumeration value="RN"/>
+			<xsd:enumeration value="RO"/>
+			<xsd:enumeration value="RR"/>
+			<xsd:enumeration value="RS"/>
+			<xsd:enumeration value="SC"/>
+			<xsd:enumeration value="SE"/>
+			<xsd:enumeration value="SP"/>
+			<xsd:enumeration value="TO"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsCodigoPaisBacen">
@@ -196,6 +516,7 @@
 			<xsd:length value="4" />
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
+
 	</xsd:simpleType>
 	<xsd:simpleType name="tsCep">
 		<xsd:restriction base="xsd:string">
@@ -223,14 +544,14 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="tsCodigoObra">
 		<xsd:restriction base="xsd:string">
-			<xsd:maxLength value="15" />
+			<xsd:maxLength value="30" />
 			<xsd:minLength value="1" />
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsArt">
 		<xsd:restriction base="xsd:string">
-			<xsd:maxLength value="15" />
+			<xsd:maxLength value="30" />
 			<xsd:minLength value="1" />
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
@@ -269,6 +590,15 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tsCodigoCancelamentoNfse">
+		<xsd:annotation>
+			<xsd:documentation>Codigo do Cancelamento da NFS-e (
+					1 - Erro na emissao;
+					2 - Servico nao prestado;
+					3 - Erro de assinatura;
+					4 - Duplicidade da nota;
+					5 - Erro de processamento)
+                        </xsd:documentation>
+		</xsd:annotation>	
 		<xsd:restriction base="xsd:byte">
 			<xsd:pattern value="1|2|3|4|5" />
 		</xsd:restriction>
@@ -383,6 +713,8 @@
 		<xsd:sequence>
 			<xsd:element name="IdentificacaoTomador" type="tcIdentificacaoTomador"
 				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="NifTomador" type="tsNif"
+				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="RazaoSocial" type="tsRazaoSocial"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Endereco" type="tcEndereco" minOccurs="0"
@@ -396,6 +728,7 @@
         <xsd:sequence>
             <xsd:element name="IdentificacaoIntermediario" type="tcIdentificacaoIntermediario" minOccurs="1" maxOccurs="1"/>
             <xsd:element name="RazaoSocial" type="tsRazaoSocial" minOccurs="1" maxOccurs="1"/>
+	    <xsd:element name="CodigoMunicipio" type="tsCodigoMunicipioIbge" minOccurs="1" maxOccurs="1" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -416,6 +749,8 @@
 			<xsd:element name="ValorCsll" type="tsValor" minOccurs="0"
 				maxOccurs="1" />
 			<xsd:element name="OutrasRetencoes" type="tsValor"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="ValTotTributos" type="tsValor"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ValorIss" type="tsValor" minOccurs="0"
 				maxOccurs="1" />
@@ -454,6 +789,8 @@
 			<xsd:element name="CodigoCnae" type="tsCodigoCnae"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="CodigoTributacaoMunicipio" type="tsCodigoTributacao"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CodigoNbs" type="tsCodigoNbs"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Discriminacao" type="tsDiscriminacao"
 				minOccurs="1" maxOccurs="1" />
@@ -531,6 +868,8 @@
 				minOccurs="1" maxOccurs="1" />
 			<xsd:element name="IncentivoFiscal" type="tsSimNao"
 				minOccurs="1" maxOccurs="1" />
+            <xsd:element name="OutrasInformacoes" type="tsOutrasInformacoes"
+				minOccurs="0" maxOccurs="1" />
 		</xsd:sequence>
 		<xsd:attribute name="Id" type="tsIdTag" />
 	</xsd:complexType>
@@ -805,7 +1144,7 @@
 						<xsd:complexType>
 							<xsd:sequence>
 								<xsd:element ref="CompNfse" 
-									minOccurs="1" />
+									minOccurs="1" maxOccurs="unbounded" />
 								<xsd:element ref="ListaMensagemAlertaRetorno" minOccurs="0" maxOccurs="1" />
 							</xsd:sequence>						
 						</xsd:complexType>
@@ -835,7 +1174,7 @@
 						<xsd:complexType>
 							<xsd:sequence>
 								<xsd:element ref="CompNfse" 
-									minOccurs="1" />
+									minOccurs="1" maxOccurs="1" />
 								<xsd:element ref="ListaMensagemAlertaRetorno" minOccurs="0" maxOccurs="1" />
 							</xsd:sequence>						
 						</xsd:complexType>

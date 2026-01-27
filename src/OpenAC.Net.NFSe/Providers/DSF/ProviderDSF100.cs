@@ -40,11 +40,11 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderDSF : ProviderABRASF
+internal sealed class ProviderDSF100 : ProviderABRASF
 {
     #region Constructors
 
-    public ProviderDSF(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
+    public ProviderDSF100(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "DSF";
     }
@@ -53,7 +53,7 @@ internal sealed class ProviderDSF : ProviderABRASF
 
     #region Private Methods
 
-    protected override IServiceClient GetClient(TipoUrl tipo) => new DSFServiceClient(this, tipo);
+    protected override IServiceClient GetClient(TipoUrl tipo) => new DSF100ServiceClient(this, tipo);
 
     protected override string GerarCabecalho()
     {

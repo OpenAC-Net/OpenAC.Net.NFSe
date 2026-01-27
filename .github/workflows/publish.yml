@@ -100,3 +100,14 @@ jobs:
           foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
               dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
           }
+          
+  webhook:
+    runs-on: ubuntu-latest
+    needs: [ deploy ]
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    steps:
+      - name: Discord notification
+        uses: Ilshidur/action-discord@0.4.0
+        with:          
+          args: 'Uma nova versão do **OpenAC.Net.NFSe** foi publicada! Confira agora em [NuGet.org](https://www.nuget.org/packages/OpenAC.Net.NFSe).'

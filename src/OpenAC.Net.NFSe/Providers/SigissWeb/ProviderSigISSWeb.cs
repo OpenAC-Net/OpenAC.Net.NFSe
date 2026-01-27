@@ -45,7 +45,7 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
-internal sealed class ProviderSigISSWeb : ProviderBase
+internal class ProviderSigISSWeb : ProviderBase
 {
     public ProviderSigISSWeb(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
@@ -53,7 +53,7 @@ internal sealed class ProviderSigISSWeb : ProviderBase
         Versao = VersaoNFSe.ve100;
     }
 
-    private static string FormataDecimal(decimal valor) => valor.ToString("0.00").Replace(".", ",");
+    protected static string FormataDecimal(decimal valor) => valor.ToString("0.00").Replace(".", ",");
 
     protected override IServiceClient GetClient(TipoUrl tipo) => new SigISSWebServiceClient(this, tipo);
 

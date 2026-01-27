@@ -201,6 +201,11 @@ public abstract class NFSeHttpServiceClient : IDisposable
     /// Envelope XML que será recebido na resposta da requisição HTTP.
     /// </summary>
     public string EnvelopeRetorno { get; protected set; } = "";
+    
+    /// <summary>
+    /// Código do Satus HTTP retornado pela última requisição.
+    /// </summary>
+    protected HttpStatusCode? StatusCode { get; set;}
 
     /// <summary>
     /// Instância do provedor de NFSe associado a este cliente HTTP.
@@ -317,6 +322,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
                 request.Content = content;
 
             var response = client.SendAsync(request).GetAwaiter().GetResult();
+            StatusCode = response.StatusCode;
             EnvelopeRetorno = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             GravarEnvio(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");

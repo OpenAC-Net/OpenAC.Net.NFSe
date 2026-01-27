@@ -42,6 +42,7 @@ using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
+using OpenAC.Net.DFe.Core.Serializer;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -174,5 +175,29 @@ internal sealed class ProviderISSNet204 : ProviderABRASF204
         retornoWebservice.Nota = notaSubistituidoraExistente;
     }
 
+    #endregion
+
+    #region RPS
+    protected override XElement? WriteTomadorRps(NotaServico nota)
+    {
+        var rootRps = base.WriteTomadorRps(nota);
+
+        if (rootRps == null && nota.Tomador.EnderecoExterior.CodigoPais > 0)
+        {
+            var tomador = new XElement("TomadorServico");
+
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "RazaoSocial", 1, 150, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
+
+            var enderecoExt = new XElement("EnderecoExterior");
+            tomador.Add(enderecoExt);
+
+            enderecoExt.AddChild(AddTag(TipoCampo.Int, "", "CodigoPais", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
+            enderecoExt.AddChild(AddTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
+
+            return tomador;
+        }
+
+        return rootRps;
+    }
     #endregion
 }

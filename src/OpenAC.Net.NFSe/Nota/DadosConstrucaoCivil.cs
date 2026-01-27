@@ -52,6 +52,8 @@ public sealed class DadosConstrucaoCivil : GenericClone<DadosConstrucaoCivil>, I
 
     #region Propriedades
 
+    public string NomeObra { get; set; }
+
     public string CodigoObra { get; set; }
 
     public string ArtObra { get; set; }
@@ -68,11 +70,21 @@ public sealed class DadosConstrucaoCivil : GenericClone<DadosConstrucaoCivil>, I
 
     public int CodigoMunicipioObra { get; set; }
 
+    public string CidadeObra { get; set; }
+
     public string UFObra { get; set; }
 
     public int CodigoPaisObra { get; set; }
 
     public string XPaisObra { get; set; }
+
+    public string InscricaoImobiliariaFiscal { get; set; }
+
+    public string CnoObra { get; set; }
+
+    public string CidadeExteriorObra { get; set; }
+
+    public string EstadoRegiaoExteriorObra { get; set; }
 
     public string CodigoCEI { get; set; }
 

@@ -95,7 +95,7 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="tsItemListaServico">
 		<xsd:restriction base="xsd:string">
-			<xsd:maxLength value="5" />
+			<xsd:maxLength value="15" />
 			<xsd:minLength value="1" />
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
@@ -228,6 +228,19 @@
 			<xsd:whiteSpace value="collapse" />
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="tsInscImobFisc">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="30" />
+			<xsd:minLength value="1" />
+			<xsd:whiteSpace value="preserve"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCodCIB">
+		<xsd:restriction base="xsd:string">
+			<xsd:length value="8"/>
+			<xsd:whiteSpace value="preserve"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:simpleType name="tsArt">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="15" />
@@ -273,15 +286,278 @@
 			<xsd:pattern value="1|2|3|4|5" />
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="tsCodJustCanc">
+		<xsd:annotation>
+			<xsd:documentation>
+				Código de justificativa de cancelamento:
+				1 - Erro na Emissão;
+				2 - Serviço não Prestado;
+				9 - Outros;
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="9"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsMotivo">
+		<xsd:annotation>
+			<xsd:documentation>Descrição do motivo da substituição da NFS-e</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tsString">
+			<xsd:minLength value="15"/>
+			<xsd:maxLength value="255"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:simpleType name="tsIdTag">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="255" />
 		</xsd:restriction>
 	</xsd:simpleType>
-
 	<xsd:simpleType name="tsVersao">
 		<xsd:restriction base="xsd:token">
 			<xsd:pattern value="[1-9]{1}[0-9]{0,1}\.[0-9]{2}" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCidadeExterior">
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="60"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsEstadoProvRegiaoExterior">
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="60"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCodigoEndPostal">
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="collapse"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="11"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsDesc255">
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="255"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsIdeEvento">
+		<xsd:annotation>
+			<xsd:documentation>Identificação da Atividade de Evento (código identificador de evento determinado pela Administração Tributária Municipal)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="30"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsModoPrestacao">
+		<xsd:annotation>
+			<xsd:documentation>Modo de Prestação: 0 - Desconhecido (tipo não informado na nota de origem); 1 - Transfronteiriço; 2 - Consumo no Brasil; 3 - Presença Comercial no Exterior; 4 - Movimento Temporário de Pessoas Físicas;</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsVincPrest">
+		<xsd:annotation>
+			<xsd:documentation>Vínculo entre as partes no negócio: 0 - Sem vínculo com o tomador/ Prestador 1 - Controlada; 2 - Controladora; 3 - Coligada; 4 - Matriz; 5 - Filial ou sucursal; 6 - Outro vínculo;</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+			<xsd:enumeration value="5"/>
+			<xsd:enumeration value="6"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCodMoeda">
+		<xsd:annotation>
+			<xsd:documentation>Tipo com código que identifica a moeda conforme tabela do BACEN</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:maxLength value="3"/>
+			<xsd:pattern value="[0-9]{3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsMecAFComExPrest">
+		<xsd:annotation>
+			<xsd:documentation>Mecanismo de apoio/fomento ao Comércio Exterior utilizado pelo prestador do serviço: 00 - Desconhecido (tipo não informado na nota de origem); 01 - Nenhum; 02 - ACC - Adiantamento sobre Contrato de Câmbio – Redução a Zero do IR e do IOF; 03 - ACE – Adiantamento sobre Cambiais Entregues - Redução a Zero do IR e do IOF; 04 - BNDES-Exim Pós-Embarque – Serviços; 05 - BNDES-Exim Pré-Embarque - Serviços; 06 - FGE - Fundo de Garantia à Exportação; 07 - PROEX - EQUALIZAÇÃO 08 - PROEX - Financiamento;</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="00"/>
+			<xsd:enumeration value="01"/>
+			<xsd:enumeration value="02"/>
+			<xsd:enumeration value="03"/>
+			<xsd:enumeration value="04"/>
+			<xsd:enumeration value="05"/>
+			<xsd:enumeration value="06"/>
+			<xsd:enumeration value="07"/>
+			<xsd:enumeration value="08"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsMecAFComExToma">
+		<xsd:annotation>
+			<xsd:documentation>Mecanismo de apoio/fomento ao Comércio Exterior utilizado pelo tomador do serviço: 00 - Desconhecido (tipo não informado na nota de origem); 01 - Nenhum; 02 - Adm. Pública e Repr. Internacional; 03 - Alugueis e Arrend. Mercantil de maquinas, equip., embarc. e aeronaves; 04 - Arrendamento Mercantil de aeronave para empresa de transporte aéreo público; 05 - Comissão a agentes externos na exportação; 06 - Despesas de armazenagem, mov. e transporte de carga no exterior; 07 - Eventos FIFA (subsidiária); 08 - Eventos FIFA; 09 - Fretes, arrendamentos de embarcações ou aeronaves e outros; 10 - Material Aeronáutico; 11 - Promoção de Bens no Exterior; 12 - Promoção de Dest. Turísticos Brasileiros; 13 - Promoção do Brasil no Exterior; 14 - Promoção Serviços no Exterior; 15 - RECINE; 16 - RECOPA; 17 - Registro e Manutenção de marcas, patentes e cultivares; 18 - REICOMP; 19 - REIDI; 20 - REPENEC; 21 - REPES; 22 - RETAERO; 23 - RETID; 24 - Royalties, Assistência Técnica, Científica e Assemelhados; 25 - Serviços de avaliação da conformidade vinculados aos Acordos da OMC; 26 - ZPE;</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="00"/>
+			<xsd:enumeration value="01"/>
+			<xsd:enumeration value="02"/>
+			<xsd:enumeration value="03"/>
+			<xsd:enumeration value="04"/>
+			<xsd:enumeration value="05"/>
+			<xsd:enumeration value="06"/>
+			<xsd:enumeration value="07"/>
+			<xsd:enumeration value="08"/>
+			<xsd:enumeration value="09"/>
+			<xsd:enumeration value="10"/>
+			<xsd:enumeration value="11"/>
+			<xsd:enumeration value="12"/>
+			<xsd:enumeration value="13"/>
+			<xsd:enumeration value="14"/>
+			<xsd:enumeration value="15"/>
+			<xsd:enumeration value="16"/>
+			<xsd:enumeration value="17"/>
+			<xsd:enumeration value="18"/>
+			<xsd:enumeration value="19"/>
+			<xsd:enumeration value="20"/>
+			<xsd:enumeration value="21"/>
+			<xsd:enumeration value="22"/>
+			<xsd:enumeration value="23"/>
+			<xsd:enumeration value="24"/>
+			<xsd:enumeration value="25"/>
+			<xsd:enumeration value="26"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsMovTempBens">
+		<xsd:annotation>
+			<xsd:documentation>Operação está vinculada à Movimentação Temporária de Bens: 0 - Desconhecido (tipo não informado na nota de origem); 1 - Não 2 - Vinculada - Declaração de Importação 3 - Vinculada - Declaração de Exportação</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsEnvMDIC">
+		<xsd:annotation>
+			<xsd:documentation>Compartilhar as informações da NFS-e gerada a partir desta DPS com a Secretaria de Comércio Exterior: 0 - Não enviar para o MDIC; 1 - Enviar para o MDIC;</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsNIF">
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="40"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCodNaoNIF">
+		<xsd:annotation>
+			<xsd:documentation>Motivo para não informação do NIF: 0 - Não informado na nota de origem; 1 - Dispensado do NIF; 2 - Não exigência do NIF;</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsCodNBS">
+		<xsd:annotation>
+			<xsd:documentation>Código da lista de Nomenclatura Brasileira de Serviços (NBS)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:pattern value="[0-9]{9}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsRTCCodIndOp">
+		<xsd:annotation>
+			<xsd:documentation>
+				Código indicador da operação de fornecimento, conforme tabela "código indicador de operação"
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:pattern value="[0-9]{6}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsRTCCodClassTrib">
+		<xsd:annotation>
+			<xsd:documentation>
+				Código de Classificação Tributária
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:pattern value="[0-9]{6}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsTipoCST">
+		<xsd:annotation>
+			<xsd:documentation>Código de Situação Tributária do PIS/COFINS (CST): 00 - Nenhum; 01 - Operação Tributável com Alíquota Básica; 02 - Operação Tributável com Alíquota Diferenciada; 03 - Operação Tributável com Alíquota por Unidade de Medida de Produto; 04 - Operação Tributável monofásica - Revenda a Alíquota Zero; 05 - Operação Tributável por Substituição Tributária; 06 - Operação Tributável a Alíquota Zero; 07 - Operação Tributável da Contribuição; 08 - Operação sem Incidência da Contribuição; 09 - Operação com Suspensão da Contribuição;</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="00"/>
+			<xsd:enumeration value="01"/>
+			<xsd:enumeration value="02"/>
+			<xsd:enumeration value="03"/>
+			<xsd:enumeration value="04"/>
+			<xsd:enumeration value="05"/>
+			<xsd:enumeration value="06"/>
+			<xsd:enumeration value="07"/>
+			<xsd:enumeration value="08"/>
+			<xsd:enumeration value="09"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsTipoRetPISCofins">
+		<xsd:annotation>
+			<xsd:documentation>
+				Tipo de retencao do Pis/Cofins:
+				1 - Retido;
+				2 - Não Retido;
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tsString">
+		<xsd:annotation>
+			<xsd:documentation>Tipo string genérico</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="preserve"/>
+			<xsd:pattern value="[!-ÿ]{1}[ -ÿ]{0,}[!-ÿ]{1}|[!-ÿ]{1}"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 
@@ -313,6 +589,19 @@
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Cep" type="tsCep" minOccurs="0"
 				maxOccurs="1" />
+			<xsd:element name="EndExt" type="tcEnderExt" minOccurs="0"
+						 maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="tcEnderExt">
+		<xsd:sequence>
+			<xsd:element name="CodigoEndPost" type="tsCodigoEndPostal" minOccurs="1"
+						 maxOccurs="1" />
+			<xsd:element name="CidadeExterior" type="tsCidadeExterior" minOccurs="1"
+						 maxOccurs="1" />
+			<xsd:element name="EstProvRegExterior" type="tsEstadoProvRegiaoExterior" minOccurs="1"
+						 maxOccurs="1" />
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -360,6 +649,18 @@
 				maxOccurs="1" />
 			<xsd:element name="InscricaoMunicipal" type="tsInscricaoMunicipal"
 				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="NIF" type="tsNIF"
+			minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Número de Identificação Fiscal fornecido por órgão de administração tributária no exterior</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CodNaoNIF" type="tsCodNaoNIF"
+						 minOccurs="0" maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Motivo para não informação do NIF: 0 - Não informado na nota de origem; 1 - Dispensado do NIF; 2 - Não exigência do NIF; </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -425,6 +726,9 @@
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="DescontoCondicionado" type="tsValor"
 				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CST" type="tsTipoCST"
+						 minOccurs="0" maxOccurs="1" />
+			<xsd:element name="TpRetPisCofins" type="tsTipoRetPISCofins" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -467,7 +771,39 @@
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="NumeroProcesso" type="tsNumeroProcesso"
 				minOccurs="0" maxOccurs="1" />
-
+			<xsd:element name="MunicipioPrestacao" type="tsCodigoMunicipioIbge"
+						 minOccurs="0" maxOccurs="1" />
+			<xsd:element name="PaisPrestacao" type="tsCodigoPaisBacen"
+						 minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CodigoNBS" type="tsCodNBS"
+						 minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Código NBS (Nomenclatura Brasileira de Serviços, Intangíveis e outras Operações que produzam Variações no Patrimônio) correspondente ao serviço prestado</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CIndOp" type="tsRTCCodIndOp"
+						 minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Código indicador da operação de fornecimento, conforme tabela "código indicador de operação"
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CClassTribReg" type="tsRTCCodClassTrib"
+						 minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Código da Classificação Tributária do IBS e da CBS de tributação regular
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Imovel" type="tcDadosImovel" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Grupo de informações de operações relacionadas a bens imóveis quando campo CIndOp for relativo a operações com imóveis (020101, 020201 ou 020301) deve ser informado.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -477,6 +813,95 @@
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Art" type="tsArt" minOccurs="1"
 				maxOccurs="1" />
+			<xsd:element name="InscImobFisc" type="tsInscImobFisc"
+						 minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="IdObra" type="tsCodigoObra"
+						 minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CCIB" type="tsCodCIB"
+						 minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Endereco" type="tcEndereco"
+						 minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="tcComExterior">
+		<xsd:sequence>
+			<xsd:element name="MdPrestacao" type="tsModoPrestacao"
+						 minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation> Modo de Prestação: 0 - Desconhecido (tipo não informado na nota de origem); 1 - Transfronteiriço; 2 - Consumo no Brasil; 3 - Presença Comercial no Exterior; 4 - Movimento Temporário de Pessoas Físicas; </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="VincPrest" type="tsVincPrest" minOccurs="1"
+						 maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation> Vínculo entre as partes no negócio: 0 - Sem vínculo com o tomador/ Prestador 1 - Controlada; 2 - Controladora; 3 - Coligada; 4 - Matriz; 5 - Filial ou sucursal; 6 - Outro vínculo; </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TpMoeda" type="tsCodMoeda" minOccurs="1"
+						 maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Identifica a moeda da transação comercial</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="VServMoeda" type="tsValor" minOccurs="1"
+						 maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Valor do serviço prestado expresso em moeda estrangeira especificada em tpmoeda</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MecAFComexP" type="tsMecAFComExPrest" minOccurs="1"
+						 maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Mecanismo de apoio/fomento ao Comércio Exterior utilizado pelo prestador do serviço: 00 - Desconhecido (tipo não informado na nota de origem); 01 - Nenhum; 02 - ACC - Adiantamento sobre Contrato de Câmbio – Redução a Zero do IR e do IOF; 03 - ACE – Adiantamento sobre Cambiais Entregues - Redução a Zero do IR e do IOF; 04 - BNDES-Exim Pós-Embarque – Serviços; 05 - BNDES-Exim Pré-Embarque - Serviços; 06 - FGE - Fundo de Garantia à Exportação; 07 - PROEX - EQUALIZAÇÃO 08 - PROEX - Financiamento;</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MecAFComexT" type="tsMecAFComExToma" minOccurs="1"
+						 maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Mecanismo de apoio/fomento ao Comércio Exterior utilizado pelo tomador do serviço: 00 - Desconhecido (tipo não informado na nota de origem); 01 - Nenhum; 02 - Adm. Pública e Repr. Internacional; 03 - Alugueis e Arrend. Mercantil de maquinas, equip., embarc. e aeronaves; 04 - Arrendamento Mercantil de aeronave para empresa de transporte aéreo público; 05 - Comissão a agentes externos na exportação; 06 - Despesas de armazenagem, mov. e transporte de carga no exterior; 07 - Eventos FIFA (subsidiária); 08 - Eventos FIFA; 09 - Fretes, arrendamentos de embarcações ou aeronaves e outros; 10 - Material Aeronáutico; 11 - Promoção de Bens no Exterior; 12 - Promoção de Dest. Turísticos Brasileiros; 13 - Promoção do Brasil no Exterior; 14 - Promoção Serviços no Exterior; 15 - RECINE; 16 - RECOPA; 17 - Registro e Manutenção de marcas, patentes e cultivares; 18 - REICOMP; 19 - REIDI; 20 - REPENEC; 21 - REPES; 22 - RETAERO; 23 - RETID; 24 - Royalties, Assistência Técnica, Científica e Assemelhados; 25 - Serviços de avaliação da conformidade vinculados aos Acordos da OMC; 26 - ZPE;</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MovTempBens" type="tsMovTempBens" minOccurs="1"
+						 maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Operação está vinculada à Movimentação Temporária de Bens: 0 - Desconhecido (tipo não informado na nota de origem); 1 - Não 2 - Vinculada - Declaração de Importação 3 - Vinculada - Declaração de Exportação;</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Mdic" type="tsEnvMDIC" minOccurs="1"
+						 maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Compartilhar as informações da NFS-e gerada a partir desta DPS com a Secretaria de Comércio Exterior: 0 - Não enviar para o MDIC; 1 - Enviar para o MDIC;</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="tcDadosAtividadeEvento">
+		<xsd:sequence>
+			<xsd:element name="Nome" type="tsDesc255"
+						 minOccurs="1" maxOccurs="1" />
+			<xsd:element name="DataInicio" type="xsd:date" minOccurs="1"
+						 maxOccurs="1" />
+			<xsd:element name="DataFim" type="xsd:date"
+						 minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="IdAtvEv" type="tsIdeEvento"
+						 minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Endereco" type="tcEndereco"
+						 minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="tcDadosImovel">
+		<xsd:sequence>
+			<xsd:choice minOccurs="1">
+				<xsd:element name="CCIB" type="tsCodCIB"
+							 minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="Endereco" type="tcEndereco"
+							 minOccurs="0" maxOccurs="1"/>
+			</xsd:choice>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -511,7 +936,7 @@
 
 	<xsd:complexType name="tcInfDeclaracaoPrestacaoServico">
 		<xsd:sequence>
-			<xsd:element name="Rps" type="tcInfRps" 
+			<xsd:element name="Rps" type="tcInfRps"
 				minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Competencia" type="xsd:date"
 				minOccurs="1" maxOccurs="1" />
@@ -531,6 +956,18 @@
 				minOccurs="1" maxOccurs="1" />
 			<xsd:element name="IncentivoFiscal" type="tsSimNao"
 				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="ComExt" type="tcComExterior"
+						 minOccurs="0" maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Grupo de informações relativas à exportação/importação de serviço prestado</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AtvEvento" type="tcDadosAtividadeEvento"
+						 minOccurs="0" maxOccurs="1" >
+				<xsd:annotation>
+					<xsd:documentation>Grupo de informações do DPS relativas à Evento</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 		</xsd:sequence>
 		<xsd:attribute name="Id" type="tsIdTag" />
 	</xsd:complexType>
@@ -598,6 +1035,16 @@
 				minOccurs="1" maxOccurs="1" />
 			<xsd:element name="CodigoCancelamento" type="tsCodigoCancelamentoNfse"
 				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="CMotivo" type="tsCodJustCanc">
+				<xsd:annotation>
+					<xsd:documentation>Código de justificativa de cancelamento</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="XMotivo" type="tsMotivo">
+				<xsd:annotation>
+					<xsd:documentation>Descrição para explicitar o motivo do cancelamento</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 		</xsd:sequence>
 		<xsd:attribute name="Id" type="tsIdTag" />
 	</xsd:complexType>
@@ -804,10 +1251,10 @@
 					<xsd:element name="ListaNfse" minOccurs="1" maxOccurs="1">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element ref="CompNfse" 
-									minOccurs="1"  maxOccurs="unbounded"/>
+								<xsd:element ref="CompNfse"
+									minOccurs="1" />
 								<xsd:element ref="ListaMensagemAlertaRetorno" minOccurs="0" maxOccurs="1" />
-							</xsd:sequence>						
+							</xsd:sequence>
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element ref="ListaMensagemRetorno" minOccurs="1"
@@ -824,7 +1271,7 @@
 			<xsd:sequence>
 				<xsd:element name="Rps" type="tcDeclaracaoPrestacaoServico"/>
 			</xsd:sequence>
-		</xsd:complexType>		
+		</xsd:complexType>
 	</xsd:element>
 
 	<xsd:element name="GerarNfseResposta">
@@ -834,17 +1281,17 @@
 					<xsd:element name="ListaNfse" minOccurs="1" maxOccurs="1">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element ref="CompNfse" 
+								<xsd:element ref="CompNfse"
 									minOccurs="1" />
 								<xsd:element ref="ListaMensagemAlertaRetorno" minOccurs="0" maxOccurs="1" />
-							</xsd:sequence>						
+							</xsd:sequence>
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element ref="ListaMensagemRetorno" minOccurs="1"
 						maxOccurs="1" />
 				</xsd:choice>
 			</xsd:sequence>
-		</xsd:complexType>		
+		</xsd:complexType>
 	</xsd:element>
 
 	<xsd:element name="CancelarNfseEnvio">
@@ -936,7 +1383,7 @@
 							<xsd:element ref="CompNfse" maxOccurs="50"
 								minOccurs="1" />
 							<xsd:element ref="ListaMensagemAlertaRetorno" minOccurs="0" maxOccurs="1" />
-						</xsd:sequence>						
+						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
 				<xsd:element ref="ListaMensagemRetorno" minOccurs="1"
@@ -1123,4 +1570,3 @@
 	</xsd:element>
 
 </xsd:schema>
-

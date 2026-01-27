@@ -97,5 +97,9 @@ public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyCh
 
     public DeducoesCollection Deducoes { get; }
 
+    public string CodigoIndicadorOperacao { get; set; } 
+
+    public string CodigoClassificacaoTributaria { get; set; }
+
     #endregion Propriedades
 }
