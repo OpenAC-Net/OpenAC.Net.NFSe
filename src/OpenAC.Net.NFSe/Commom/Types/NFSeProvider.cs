@@ -143,7 +143,7 @@ public enum NFSeProvider : sbyte
     /// Provedor IISPortoVelho.
     /// </summary>
     [Description("Porto Velho")]
-    ISSPortoVelho = 32,
+    IISPortoVelho = 32,
 
     /// <summary>
     /// Provedor IPM.
