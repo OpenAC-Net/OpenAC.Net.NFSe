@@ -33,6 +33,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
@@ -50,15 +51,108 @@ internal sealed class ProviderWebIss2 : ProviderABRASF202
     public ProviderWebIss2(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
         Name = "WebISS2";
+        Versao = VersaoNFSe.ve202;
     }
 
     #endregion Constructors
 
     #region Methods
-    
-     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
-    {
 
+    protected override XElement WriteServicosRps(NotaServico nota)
+    {
+        var servico = new XElement("Servico");
+
+        servico.Add(WriteValoresRps(nota));
+
+        servico.AddChild(AddTag(TipoCampo.Int, "", "IssRetido", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? 1 : 2));
+
+        if (nota.Servico.ResponsavelRetencao.HasValue)
+            servico.AddChild(AddTag(TipoCampo.Int, "", "ResponsavelRetencao", 1, 1, Ocorrencia.NaoObrigatoria, (int)nota.Servico.ResponsavelRetencao + 1));
+
+        servico.AddChild(AddTag(TipoCampo.Str, "", "ItemListaServico", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoCnae", 1, 7, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoCnae));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoTributacaoMunicipio", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoTributacaoMunicipio));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoNbs", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoNbs));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoMunicipio", 1, 20, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
+        servico.AddChild(AddTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.CodigoPais));
+        servico.AddChild(AddTag(TipoCampo.Int, "", "ExigibilidadeISS", 1, 1, Ocorrencia.Obrigatoria, (int)nota.Servico.ExigibilidadeIss + 1));
+        servico.AddChild(AddTag(TipoCampo.Int, "", "MunicipioIncidencia", 7, 7, Ocorrencia.MaiorQueZero, nota.Servico.MunicipioIncidencia));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "NumeroProcesso", 1, 30, Ocorrencia.NaoObrigatoria, nota.Servico.NumeroProcesso));
+
+        return servico;
+    }
+
+    protected override XElement WriteRps(NotaServico nota)
+    {
+        var rootRps = new XElement("Rps");
+
+        var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
+        rootRps.Add(infServico);
+
+        infServico.Add(WriteRpsRps(nota));
+
+        infServico.AddChild(AddTag(TipoCampo.Dat, "", "Competencia", 10, 10, Ocorrencia.Obrigatoria, nota.Competencia));
+
+        infServico.AddChild(WriteServicosRps(nota));
+        infServico.AddChild(WritePrestadorRps(nota));
+        infServico.AddChild(WriteTomadorRps(nota));
+        infServico.AddChild(WriteIntermediarioRps(nota));
+        infServico.AddChild(WriteConstrucaoCivilRps(nota));
+
+        string regimeEspecialTributacao;
+        string optanteSimplesNacional;
+        if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
+        {
+            regimeEspecialTributacao = "6";
+            optanteSimplesNacional = "1";
+        }
+        else
+        {
+            regimeEspecialTributacao = ((int)nota.RegimeEspecialTributacao).ToString();
+            optanteSimplesNacional = "2";
+        }
+
+        if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
+            infServico.AddChild(AddTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
+
+        infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
+        infServico.AddChild(AddTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
+
+        var IBSCBS = WriteIBSCBSRps(nota);
+
+        if (IBSCBS != null)
+            infServico.AddChild(IBSCBS);
+
+        return rootRps;
+    }
+    XElement? WriteIBSCBSRps(NotaServico nota)
+    {
+        var info = nota.Servico.Valores.IBSCBS;
+        if (info == null) return null;
+
+        var ibsCbs = new XElement("IBSCBS");
+
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "finNFSe", 1, 1, Ocorrencia.Obrigatoria, info.FinalidadeNFSe));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "indFinal", 1, 1, Ocorrencia.Obrigatoria, info.IndicadorFinal));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "cIndOp", 6, 6, Ocorrencia.Obrigatoria, info.CodigoIndicadorOperacao));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "tpOper", 1, 1, Ocorrencia.NaoObrigatoria, info.TipoOperacao));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "indDest", 1, 1, Ocorrencia.Obrigatoria, info.IndicadorDestinatario));
+
+        var valores = new XElement("valores");
+        var trib = new XElement("trib");
+        var gIbsCbs = new XElement("gIBSCBS");
+        gIbsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "CST", 3, 3, Ocorrencia.Obrigatoria, info.Valores.Tributos.SituacaoClassificacao.CodigoSituacaoTributaria));
+        gIbsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "cClassTrib", 6, 6, Ocorrencia.Obrigatoria, info.Valores.Tributos.SituacaoClassificacao.CodigoClassificacaoTributaria));
+        trib.AddChild(gIbsCbs);
+        valores.AddChild(trib);
+        ibsCbs.AddChild(valores);
+
+        return ibsCbs;
+    }
+
+    protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
         MensagemErro(retornoWebservice, xmlRet, "EnviarLoteRpsSincronoResposta");
         if (retornoWebservice.Erros.Count != 0) return;
@@ -109,7 +203,6 @@ internal sealed class ProviderWebIss2 : ProviderABRASF202
             nota.Protocolo = retornoWebservice.Protocolo;
         }
     }
-
     protected override IServiceClient GetClient(TipoUrl tipo)
     {
         return new WebIss2ServiceClient(this, tipo);
