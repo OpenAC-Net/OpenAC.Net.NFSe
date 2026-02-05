@@ -123,8 +123,9 @@ internal sealed class ProviderSigISS100 : ProviderBase
             notaTag.AddChild(AddTag(TipoCampo.Int, "", "rps_ano", 1, 4, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.Year));
         }
 
-        if (nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoMunicipio != nota.Prestador.Endereco.CodigoMunicipio)
+        if (nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Servico.MunicipioIncidencia > 0) //E122 Não é permitido o preenchimento da tag outro_municipio quando a incidência do imposto for em Marilia
         {
+            //0 = prestado em marilia // 1 = prestado fora de marilia
             notaTag.AddChild(AddTag(TipoCampo.Int, "", "outro_municipio", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.MunicipioIncidencia));
 
             if (nota.Servico.MunicipioIncidencia == 1)
