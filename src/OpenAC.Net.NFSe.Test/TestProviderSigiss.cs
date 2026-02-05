@@ -29,7 +29,7 @@ public class TestProviderSigiss
         nota.Servico.Descricao = "serviço teste";
         nota.Servico.CodigoNbs = "115021005";
         nota.Tomador.Tipo = TipoTomador.NaoIdentificado;
-        /*nota.Tomador.CpfCnpj = "33287802895";
+        /*nota.Tomador.CpfCnpj = "";
         nota.Tomador.DadosContato.Telefone = "";
         nota.Tomador.DadosContato.Email = "";*/
         //nota.IdentificacaoRps.Numero = "1";
