@@ -13,13 +13,13 @@ public class TestProviderSigiss
         //Dados WebService
         openNFSe.Configuracoes.WebServices.Ambiente = DFe.Core.Common.DFeTipoAmbiente.Producao;
         openNFSe.Configuracoes.WebServices.CodigoMunicipio = 3529005;
-        openNFSe.Configuracoes.WebServices.Usuario = "16601";
-        openNFSe.Configuracoes.WebServices.Senha = "250306";
-        openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "62559695000101";
+        openNFSe.Configuracoes.WebServices.Usuario = "";
+        openNFSe.Configuracoes.WebServices.Senha = "";
+        openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "";
 
         //adicionado rps
         var nota = openNFSe.NotasServico.AddNew();
-        nota.Prestador.CpfCnpj = "62559695000101";
+        nota.Prestador.CpfCnpj = "";
         nota.RegimeEspecialTributacao = RegimeEspecialTributacao.SimplesNacional;
         nota.Servico.Valores.Aliquota = 4.9588M;
         nota.Servico.CodigoTributacaoMunicipio = "104";
@@ -30,8 +30,8 @@ public class TestProviderSigiss
         nota.Servico.CodigoNbs = "115021005";
         nota.Tomador.Tipo = TipoTomador.NaoIdentificado;
         /*nota.Tomador.CpfCnpj = "33287802895";
-        nota.Tomador.DadosContato.Telefone = "14996136681";
-        nota.Tomador.DadosContato.Email = "danilo@bredas.com.br";*/
+        nota.Tomador.DadosContato.Telefone = "";
+        nota.Tomador.DadosContato.Email = "";*/
         //nota.IdentificacaoRps.Numero = "1";
         //nota.IdentificacaoRps.Serie = "100";
 
@@ -50,9 +50,9 @@ public class TestProviderSigiss
         //Dados WebService
         openNFSe.Configuracoes.WebServices.Ambiente = DFe.Core.Common.DFeTipoAmbiente.Producao;
         openNFSe.Configuracoes.WebServices.CodigoMunicipio = 3529005;
-        openNFSe.Configuracoes.WebServices.Usuario = "16601";
-        openNFSe.Configuracoes.WebServices.Senha = "250306";
-        openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "62559695000101";
+        openNFSe.Configuracoes.WebServices.Usuario = "";
+        openNFSe.Configuracoes.WebServices.Senha = "";
+        openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "";
 
         //Dados Prestador
         openNFSe.Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio = 3529005;
@@ -73,13 +73,12 @@ public class TestProviderSigiss
         //Dados WebService
         openNFSe.Configuracoes.WebServices.Ambiente = DFe.Core.Common.DFeTipoAmbiente.Producao;
         openNFSe.Configuracoes.WebServices.CodigoMunicipio = 3529005;
-        openNFSe.Configuracoes.WebServices.Usuario = "16601";
-        openNFSe.Configuracoes.WebServices.Senha = "250306";
-        openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "62559695000101";
+        openNFSe.Configuracoes.WebServices.Usuario = "";
+        openNFSe.Configuracoes.WebServices.Senha = "";
+        openNFSe.Configuracoes.PrestadorPadrao.CpfCnpj = "";
 
         //enviando requisicao de cancelamento
-        //var retorno = openNFSe.CancelarNFSe("danilo@bredas.com.br", "42218", "teste desenvolvimento danilo breda");
-        var retorno = openNFSe.CancelarNFSe("danilo@bredas.com.br", "42216", "teste desenvolvimento danilo breda");
+        var retorno = openNFSe.CancelarNFSe("email@email.com", "42216", "teste desenvolvimento danilo breda");
         Assert.True(retorno.Sucesso);
     }
 }
