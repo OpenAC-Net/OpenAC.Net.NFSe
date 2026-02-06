@@ -29,11 +29,6 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
@@ -42,6 +37,12 @@ using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -88,7 +89,7 @@ internal sealed class ProviderSigISS100 : ProviderBase
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "valor", 1, 15, Ocorrencia.Obrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorServicos)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "base", 1, 15, Ocorrencia.Obrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.BaseCalculo)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "descricaoNF", 0, 2000, Ocorrencia.NaoObrigatoria, nota.Servico.Descricao.RemoveAccent()));
-        notaTag.AddChild(AddTag(TipoCampo.Str, "", "tomador_tipo", 14, 14, Ocorrencia.NaoObrigatoria, 
+        notaTag.AddChild(AddTag(TipoCampo.Str, "", "tomador_tipo", 14, 14, Ocorrencia.NaoObrigatoria,
             nota.Tomador.Tipo == TipoTomador.NaoIdentificado ? 1 :
                 nota.Tomador.Tipo == TipoTomador.PessoaFisica ? 2 :
                 nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoMunicipio == nota.Prestador.Endereco.CodigoMunicipio ? 3 :
@@ -122,8 +123,9 @@ internal sealed class ProviderSigISS100 : ProviderBase
             notaTag.AddChild(AddTag(TipoCampo.Int, "", "rps_ano", 1, 4, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao.Year));
         }
 
-        if (nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Tomador.Endereco.CodigoMunicipio != nota.Prestador.Endereco.CodigoMunicipio)
+        if (nota.Tomador.Tipo == TipoTomador.PessoaJuridica && nota.Servico.MunicipioIncidencia > 0) //E122 Não é permitido o preenchimento da tag outro_municipio quando a incidência do imposto for em Marilia
         {
+            //0 = prestado em marilia // 1 = prestado fora de marilia
             notaTag.AddChild(AddTag(TipoCampo.Int, "", "outro_municipio", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.MunicipioIncidencia));
 
             if (nota.Servico.MunicipioIncidencia == 1)
@@ -143,6 +145,8 @@ internal sealed class ProviderSigISS100 : ProviderBase
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "inss", 1, 15, Ocorrencia.NaoObrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorInss)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "irrf", 1, 15, Ocorrencia.NaoObrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorIr)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "csll", 1, 15, Ocorrencia.NaoObrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorCsll)));
+
+        notaTag.AddChild(AddTag(TipoCampo.Str, "", "dps_serv_cnbs", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.CodigoNbs));
 
         return xmldoc.Root.AsString(identado, showDeclaration, Encoding.UTF8);
     }
@@ -182,29 +186,52 @@ internal sealed class ProviderSigISS100 : ProviderBase
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
         var root = xmlRet.ElementAnyNs("GerarNotaResponse");
-        var data = root.ElementAnyNs("RetornoNota") ?? throw new Exception("Elemento do xml RetornoNota não encontado");
-        var errors = root.ElementAnyNs("DescricaoErros") ?? throw new Exception("Elemento do xml DescricaoErros não encontado");
+        var errors = root.ElementAnyNs("DescricaoErros");
 
-        var resultado = data.ElementAnyNs("Resultado")?.GetValue<int>() ?? 0;
-        var protocolo = data.ElementAnyNs("autenticidade")?.GetValue<string>() ?? string.Empty;
-        //var linkImpressao = data.ElementAnyNs("LinkImpressao")?.GetValue<string>() ?? string.Empty; //não utilizado pois não tem como retornar
+        if (errors != null && errors.HasElements)
+        {
+            foreach (var node in errors.Descendants().Where(x => x.Name.LocalName == "item"))
+            {
+                var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
 
-        if (resultado != 1 && errors.HasElements)
+                // Se tem DescricaoErro, é um erro real
+                if (!string.IsNullOrEmpty(errorDescricao))
+                {
+                    var errorId = node.ElementAnyNs("id")?.Value ?? string.Empty;
+                    var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
+                    retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
+                }
+                else
+                {
+                    // Sem DescricaoErro = sucesso, extrair ID da nota do DescricaoProcesso
+                    var descricaoProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
+
+                    // Extrair o ID da nota da mensagem (ex: "...NFS-e:42161")
+                    /*var match = System.Text.RegularExpressions.Regex.Match(descricaoProcesso, @"NFS-e:(\d+)");
+                    if (match.Success)
+                    {
+                        retornoWebservice.Protocolo = match.Groups[1].Value;
+                    }*/
+
+                    //26/01/25 adicionado id da nota no corpo, nao precisa mais extrair comoa cima
+                    var retornoNota = root.ElementAnyNs("RetornoNota");
+                    var notaElement = retornoNota?.ElementAnyNs("Nota");
+                    if (notaElement != null)
+                    {
+                        retornoWebservice.Protocolo = notaElement.GetValue<string>();
+                    }
+                }
+            }
+        }
+
+        if (retornoWebservice.Erros.Any() || string.IsNullOrEmpty(retornoWebservice.Protocolo))
         {
             retornoWebservice.Sucesso = false;
-            foreach (var node in errors.Descendants().Where(x => x.Name == "item"))
-            {
-                var errorId = node.ElementAnyNs("id")?.Value ?? string.Empty;
-                var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
-                var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
-                retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
-            }
         }
         else
         {
             retornoWebservice.Sucesso = true;
             retornoWebservice.Lote = 0; //Não tem lote nesse serviço
-            retornoWebservice.Protocolo = protocolo;
         }
     }
 
@@ -250,12 +277,21 @@ internal sealed class ProviderSigISS100 : ProviderBase
                 var errorId = node.ElementAnyNs("id")?.Value ?? string.Empty;
                 var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
                 var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
+                if (errorDescricao.ToLower().Contains("se encontra cancelada"))
+                {
+                    retornoWebservice.Sucesso = true;
+                }
+                else if (errorProcesso.ToLower().Contains(retornoWebservice.NumeroNFSe + " enviada"))
+                {
+                    retornoWebservice.Sucesso = true;
+                }
                 retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = errorId, Correcao = errorProcesso, Descricao = errorDescricao });
             }
         }
         else
         {
-            retornoWebservice.Sucesso = true;
+            retornoWebservice.Sucesso = false;
+            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "", Correcao = "", Descricao = "sem retorno" });
         }
     }
 
@@ -279,17 +315,160 @@ internal sealed class ProviderSigISS100 : ProviderBase
 
     protected override void PrepararConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
     {
-        throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
+        var loteBuilder = new StringBuilder();
+        loteBuilder.Append($"<ConsultarNotaPrestador>");
+        loteBuilder.Append("<DadosPrestador>");
+
+        loteBuilder.Append("<ccm>");
+        loteBuilder.Append(Configuracoes.WebServices.Usuario);
+        loteBuilder.Append("</ccm>");
+
+        if (Configuracoes.PrestadorPadrao.CpfCnpj.IsCNPJ() == false)
+            throw new Exception("PrestadorPadrao.CpfCnpj não preenchido ou foi informado CPF e esse metodo só aceita cnpj");
+
+        loteBuilder.Append($"<cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</cnpj>");
+
+        loteBuilder.Append("<senha>");
+        loteBuilder.Append(Configuracoes.WebServices.Senha);
+        loteBuilder.Append("</senha>");
+
+        loteBuilder.Append("</DadosPrestador>");
+
+        loteBuilder.Append($"<Nota>{retornoWebservice.NumeroNFse}</Nota>");
+        loteBuilder.Append("</ConsultarNotaPrestador>");
+        retornoWebservice.XmlEnvio = loteBuilder.ToString();
     }
 
     protected override void AssinarConsultarNFSe(RetornoConsultarNFSe retornoWebservice)
     {
-        throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
     }
 
     protected override void TratarRetornoConsultarNFSe(RetornoConsultarNFSe retornoWebservice, NotaServicoCollection notas)
     {
-        throw new NotImplementedException("Função não implementada/suportada neste Provedor.");
+        var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+        var root = xmlRet.ElementAnyNs("ConsultarNotaPrestadorResponse");
+        var dadosNota = root?.ElementAnyNs("DadosNota");
+        var errors = root?.ElementAnyNs("DescricaoErros");
+
+        // Verifica se há erros reais (quando id = 0 é erro, quando id = número da nota é sucesso)
+        if (errors != null && errors.HasElements)
+        {
+            foreach (var node in errors.Descendants().Where(x => x.Name.LocalName == "item"))
+            {
+                //var errorId = node.ElementAnyNs("id")?.GetValue<int>() ?? 0;
+                var errorProcesso = node.ElementAnyNs("DescricaoProcesso")?.Value ?? string.Empty;
+                var errorDescricao = node.ElementAnyNs("DescricaoErro")?.Value ?? string.Empty;
+                if (errorDescricao.ToLower().Contains("nota recusada"))
+                {
+                    //recusada
+                    retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Correcao = errorProcesso, Descricao = errorDescricao });
+                }
+                else if (errorDescricao.ToLower().Contains("nota aguardando"))
+                {
+                    //aguardando
+                    retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "aguardando", Correcao = errorProcesso, Descricao = errorDescricao });
+                }
+            }
+        }
+
+        if (retornoWebservice.Erros.Any())
+        {
+            retornoWebservice.Sucesso = false;
+            return;
+        }
+
+        if (dadosNota == null)
+        {
+            retornoWebservice.Sucesso = false;
+            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Descricao = "dadosNota = null" });
+            return;
+        }
+
+        if (!dadosNota.HasElements)
+        {
+            retornoWebservice.Sucesso = false;
+            retornoWebservice.Erros.Add(new EventoRetorno() { Codigo = "rejeitado", Descricao = "Nota não retornada completa. DadosNota não possui elementos." });
+            return;
+        }
+
+        retornoWebservice.Sucesso = true;
+
+        //retorno de dados.
+        var nota = notas.FirstOrDefault() ?? new NotaServico(Configuracoes);
+
+        // Dados da NFSe
+        nota.IdentificacaoNFSe.Numero = dadosNota.ElementAnyNs("nota")?.GetValue<string>() ?? string.Empty;
+        nota.IdentificacaoNFSe.Chave = dadosNota.ElementAnyNs("autenticidade")?.GetValue<string>() ?? string.Empty;
+
+        var dtConversao = dadosNota.ElementAnyNs("dt_conversao")?.GetValue<string>();
+        if (!string.IsNullOrEmpty(dtConversao) && DateTime.TryParseExact(dtConversao, "MMM dd yyyy hh:mm:ss:ffftt", CultureInfo.GetCultureInfo("en-US"), DateTimeStyles.AssumeLocal, out var dataEmissao))
+        {
+            nota.IdentificacaoNFSe.DataEmissao = dataEmissao;
+        }
+
+        // Link de Impressão
+        nota.LinkNFSe = dadosNota.ElementAnyNs("LinkImpressao")?.GetValue<string>() ?? string.Empty;
+
+        // Dados do RPS
+        nota.IdentificacaoRps.Numero = dadosNota.ElementAnyNs("num_rps")?.GetValue<string>() ?? string.Empty;
+        nota.IdentificacaoRps.Serie = dadosNota.ElementAnyNs("serie_rps")?.GetValue<string>() ?? string.Empty;
+
+        var emissaoRps = dadosNota.ElementAnyNs("emissao_rps")?.GetValue<string>();
+        if (!string.IsNullOrEmpty(emissaoRps) && DateTime.TryParseExact(emissaoRps, "MMM dd yyyy hh:mm:ss:ffftt", CultureInfo.GetCultureInfo("en-US"), DateTimeStyles.AssumeLocal, out var dataEmissaoRps))
+        {
+            nota.IdentificacaoRps.DataEmissao = dataEmissaoRps;
+        }
+
+        // Dados do Prestador
+        nota.Prestador.RazaoSocial = dadosNota.ElementAnyNs("prestador_razao")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.Endereco.Logradouro = dadosNota.ElementAnyNs("prestador_endereco")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.Endereco.Numero = dadosNota.ElementAnyNs("prestador_numero")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.Endereco.Complemento = dadosNota.ElementAnyNs("prestador_complemento")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.Endereco.Bairro = dadosNota.ElementAnyNs("prestador_bairro")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.Endereco.Municipio = dadosNota.ElementAnyNs("prestador_cidade")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.Endereco.Uf = dadosNota.ElementAnyNs("prestador_estado")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.Endereco.Cep = dadosNota.ElementAnyNs("prestador_cep")?.GetValue<string>() ?? string.Empty;
+        nota.Prestador.DadosContato.Email = dadosNota.ElementAnyNs("prestador_email")?.GetValue<string>() ?? string.Empty;
+
+        // Dados do Serviço
+        nota.Servico.Descricao = dadosNota.ElementAnyNs("descricao")?.GetValue<string>() ?? string.Empty;
+        nota.Servico.CodigoTributacaoMunicipio = dadosNota.ElementAnyNs("servico")?.GetValue<string>() ?? string.Empty;
+        nota.Servico.Valores.ValorServicos = ParseDecimalSigiss(dadosNota.ElementAnyNs("valor")?.GetValue<string>());
+        nota.Servico.Valores.BaseCalculo = ParseDecimalSigiss(dadosNota.ElementAnyNs("base")?.GetValue<string>());
+        nota.Servico.Valores.Aliquota = ParseDecimalSigiss(dadosNota.ElementAnyNs("aliquota_atividade")?.GetValue<string>());
+        nota.Servico.Valores.ValorIss = ParseDecimalSigiss(dadosNota.ElementAnyNs("iss")?.GetValue<string>());
+        nota.Servico.Valores.ValorPis = ParseDecimalSigiss(dadosNota.ElementAnyNs("pis")?.GetValue<string>());
+        nota.Servico.Valores.ValorCofins = ParseDecimalSigiss(dadosNota.ElementAnyNs("cofins")?.GetValue<string>());
+        nota.Servico.Valores.ValorInss = ParseDecimalSigiss(dadosNota.ElementAnyNs("inss")?.GetValue<string>());
+        nota.Servico.Valores.ValorIr = ParseDecimalSigiss(dadosNota.ElementAnyNs("irrf")?.GetValue<string>());
+        nota.Servico.Valores.ValorCsll = ParseDecimalSigiss(dadosNota.ElementAnyNs("csll")?.GetValue<string>());
+
+        // ISS Retido
+        var issRetido = dadosNota.ElementAnyNs("ISSRetido")?.GetValue<string>() ?? string.Empty;
+        nota.Servico.Valores.IssRetido = issRetido.Equals("SIM", StringComparison.OrdinalIgnoreCase) ? SituacaoTributaria.Retencao : SituacaoTributaria.Normal;
+
+        // Dados do Tomador
+        nota.Tomador.CpfCnpj = dadosNota.ElementAnyNs("cnpj_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.RazaoSocial = dadosNota.ElementAnyNs("razao_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Logradouro = dadosNota.ElementAnyNs("endereco_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Numero = dadosNota.ElementAnyNs("numero_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Complemento = dadosNota.ElementAnyNs("complemento_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Bairro = dadosNota.ElementAnyNs("bairro_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Municipio = dadosNota.ElementAnyNs("cidade_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Uf = dadosNota.ElementAnyNs("estado_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.Endereco.Cep = dadosNota.ElementAnyNs("cep_tomador")?.GetValue<string>() ?? string.Empty;
+        nota.Tomador.DadosContato.Email = dadosNota.ElementAnyNs("email_tomador")?.GetValue<string>() ?? string.Empty;
+
+        // Situação da NFSe
+        var statusNFe = dadosNota.ElementAnyNs("StatusNFe")?.GetValue<string>() ?? string.Empty;
+        nota.Situacao = statusNFe.Equals("Ativa", StringComparison.OrdinalIgnoreCase) ? SituacaoNFSeRps.Normal : SituacaoNFSeRps.Cancelado;
+
+        nota.XmlOriginal = retornoWebservice.XmlRetorno;
+
+        if (!notas.Contains(nota))
+            notas.Add(nota);
+
+        retornoWebservice.Notas = notas.ToArray();
     }
 
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
@@ -518,6 +697,18 @@ internal sealed class ProviderSigISS100 : ProviderBase
         var formatado = valor.ToString("0.00").Replace(".", ",");
         var trim = formatado.Contains(",") ? formatado.TrimEnd('0').TrimEnd(',') : formatado;
         return trim;
+    }
+
+    private decimal ParseDecimalSigiss(string valor)
+    {
+        if (string.IsNullOrWhiteSpace(valor)) return 0;
+
+        // Remove espaços e converte vírgula para ponto
+        valor = valor.Trim().Replace(",", ".");
+
+        return decimal.TryParse(valor, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var result)
+            ? result
+            : 0;
     }
 
     #endregion Private

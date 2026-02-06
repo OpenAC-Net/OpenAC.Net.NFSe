@@ -9088,6 +9088,7 @@
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSe</TipoUrl>
+					<Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php</Url>
 				</Item>
 				<Item>
 					<TipoUrl>ConsultarNFSeRps</TipoUrl>
