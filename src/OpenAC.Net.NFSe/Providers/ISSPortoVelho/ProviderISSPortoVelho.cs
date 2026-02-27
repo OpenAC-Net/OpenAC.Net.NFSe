@@ -29,18 +29,19 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Linq;
+using System.Text;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -84,11 +85,22 @@ internal sealed class ProviderISSPortoVelho : ProviderABRASF200
                 ? "6"
                 : ((int)nota.RegimeEspecialTributacao).ToString();
 
+        bool optanteSimplesNacional = false;
+
+        switch (nota.RegimeEspecialTributacao)
+        {
+            case RegimeEspecialTributacao.SimplesNacional:
+            case RegimeEspecialTributacao.MicroEmpresarioIndividual:
+            case RegimeEspecialTributacao.MicroEmpresarioEmpresaPP:
+                optanteSimplesNacional = true;
+                break;
+        }
+
         if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
         {
             infServico.AddChild(AddTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
         }
-        infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional ? 1 : 2));
+        infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional ? 1 : 2));
         infServico.AddChild(AddTag(TipoCampo.Int, "","IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
 
         return rootRps;
@@ -308,20 +320,38 @@ internal sealed class ProviderISSPortoVelho : ProviderABRASF200
 
             GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numero}-{chave}.xml", data);
 
-            var numeroRps =
-                nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
-                    .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
-                    .ElementAnyNs("Rps")?
-                    .ElementAnyNs("IdentificacaoRps")?
-                    .ElementAnyNs("Numero")?
-                    .GetValue<string>();
+            // Busca identificação do RPS no retorno (número e série)
+            var identificacaoRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
+                                       .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
+                                       .ElementAnyNs("Rps")?
+                                       .ElementAnyNs("IdentificacaoRps");
+            
+            var numeroRps = identificacaoRps?.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+            var serieRps = identificacaoRps?.ElementAnyNs("Serie")?.GetValue<string>() ?? string.Empty;
 
-            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+            // Associa a nota pelo número E série do RPS
+            var nota = notas.FirstOrDefault(x => 
+                x.IdentificacaoRps.Numero == numeroRps && 
+                x.IdentificacaoRps.Serie == serieRps);
+            
             if (nota != null)
             {
                 nota.IdentificacaoNFSe.Numero = numero;
                 nota.IdentificacaoNFSe.Chave = chave;
                 nota.IdentificacaoNFSe.DataEmissao = data;
+                nota.XmlOriginal = compNfse.AsString();
+            }
+            else
+            {
+                // Se não encontrou pelo número E serie, tenta só pelo número (retrocompatibilidade)
+                nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+                if (nota != null)
+                {
+                    nota.IdentificacaoNFSe.Numero = numero;
+                    nota.IdentificacaoNFSe.Chave = chave;
+                    nota.IdentificacaoNFSe.DataEmissao = data;
+                    nota.XmlOriginal = compNfse.AsString();
+                }
             }
         }
 
@@ -429,6 +459,95 @@ internal sealed class ProviderISSPortoVelho : ProviderABRASF200
         retornoWebservice.NumeroNFSe = numero ?? string.Empty;
         retornoWebservice.Sucesso = retornoWebservice.Data != DateTime.MinValue;
     }
+
+    #region LoadXml
+
+    protected override void LoadPrestador(NotaServico nota, XElement rootNFSe)
+    {
+        // Porto Velho retorna os dados do prestador em <PrestadorServico>
+        var prestadorServico = rootNFSe.ElementAnyNs("PrestadorServico");
+        if (prestadorServico != null)
+        {
+            nota.Prestador.RazaoSocial = prestadorServico.ElementAnyNs("RazaoSocial")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.RazaoSocial ?? string.Empty;
+            nota.Prestador.NomeFantasia = prestadorServico.ElementAnyNs("NomeFantasia")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.NomeFantasia ?? string.Empty;
+
+
+            var enderecoPrestador = prestadorServico.ElementAnyNs("Endereco");
+            if (enderecoPrestador != null)
+            {
+                nota.Prestador.Endereco.Logradouro = enderecoPrestador.ElementAnyNs("Endereco")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.Endereco.Logradouro ?? string.Empty;
+                nota.Prestador.Endereco.Numero = enderecoPrestador.ElementAnyNs("Numero")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.Endereco.Numero ?? string.Empty;
+                nota.Prestador.Endereco.Complemento = enderecoPrestador.ElementAnyNs("Complemento")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.Endereco.Complemento ?? string.Empty;
+                nota.Prestador.Endereco.Bairro = enderecoPrestador.ElementAnyNs("Bairro")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.Endereco.Bairro ?? string.Empty;
+                nota.Prestador.Endereco.CodigoMunicipio = enderecoPrestador.ElementAnyNs("CodigoMunicipio")?.GetValue<int>() ?? 0;
+                nota.Prestador.Endereco.Uf = enderecoPrestador.ElementAnyNs("Uf")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.Endereco.Uf ?? string.Empty;
+                nota.Prestador.Endereco.CodigoPais = enderecoPrestador.ElementAnyNs("CodigoPais")?.GetValue<int>() ?? 0;
+                nota.Prestador.Endereco.Cep = enderecoPrestador.ElementAnyNs("Cep")?.GetValue<string>() ?? Configuracoes.PrestadorPadrao.Endereco.Cep ?? string.Empty;
+            }
+        }
+        // Porto Velho retorna o cabeçalho dentro de DeclaracaoPrestacaoServico
+        var prestadorRps = rootNFSe.ElementAnyNs("DeclaracaoPrestacaoServico")?.ElementAnyNs("InfDeclaracaoPrestacaoServico")?.ElementAnyNs("Prestador");
+
+        if (prestadorRps != null)
+        {
+            nota.Prestador.CpfCnpj = prestadorRps.ElementAnyNs("CpfCnpj")?.ElementAnyNs("Cnpj")?.GetValue<string>() ?? prestadorRps.ElementAnyNs("CpfCnpj")?.ElementAnyNs("Cpf")?.GetValue<string>() ?? string.Empty;
+            nota.Prestador.InscricaoMunicipal = prestadorRps.ElementAnyNs("InscricaoMunicipal")?.GetValue<string>() ?? string.Empty;
+        }
+        // Carrega dados do prestador da configuração para completar (razão social)
+        if (nota.Prestador.CpfCnpj.IsEmpty() || nota.Prestador.CpfCnpj == Configuracoes.PrestadorPadrao.CpfCnpj)
+        {
+            nota.Prestador.RazaoSocial = Configuracoes.PrestadorPadrao.RazaoSocial;
+            nota.Prestador.NomeFantasia = Configuracoes.PrestadorPadrao.NomeFantasia;
+
+        }
+
+        // Chama a implementação base para carregar o endereço do prestador (se existir EnderecoPrestadorServico)
+        base.LoadPrestador(nota, rootNFSe);
+    }
+
+    protected override void LoadTomador(NotaServico nota, XElement rpsRoot)
+    {
+        // Porto Velho retorna o tomador em <TomadorServico> dentro do InfDeclaracaoPrestacaoServico
+        var rootTomador = rpsRoot.ElementAnyNs("TomadorServico");
+        if (rootTomador == null)
+        {
+            // Se não encontrar, tenta com o nome padrão da classe base
+            base.LoadTomador(nota, rpsRoot);
+            return;
+        }
+
+        var tomadorIdentificacao = rootTomador.ElementAnyNs("IdentificacaoTomador");
+        if (tomadorIdentificacao != null)
+        {
+            nota.Tomador.CpfCnpj = tomadorIdentificacao.ElementAnyNs("CpfCnpj")?.GetCPF_CNPJ();
+            nota.Tomador.InscricaoMunicipal = tomadorIdentificacao.ElementAnyNs("InscricaoMunicipal")?.GetValue<string>() ?? string.Empty;
+        }
+
+        nota.Tomador.RazaoSocial = rootTomador.ElementAnyNs("RazaoSocial")?.GetValue<string>() ?? string.Empty;
+
+        var rootTomadorEndereco = rootTomador.ElementAnyNs("Endereco");
+        if (rootTomadorEndereco != null)
+        {
+            nota.Tomador.Endereco.Logradouro = rootTomadorEndereco.ElementAnyNs("Endereco")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.Numero = rootTomadorEndereco.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.Complemento = rootTomadorEndereco.ElementAnyNs("Complemento")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.Bairro = rootTomadorEndereco.ElementAnyNs("Bairro")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.CodigoMunicipio = rootTomadorEndereco.ElementAnyNs("CodigoMunicipio")?.GetValue<int>() ?? 0;
+            nota.Tomador.Endereco.Uf = rootTomadorEndereco.ElementAnyNs("Uf")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.Endereco.CodigoPais = rootTomadorEndereco.ElementAnyNs("CodigoPais")?.GetValue<int>() ?? 0;
+            nota.Tomador.Endereco.Cep = rootTomadorEndereco.ElementAnyNs("Cep")?.GetValue<string>() ?? string.Empty;
+        }
+
+        var rootTomadorContato = rootTomador.ElementAnyNs("Contato");
+        if (rootTomadorContato != null)
+        {
+            nota.Tomador.DadosContato.DDD = "";
+            nota.Tomador.DadosContato.Telefone = rootTomadorContato.ElementAnyNs("Telefone")?.GetValue<string>() ?? string.Empty;
+            nota.Tomador.DadosContato.Email = rootTomadorContato.ElementAnyNs("Email")?.GetValue<string>() ?? string.Empty;
+        }
+    }
+
+    #endregion LoadXml
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         throw new NotImplementedException("Porto Velho não suporta envio síncrono.");

@@ -29,17 +29,16 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using System.Linq;
-using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -100,23 +99,25 @@ internal sealed class ProviderWebIss2 : ProviderABRASF202
         infServico.AddChild(WriteIntermediarioRps(nota));
         infServico.AddChild(WriteConstrucaoCivilRps(nota));
 
-        string regimeEspecialTributacao;
-        string optanteSimplesNacional;
-        if (nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional)
+        var regimeEspecialTributacao = nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional
+                ? "6"
+                : ((int)nota.RegimeEspecialTributacao).ToString();
+
+        bool optanteSimplesNacional = false;
+
+        switch (nota.RegimeEspecialTributacao)
         {
-            regimeEspecialTributacao = "6";
-            optanteSimplesNacional = "1";
-        }
-        else
-        {
-            regimeEspecialTributacao = ((int)nota.RegimeEspecialTributacao).ToString();
-            optanteSimplesNacional = "2";
+            case RegimeEspecialTributacao.SimplesNacional:
+            case RegimeEspecialTributacao.MicroEmpresarioIndividual:
+            case RegimeEspecialTributacao.MicroEmpresarioEmpresaPP:
+                optanteSimplesNacional = true;
+                break;
         }
 
         if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
             infServico.AddChild(AddTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
 
-        infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
+        infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional ? 1 : 2));
         infServico.AddChild(AddTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
 
         var IBSCBS = WriteIBSCBSRps(nota);
