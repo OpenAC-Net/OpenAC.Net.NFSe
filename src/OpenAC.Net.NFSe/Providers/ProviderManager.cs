@@ -86,6 +86,7 @@ public static class ProviderManager
             {NFSeProvider.MetropolisWeb, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderMetropolisWeb)}}},
             {NFSeProvider.Mitra, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderMitra)}}},
             {NFSeProvider.NFeCidades, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderNFeCidades)}}},
+            {NFSeProvider.Prodata, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve201, typeof(ProviderProdata)}}},
             {NFSeProvider.Pronim, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderPronim)},{VersaoNFSe.ve202, typeof(ProviderPronim202)}, {VersaoNFSe.ve203, typeof(ProviderPronim203)}}},
             {NFSeProvider.ISSPortoVelho, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve200, typeof(ProviderISSPortoVelho)}}},
             {NFSeProvider.RLZ, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(RLZProvider)}}},
