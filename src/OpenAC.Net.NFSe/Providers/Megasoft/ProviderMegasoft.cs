@@ -236,6 +236,8 @@ internal class ProviderMegasoft : ProviderABRASF200
             nota.Servico.CodigoMunicipio));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoTributacaoMunicipio", 1, 20, Ocorrencia.NaoObrigatoria,
             nota.Servico.CodigoTributacaoMunicipio));
+        servico.AddChild(AddTag(TipoCampo.Str, "", "NumeroNbs", 1, 12, Ocorrencia.Obrigatoria,
+            nota.Servico.CodigoNbs));
         servico.AddChild(AddTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria,
             nota.Servico.Discriminacao));
 
