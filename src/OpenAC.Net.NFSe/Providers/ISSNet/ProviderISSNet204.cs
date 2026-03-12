@@ -186,12 +186,13 @@ internal sealed class ProviderISSNet204 : ProviderABRASF204
         {
             var tomador = new XElement("TomadorServico");
 
+            tomador.AddChild(AddTag(TipoCampo.Str, "", "NifTomador", 1, 40, Ocorrencia.NaoObrigatoria, nota.Tomador.DocEstrangeiro));
             tomador.AddChild(AddTag(TipoCampo.Str, "", "RazaoSocial", 1, 150, Ocorrencia.Obrigatoria, nota.Tomador.RazaoSocial));
 
             var enderecoExt = new XElement("EnderecoExterior");
             tomador.Add(enderecoExt);
 
-            enderecoExt.AddChild(AddTag(TipoCampo.Int, "", "CodigoPais", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
+            enderecoExt.AddChild(AddTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.CodigoPais));
             enderecoExt.AddChild(AddTag(TipoCampo.Str, "", "EnderecoCompletoExterior", 8, 8, Ocorrencia.Obrigatoria, nota.Tomador.EnderecoExterior.EnderecoCompleto));
 
             return tomador;
