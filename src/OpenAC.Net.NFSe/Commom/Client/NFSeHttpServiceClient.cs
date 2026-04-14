@@ -283,7 +283,8 @@ public abstract class NFSeHttpServiceClient : IDisposable
             if (!ValidarCertificadoServidor())
                 handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
 
-            handler.SslProtocols = (SslProtocols)Provider.Configuracoes.WebServices.Protocolos;
+            //Comentado para deixar o OS decidir qual protocolo utilizar. Estava dando "Operation is not supported on this platform"
+            //handler.SslProtocols = (SslProtocols)Provider.Configuracoes.WebServices.Protocolos;
 
             if (Certificado != null)
                 handler.ClientCertificates.Add(Certificado);
