@@ -5,11 +5,21 @@ namespace OpenAC.Net.NFSe.Nota;
 
 public sealed class DadosComExterior : GenericClone<DadosComExterior>, INotifyPropertyChanged
 {
+    #region Events
+
     public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Events
+
+    #region Constructor
 
     internal DadosComExterior()
     {
     }
+
+    #endregion Constructor
+
+    #region Properties
 
     public string ModoPrestacao { get; set; }
 
@@ -26,4 +36,6 @@ public sealed class DadosComExterior : GenericClone<DadosComExterior>, INotifyPr
     public string MovimentoTemporarioBens { get; set; }
 
     public string EnviarMdic { get; set; }
+
+    #endregion Properties
 }

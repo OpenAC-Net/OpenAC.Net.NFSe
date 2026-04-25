@@ -132,14 +132,14 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
         servico.AddChild(AddTag(TipoCampo.Int, "", "MunicipioIncidencia", 7, 7, Ocorrencia.MaiorQueZero, nota.Servico.MunicipioIncidencia));
         servico.AddChild(AddTag(TipoCampo.Str, "", "NumeroProcesso", 1, 30, Ocorrencia.NaoObrigatoria, nota.Servico.NumeroProcesso));
         servico.AddChild(AddTag(TipoCampo.Str, "", "MunicipioPrestacao", 1, 20, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
-        servico.AddChild(AddTag(TipoCampo.Int, "", "PaisPrestacao", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.CodigoPais));
+        servico.AddChild(AddTag(TipoCampo.Int, "", "PaisPrestacao", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.PaisPrestacao > 0 ? nota.Servico.PaisPrestacao : nota.Servico.CodigoPais));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoNBS", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.CodigoNbs));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CIndOp", 6, 6, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoIndicadorOperacao));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CClassTribReg", 6, 6, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoClassificacaoTributaria));
 
         return servico;
     }
-    
+
     protected override XElement WriteValoresRps(NotaServico nota)
     {
         var valores = new XElement("Valores");
@@ -171,7 +171,8 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
 
         if (!nota.Tomador.CpfCnpj.IsEmpty() ||
             !nota.Tomador.InscricaoMunicipal.IsEmpty() ||
-            !nota.Tomador.DocEstrangeiro.IsEmpty())
+            !nota.Tomador.DocEstrangeiro.IsEmpty() ||
+            !nota.Tomador.CodNaoNif.IsEmpty())
         {
             var ideTomador = new XElement("IdentificacaoTomador");
             tomador.Add(ideTomador);
@@ -188,6 +189,8 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
                 Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
             ideTomador.AddChild(AddTag(TipoCampo.Str, "", "NIF", 1, 40,
                 Ocorrencia.NaoObrigatoria, nota.Tomador.DocEstrangeiro));
+            ideTomador.AddChild(AddTag(TipoCampo.Str, "", "CodNaoNIF", 1, 1,
+                Ocorrencia.NaoObrigatoria, nota.Tomador.CodNaoNif));
         }
 
         tomador.AddChild(AddTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
