@@ -90,6 +90,7 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
 
         infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional));
         infServico.AddChild(AddTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
+        infServico.AddChild(WriteComExteriorRps(nota));
 
 
 
@@ -131,14 +132,14 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
         servico.AddChild(AddTag(TipoCampo.Int, "", "MunicipioIncidencia", 7, 7, Ocorrencia.MaiorQueZero, nota.Servico.MunicipioIncidencia));
         servico.AddChild(AddTag(TipoCampo.Str, "", "NumeroProcesso", 1, 30, Ocorrencia.NaoObrigatoria, nota.Servico.NumeroProcesso));
         servico.AddChild(AddTag(TipoCampo.Str, "", "MunicipioPrestacao", 1, 20, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
-        servico.AddChild(AddTag(TipoCampo.Int, "", "PaisPrestacao", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.CodigoPais));
+        servico.AddChild(AddTag(TipoCampo.Int, "", "PaisPrestacao", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.PaisPrestacao > 0 ? nota.Servico.PaisPrestacao : nota.Servico.CodigoPais));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoNBS", 1, 5, Ocorrencia.Obrigatoria, nota.Servico.CodigoNbs));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CIndOp", 6, 6, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoIndicadorOperacao));
         servico.AddChild(AddTag(TipoCampo.Str, "", "CClassTribReg", 6, 6, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoClassificacaoTributaria));
 
         return servico;
     }
-    
+
     protected override XElement WriteValoresRps(NotaServico nota)
     {
         var valores = new XElement("Valores");
@@ -162,6 +163,111 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
         valores.AddChild(AddTag(TipoCampo.Str, "", "TpRetPisCofins", 1, 1, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.TipoRetencaoPisCofins));
 
         return valores;
+    }
+
+    protected override XElement? WriteTomadorRps(NotaServico nota)
+    {
+        var tomador = new XElement("Tomador");
+
+        if (!nota.Tomador.CpfCnpj.IsEmpty() ||
+            !nota.Tomador.InscricaoMunicipal.IsEmpty() ||
+            !nota.Tomador.DocEstrangeiro.IsEmpty() ||
+            !nota.Tomador.CodNaoNif.IsEmpty())
+        {
+            var ideTomador = new XElement("IdentificacaoTomador");
+            tomador.Add(ideTomador);
+
+            if (!nota.Tomador.CpfCnpj.IsEmpty())
+            {
+                var cpfCnpjTomador = new XElement("CpfCnpj");
+                ideTomador.Add(cpfCnpjTomador);
+
+                cpfCnpjTomador.AddChild(AdicionarTagCNPJCPF("", "Cpf", "Cnpj", nota.Tomador.CpfCnpj));
+            }
+
+            ideTomador.AddChild(AddTag(TipoCampo.Str, "", "InscricaoMunicipal", 1, 15,
+                Ocorrencia.NaoObrigatoria, nota.Tomador.InscricaoMunicipal));
+            ideTomador.AddChild(AddTag(TipoCampo.Str, "", "NIF", 1, 40,
+                Ocorrencia.NaoObrigatoria, nota.Tomador.DocEstrangeiro));
+            ideTomador.AddChild(AddTag(TipoCampo.Str, "", "CodNaoNIF", 1, 1,
+                Ocorrencia.NaoObrigatoria, nota.Tomador.CodNaoNif));
+        }
+
+        tomador.AddChild(AddTag(TipoCampo.Str, "", "RazaoSocial", 1, 115, Ocorrencia.NaoObrigatoria, nota.Tomador.RazaoSocial));
+
+        if (!nota.Tomador.Endereco.Logradouro.IsEmpty() ||
+            !nota.Tomador.Endereco.Numero.IsEmpty() ||
+            !nota.Tomador.Endereco.Complemento.IsEmpty() ||
+            !nota.Tomador.Endereco.Bairro.IsEmpty() ||
+            nota.Tomador.Endereco.CodigoMunicipio > 0 ||
+            !nota.Tomador.Endereco.Uf.IsEmpty() ||
+            nota.Tomador.Endereco.CodigoPais > 0 ||
+            !nota.Tomador.Endereco.Cep.IsEmpty() ||
+            !nota.Tomador.Endereco.CodigoPostalExterior.IsEmpty() ||
+            !nota.Tomador.Endereco.CidadeExterior.IsEmpty() ||
+            !nota.Tomador.Endereco.EstadoProvinciaExterior.IsEmpty())
+        {
+            var endereco = new XElement("Endereco");
+            tomador.Add(endereco);
+
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "Endereco", 1, 125, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Logradouro));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "Numero", 1, 10, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Numero));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "Complemento", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Complemento));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "Bairro", 1, 60, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Bairro));
+            endereco.AddChild(AddTag(TipoCampo.Int, "", "CodigoMunicipio", 7, 7, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoMunicipio));
+            endereco.AddChild(AddTag(TipoCampo.Str, "", "Uf", 2, 2, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Uf));
+            endereco.AddChild(AddTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Tomador.Endereco.CodigoPais));
+            endereco.AddChild(AddTag(TipoCampo.StrNumber, "", "Cep", 8, 8, Ocorrencia.NaoObrigatoria, nota.Tomador.Endereco.Cep));
+
+            if (!nota.Tomador.Endereco.CodigoPostalExterior.IsEmpty() ||
+                !nota.Tomador.Endereco.CidadeExterior.IsEmpty() ||
+                !nota.Tomador.Endereco.EstadoProvinciaExterior.IsEmpty())
+            {
+                var enderecoExterior = new XElement("EndExt");
+                endereco.Add(enderecoExterior);
+
+                enderecoExterior.AddChild(AddTag(TipoCampo.Str, "", "CodigoEndPost", 1, 15, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.CodigoPostalExterior));
+                enderecoExterior.AddChild(AddTag(TipoCampo.Str, "", "CidadeExterior", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.CidadeExterior));
+                enderecoExterior.AddChild(AddTag(TipoCampo.Str, "", "EstProvRegExterior", 1, 60, Ocorrencia.Obrigatoria, nota.Tomador.Endereco.EstadoProvinciaExterior));
+            }
+        }
+
+        if (!nota.Tomador.DadosContato.Telefone.IsEmpty() ||
+            !nota.Tomador.DadosContato.Email.IsEmpty())
+        {
+            var contato = new XElement("Contato");
+            tomador.Add(contato);
+
+            contato.AddChild(AddTag(TipoCampo.StrNumber, "", "Telefone", 1, 11, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.DDD + nota.Tomador.DadosContato.Telefone));
+            contato.AddChild(AddTag(TipoCampo.Str, "", "Email", 1, 80, Ocorrencia.NaoObrigatoria, nota.Tomador.DadosContato.Email));
+        }
+
+        return tomador;
+    }
+
+    private XElement? WriteComExteriorRps(NotaServico nota)
+    {
+        if (nota.ComExterior == null) return null;
+        if (nota.ComExterior.ModoPrestacao.IsEmpty() &&
+            nota.ComExterior.VinculoPrestacao.IsEmpty() &&
+            nota.ComExterior.TipoMoeda.IsEmpty() &&
+            nota.ComExterior.ValorServicoMoeda <= 0 &&
+            nota.ComExterior.MecanismoApoioPrestador.IsEmpty() &&
+            nota.ComExterior.MecanismoApoioTomador.IsEmpty() &&
+            nota.ComExterior.MovimentoTemporarioBens.IsEmpty() &&
+            nota.ComExterior.EnviarMdic.IsEmpty()) return null;
+
+        var comExterior = new XElement("ComExt");
+        comExterior.AddChild(AddTag(TipoCampo.Str, "", "MdPrestacao", 1, 1, Ocorrencia.Obrigatoria, nota.ComExterior.ModoPrestacao));
+        comExterior.AddChild(AddTag(TipoCampo.Str, "", "VincPrest", 1, 1, Ocorrencia.Obrigatoria, nota.ComExterior.VinculoPrestacao));
+        comExterior.AddChild(AddTag(TipoCampo.Str, "", "TpMoeda", 1, 3, Ocorrencia.Obrigatoria, nota.ComExterior.TipoMoeda));
+        comExterior.AddChild(AddTag(TipoCampo.De2, "", "VServMoeda", 1, 15, Ocorrencia.Obrigatoria, nota.ComExterior.ValorServicoMoeda));
+        comExterior.AddChild(AddTag(TipoCampo.Str, "", "MecAFComexP", 1, 2, Ocorrencia.Obrigatoria, nota.ComExterior.MecanismoApoioPrestador));
+        comExterior.AddChild(AddTag(TipoCampo.Str, "", "MecAFComexT", 1, 2, Ocorrencia.Obrigatoria, nota.ComExterior.MecanismoApoioTomador));
+        comExterior.AddChild(AddTag(TipoCampo.Str, "", "MovTempBens", 1, 1, Ocorrencia.Obrigatoria, nota.ComExterior.MovimentoTemporarioBens));
+        comExterior.AddChild(AddTag(TipoCampo.Str, "", "Mdic", 1, 1, Ocorrencia.Obrigatoria, nota.ComExterior.EnviarMdic));
+
+        return comExterior;
     }
 
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)

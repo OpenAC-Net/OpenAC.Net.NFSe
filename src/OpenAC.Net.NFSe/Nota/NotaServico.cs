@@ -80,6 +80,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
         DestinatarioCBSIBS = new DadosTomador();
         Intermediario = new DadosIntermediario();
         ConstrucaoCivil = new DadosConstrucaoCivil();
+        ComExterior = new DadosComExterior();
         Material = new DadosMateriais();
         Pagamento = new DadosPagamento();
         OrgaoGerador = new IdeOrgaoGerador();
@@ -126,6 +127,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public Endereco EnderecoPrestacao { get; set; }
 
     public DadosConstrucaoCivil ConstrucaoCivil { get; }
+
+    public DadosComExterior ComExterior { get; }
 
     public DadosMateriais Material { get; set; }
 
