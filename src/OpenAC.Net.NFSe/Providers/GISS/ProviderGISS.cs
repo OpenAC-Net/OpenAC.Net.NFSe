@@ -60,7 +60,12 @@ internal class ProviderGISS : ProviderABRASF204
 
         valores.AddChild(AddTag(TipoCampo.De2, "", "DescontoIncondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoIncondicionado));
         valores.AddChild(AddTag(TipoCampo.De2, "", "DescontoCondicionado", 1, 15, Ocorrencia.MaiorQueZero, nota.Servico.Valores.DescontoCondicionado));
-
+        
+        
+        var trib = WriteTribRps(nota);
+        if (trib != null)
+            valores.AddChild(trib);
+        
         var IBSCBS = WriteIBSCBSRps(nota);
         
         if(IBSCBS != null)
@@ -68,6 +73,60 @@ internal class ProviderGISS : ProviderABRASF204
         
 
         return valores;
+    }
+
+    protected XElement? WriteTribRps(NotaServico nota)
+    {
+        if (string.IsNullOrWhiteSpace(nota.Servico.Valores.TipoRetencaoPisCofins))
+            return null;
+        
+        var trib = new XElement("trib");
+        var tribFed = WriteTribFedRps(nota);
+        if (tribFed != null)
+            trib.AddChild(tribFed);
+        
+        var tribTot = WriteTribTotRps(nota);
+        if (tribTot != null)
+            trib.AddChild(tribTot);
+
+        return trib;
+    }
+
+    protected XElement WriteTribFedRps(NotaServico nota)
+    {
+        var valores = nota.Servico.Valores;
+        
+        var tribFed = new XElement("tribFed");
+        var piscofins = new XElement("piscofins");
+        piscofins.AddChild(AddTag(TipoCampo.StrNumber, "", "CST", 1, 1, Ocorrencia.Obrigatoria, valores.CstPisCofins));
+        piscofins.AddChild(AddTag(TipoCampo.De2, "", "vBCPisCofins", 1, 1, Ocorrencia.Obrigatoria, valores.BaseCalculo));
+        piscofins.AddChild(AddTag(TipoCampo.De2, "", "pAliqPis", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaPis));
+        piscofins.AddChild(AddTag(TipoCampo.De2, "", "pAliqCofins", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaCofins));
+        piscofins.AddChild(AddTag(TipoCampo.De2, "", "vPis", 1, 1, Ocorrencia.Obrigatoria, valores.ValorPis));
+        piscofins.AddChild(AddTag(TipoCampo.De2, "", "vCofins", 1, 1, Ocorrencia.Obrigatoria, valores.ValorCofins));
+        piscofins.AddChild(AddTag(TipoCampo.StrNumber, "", "tpRetPisCofins", 1, 1, Ocorrencia.Obrigatoria, valores.TipoRetencaoPisCofins));
+        
+        tribFed.AddChild(piscofins);
+
+        return tribFed;
+    }
+    
+    protected XElement? WriteTribTotRps(NotaServico nota)
+    {
+        var valores = nota.Servico.Valores;
+        
+        if (!valores.AliquotaTotalEstadual.HasValue &&  !valores.AliquotaTotalEstadual.HasValue && valores.AliquotaTotalMunicipal.HasValue)
+            return null;
+        
+        var totTrib = new XElement("totTrib");
+        var pTotTrib = new XElement("pTotTrib");
+        pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribFed", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalEstadual ?? 0));
+        pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribEst", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalEstadual ?? 0));
+        pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribMun", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalMunicipal ?? 0));
+        
+        totTrib.AddChild(pTotTrib);
+
+        return totTrib;
     }
 
     protected XElement? WriteIBSCBSRps(NotaServico nota)
