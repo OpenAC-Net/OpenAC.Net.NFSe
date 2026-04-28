@@ -79,6 +79,8 @@ public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyCh
 
     public int CodigoPais { get; set; }
 
+    public int PaisPrestacao { get; set; }
+
     public ExigibilidadeIss ExigibilidadeIss { get; set; }
 
     public string IdentifNaoExigibilidade { get; set; }
