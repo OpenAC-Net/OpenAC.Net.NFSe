@@ -74,6 +74,12 @@ public sealed class ValoresServico : GenericClone<ValoresServico>, INotifyProper
     public decimal OutrasRetencoes { get; set; }
 
     public decimal ValTotTributos { get; set; }
+    
+    public decimal? AliquotaTotalEstadual { get; set; }
+    
+    public decimal? AliquotaTotalFederal { get; set; }
+    
+    public decimal? AliquotaTotalMunicipal { get; set; }
 
     public decimal BaseCalculo { get; set; }
 
