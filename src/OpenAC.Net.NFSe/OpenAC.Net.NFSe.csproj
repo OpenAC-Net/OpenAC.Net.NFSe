@@ -226,7 +226,11 @@
 		<None Include="Schemas\Tiplan\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Tiplan</PackagePath>
-		</None>		
+		</None>
+		<None Include="Schemas\Tinus\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Tinus</PackagePath>
+		</None>
 		<None Include="Schemas\WebISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\WebISS</PackagePath>
@@ -374,6 +378,9 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>	
 		<None Update="Schemas\Tiplan\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\Tinus\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\WebISS\**\*.*">
