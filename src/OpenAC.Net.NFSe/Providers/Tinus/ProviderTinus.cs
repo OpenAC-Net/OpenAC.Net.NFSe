@@ -195,13 +195,13 @@ internal sealed class ProviderTinus : ProviderABRASF203
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
 
-        MensagemErro(retornoWebservice, xmlRet.Root, "ListaMensagemRetorno");
-        MensagemErro(retornoWebservice, xmlRet.Root, "ListaMensagemRetornoLote");
+        MensagemErro(retornoWebservice, xmlRet, "EnviarLoteRpsSincronoResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("DataRecebimento")?.GetValue<DateTime>() ?? DateTime.MinValue;
         retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("Protocolo")?.GetValue<string>() ?? string.Empty;
         retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
+        MensagemErro(retornoWebservice, xmlRet, "EnviarLoteRpsSincronoResposta");
 
         if (!retornoWebservice.Sucesso) return;
 
