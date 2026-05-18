@@ -20,9 +20,9 @@
         <NeutralLanguage>pt-BR</NeutralLanguage>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <AssemblyVersion>1.7.2</AssemblyVersion>
-        <FileVersion>1.7.2</FileVersion>
-        <Version>1.7.2</Version>
+        <AssemblyVersion>1.7.3</AssemblyVersion>
+        <FileVersion>1.7.3</FileVersion>
+        <Version>1.7.3</Version>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <DebugType>embedded</DebugType>
@@ -54,11 +54,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203">
+      <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="QuestPDF" Version="2026.2.4" />
+      <PackageReference Include="QuestPDF" Version="2026.5.0" />
     </ItemGroup>
 
     <ItemGroup>
