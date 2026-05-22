@@ -124,7 +124,9 @@ public class TestProviderISSMap
     {
         var openNFSe = CriarOpenNFSe();
 
-        var retorno = openNFSe.ConsultaNFSe(1); // número do RPS
+        // A consulta do ISSMap exige o número do RPS e o CPF/CNPJ do tomador.
+        // O 2º parâmetro (serieNfse) é reaproveitado pelo provedor para o documento do tomador.
+        var retorno = openNFSe.ConsultaNFSe(1, "");
 
         Assert.True(retorno.Sucesso,
             "Erro na consulta: " + string.Join(" | ", retorno.Erros.ConvertAll(e => $"{e.Codigo}-{e.Descricao}")));

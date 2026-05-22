@@ -96,7 +96,7 @@ internal sealed class ProviderISSMap : ProviderBase
 
         rps.Add(new XElement("descServico", Truncar(nota.Servico.Descricao, 2000)));
         rps.Add(new XElement("servicoPrestado", Truncar(string.IsNullOrWhiteSpace(nota.Servico.Discriminacao) ? nota.Servico.Descricao : nota.Servico.Discriminacao, 1000)));
-        rps.Add(new XElement("codigoServicoPrestado", (nota.Servico.ItemListaServico ?? string.Empty).Replace(".", "")));
+        rps.Add(new XElement("codigoServicoPrestado", FormatarCodigoServico(nota.Servico.ItemListaServico)));
         rps.Add(new XElement("cNBS", (nota.Servico.CodigoNbs ?? string.Empty).OnlyNumbers()));
 
         rps.Add(new XElement("retidoNaFonte", retido ? "S" : "N"));
@@ -255,8 +255,11 @@ internal sealed class ProviderISSMap : ProviderBase
     {
         // O serviço de consulta do ISSMap usa GET com parâmetros no path:
         // /ws/rps/consulta/[cidade]/[docPrestador]/[docTomador]/[numeroRPS]
+        // O ISSMap não tem conceito de "série" na consulta, então o campo SerieNFse do
+        // RetornoConsultarNFSe é reaproveitado para transportar o CPF/CNPJ do tomador
+        // (exigido na URL) - assim a fachada OpenNFSe.ConsultaNFSe(numero, serie) já atende.
         var docPrestador = Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers();
-        var docTomador = (retornoWebservice.CPFCNPJTomador ?? string.Empty).OnlyNumbers();
+        var docTomador = (retornoWebservice.SerieNFse ?? string.Empty).OnlyNumbers();
         var numeroRps = retornoWebservice.NumeroNFse.ToString();
 
         retornoWebservice.XmlEnvio = $"/{docPrestador}/{docTomador}/{numeroRps}";
@@ -442,6 +445,18 @@ internal sealed class ProviderISSMap : ProviderBase
     }
 
     private static string FormataValor(decimal valor) => valor.ToString("0.00", CultureInfo.InvariantCulture);
+
+    /// <summary>
+    /// Formata o código do serviço no padrão nacional de 6 dígitos exigido pelo ISSMap
+    /// (99 item, 88 subitem, 77 desdobro). O item da lista (LC 116, ex.: "99.99") é
+    /// completado à direita com o desdobro "00" quando não informado.
+    /// </summary>
+    private static string FormatarCodigoServico(string? itemListaServico)
+    {
+        var codigo = (itemListaServico ?? string.Empty).OnlyNumbers();
+        if (codigo.Length == 0) return string.Empty;
+        return codigo.Length >= 6 ? codigo.Substring(0, 6) : codigo.PadRight(6, '0');
+    }
 
     private static string MontaEndereco(Endereco endereco)
     {
