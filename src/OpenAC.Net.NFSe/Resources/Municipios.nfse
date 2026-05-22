@@ -2,6 +2,41 @@
 <OpenNFSe xmlns="https://www.openac.net.br/">
   <Municipios>
     <Municipio>
+      <Codigo>3555505</Codigo>
+      <Nome>Ubirajara</Nome>
+      <UF>SP</UF>
+      <Provedor>ISSMap</Provedor>
+      <Versao>1.00</Versao>
+      <UrlHomologacao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/teste/enviar/75</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/cancela/75</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/consulta/75</Url>
+        </Item>
+      </UrlHomologacao>
+      <UrlProducao>
+        <Item>
+          <TipoUrl>Enviar</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/novo/enviar/75</Url>
+        </Item>
+        <Item>
+          <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/cancela/75</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/consulta/75</Url>
+        </Item>
+      </UrlProducao>
+    </Municipio>
+    <Municipio>
       <Codigo>3548807</Codigo>
       <Nome>São Caetano do Sul</Nome>
       <UF>SP</UF>

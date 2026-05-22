@@ -110,6 +110,7 @@ public static class ProviderManager
             {NFSeProvider.GovBR, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderGovBR)}}},
             {NFSeProvider.ISSCampinas, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderISSCampinas203) }}},
             {NFSeProvider.Tinus, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve203, typeof(ProviderTinus)}}},
+            {NFSeProvider.ISSMap, new Dictionary<VersaoNFSe, Type> {{VersaoNFSe.ve100, typeof(ProviderISSMap)}}},
         };
 
         Load();

@@ -322,4 +322,9 @@ public enum NFSeProvider : sbyte
     /// Provedor Tinus.
     /// </summary>
     Tinus = 57,
+
+    /// <summary>
+    /// Provedor ISSMap (Gemmap Informática).
+    /// </summary>
+    ISSMap = 58,
 }
