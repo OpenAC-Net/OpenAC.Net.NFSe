@@ -29,15 +29,16 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.NFSe.Configuracao;
-using System.Xml.Linq;
+using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Common;
-using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
+using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -90,6 +91,47 @@ internal sealed class ProviderFiorilli200 : ProviderABRASF200
     {
         if(Configuracoes.WebServices.Ambiente == DFeTipoAmbiente.Producao)
             base.AssinarSubstituirNFSe(retornoWebservice);
+    }
+
+    protected override XElement WriteRps(NotaServico nota)
+    {
+        var rootRps = new XElement("Rps");
+
+        var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
+        rootRps.Add(infServico);
+
+        infServico.Add(WriteRpsRps(nota));
+
+        infServico.AddChild(AddTag(TipoCampo.Dat, "", "Competencia", 10, 10, Ocorrencia.Obrigatoria, nota.Competencia));
+
+        infServico.AddChild(WriteServicosRps(nota));
+        infServico.AddChild(WritePrestadorRps(nota));
+        infServico.AddChild(WriteTomadorRps(nota));
+        infServico.AddChild(WriteIntermediarioRps(nota));
+        infServico.AddChild(WriteConstrucaoCivilRps(nota));
+
+        var regimeEspecialTributacao = nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional
+        ? "6"
+        : ((int)nota.RegimeEspecialTributacao).ToString();
+
+        bool optanteSimplesNacional = false;
+
+        switch (nota.RegimeEspecialTributacao)
+        {
+            case RegimeEspecialTributacao.SimplesNacional:
+            case RegimeEspecialTributacao.MicroEmpresarioIndividual:
+            case RegimeEspecialTributacao.MicroEmpresarioEmpresaPP:
+                optanteSimplesNacional = true;
+                break;
+        }
+
+        if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
+            infServico.AddChild(AddTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
+
+        infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional ? 1 : 2));
+        infServico.AddChild(AddTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
+
+        return rootRps;
     }
     
     #endregion Methods

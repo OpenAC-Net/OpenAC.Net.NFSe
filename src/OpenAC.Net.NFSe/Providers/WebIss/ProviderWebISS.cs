@@ -29,13 +29,15 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System;
-using OpenAC.Net.NFSe.Commom;
+using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using System;
+using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -80,6 +82,40 @@ internal sealed class ProviderWebIss : ProviderABRASF
             case TipoUrl.CancelarNFSe: return "servico_cancelar_nfse_envio.xsd";
             default: throw new ArgumentOutOfRangeException(nameof(tipo), tipo, @"Valor incorreto ou serviço não suportado.");
         }
+    }
+
+    protected override XElement WriteInfoRPS(NotaServico nota)
+    {
+        var incentivadorCultural = nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2;
+
+        var regimeEspecialTributacao = nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional
+                ? "6"
+                : ((int)nota.RegimeEspecialTributacao).ToString();
+
+        bool optanteSimplesNacional = false;
+
+        switch (nota.RegimeEspecialTributacao)
+        {
+            case RegimeEspecialTributacao.SimplesNacional:
+            case RegimeEspecialTributacao.MicroEmpresarioIndividual:
+            case RegimeEspecialTributacao.MicroEmpresarioEmpresaPP:
+                optanteSimplesNacional = true;
+                break;
+        }
+
+        var situacao = nota.Situacao == SituacaoNFSeRps.Normal ? "1" : "2";
+
+        var infoRps = new XElement("InfRps", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero}"));
+
+        infoRps.Add(WriteIdentificacao(nota));
+        infoRps.AddChild(AddTag(TipoCampo.DatHor, "", "DataEmissao", 20, 20, Ocorrencia.Obrigatoria, nota.IdentificacaoRps.DataEmissao));
+        infoRps.AddChild(AddTag(TipoCampo.Int, "", "NaturezaOperacao", 1, 1, Ocorrencia.Obrigatoria, nota.NaturezaOperacao));
+        infoRps.AddChild(AddTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
+        infoRps.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional ? 1 : 2));
+        infoRps.AddChild(AddTag(TipoCampo.Int, "", "IncentivadorCultural", 1, 1, Ocorrencia.Obrigatoria, incentivadorCultural));
+        infoRps.AddChild(AddTag(TipoCampo.Int, "", "Status", 1, 1, Ocorrencia.Obrigatoria, situacao));
+
+        return infoRps;
     }
 
     #endregion Methods

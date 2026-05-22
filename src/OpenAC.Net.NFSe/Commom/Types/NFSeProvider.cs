@@ -132,7 +132,7 @@ public enum NFSeProvider : sbyte
     /// Provedor GISS.
     /// </summary>
     GISS = 52,
-    
+
     /// <summary>
     /// ISS govbr.cloud
     /// </summary>
@@ -143,7 +143,7 @@ public enum NFSeProvider : sbyte
     /// Provedor IISPortoVelho.
     /// </summary>
     [Description("Porto Velho")]
-    IISPortoVelho = 32,
+    ISSPortoVelho = 32,
 
     /// <summary>
     /// Provedor IPM.
@@ -308,8 +308,18 @@ public enum NFSeProvider : sbyte
     /// </summary>
     WebIss = 10,
 
-   /// <summary>
-   /// Provedor Campinas - SP.
-   /// </summary>
-    ISSCampinas = 55
+    /// <summary>
+    /// Provedor Campinas - SP.
+    /// </summary>
+    ISSCampinas = 55,
+
+    /// <summary>
+    /// Provedor Prodata.
+    /// </summary>
+    Prodata = 56,
+
+    /// <summary>
+    /// Provedor Tinus.
+    /// </summary>
+    Tinus = 57,
 }
