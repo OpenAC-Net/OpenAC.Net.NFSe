@@ -275,6 +275,34 @@ internal sealed class ProviderNFeCidades : ProviderABRASF201
         throw new NotImplementedException($"O provedor [{Name}] não implementa o método [{nameof(Enviar)}], utilize o método [{nameof(EnviarSincrono)}]");
     }
 
+    protected override void PrepararCancelarNFSe(RetornoCancelar retornoWebservice)
+{
+    if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
+    {
+        retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Número da NFSe/Codigo de cancelamento não informado para cancelamento." });
+        return;
+    }
+
+    var loteBuilder = new StringBuilder();
+    loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+    loteBuilder.Append($"<CancelarNfseEnvio {GetNamespace()}>");
+    loteBuilder.Append("<Pedido>");
+    loteBuilder.Append($"<InfPedidoCancelamento Id=\"N{retornoWebservice.NumeroNFSe}\">");
+    loteBuilder.Append("<IdentificacaoNfse>");
+    loteBuilder.Append($"<Numero>{retornoWebservice.NumeroNFSe}</Numero>");
+    loteBuilder.Append($"<CpfCnpj><Cnpj>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</Cnpj></CpfCnpj>");
+    loteBuilder.Append($"<InscricaoMunicipal>{Configuracoes.PrestadorPadrao.InscricaoMunicipal}</InscricaoMunicipal>");
+    loteBuilder.Append($"<CodigoMunicipio>{Configuracoes.PrestadorPadrao.Endereco.CodigoMunicipio}</CodigoMunicipio>");
+    loteBuilder.Append("</IdentificacaoNfse>");
+    loteBuilder.Append($"<CodigoCancelamento>{retornoWebservice.CodigoCancelamento}</CodigoCancelamento>");
+    loteBuilder.Append($"<CMotivo>{retornoWebservice.CodigoCancelamento}</CMotivo>");
+    loteBuilder.Append($"<XMotivo>{retornoWebservice.Motivo}</CMotivo>");
+    loteBuilder.Append("</InfPedidoCancelamento>");
+    loteBuilder.Append("</Pedido>");
+    loteBuilder.Append("</CancelarNfseEnvio>");
+    retornoWebservice.XmlEnvio = loteBuilder.ToString();
+}
+
     protected override IServiceClient GetClient(TipoUrl tipo) => new NFeCidadesServiceClient(this, tipo);
 
     #endregion Protected Methods
