@@ -15,6 +15,9 @@
 // =====================================================================================
 
 using System;
+using System.Security.Cryptography;
+using System.Text;
+using System.Xml.Linq;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Nota;
 using Xunit;
@@ -146,4 +149,78 @@ public class TestProviderISSMap
         Assert.True(retorno.Sucesso,
             "Erro no cancelamento: " + string.Join(" | ", retorno.Erros.ConvertAll(e => $"{e.Codigo}-{e.Descricao}")));
     }
+
+    /// <summary>
+    /// Descriptografa um XML do ISSMap (envio ou retorno) capturado da comunicação,
+    /// usando a Chave de Acesso. Cole o XML criptografado em <c>xmlCriptografado</c>
+    /// e preencha <see cref="IssMapChaveAcesso"/> antes de executar.
+    /// </summary>
+    [Fact]
+    public void DescriptografarXmlIssMap()
+    {
+        const string xmlCriptografado = ""; // cole aqui o XML com os conteúdos das tags criptografados
+
+        var xmlClaro = DescriptografarXml(xmlCriptografado);
+
+        Console.WriteLine(xmlClaro);
+        Assert.False(string.IsNullOrWhiteSpace(xmlClaro), "XML descriptografado vazio.");
+    }
+
+    #region Descriptografia ISSMap
+
+    /// <summary>
+    /// Descriptografa um XML do ISSMap, decifrando o conteúdo de todas as tags folha
+    /// (exceto a tag <c>key</c>, que não é criptografada) com a Chave de Acesso (AES-128/ECB/PKCS7).
+    /// Espelha o comportamento de <c>ProviderISSMap.DescriptografarXml</c>/<c>ISSMapCripto</c>,
+    /// replicado aqui por serem tipos <c>internal</c> da biblioteca.
+    /// </summary>
+    /// <param name="xmlCriptografado">XML com os conteúdos das tags criptografados em Base64.</param>
+    /// <param name="chaveAcessoBase64">Chave de Acesso (AES) em Base64. Quando vazio, usa <see cref="IssMapChaveAcesso"/>.</param>
+    /// <returns>O mesmo XML, com os conteúdos das tags em claro.</returns>
+    public static string DescriptografarXml(string xmlCriptografado, string chaveAcessoBase64 = "")
+    {
+        var chave = string.IsNullOrEmpty(chaveAcessoBase64) ? IssMapChaveAcesso : chaveAcessoBase64;
+        if (string.IsNullOrWhiteSpace(chave))
+            throw new InvalidOperationException("Chave de Acesso (criptografia) do ISSMap não informada.");
+
+        var doc = XDocument.Parse(xmlCriptografado);
+        foreach (var element in doc.Descendants())
+        {
+            if (element.HasElements) continue;
+            if (element.Name.LocalName.Equals("key", StringComparison.OrdinalIgnoreCase)) continue;
+            if (string.IsNullOrWhiteSpace(element.Value)) continue;
+
+            try
+            {
+                element.Value = Descriptografar(element.Value, chave);
+            }
+            catch
+            {
+                // mantém o valor original caso a tag não esteja criptografada
+            }
+        }
+
+        return doc.ToString(SaveOptions.DisableFormatting);
+    }
+
+    /// <summary>
+    /// Descriptografa um texto cifrado pelo WebService IssMap (AES-128, modo ECB, padding PKCS7).
+    /// </summary>
+    private static string Descriptografar(string textoCifrado, string chaveBase64)
+    {
+        if (string.IsNullOrEmpty(textoCifrado)) return string.Empty;
+
+        using var aes = Aes.Create();
+        aes.Key = Convert.FromBase64String(chaveBase64);
+        aes.Mode = CipherMode.ECB;
+        aes.Padding = PaddingMode.PKCS7;
+
+        using var decryptor = aes.CreateDecryptor();
+        var dados = Convert.FromBase64String(textoCifrado);
+        var decifrado = decryptor.TransformFinalBlock(dados, 0, dados.Length);
+
+        return Encoding.UTF8.GetString(decifrado);
+    }
+
+    #endregion Descriptografia ISSMap
 }
