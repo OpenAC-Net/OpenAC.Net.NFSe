@@ -768,6 +768,20 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         }
     }
 
+    /// <summary>
+    /// Consulta a versão digital (PDF) de uma NFS-e a partir do número do RPS.
+    /// Por padrão não é suportado; provedores que oferecem o serviço devem sobrescrever este método.
+    /// </summary>
+    /// <param name="notas"></param>
+    /// <param name="numeroRps">Número do RPS a consultar.</param>
+    /// <returns></returns>
+    public virtual RetornoConsultarNFSePdf ConsultaNFSePdf(NotaServicoCollection notas, int numeroRps)
+    {
+        var retornoWebservice = new RetornoConsultarNFSePdf { NumeroRps = numeroRps };
+        retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Função não implementada/suportada neste Provedor." });
+        return retornoWebservice;
+    }
+
         /// <summary>
         /// Cancela uma NFSe.
         /// </summary>

@@ -341,6 +341,37 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     }
 
     /// <summary>
+    /// Consulta a versão digital (PDF) de uma NFS-e a partir do número do RPS.
+    ///
+    /// Obs.: Nem todos provedores suportam este metodo.
+    /// </summary>
+    /// <param name="numeroRps">Número do RPS a consultar.</param>
+    /// <returns>RetornoWebservice contendo o conteúdo binário do PDF.</returns>
+    public RetornoConsultarNFSePdf ConsultaNFSePdf(int numeroRps)
+    {
+        Guard.Against<OpenException>(numeroRps < 1, "O número do RPS não pode ser zero ou negativo.");
+
+        var provider = ProviderManager.GetProvider(Configuracoes);
+        var oldProtocol = ServicePointManager.SecurityProtocol;
+
+        try
+        {
+            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+            return provider.ConsultaNFSePdf(NotasServico, numeroRps);
+        }
+        catch (Exception exception)
+        {
+            this.Log().Error("[ConsultaNFSePdf]", exception);
+            throw;
+        }
+        finally
+        {
+            ServicePointManager.SecurityProtocol = oldProtocol;
+            provider.Dispose();
+        }
+    }
+
+    /// <summary>
     /// Consulta as NFSe de acordo com os filtros.
     ///
     /// Obs.: Nem todos provedores suportam este metodo.

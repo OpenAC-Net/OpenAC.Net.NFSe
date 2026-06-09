@@ -20,6 +20,10 @@
           <TipoUrl>ConsultarNFSe</TipoUrl>
           <Url>https://www.issmap.com.br/ws/rps/consulta/75</Url>
         </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSePdf</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/QRCode/75</Url>
+        </Item>
       </UrlHomologacao>
       <UrlProducao>
         <Item>
@@ -33,6 +37,10 @@
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
           <Url>https://www.issmap.com.br/ws/rps/consulta/75</Url>
+        </Item>
+        <Item>
+          <TipoUrl>ConsultarNFSePdf</TipoUrl>
+          <Url>https://www.issmap.com.br/ws/rps/QRCode/75</Url>
         </Item>
       </UrlProducao>
     </Municipio>

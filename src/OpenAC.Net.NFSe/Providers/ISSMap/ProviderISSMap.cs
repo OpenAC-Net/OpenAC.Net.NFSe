@@ -283,7 +283,67 @@ internal sealed class ProviderISSMap : ProviderBase
 
         // Quando encontrado, o RPS retorna com os conteúdos criptografados.
         retornoWebservice.Sucesso = true;
-        retornoWebservice.XmlRetorno = DescriptografarXml(retorno);
+        var xmlClaro = DescriptografarXml(retorno);
+        retornoWebservice.XmlRetorno = xmlClaro;
+
+        // Surge informações úteis do RPS encontrado (número da NFS-e e estado de cancelamento).
+        try
+        {
+            var doc = XDocument.Parse(xmlClaro);
+
+            var numeroNfse = ObterValorTag(doc, "numeroNfse");
+            if (int.TryParse(numeroNfse, out var nro))
+                retornoWebservice.NumeroNFse = nro;
+
+            var status = ObterValorTag(doc, "status");
+            if (status.Equals("CANCELADA", StringComparison.OrdinalIgnoreCase))
+                retornoWebservice.Alertas.Add(new EventoRetorno { Codigo = "207", Descricao = DescricaoErro("207") });
+        }
+        catch
+        {
+            // mantém apenas o XML descriptografado caso a estrutura não seja reconhecida.
+        }
+    }
+
+    /// <summary>
+    /// Consulta a versão digital (PDF) da NFS-e gerada a partir do RPS (serviço de QRCode do ISSMap).
+    /// URL: <c>/ws/rps/QRCode/[cidade]/[docPrestador]/[numeroRps]</c> (GET, retorno binário PDF).
+    /// </summary>
+    public override RetornoConsultarNFSePdf ConsultaNFSePdf(NotaServicoCollection notas, int numeroRps)
+    {
+        var retornoWebservice = new RetornoConsultarNFSePdf { NumeroRps = numeroRps };
+
+        try
+        {
+            var docPrestador = Configuracoes.PrestadorPadrao.CpfCnpj.OnlyNumbers();
+            var sufixo = $"/{docPrestador}/{numeroRps}";
+            retornoWebservice.XmlEnvio = sufixo;
+
+            byte[] pdf;
+            using (var cliente = new ISSMapServiceClient(this, TipoUrl.ConsultarNFSePdf))
+            {
+                pdf = cliente.ConsultarNFSePdf(sufixo);
+                retornoWebservice.EnvelopeEnvio = cliente.EnvelopeEnvio;
+                retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
+                retornoWebservice.NomeArquivo = cliente.NomeArquivo;
+            }
+
+            // O serviço de QRCode devolve o PDF (magic "%PDF"). Qualquer outro conteúdo indica RPS não encontrado.
+            if (pdf.Length < 4 || pdf[0] != 0x25 || pdf[1] != 0x50 || pdf[2] != 0x44 || pdf[3] != 0x46)
+            {
+                retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "206", Descricao = DescricaoErro("206") });
+                return retornoWebservice;
+            }
+
+            retornoWebservice.Pdf = pdf;
+            retornoWebservice.Sucesso = true;
+        }
+        catch (Exception ex)
+        {
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSePdf: " + ex.Message });
+        }
+
+        return retornoWebservice;
     }
 
     #region Não implementados neste provedor
@@ -443,6 +503,14 @@ internal sealed class ProviderISSMap : ProviderBase
 
         return string.Empty;
     }
+
+    /// <summary>
+    /// Obtém o valor (trim) da primeira tag folha com o nome local informado, ou string vazia.
+    /// </summary>
+    private static string ObterValorTag(XDocument doc, string localName) =>
+        doc.Descendants()
+            .FirstOrDefault(x => !x.HasElements && x.Name.LocalName.Equals(localName, StringComparison.OrdinalIgnoreCase))
+            ?.Value?.Trim() ?? string.Empty;
 
     private static string FormataValor(decimal valor) => valor.ToString("0.00", CultureInfo.InvariantCulture);
 

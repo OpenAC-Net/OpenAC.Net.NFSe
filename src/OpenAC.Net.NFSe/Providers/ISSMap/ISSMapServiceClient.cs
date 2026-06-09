@@ -30,8 +30,10 @@
 // ***********************************************************************
 
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using OpenAC.Net.DFe.Core;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
@@ -54,6 +56,16 @@ internal sealed class ISSMapServiceClient : NFSeHttpServiceClient, IServiceClien
     }
 
     #endregion Constructors
+
+    #region Properties
+
+    /// <summary>
+    /// Nome do arquivo informado pelo provedor no cabeçalho <c>Content-Disposition</c> da última
+    /// resposta binária (ex.: <c>0000245.pdf</c>). Vazio quando não informado.
+    /// </summary>
+    public string NomeArquivo { get; private set; } = "";
+
+    #endregion Properties
 
     #region Methods
 
@@ -83,12 +95,94 @@ internal sealed class ISSMapServiceClient : NFSeHttpServiceClient, IServiceClien
         return EnvelopeRetorno;
     }
 
+    /// <summary>
+    /// Consulta a versão digital (PDF) do RPS/NFSe (GET). O <paramref name="msg"/> é o sufixo de
+    /// path (<c>/{docPrestador}/{numeroRps}</c>) que complementa a URL base de QRCode.
+    /// Retorna o conteúdo binário do PDF.
+    /// </summary>
+    public byte[] ConsultarNFSePdf(string msg)
+    {
+        if (!string.IsNullOrEmpty(msg))
+            Url = Url.TrimEnd('/') + msg;
+
+        return ExecuteGetBytes();
+    }
+
     /// <summary>Envia a Carta de Cancelamento (POST).</summary>
     public string CancelarNFSe(string? cabec, string msg) => PostXml(msg);
 
     public string CancelarNFSeLote(string? cabec, string msg) => throw new NotImplementedException();
 
     public string SubstituirNFSe(string? cabec, string msg) => throw new NotImplementedException();
+
+    /// <summary>
+    /// Executa um GET HTTP cuja resposta é binária (ex.: PDF) e devolve os bytes recebidos.
+    /// Reproduz a configuração de proxy/timeout/certificado de <see cref="NFSeHttpServiceClient.Execute"/>,
+    /// porém lendo o corpo como <c>byte[]</c> (a leitura como string corromperia o binário). Também
+    /// captura o nome do arquivo do cabeçalho <c>Content-Disposition</c> em <see cref="NomeArquivo"/>.
+    /// </summary>
+    private byte[] ExecuteGetBytes()
+    {
+        try
+        {
+            // O serviço de QRCode do ISSMap responde 303 redirecionando para uma URL HTTP (downgrade
+            // de https para http). O HttpClient não segue automaticamente esse tipo de redirecionamento
+            // por segurança, então o tratamento é feito manualmente (limitado a poucos saltos).
+            var handler = new HttpClientHandler { AllowAutoRedirect = false };
+
+            if (!ValidarCertificadoServidor())
+                handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+
+            if (Certificado != null)
+                handler.ClientCertificates.Add(Certificado);
+
+            if (!string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.Proxy))
+                handler.Proxy = new WebProxy(Provider.Configuracoes.WebServices.Proxy, true);
+
+            using var client = new HttpClient(handler);
+
+            if (Provider.TimeOut.HasValue)
+                client.Timeout = Provider.TimeOut.Value;
+
+            var assemblyName = GetType().Assembly.GetName();
+            var urlAtual = new Uri(Url);
+            HttpResponseMessage response;
+
+            const int maxRedirecionamentos = 5;
+            var saltos = 0;
+            while (true)
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, urlAtual);
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(assemblyName.Name!, assemblyName.Version!.ToString()));
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("(+https://github.com/OpenAC-Net/OpenAC.Net.NFSe)"));
+
+                response = client.SendAsync(request).GetAwaiter().GetResult();
+
+                var ehRedirect = (int)response.StatusCode is >= 300 and < 400;
+                if (!ehRedirect || response.Headers.Location == null || ++saltos > maxRedirecionamentos)
+                    break;
+
+                urlAtual = response.Headers.Location.IsAbsoluteUri
+                    ? response.Headers.Location
+                    : new Uri(urlAtual, response.Headers.Location);
+                response.Dispose();
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            NomeArquivo = response.Content.Headers.ContentDisposition?.FileName?.Trim('"') ?? "";
+            var bytes = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+
+            // EnvelopeRetorno é usado para diagnóstico/log; mantém apenas um resumo do binário.
+            EnvelopeRetorno = $"[{response.Content.Headers.ContentType?.MediaType ?? "application/octet-stream"}] {NomeArquivo} ({bytes.Length} bytes)";
+            response.Dispose();
+            return bytes;
+        }
+        catch (Exception ex) when (ex is not OpenDFeCommunicationException)
+        {
+            throw new OpenDFeCommunicationException("Erro no ExecuteGetBytes HttpContent => " + ex.Message, ex);
+        }
+    }
 
     private string PostXml(string msg)
     {

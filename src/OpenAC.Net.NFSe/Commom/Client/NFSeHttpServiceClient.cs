@@ -152,6 +152,11 @@ public abstract class NFSeHttpServiceClient : IDisposable
                 PrefixoResposta = "con-nfse";
                 break;
 
+            case TipoUrl.ConsultarNFSePdf:
+                PrefixoEnvio = "con-nfse-pdf";
+                PrefixoResposta = "con-nfse-pdf";
+                break;
+
             case TipoUrl.CancelarNFSe:
                 PrefixoEnvio = "canc-nfse";
                 PrefixoResposta = "canc-nfse";

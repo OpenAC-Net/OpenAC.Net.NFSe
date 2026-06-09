@@ -136,6 +136,27 @@ public class TestProviderISSMap
     }
 
     /// <summary>
+    /// Consulta a versão digital (PDF) de um RPS já transmitido (serviço de QRCode).
+    /// Ajuste o número do RPS. O PDF é salvo em disco quando a consulta tem sucesso.
+    /// </summary>
+    [Fact]
+    public void ConsultarPdf()
+    {
+        var openNFSe = CriarOpenNFSe();
+
+        var retorno = openNFSe.ConsultaNFSePdf(1);
+
+        Assert.True(retorno.Sucesso,
+            "Erro na consulta do PDF: " + string.Join(" | ", retorno.Erros.ConvertAll(e => $"{e.Codigo}-{e.Descricao}")));
+        Assert.NotNull(retorno.Pdf);
+        Assert.NotEmpty(retorno.Pdf!);
+
+        var nomeArquivo = string.IsNullOrWhiteSpace(retorno.NomeArquivo) ? "issmap-rps.pdf" : retorno.NomeArquivo;
+        var pastaArquivo = System.IO.Path.Combine(System.IO.Path.GetTempPath(), nomeArquivo);
+        System.IO.File.WriteAllBytes(pastaArquivo, retorno.Pdf!);
+    }
+
+    /// <summary>
     /// Envia uma Carta de Cancelamento para um RPS transmitido.
     /// O 6º parâmetro (codigoVerificacao) é usado como CPF/CNPJ do tomador na carta.
     /// </summary>

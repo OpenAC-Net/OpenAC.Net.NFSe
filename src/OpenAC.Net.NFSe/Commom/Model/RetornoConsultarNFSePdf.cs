@@ -1,14 +1,14 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
-// Author           : Rafael Dias
-// Created          : 08-17-2016
+// Author           : danilobreda
+// Created          : 06-09-2026
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 08-17-2016
+// Last Modified By : danilobreda
+// Last Modified On : 06-09-2026
 // ***********************************************************************
-// <copyright file="TipoUrl.cs" company="OpenAC .Net">
+// <copyright file="RetornoConsultarNFSePdf.cs" company="OpenAC .Net">
 //		        		   The MIT License (MIT)
-//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
+//	     		    Copyright (c) 2014 - 2026 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,20 +29,25 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Commom.Types;
+namespace OpenAC.Net.NFSe.Commom.Model;
 
-public enum TipoUrl
+/// <summary>
+/// Retorno da consulta da versão digital (PDF) de uma NFS-e/RPS.
+/// </summary>
+public sealed class RetornoConsultarNFSePdf : RetornoWebservice
 {
-    Enviar,
-    EnviarSincrono,
-    ConsultarSituacao,
-    ConsultarLoteRps,
-    ConsultarSequencialRps,
-    ConsultarNFSeRps,
-    ConsultarNFSe,
-    ConsultarNFSePdf,
-    CancelarNFSe,
-    CancelarNFSeLote,
-    SubstituirNFSe,
-    Autenticacao,
+    /// <summary>
+    /// Número do RPS consultado.
+    /// </summary>
+    public int NumeroRps { get; internal set; }
+
+    /// <summary>
+    /// Conteúdo binário do PDF retornado pelo provedor (nulo quando não encontrado).
+    /// </summary>
+    public byte[]? Pdf { get; internal set; }
+
+    /// <summary>
+    /// Nome do arquivo informado pelo provedor (cabeçalho Content-Disposition), quando disponível.
+    /// </summary>
+    public string NomeArquivo { get; internal set; } = "";
 }
