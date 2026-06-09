@@ -31,6 +31,7 @@
 
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
@@ -92,7 +93,15 @@ internal sealed class ISSMapServiceClient : NFSeHttpServiceClient, IServiceClien
     private string PostXml(string msg)
     {
         EnvelopeEnvio = msg;
-        Execute(new StringContent(msg, Charset, HttpContentType.ApplicationXml), HttpMethod.Post);
+
+        // O WebService do ISSMap espera o header Content-Type EXATAMENTE como "application/xml".
+        // O StringContent(msg, encoding, mediaType) do .NET sempre acrescenta "; charset=utf-8",
+        // e o serviço, ao não reconhecer o content-type, ignora o corpo e responde 201 (campo Key
+        // inválida). Por isso montamos o header manualmente, sem o parâmetro charset.
+        var content = new StringContent(msg, Charset);
+        content.Headers.ContentType = new MediaTypeHeaderValue(HttpContentType.ApplicationXml);
+
+        Execute(content, HttpMethod.Post);
         return EnvelopeRetorno;
     }
 
