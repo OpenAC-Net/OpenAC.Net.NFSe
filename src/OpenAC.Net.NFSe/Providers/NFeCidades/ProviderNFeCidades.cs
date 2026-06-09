@@ -37,6 +37,7 @@ using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System;
+using System.Text;
 using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
