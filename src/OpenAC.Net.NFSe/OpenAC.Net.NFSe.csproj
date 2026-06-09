@@ -22,7 +22,7 @@
 		<NeutralLanguage>pt-BR</NeutralLanguage>
 		<AssemblyVersion>1.7.3</AssemblyVersion>
 		<FileVersion>1.7.3</FileVersion>
-		<Version>1.7.3</Version>
+		<Version>1.7.4</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
