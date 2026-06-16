@@ -39,6 +39,7 @@ using OpenAC.Net.NFSe.Nota;
 using System;
 using System.Text;
 using System.Xml.Linq;
+using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers;
 
