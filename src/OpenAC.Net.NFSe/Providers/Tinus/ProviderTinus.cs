@@ -87,8 +87,6 @@ internal sealed class ProviderTinus : ProviderABRASF203
         ret.IdentificacaoNFSe.Numero = infNFSe.ElementAnyNs("nNFSe")?.GetValue<string>() ?? string.Empty;
         ret.IdentificacaoNFSe.DataEmissao = infNFSe.ElementAnyNs("dhProc")?.GetValue<DateTime>() ?? DateTime.MinValue;
 
-        // A chave da NFS-e nacional est� no atributo Id (ex: "NFS26079011...").
-        // O ADNChave para cancelamento usa os 50 d�gitos sem o prefixo "NFS".
         var nfseId = infNFSe.Attribute("Id")?.Value ?? string.Empty;
         ret.IdentificacaoNFSe.Chave = nfseId.StartsWith("NFS", StringComparison.OrdinalIgnoreCase)
             ? nfseId.Substring(3)
@@ -208,7 +206,7 @@ internal sealed class ProviderTinus : ProviderABRASF203
         var listaNfse = xmlRet.Root?.ElementAnyNs("ListaNfse");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n�o encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
 
@@ -225,7 +223,6 @@ internal sealed class ProviderTinus : ProviderABRASF203
 
             GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-.xml", dataNFSe);
 
-            // A chave da NFS-e nacional est� no atributo Id do infNFSe (ex: "NFS26079011...").
             var chaveNFSe = (infNFSe.Attribute("Id")?.Value ?? string.Empty);
             if (chaveNFSe.StartsWith("NFS", StringComparison.OrdinalIgnoreCase))
                 chaveNFSe = chaveNFSe.Substring(3);
@@ -250,12 +247,10 @@ internal sealed class ProviderTinus : ProviderABRASF203
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "AC0001", Descricao = "N�mero da NFSe/C�digo de cancelamento n�o informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "AC0001", Descricao = "Número da NFSe/Código de cancelamento não informado para cancelamento." });
             return;
         }
 
-        // O Tinus exige ADNCodMotivo com valores "1" (erro na emiss�o), "2" (servi�o n�o prestado) ou "9" (outros).
-        // Mapeia a partir do CodigoCancelamento ABRASF padr�o.
         var adnCodMotivo = retornoWebservice.CodigoCancelamento switch
         {
             "1" => "1",
