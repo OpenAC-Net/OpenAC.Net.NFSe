@@ -87,8 +87,6 @@ internal sealed class ProviderTinus : ProviderABRASF203
         ret.IdentificacaoNFSe.Numero = infNFSe.ElementAnyNs("nNFSe")?.GetValue<string>() ?? string.Empty;
         ret.IdentificacaoNFSe.DataEmissao = infNFSe.ElementAnyNs("dhProc")?.GetValue<DateTime>() ?? DateTime.MinValue;
 
-        // A chave da NFS-e nacional est· no atributo Id (ex: "NFS26079011...").
-        // O ADNChave para cancelamento usa os 50 dÌgitos sem o prefixo "NFS".
         var nfseId = infNFSe.Attribute("Id")?.Value ?? string.Empty;
         ret.IdentificacaoNFSe.Chave = nfseId.StartsWith("NFS", StringComparison.OrdinalIgnoreCase)
             ? nfseId.Substring(3)
@@ -208,7 +206,7 @@ internal sealed class ProviderTinus : ProviderABRASF203
         var listaNfse = xmlRet.Root?.ElementAnyNs("ListaNfse");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
             return;
         }
 
@@ -225,7 +223,6 @@ internal sealed class ProviderTinus : ProviderABRASF203
 
             GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-.xml", dataNFSe);
 
-            // A chave da NFS-e nacional est· no atributo Id do infNFSe (ex: "NFS26079011...").
             var chaveNFSe = (infNFSe.Attribute("Id")?.Value ?? string.Empty);
             if (chaveNFSe.StartsWith("NFS", StringComparison.OrdinalIgnoreCase))
                 chaveNFSe = chaveNFSe.Substring(3);
@@ -250,12 +247,10 @@ internal sealed class ProviderTinus : ProviderABRASF203
     {
         if (retornoWebservice.NumeroNFSe.IsEmpty() || retornoWebservice.CodigoCancelamento.IsEmpty())
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "AC0001", Descricao = "N˙mero da NFSe/CÛdigo de cancelamento n„o informado para cancelamento." });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "AC0001", Descricao = "N√∫mero da NFSe/C√≥digo de cancelamento n√£o informado para cancelamento." });
             return;
         }
 
-        // O Tinus exige ADNCodMotivo com valores "1" (erro na emiss„o), "2" (serviÁo n„o prestado) ou "9" (outros).
-        // Mapeia a partir do CodigoCancelamento ABRASF padr„o.
         var adnCodMotivo = retornoWebservice.CodigoCancelamento switch
         {
             "1" => "1",
@@ -297,8 +292,122 @@ internal sealed class ProviderTinus : ProviderABRASF203
 
         var infServico = rps.ElementAnyNs("InfDeclaracaoPrestacaoServico");
         infServico?.AddChild(AddTag(TipoCampo.Int, "", "regApTribSN", 1, 1, Ocorrencia.Obrigatoria, 1));
+        infServico?.AddChild(WriteInfoIBSCBSRps(nota));
+
+        rps.Add(WriteIBSCBSTotalRps(nota));
 
         return rps;
+    }
+
+    /// <summary>
+    /// Escreve o grupo IBSCBS (TCRTCIBSCBS) como elemento raiz, irm√£o de InfDeclaracaoPrestacaoServico.
+    /// </summary>
+    private XElement? WriteIBSCBSTotalRps(NotaServico nota)
+    {
+        if (nota.Servico.Valores.IBSCBS is null) return null;
+
+        var total = nota.IBSCBSTotal;
+
+        var ibsCbs = new XElement("IBSCBS");
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "cLocalidadeIncid", 7, 7, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
+        ibsCbs.AddChild(AddTag(TipoCampo.Str, "", "xLocalidadeIncid", 1, 600, Ocorrencia.Obrigatoria, nota.Prestador.Endereco.Municipio));
+
+        var valores = new XElement("valores");
+        valores.AddChild(AddTag(TipoCampo.De2, "", "vBC", 1, 15, Ocorrencia.Obrigatoria, total.Valores.ValorBaseCalculo));
+
+        var uf = new XElement("uf");
+        uf.AddChild(AddTag(TipoCampo.De2, "", "pIBSUF", 1, 5, Ocorrencia.Obrigatoria, total.Valores.UF.PercentualIBSUF));
+        if (total.Valores.UF.PercentualReducaoAliquotaUF > 0)
+            uf.AddChild(AddTag(TipoCampo.De2, "", "pRedAliqUF", 1, 6, Ocorrencia.MaiorQueZero, total.Valores.UF.PercentualReducaoAliquotaUF));
+        uf.AddChild(AddTag(TipoCampo.De2, "", "pAliqEfetUF", 1, 5, Ocorrencia.Obrigatoria, total.Valores.UF.PercentualAliquotaEfetivaUF));
+        valores.AddChild(uf);
+
+        var mun = new XElement("mun");
+        mun.AddChild(AddTag(TipoCampo.De2, "", "pIBSMun", 1, 5, Ocorrencia.Obrigatoria, total.Valores.Municipio.PercentualIBSMun));
+        if (total.Valores.Municipio.PercentualReducaoAliquotaMun > 0)
+            mun.AddChild(AddTag(TipoCampo.De2, "", "pRedAliqMun", 1, 6, Ocorrencia.MaiorQueZero, total.Valores.Municipio.PercentualReducaoAliquotaMun));
+        mun.AddChild(AddTag(TipoCampo.De2, "", "pAliqEfetMun", 1, 5, Ocorrencia.Obrigatoria, total.Valores.Municipio.PercentualAliquotaEfetivaMun));
+        valores.AddChild(mun);
+
+        var fed = new XElement("fed");
+        fed.AddChild(AddTag(TipoCampo.De2, "", "pCBS", 1, 5, Ocorrencia.Obrigatoria, total.Valores.Federal.PercentualCBS));
+        if (total.Valores.Federal.PercentualReducaoAliquotaCBS > 0)
+            fed.AddChild(AddTag(TipoCampo.De2, "", "pRedAliqCBS", 1, 6, Ocorrencia.MaiorQueZero, total.Valores.Federal.PercentualReducaoAliquotaCBS));
+        fed.AddChild(AddTag(TipoCampo.De2, "", "pAliqEfetCBS", 1, 5, Ocorrencia.Obrigatoria, total.Valores.Federal.PercentualAliquotaEfetivaCBS));
+        valores.AddChild(fed);
+
+        ibsCbs.AddChild(valores);
+
+        var totCIBS = new XElement("totCIBS");
+        totCIBS.AddChild(AddTag(TipoCampo.De2, "", "vTotNF", 1, 15, Ocorrencia.Obrigatoria, total.Totalizadores.ValorTotalNF));
+
+        var gIBS = new XElement("gIBS");
+        gIBS.AddChild(AddTag(TipoCampo.De2, "", "vIBSTot", 1, 15, Ocorrencia.Obrigatoria, total.Totalizadores.IBS.ValorIBSTotal));
+
+        var gIBSUFTot = new XElement("gIBSUFTot");
+        if (total.Totalizadores.IBS.TotalIBSUF.ValorDiferimento > 0)
+            gIBSUFTot.AddChild(AddTag(TipoCampo.De2, "", "vDifUF", 1, 15, Ocorrencia.MaiorQueZero, total.Totalizadores.IBS.TotalIBSUF.ValorDiferimento));
+        gIBSUFTot.AddChild(AddTag(TipoCampo.De2, "", "vIBSUF", 1, 15, Ocorrencia.Obrigatoria, total.Totalizadores.IBS.TotalIBSUF.ValorIBSUF));
+        gIBS.AddChild(gIBSUFTot);
+
+        var gIBSMunTot = new XElement("gIBSMunTot");
+        if (total.Totalizadores.IBS.TotalIBSMun.ValorDiferimento > 0)
+            gIBSMunTot.AddChild(AddTag(TipoCampo.De2, "", "vDifMun", 1, 15, Ocorrencia.MaiorQueZero, total.Totalizadores.IBS.TotalIBSMun.ValorDiferimento));
+        gIBSMunTot.AddChild(AddTag(TipoCampo.De2, "", "vIBSMun", 1, 15, Ocorrencia.Obrigatoria, total.Totalizadores.IBS.TotalIBSMun.ValorIBSMun));
+        gIBS.AddChild(gIBSMunTot);
+
+        totCIBS.AddChild(gIBS);
+
+        var gCBS = new XElement("gCBS");
+        if (total.Totalizadores.CBS.ValorDiferimento > 0)
+            gCBS.AddChild(AddTag(TipoCampo.De2, "", "vDifCBS", 1, 15, Ocorrencia.MaiorQueZero, total.Totalizadores.CBS.ValorDiferimento));
+        gCBS.AddChild(AddTag(TipoCampo.De2, "", "vCBS", 1, 15, Ocorrencia.Obrigatoria, total.Totalizadores.CBS.ValorCBS));
+        totCIBS.AddChild(gCBS);
+
+        ibsCbs.AddChild(totCIBS);
+
+        return ibsCbs;
+    }
+
+    /// <summary>
+    /// Escreve o grupo IBSCBS (TCRTCInfoIBSCBS) dentro de InfDeclaracaoPrestacaoServico.
+    /// </summary>
+    private XElement? WriteInfoIBSCBSRps(NotaServico nota)
+    {
+        var info = nota.Servico.Valores.IBSCBS;
+        if (info is null) return null;
+
+        var ibsCbs = new XElement("IBSCBS");
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "finNFSe", 1, 1, Ocorrencia.Obrigatoria, info.FinalidadeNFSe));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "indFinal", 1, 1, Ocorrencia.NaoObrigatoria, info.IndicadorFinal));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "cIndOp", 6, 6, Ocorrencia.Obrigatoria, info.CodigoIndicadorOperacao));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "tpOper", 1, 1, Ocorrencia.NaoObrigatoria, info.TipoOperacao));
+
+        var referencias = info.ReferenciasNFSe.Where(x => !x.IsEmpty()).ToList();
+        if (referencias.Count > 0)
+        {
+            var gRefNFSe = new XElement("gRefNFSe");
+            foreach (var referencia in referencias)
+                gRefNFSe.AddChild(AddTag(TipoCampo.Str, "", "refNFSe", 1, 50, Ocorrencia.Obrigatoria, referencia));
+            ibsCbs.AddChild(gRefNFSe);
+        }
+
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "tpEnteGov", 1, 1, Ocorrencia.NaoObrigatoria, info.TipoEnteGov));
+        ibsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "indDest", 1, 1, Ocorrencia.Obrigatoria, info.IndicadorDestinatario));
+
+        var valores = new XElement("valores");
+        var trib = new XElement("trib");
+        var gIbsCbs = new XElement("gIBSCBS");
+
+        var sitClass = info.Valores.Tributos.SituacaoClassificacao;
+        gIbsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "CST", 3, 3, Ocorrencia.Obrigatoria, sitClass.CodigoSituacaoTributaria));
+        gIbsCbs.AddChild(AddTag(TipoCampo.StrNumber, "", "cClassTrib", 6, 6, Ocorrencia.Obrigatoria, sitClass.CodigoClassificacaoTributaria));
+
+        trib.AddChild(gIbsCbs);
+        valores.AddChild(trib);
+        ibsCbs.AddChild(valores);
+
+        return ibsCbs;
     }
 
     /// <inheritdoc />

@@ -19,6 +19,11 @@ public sealed class IBSCBSValores : GenericClone<IBSCBSValores>
     public decimal ValorCalculadoReeRepRes { get; set; }
 
     /// <summary>
+    /// Valor da base de calculo do IBS e da CBS.
+    /// </summary>
+    public decimal ValorBaseCalculo { get; set; }
+
+    /// <summary>
     /// Grupo de informacoes relativas aos valores do IBS Estadual.
     /// </summary>
     public IBSCBSValoresUF UF { get; set; }
