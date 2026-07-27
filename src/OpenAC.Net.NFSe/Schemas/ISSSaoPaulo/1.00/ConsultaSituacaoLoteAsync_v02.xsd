@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.prefeitura.sp.gov.br/nfe"
+            xmlns:tipos="http://www.prefeitura.sp.gov.br/nfe/tipos"
+            xmlns:async="http://www.prefeitura.sp.gov.br/nfe/tipos"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:import namespace="http://www.prefeitura.sp.gov.br/nfe/tipos" schemaLocation="TiposNFe_v02.xsd" />
+    <xsd:import namespace="http://www.prefeitura.sp.gov.br/nfe/tipos" schemaLocation="TiposNFeAsync_v02.xsd" />
+
+    
+    <xsd:element name="PedidoConsultaSituacaoLote">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="CPFCNPJRemetente" type="tipos:tpCPFCNPJ" minOccurs="1" maxOccurs="1">
+                    <xsd:annotation>
+                        <xsd:documentation>Informe o CPF/CNPJ do Remetente autorizado a transmitir a mensagem XML.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="NumeroProtocolo" type="async:tpNumeroProtocoloAsync" minOccurs="1" maxOccurs="1">
+                    <xsd:annotation>
+                        <xs:documentation>Número do protocolo do lote.</xs:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="RetornoConsultaSituacaoLote">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xs:element name="Sucesso" type="tipos:tpSucesso" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Campo indicativo do sucesso do pedido do serviço.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                
+                <xsd:element name="Situacao" minOccurs="1" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:extension base="xsd:int">
+                                <xsd:attribute name="nome" type="async:tpSituacaoLote"/>
+                            </xsd:extension>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+
+                <xsd:element name="NumeroLote" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+                    <xsd:annotation>
+                        <xsd:documentation>Número do lote após processamento.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                
+                <xsd:element name="DataRecebimento"   type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="DataProcessamento" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="ResultadoOperacao" type="xsd:string"   minOccurs="0" maxOccurs="1" />
+                
+                <xs:element name="Erro" type="async:tpEventoAsync" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Elemento que representa a ocorrência de eventos de erro durante o processamento da mensagem XML.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

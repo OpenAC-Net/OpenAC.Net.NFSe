@@ -256,7 +256,10 @@
 	<ItemGroup>
 		<None Remove="Resources\Municipios.nfse" />
 		<EmbeddedResource Include="Resources\Municipios.nfse" />
-        
+	</ItemGroup>
+
+	<!-- Consumidores que mantêm schemas próprios podem desabilitar apenas a cópia para a saída. -->
+	<ItemGroup Condition="'$(CopySchemasToOutputDirectory)' != 'false'">
 		<None Update="Schemas\Abaco\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -428,7 +431,7 @@
 	  <Folder Include="Schemas\ISSCampinas\2.03\" />
 	</ItemGroup>
 	
-	<ItemGroup>
+	<ItemGroup Condition="'$(CopySchemasToOutputDirectory)' != 'false'">
 	  <None Update="Schemas\ISSCampinas\2.03\nfse.xsd">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

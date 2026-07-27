@@ -14366,7 +14366,7 @@
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx?WSDL</Url>
+          <Url>https://nfews.prefeitura.sp.gov.br/lotenfe.asmx?WSDL</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
@@ -14402,33 +14402,33 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx?WSDL</Url>
+          <Url>https://nfews.prefeitura.sp.gov.br/lotenfe.asmx?WSDL</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx?WSDL</Url>
+          <Url>https://nfews.prefeitura.sp.gov.br/lotenfe.asmx?WSDL</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx?WSDL</Url>
+          <Url>https://nfews.prefeitura.sp.gov.br/lotenfe.asmx?WSDL</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
-          <Url>https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx?WSDL</Url>
+          <Url>https://nfews.prefeitura.sp.gov.br/lotenfe.asmx?WSDL</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarLoteRps</TipoUrl>
-          <Url>https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx?WSDL</Url>
+          <Url>https://nfews.prefeitura.sp.gov.br/lotenfe.asmx?WSDL</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx?WSDL</Url>
+          <Url>https://nfews.prefeitura.sp.gov.br/lotenfe.asmx?WSDL</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
