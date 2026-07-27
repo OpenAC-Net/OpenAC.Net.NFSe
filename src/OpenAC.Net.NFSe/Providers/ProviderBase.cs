@@ -379,7 +379,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"Enviar-{lote}-env.xml");
 
             //Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.Enviar))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.Enviar))
@@ -434,7 +435,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
         GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"EnviarSincrono-{lote}-env.xml");
 
         //Remover a declaração do Xml se tiver
-        retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+        if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.EnviarSincrono))
+            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
         // Verifica Schema
         if (PrecisaValidarSchema(TipoUrl.EnviarSincrono))
@@ -492,7 +494,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarSituacao-{DateTime.Now:yyyyMMddssfff}-{protocolo}-env.xml");
 
             //Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.ConsultarSituacao))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.ConsultarSituacao))
@@ -549,7 +552,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarLote-{DateTime.Now:yyyyMMddssfff}-{protocolo}-env.xml");
 
             // Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.ConsultarLoteRps))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.ConsultarLoteRps))
@@ -603,7 +607,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarSequencialRps-{DateTime.Now:yyyyMMddssfff}-{serie}-env.xml");
 
             // Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.ConsultarSequencialRps))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.ConsultarSequencialRps))
@@ -666,7 +671,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarNFSeRps-{numero}-{serie}-env.xml");
 
             // Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.ConsultarNFSeRps))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.ConsultarNFSeRps))
@@ -740,7 +746,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"ConsultarNFSe-{DateTime.Now:yyyyMMddssfff}-{numeroNfse}-env.xml");
 
             // Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.ConsultarNFSe))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.ConsultarNFSe))
@@ -800,7 +807,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"CancelarNFSe-{numeroNFSe}-env.xml");
 
             // Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.CancelarNFSe))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.CancelarNFSe))
@@ -854,7 +862,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"CancelarNFSeLote-{lote}-env.xml");
 
             // Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.CancelarNFSeLote))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.CancelarNFSeLote))
@@ -913,7 +922,8 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             GravarArquivoEmDisco(retornoWebservice.XmlEnvio, $"SubstituirNFSe-{numeroNFSe}-env.xml");
 
             // Remover a declaração do Xml se tiver
-            retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
+            if (RemoverDeclaracaoXmlAposAssinatura(TipoUrl.SubstituirNFSe))
+                retornoWebservice.XmlEnvio = retornoWebservice.XmlEnvio.RemoverDeclaracaoXml();
 
             // Verifica Schema
             if (PrecisaValidarSchema(TipoUrl.SubstituirNFSe))
@@ -1219,6 +1229,11 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="tipo"></param>
     /// <returns></returns>
     protected virtual bool PrecisaValidarSchema(TipoUrl tipo) => true;
+
+    /// <summary>
+    /// Define se a declaração XML deve ser removida depois da assinatura.
+    /// </summary>
+    protected virtual bool RemoverDeclaracaoXmlAposAssinatura(TipoUrl tipo) => true;
 
     /// <summary>
     /// Retornar o XML da assinatura ou nulo caso não tenha nada.

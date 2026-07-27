@@ -73,6 +73,8 @@ public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
 
     public NFSeProvider Provider { get; private set; } = NFSeProvider.Nenhum;
 
+    public LayoutISSSaoPaulo LayoutISSSaoPaulo { get; set; }
+
     public string Usuario { get; set; }
 
     public string Senha { get; set; }

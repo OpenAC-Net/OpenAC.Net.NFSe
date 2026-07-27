@@ -186,6 +186,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
 
     public string XmlOriginal { get; set; }
 
+    public string XmlRetornoComplementarIBSCBS { get; set; }
+
     public string LinkNFSe { get; set; }
 
     public EventoRps? Evento { get; set; }
