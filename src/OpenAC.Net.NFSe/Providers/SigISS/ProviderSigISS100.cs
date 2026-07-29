@@ -148,6 +148,14 @@ internal sealed class ProviderSigISS100 : ProviderBase
 
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "dps_serv_cnbs", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.CodigoNbs));
 
+        //Campos novos IBS/CBS (Reforma Tributaria) - Marilia
+        //CODIGO_SERVICO_NACIONAL (cTribNac) - reutiliza ItemListaServico (mesmo padrao do provedor ISSMap)
+        notaTag.AddChild(AddTag(TipoCampo.Str, "", "dps_serv_ctribnac", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.ItemListaServico.OnlyNumbers()));
+        //IBSCBS_CCLASSTRIB (cClassTrib)
+        notaTag.AddChild(AddTag(TipoCampo.Str, "", "dps_ibscbs_valores_trib_cclasstrib", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoClassificacaoTributaria));
+        //IBSCBS_CINDOP (cIndOp)
+        notaTag.AddChild(AddTag(TipoCampo.Str, "", "dps_cindop", 1, 5, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoIndicadorOperacao));
+
         return xmldoc.Root.AsString(identado, showDeclaration, Encoding.UTF8);
     }
 
