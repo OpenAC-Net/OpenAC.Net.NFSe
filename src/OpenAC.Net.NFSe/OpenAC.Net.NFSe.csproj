@@ -40,7 +40,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="OpenAC.Net.Core" Version="1.6.0" />
-		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.2" />				
+		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.2" />
+		<PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />				
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
