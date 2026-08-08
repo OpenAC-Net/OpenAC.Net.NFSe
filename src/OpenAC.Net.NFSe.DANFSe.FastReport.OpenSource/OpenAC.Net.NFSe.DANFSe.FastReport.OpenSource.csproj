@@ -21,9 +21,9 @@
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.7.5</AssemblyVersion>
-    <FileVersion>1.7.5</FileVersion>
-    <Version>1.7.5</Version>
+    <AssemblyVersion>1.7.6</AssemblyVersion>
+    <FileVersion>1.7.6</FileVersion>
+    <Version>1.7.6</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
