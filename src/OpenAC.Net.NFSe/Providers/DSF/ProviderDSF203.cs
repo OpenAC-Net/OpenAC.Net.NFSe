@@ -72,7 +72,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "EnviarLoteRpsResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "EnviarLoteRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var rootElement = xmlRet.Root.ElementAnyNs("EnviarLoteRpsResposta");
@@ -92,7 +92,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "ConsultarLoteRpsResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "ConsultarLoteRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var retornoLote = xmlRet.Root.ElementAnyNs("ConsultarLoteRpsResposta");
@@ -145,7 +145,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "ConsultarNfseRpsResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "ConsultarNfseRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var compNfse = xmlRet.Root.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
@@ -218,7 +218,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "CancelarNfseResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "CancelarNfseResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
