@@ -43,6 +43,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Mitra.
+/// </summary>
 internal sealed class ProviderMitra : ProviderABRASF201
 {
     #region Constructors

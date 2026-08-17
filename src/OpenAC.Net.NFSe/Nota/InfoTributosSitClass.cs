@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Classificação e situação tributária dos itens para fins de IBS e CBS.
+/// </summary>
+
 
 public sealed class InfoTributosSitClass : GenericClone<InfoTributosSitClass>
 {

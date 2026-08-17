@@ -46,6 +46,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Megasoft.
+/// </summary>
 internal class ProviderMegasoft : ProviderABRASF200
 {
     #region Constructors

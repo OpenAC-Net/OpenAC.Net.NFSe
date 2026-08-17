@@ -44,6 +44,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão GIAP.
+/// </summary>
 internal class ProviderGIAP200 : ProviderABRASF
 {
     #region Constructors

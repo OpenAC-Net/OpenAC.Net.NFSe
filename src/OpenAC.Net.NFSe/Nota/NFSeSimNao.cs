@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Enumeração para campos indicativos Sim/Não da NFSe.
+/// </summary>
+
 
 public enum NFSeSimNao
 {

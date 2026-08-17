@@ -42,6 +42,9 @@ using System.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor ISSPortoVelho.
+/// </summary>
 internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

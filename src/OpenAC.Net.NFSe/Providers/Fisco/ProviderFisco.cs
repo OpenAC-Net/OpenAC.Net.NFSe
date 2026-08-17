@@ -48,6 +48,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Fisco.
+/// </summary>
 internal sealed class ProviderFisco : ProviderABRASF203
 {
     #region Fields

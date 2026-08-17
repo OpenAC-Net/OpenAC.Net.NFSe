@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Detalhamento de valores e bases de cálculo para IBS e CBS.
+/// </summary>
+
 
 public sealed class IBSCBSValores : GenericClone<IBSCBSValores>
 {

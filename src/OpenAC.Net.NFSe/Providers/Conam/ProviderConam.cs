@@ -16,6 +16,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Conam.
+/// </summary>
 internal sealed class ProviderConam : ProviderBase
 {
     #region Internal Types

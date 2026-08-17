@@ -33,12 +33,15 @@ using OpenAC.Net.DFe.Core.Common;
 
 namespace OpenAC.Net.NFSe.Configuracao;
 
+/// <summary>
+/// Configurações dos certificados digitais utilizados para assinatura e transmissão da NFSe.
+/// </summary>
 public sealed class ConfigCertificadosNFSe : DFeCertificadosConfigBase
 {
     #region Constructor
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConfigCertificadosNFSe"/> class.
+    /// Inicializa uma nova instância da classe <see cref="ConfigCertificadosNFSe"/>.
     /// </summary>
     internal ConfigCertificadosNFSe()
     {

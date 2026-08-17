@@ -31,7 +31,10 @@
 
 using OpenAC.Net.DFe.Core.Common;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Identificação do documento comprobatório de dedução da NFS-e.
+/// </summary>
+
 
 public sealed class IdeDocumentoDeducao
 {

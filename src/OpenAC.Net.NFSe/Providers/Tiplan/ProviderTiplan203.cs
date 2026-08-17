@@ -45,6 +45,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Tiplan.
+/// </summary>
 internal sealed class ProviderTiplan203 : ProviderABRASF203
 {
     #region Constructors

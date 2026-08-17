@@ -31,10 +31,28 @@
 
 namespace OpenAC.Net.NFSe;
 
+/// <summary>
+/// Define os layouts de impressão disponíveis para o DANFSe.
+/// </summary>
 public enum LayoutImpressao
 {
+    /// <summary>
+    /// Layout padrão ABRASF versão 1.
+    /// </summary>
     ABRASF,
+
+    /// <summary>
+    /// Layout padrão ABRASF versão 2.
+    /// </summary>
     ABRASF2,
+
+    /// <summary>
+    /// Layout padrão DSF.
+    /// </summary>
     DSF,
+
+    /// <summary>
+    /// Layout padrão Ginfes.
+    /// </summary>
     Ginfes
 }

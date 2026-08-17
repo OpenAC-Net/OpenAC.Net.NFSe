@@ -46,6 +46,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padr√£o DSF.
+/// </summary>
 internal sealed class ProviderDSF203 : ProviderABRASF203
 {
     #region Constructors
@@ -99,7 +102,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
         var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
             return;
         }
 
@@ -152,7 +155,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
 
         if (compNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal n„o encontrada! (CompNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal n√£o encontrada! (CompNfse)" });
             return;
         }
 
@@ -224,7 +227,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
         var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
         if (confirmacaoCancelamento == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "ConfirmaÁ„o do cancelamento n„o encontrada!" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Confirma√ß√£o do cancelamento n√£o encontrada!" });
             return;
         }
 

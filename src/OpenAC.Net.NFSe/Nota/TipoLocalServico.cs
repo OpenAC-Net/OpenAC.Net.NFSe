@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Local de prestação do serviço (No Município, Fora do Município ou Exterior).
+/// </summary>
+
 
 public enum TipoLocalServico
 {

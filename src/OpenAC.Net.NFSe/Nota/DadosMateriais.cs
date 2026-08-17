@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações sobre materiais fornecidos ou aplicados na prestação do serviço.
+/// </summary>
+
 
 public class DadosMateriais
 {

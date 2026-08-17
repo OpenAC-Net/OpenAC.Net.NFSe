@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Detalhamento de valores da parcela estadual do IBS.
+/// </summary>
+
 
 public sealed class IBSCBSValoresUF : GenericClone<IBSCBSValoresUF>
 {

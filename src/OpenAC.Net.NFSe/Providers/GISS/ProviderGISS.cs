@@ -17,6 +17,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão GISS.
+/// </summary>
 internal class ProviderGISS : ProviderABRASF204
 {
     #region Constructors

@@ -37,6 +37,9 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Betha.
+/// </summary>
 internal sealed class ProviderBetha2 : ProviderABRASF202
 {
     #region Constructors

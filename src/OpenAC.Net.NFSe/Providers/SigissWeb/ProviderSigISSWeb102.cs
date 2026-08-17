@@ -44,6 +44,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão SigissWeb.
+/// </summary>
 internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
 {
     private SigISSWeb102ServiceClient? client;

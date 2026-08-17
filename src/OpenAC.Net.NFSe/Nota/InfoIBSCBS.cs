@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações gerais da tributação de IBS e CBS na NFS-e (Reforma Tributária).
+/// </summary>
+
 
 public sealed class InfoIBSCBS : GenericClone<InfoIBSCBS>
 {

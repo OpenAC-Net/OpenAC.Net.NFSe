@@ -38,6 +38,9 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSe.
+/// </summary>
 internal sealed class ProviderISSe : ProviderABRASF201
 {
     #region Constructors

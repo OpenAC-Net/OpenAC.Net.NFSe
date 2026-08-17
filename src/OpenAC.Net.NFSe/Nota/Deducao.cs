@@ -32,7 +32,10 @@
 using System;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações detalhadas de dedução da base de cálculo do ISS.
+/// </summary>
+
 
 public sealed class Deducao : GenericClone<Deducao>
 {

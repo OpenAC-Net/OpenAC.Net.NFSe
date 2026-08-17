@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Situação tributária da prestação de serviço em relação ao ISS.
+/// </summary>
+
 
 public enum SituacaoTributaria
 {

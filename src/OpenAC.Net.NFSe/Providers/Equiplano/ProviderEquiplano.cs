@@ -49,6 +49,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Equiplano.
+/// </summary>
 internal sealed class ProviderEquiplano : ProviderBase
 {
     #region Constructors

@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Totalizador consolidado da Contribuição sobre Bens e Serviços (CBS).
+/// </summary>
+
 
 public sealed class IBSCBSTotalCBS : GenericClone<IBSCBSTotalCBS>
 {

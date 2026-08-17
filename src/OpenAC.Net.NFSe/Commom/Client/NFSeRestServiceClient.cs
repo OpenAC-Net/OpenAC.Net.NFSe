@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Diego Martins
 // Created          : 08-30-2021
@@ -38,25 +38,28 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Commom.Client;
 
+/// <summary>
+/// Cliente base para comunicação com provedores de NFSe que utilizam APIs REST.
+/// </summary>
 public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 {
     #region Constructors
 
     /// <summary>
-    ///
+    /// Inicializa uma nova instância da classe <see cref="NFSeRestServiceClient"/>.
     /// </summary>
-    /// <param name="provider"></param>
-    /// <param name="tipoUrl"></param>
+    /// <param name="provider">Instância do provedor de NFSe associado.</param>
+    /// <param name="tipoUrl">Tipo de URL do serviço REST.</param>
     protected NFSeRestServiceClient(ProviderBase provider, TipoUrl tipoUrl) : base(provider, tipoUrl, provider.Certificado)
     {
     }
 
     /// <summary>
-    ///
+    /// Inicializa uma nova instância da classe <see cref="NFSeRestServiceClient"/> com certificado digital explícito.
     /// </summary>
-    /// <param name="provider"></param>
-    /// <param name="tipoUrl"></param>
-    /// <param name="certificado"></param>
+    /// <param name="provider">Instância do provedor de NFSe associado.</param>
+    /// <param name="tipoUrl">Tipo de URL do serviço REST.</param>
+    /// <param name="certificado">Certificado digital para autenticação mTLS.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     protected NFSeRestServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado)
     {
@@ -66,6 +69,11 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
 
     #region Methods
 
+    /// <summary>
+    /// Executa uma requisição HTTP GET na ação informada.
+    /// </summary>
+    /// <param name="action">Ação/recurso a ser concatenado à URL base.</param>
+    /// <returns>Resposta retornada pelo servidor.</returns>
     protected string Get(string action)
     {
         var url = Url;
@@ -83,6 +91,13 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         }
     }
 
+    /// <summary>
+    /// Executa uma requisição HTTP POST na ação informada enviando o payload especificado.
+    /// </summary>
+    /// <param name="action">Ação/recurso da URL.</param>
+    /// <param name="message">Corpo da mensagem a ser enviada.</param>
+    /// <param name="contentyType">Tipo de conteúdo MIME.</param>
+    /// <returns>Resposta retornada pelo servidor.</returns>
     protected string Post(string action, string message, string contentyType = "application/json")
     {
         var url = Url;
@@ -101,6 +116,12 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         }
     }
 
+    /// <summary>
+    /// Realiza o upload de uma mensagem em formato multipart/form-data.
+    /// </summary>
+    /// <param name="action">Ação/recurso da URL.</param>
+    /// <param name="message">Conteúdo do arquivo XML a ser enviado.</param>
+    /// <returns>Resposta retornada pelo servidor.</returns>
     protected string Upload(string action, string message)
     {
         var url = Url;
@@ -129,6 +150,10 @@ public abstract class NFSeRestServiceClient : NFSeHttpServiceClient
         }
     }
 
+    /// <summary>
+    /// Define a URL de destino concatenando a ação/recurso especificado.
+    /// </summary>
+    /// <param name="action">Ação/recurso a concatenar.</param>
     protected void SetAction(string action)
     {
         Url = !Url.EndsWith("/") ? $"{Url}/{action}" : $"{Url}{action}";

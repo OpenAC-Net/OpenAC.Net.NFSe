@@ -55,46 +55,50 @@ using OpenAC.Net.NFSe.Nota;
 namespace OpenAC.Net.NFSe.Providers;
 
 /// <summary>
-/// Class ProviderBase.
+/// Classe base abstrata para todos os provedores de NFSe, contendo a lógica central de geração de XML, assinatura digital, envio, consulta e cancelamento.
 /// </summary>
 public abstract class ProviderBase : IOpenLog, IDisposable
 {
     #region Internal Types
 
     /// <summary>
-    /// 
+    /// Tipos de arquivos XML gerados durante o fluxo de envio e processamento da NFSe.
     /// </summary>
     protected enum TipoArquivo
     {
         /// <summary>
-        /// 
+        /// Mensagem de requisição/resposta do webservice.
         /// </summary>
         Webservice,
+
         /// <summary>
-        /// 
+        /// XML do Recibo Provisório de Serviços (RPS).
         /// </summary>
         Rps,
+
         /// <summary>
-        /// 
+        /// XML da Nota Fiscal de Serviço Eletrônica (NFSe).
         /// </summary>
         NFSe
     }
 
     /// <summary>
-    /// 
+    /// Regra de obrigatoriedade e ocorrência de campos no leiaute XML.
     /// </summary>
     protected enum Ocorrencia
     {
         /// <summary>
-        /// 
+        /// Campo não obrigatório (opcional).
         /// </summary>
         NaoObrigatoria,
+
         /// <summary>
-        /// 
+        /// Campo de preenchimento obrigatório.
         /// </summary>
         Obrigatoria,
+
         /// <summary>
-        /// 
+        /// Campo obrigatório apenas quando o valor for maior que zero.
         /// </summary>
         MaiorQueZero
     }
@@ -1246,9 +1250,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             signature.KeyInfo.X509Data.X509Certificate.IsEmpty())
             return null;
 
-        var ms = new MemoryStream();
-        var serializer = DFeSerializer<DFeSignature>.CreateSerializer<DFeSignature>();
-        return !serializer.Serialize(signature, ms) ? null : XElement.Load(ms);
+        return signature.WriteToXml();
     }
 
     /// <summary>
@@ -1260,8 +1262,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     {
         if (element == null) return new DFeSignature();
 
-        var serializer = DFeSerializer<DFeSignature>.CreateSerializer<DFeSignature>();
-        return serializer.Deserialize(element.ToString());
+        return DFeSignature.Load(element.ToString());
     }
 
     /// <summary>

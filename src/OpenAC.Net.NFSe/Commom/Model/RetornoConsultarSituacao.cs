@@ -31,11 +31,23 @@
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno da consulta da situação do lote de RPS.
+/// </summary>
 public sealed class RetornoConsultarSituacao : RetornoWebservice
 {
+    /// <summary>
+    /// Número do lote consultado.
+    /// </summary>
     public int Lote { get; internal set; }
 
+    /// <summary>
+    /// Protocolo do lote consultado.
+    /// </summary>
     public string Protocolo { get; internal set; } = "";
 
+    /// <summary>
+    /// Situação do lote no provedor.
+    /// </summary>
     public string Situacao { get; internal set; } = "";
 }

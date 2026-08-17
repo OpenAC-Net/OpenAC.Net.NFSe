@@ -52,6 +52,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão GIAP.
+/// </summary>
 public class ProviderGIAP100 : ProviderBase
 {
     private int _numeroLote;
