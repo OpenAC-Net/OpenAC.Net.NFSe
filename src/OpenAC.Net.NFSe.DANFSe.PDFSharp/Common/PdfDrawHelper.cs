@@ -53,6 +53,12 @@ internal static class PdfDrawHelper
 
     #region Métodos de Desenho de Formas e Caixas
 
+    public static void DesenharFundoSombreado(XGraphics gfx, double xMm, double yMm, double wMm, double hMm)
+    {
+        var rect = new XRect(MmToPt(xMm), MmToPt(yMm), MmToPt(wMm), MmToPt(hMm));
+        gfx.DrawRectangle(BrushFundoSombreado, rect);
+    }
+
     public static void DesenharRetangulo(XGraphics gfx, double xMm, double yMm, double wMm, double hMm, bool preencherSombreado = false)
     {
         var rect = new XRect(MmToPt(xMm), MmToPt(yMm), MmToPt(wMm), MmToPt(hMm));
@@ -103,8 +109,10 @@ internal static class PdfDrawHelper
         double fontValorPt = DANFSeConstantes.FonteConteudoNegritoPt)
     {
         var rect = new XRect(MmToPt(xMm), MmToPt(yMm), MmToPt(wMm), MmToPt(hMm));
-        var brushFundo = sombreado ? BrushFundoSombreado : BrushFundoBranco;
-        gfx.DrawRectangle(PenBorda, brushFundo, rect);
+        if (sombreado)
+            gfx.DrawRectangle(PenBorda, BrushFundoSombreado, rect);
+        else
+            gfx.DrawRectangle(PenBorda, rect);
 
         var paddingLeftPt = MmToPt(0.8);
         var paddingRightPt = MmToPt(0.8);
@@ -322,6 +330,145 @@ internal static class PdfDrawHelper
         }
     }
 
+    public static List<string> QuebrarEmLinhas(XGraphics gfx, string texto, XFont font, double maxWidthPt)
+    {
+        var result = new List<string>();
+        if (string.IsNullOrWhiteSpace(texto)) return result;
+
+        var rawParagraphs = texto.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+        foreach (var para in rawParagraphs)
+        {
+            if (string.IsNullOrEmpty(para))
+            {
+                result.Add("");
+                continue;
+            }
+
+            var words = para.Split(' ');
+            var currentLine = new StringBuilder();
+
+            foreach (var word in words)
+            {
+                if (string.IsNullOrEmpty(word)) continue;
+
+                var candidate = currentLine.Length == 0 ? word : $"{currentLine} {word}";
+                var size = gfx.MeasureString(candidate, font);
+
+                if (size.Width <= maxWidthPt)
+                {
+                    currentLine.Clear();
+                    currentLine.Append(candidate);
+                }
+                else
+                {
+                    if (currentLine.Length > 0)
+                    {
+                        result.Add(currentLine.ToString());
+                        currentLine.Clear();
+                    }
+
+                    var wordSize = gfx.MeasureString(word, font);
+                    if (wordSize.Width > maxWidthPt)
+                    {
+                        var chunk = new StringBuilder();
+                        foreach (var ch in word)
+                        {
+                            var testChunk = chunk.ToString() + ch;
+                            if (gfx.MeasureString(testChunk, font).Width <= maxWidthPt)
+                            {
+                                chunk.Append(ch);
+                            }
+                            else
+                            {
+                                if (chunk.Length > 0)
+                                {
+                                    result.Add(chunk.ToString());
+                                    chunk.Clear();
+                                }
+                                chunk.Append(ch);
+                            }
+                        }
+                        if (chunk.Length > 0)
+                            currentLine.Append(chunk.ToString());
+                    }
+                    else
+                    {
+                        currentLine.Append(word);
+                    }
+                }
+            }
+
+            if (currentLine.Length > 0)
+                result.Add(currentLine.ToString());
+        }
+
+        return result;
+    }
+
+    public static string DesenharTextoAutoFitComExcedente(
+        XGraphics gfx,
+        double xMm,
+        double yMm,
+        double wMm,
+        double hMm,
+        string texto,
+        double maxFontSizePt = DANFSeConstantes.FonteConteudoPt,
+        double minFontSizePt = 5.2,
+        bool negrito = false)
+    {
+        if (string.IsNullOrWhiteSpace(texto)) return string.Empty;
+
+        var maxWidthPt = MmToPt(wMm);
+        var maxHeightPt = MmToPt(hMm);
+        var startXPt = MmToPt(xMm);
+
+        // 1. Tentar encontrar uma fonte (entre max e min) na qual todo o texto caiba
+        for (var sizePt = maxFontSizePt; sizePt >= minFontSizePt; sizePt -= 0.4)
+        {
+            var fontTest = new XFont(DANFSeConstantes.FontePadrao, sizePt, negrito ? XFontStyleEx.Bold : XFontStyleEx.Regular);
+            var lineHeightTest = sizePt * 1.25;
+            var linesTest = QuebrarEmLinhas(gfx, texto, fontTest, maxWidthPt);
+            var totalHeightTest = linesTest.Count * lineHeightTest;
+
+            if (totalHeightTest <= maxHeightPt)
+            {
+                var currentYPt = MmToPt(yMm) + (sizePt * 0.9);
+                foreach (var line in linesTest)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                        gfx.DrawString(line, fontTest, BrushPreto, startXPt, currentYPt);
+                    currentYPt += lineHeightTest;
+                }
+                return string.Empty;
+            }
+        }
+
+        // 2. Não coube tudo mesmo no tamanho mínimo. Desenhar o máximo possível e retornar o excedente.
+        var finalFont = new XFont(DANFSeConstantes.FontePadrao, minFontSizePt, negrito ? XFontStyleEx.Bold : XFontStyleEx.Regular);
+        var finalLineHeight = minFontSizePt * 1.25;
+        var allLines = QuebrarEmLinhas(gfx, texto, finalFont, maxWidthPt);
+
+        var maxLinesThatFit = Math.Max(1, (int)Math.Floor(maxHeightPt / finalLineHeight));
+        var linesToDrawCount = Math.Min(allLines.Count, maxLinesThatFit);
+
+        var drawYPt = MmToPt(yMm) + (minFontSizePt * 0.9);
+        for (var i = 0; i < linesToDrawCount; i++)
+        {
+            var line = allLines[i];
+            if (!string.IsNullOrEmpty(line))
+                gfx.DrawString(line, finalFont, BrushPreto, startXPt, drawYPt);
+            drawYPt += finalLineHeight;
+        }
+
+        if (linesToDrawCount < allLines.Count)
+        {
+            var remainingLines = allLines.GetRange(linesToDrawCount, allLines.Count - linesToDrawCount);
+            return string.Join("\n", remainingLines);
+        }
+
+        return string.Empty;
+    }
+
     public static void DesenharTextoMultiLinhas(
         XGraphics gfx,
         double xMm,
@@ -332,63 +479,7 @@ internal static class PdfDrawHelper
         double fontSizePt = DANFSeConstantes.FonteConteudoPt,
         bool negrito = false)
     {
-        if (string.IsNullOrWhiteSpace(texto)) return;
-
-        var font = new XFont(DANFSeConstantes.FontePadrao, fontSizePt, negrito ? XFontStyleEx.Bold : XFontStyleEx.Regular);
-        var lineHeightPt = fontSizePt * 1.25;
-        var maxWidthPt = MmToPt(wMm);
-        var maxHeightPt = MmToPt(hMm);
-        var startXPt = MmToPt(xMm);
-        var currentYPt = MmToPt(yMm) + (fontSizePt * 0.9);
-
-        var lines = texto.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
-
-        foreach (var rawLine in lines)
-        {
-            if (currentYPt > MmToPt(yMm) + maxHeightPt)
-                break;
-
-            if (string.IsNullOrEmpty(rawLine))
-            {
-                currentYPt += lineHeightPt;
-                continue;
-            }
-
-            var words = rawLine.Split(' ');
-            var currentLine = new StringBuilder();
-
-            foreach (var word in words)
-            {
-                var testLine = currentLine.Length == 0 ? word : $"{currentLine} {word}";
-                var size = gfx.MeasureString(testLine, font);
-
-                if (size.Width <= maxWidthPt)
-                {
-                    currentLine.Clear();
-                    currentLine.Append(testLine);
-                }
-                else
-                {
-                    if (currentLine.Length > 0)
-                    {
-                        gfx.DrawString(currentLine.ToString(), font, BrushPreto, startXPt, currentYPt);
-                        currentYPt += lineHeightPt;
-
-                        if (currentYPt > MmToPt(yMm) + maxHeightPt)
-                            break;
-                    }
-
-                    currentLine.Clear();
-                    currentLine.Append(word);
-                }
-            }
-
-            if (currentLine.Length > 0 && currentYPt <= MmToPt(yMm) + maxHeightPt)
-            {
-                gfx.DrawString(currentLine.ToString(), font, BrushPreto, startXPt, currentYPt);
-                currentYPt += lineHeightPt;
-            }
-        }
+        DesenharTextoAutoFitComExcedente(gfx, xMm, yMm, wMm, hMm, texto, fontSizePt, fontSizePt, negrito);
     }
 
     public static double MedirAlturaTexto(

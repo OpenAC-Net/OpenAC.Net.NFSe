@@ -224,12 +224,8 @@ public class OpenDANFSePDFSharp : OpenDANFSeBase<DANFSePDFSharpOptions, FiltroDF
 
         foreach (var nota in notas)
         {
-            var page = doc.AddPage();
-            page.Size = PageSize.A4;
-            page.Orientation = PageOrientation.Portrait;
-
             var report = new DANFSeA4RetratoReport(nota, Configuracoes);
-            report.Render(page);
+            report.Render(doc);
         }
 
         AplicarSeguranca(doc);

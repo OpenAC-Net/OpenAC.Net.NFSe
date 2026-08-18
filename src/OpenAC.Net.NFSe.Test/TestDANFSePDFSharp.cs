@@ -292,5 +292,138 @@ public class TestDANFSePDFSharp
             o.Cancelada = true;
         });
         Assert.True(File.Exists(path4));
+
+        // 5. Exemplo de Nota com Muitos Itens (Folha de Continuação)
+        openNFSe.NotasServico.Clear();
+        var notaLonga = openNFSe.NotasServico.AddNew();
+        notaLonga.IdentificacaoNFSe.Numero = "20260000000999";
+        notaLonga.IdentificacaoNFSe.DataEmissao = DateTime.Now;
+        notaLonga.IdentificacaoNFSe.Chave = "CONT-9876-5432-1000";
+        notaLonga.Prestador.CpfCnpj = "12345678000195";
+        notaLonga.Prestador.RazaoSocial = "TECH SOLUTIONS DESENVOLVIMENTO DE SOFTWARE LTDA";
+        notaLonga.Tomador.CpfCnpj = "98765432000110";
+        notaLonga.Tomador.RazaoSocial = "GLOBAL DISTRIBUIDORA DE ALIMENTOS S.A.";
+        notaLonga.Servico.ItemListaServico = "01.07";
+        notaLonga.Servico.Valores.ValorServicos = 50000.00M;
+        notaLonga.Servico.Valores.BaseCalculo = 50000.00M;
+        notaLonga.Servico.Valores.Aliquota = 5.00M;
+        notaLonga.Servico.Valores.ValorIss = 2500.00M;
+        notaLonga.Servico.Valores.ValorLiquidoNfse = 47500.00M;
+
+        for (int i = 1; i <= 35; i++)
+        {
+            var it = notaLonga.Servico.ItemsServico.AddNew();
+            it.Descricao = $"Item {i:D2}: Serviço técnico especializado de implantação de infraestrutura e suporte.";
+            it.Quantidade = 1;
+            it.ValorUnitario = 1000.00M;
+            it.ValorTotal = 1000.00M;
+        }
+
+        var path5 = Path.Combine(OutDir, "danfse_com_folha_continuacao.pdf");
+        openNFSe.ImprimirPDF(path5, o =>
+        {
+            o.CabecalhoLinha1 = "PREFEITURA DO MUNICÍPIO DE SÃO PAULO";
+            o.CabecalhoLinha2 = "SECRETARIA MUNICIPAL DA FAZENDA";
+            o.ExibirQRCode = true;
+        });
+        Assert.True(File.Exists(path5));
+    }
+
+    [Fact]
+    public void TestGerarPDFComMuitosItensServico_GeraPaginaDeContinuacao()
+    {
+        var openNFSe = SetupOpenNFSe.Ginfes;
+        openNFSe.NotasServico.Clear();
+
+        var nota = openNFSe.NotasServico.AddNew();
+        nota.IdentificacaoNFSe.Numero = "99901";
+        nota.IdentificacaoNFSe.DataEmissao = DateTime.Now;
+        nota.IdentificacaoNFSe.Chave = "CHAVE99901";
+        nota.Prestador.CpfCnpj = "44818198000190";
+        nota.Prestador.RazaoSocial = "EMPRESA PRESTADORA LTDA";
+        nota.Tomador.CpfCnpj = "12345678000195";
+        nota.Tomador.RazaoSocial = "CLIENTE TOMADOR S/A";
+        nota.Servico.ItemListaServico = "07.02";
+
+        for (int i = 1; i <= 30; i++)
+        {
+            var item = nota.Servico.ItemsServico.AddNew();
+            item.Descricao = $"Item {i:D2}: Prestação de serviços de manutenção técnica preventiva com relatório.";
+            item.Quantidade = 1;
+            item.ValorUnitario = 100.00M;
+            item.ValorTotal = 100.00M;
+        }
+
+        using var ms = new MemoryStream();
+        openNFSe.ImprimirPDF(ms);
+
+        using var readMs = new MemoryStream(ms.ToArray());
+        using var pdfDoc = PdfSharp.Pdf.IO.PdfReader.Open(readMs, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
+
+        Assert.True(pdfDoc.PageCount > 1);
+    }
+
+    [Fact]
+    public void TestGerarPDFComTextoLongoDiscriminacao_GeraPaginaDeContinuacao()
+    {
+        var openNFSe = SetupOpenNFSe.Ginfes;
+        openNFSe.NotasServico.Clear();
+
+        var nota = openNFSe.NotasServico.AddNew();
+        nota.IdentificacaoNFSe.Numero = "99902";
+        nota.IdentificacaoNFSe.DataEmissao = DateTime.Now;
+        nota.IdentificacaoNFSe.Chave = "CHAVE99902";
+        nota.Prestador.CpfCnpj = "44818198000190";
+        nota.Prestador.RazaoSocial = "EMPRESA PRESTADORA LTDA";
+        nota.Tomador.CpfCnpj = "12345678000195";
+        nota.Tomador.RazaoSocial = "CLIENTE TOMADOR S/A";
+        nota.Servico.ItemListaServico = "01.07";
+
+        var sb = new System.Text.StringBuilder();
+        for (int i = 1; i <= 80; i++)
+        {
+            sb.AppendLine($"Linha {i:D2}: Descrição detalhada dos serviços prestados ao longo do contrato de consultoria e suporte técnico.");
+        }
+        nota.Servico.Discriminacao = sb.ToString();
+
+        using var ms = new MemoryStream();
+        openNFSe.ImprimirPDF(ms);
+
+        using var readMs = new MemoryStream(ms.ToArray());
+        using var pdfDoc = PdfSharp.Pdf.IO.PdfReader.Open(readMs, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
+
+        Assert.True(pdfDoc.PageCount > 1);
+    }
+
+    [Fact]
+    public void TestGerarPDFComTextoLongoOutrasInformacoes_GeraPaginaDeContinuacao()
+    {
+        var openNFSe = SetupOpenNFSe.Ginfes;
+        openNFSe.NotasServico.Clear();
+
+        var nota = openNFSe.NotasServico.AddNew();
+        nota.IdentificacaoNFSe.Numero = "99903";
+        nota.IdentificacaoNFSe.DataEmissao = DateTime.Now;
+        nota.IdentificacaoNFSe.Chave = "CHAVE99903";
+        nota.Prestador.CpfCnpj = "44818198000190";
+        nota.Prestador.RazaoSocial = "EMPRESA PRESTADORA LTDA";
+        nota.Tomador.CpfCnpj = "12345678000195";
+        nota.Tomador.RazaoSocial = "CLIENTE TOMADOR S/A";
+        nota.Servico.ItemListaServico = "01.07";
+
+        var sb = new System.Text.StringBuilder();
+        for (int i = 1; i <= 80; i++)
+        {
+            sb.AppendLine($"Cláusula {i:D2}: Informações adicionais, detalhes de convênio, retenções contratuais e observações fiscais.");
+        }
+        nota.OutrasInformacoes = sb.ToString();
+
+        using var ms = new MemoryStream();
+        openNFSe.ImprimirPDF(ms);
+
+        using var readMs = new MemoryStream(ms.ToArray());
+        using var pdfDoc = PdfSharp.Pdf.IO.PdfReader.Open(readMs, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
+
+        Assert.True(pdfDoc.PageCount > 1);
     }
 }

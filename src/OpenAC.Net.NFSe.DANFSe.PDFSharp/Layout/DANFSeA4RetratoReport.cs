@@ -11,12 +11,14 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Common;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Configuracao;
 using OpenAC.Net.NFSe.Nota;
+using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 
@@ -51,7 +53,35 @@ internal sealed class DANFSeA4RetratoReport
 
     #region Public Render Method
 
+    public void Render(PdfDocument doc)
+    {
+        if (doc == null) throw new ArgumentNullException(nameof(doc));
+
+        var page1 = doc.AddPage();
+        page1.Size = PageSize.A4;
+        page1.Orientation = PageOrientation.Portrait;
+
+        Render(page1, out var itensExcedentes, out var discriminacaoExcedente, out var outrasInfoExcedente);
+
+        var numPagina = 2;
+        while ((itensExcedentes != null && itensExcedentes.Count > 0) ||
+               !string.IsNullOrWhiteSpace(discriminacaoExcedente) ||
+               !string.IsNullOrWhiteSpace(outrasInfoExcedente))
+        {
+            var pageCont = doc.AddPage();
+            pageCont.Size = PageSize.A4;
+            pageCont.Orientation = PageOrientation.Portrait;
+
+            RenderContinuacao(pageCont, numPagina++, ref itensExcedentes, ref discriminacaoExcedente, ref outrasInfoExcedente);
+        }
+    }
+
     public void Render(PdfPage page)
+    {
+        Render(page, out _, out _, out _);
+    }
+
+    public void Render(PdfPage page, out List<Servico>? itensExcedentes, out string? discriminacaoExcedente, out string? outrasInfoExcedente)
     {
         using var gfx = XGraphics.FromPdfPage(page);
 
@@ -59,43 +89,53 @@ internal sealed class DANFSeA4RetratoReport
         yMm = config.MargemVerticalMm;
         largUtilMm = DANFSeConstantes.PaginaLarguraMm - (2 * config.MargemHorizontalMm);
 
-        // 1. Cabeçalho (Prefeitura, Dados da Nota, QR Code)
-        DesenharBlocoCabecalho(gfx);
-
-        // 2. Prestador de Serviços
-        DesenharBlocoPrestador(gfx);
-
-        // 3. Tomador de Serviços
-        DesenharBlocoTomador(gfx);
-
         // Cálculo da altura necessária para o rodapé (Valores, Outras Informações, Linha de Rodapé)
         var hValores = 38.0;
-        var hOutrasInfo = CalcularAlturaBlocoOutrasInformacoes(gfx);
+        var hOutrasInfo = Math.Min(CalcularAlturaBlocoOutrasInformacoes(gfx), 35.0);
         var hRodape = DANFSeConstantes.AlturaRodapeMm;
         var hTotalRodape = hValores + hOutrasInfo + hRodape;
-
         var yLimiteRodape = (DANFSeConstantes.PaginaAlturaMm - config.MargemVerticalMm) - hTotalRodape;
+
+        // 1. Camada de Fundos Sombreados
+        PdfDrawHelper.DesenharFundoSombreado(gfx, xMm, yLimiteRodape, largUtilMm, 6.0);
+
+        // 2. Marca d'água (Homologação ou Cancelada) SOBRE os fundos sombreados
+        DesenharBlocoWatermark(gfx);
+
+        // 3. Conteúdo, Textos, Linhas, Bordas e Imagens
+        // 3.1 Cabeçalho (Prefeitura, Dados da Nota, QR Code)
+        DesenharBlocoCabecalho(gfx);
+
+        // 3.2 Prestador de Serviços
+        DesenharBlocoPrestador(gfx);
+
+        // 3.3 Tomador de Serviços
+        DesenharBlocoTomador(gfx);
+
         var hDiscriminacao = Math.Max(yLimiteRodape - yMm, 20.0);
 
-        // 4. Discriminação dos Serviços / Itens
+        // 3.4 Discriminação dos Serviços / Itens
         if (nota.Servico.ItemsServico.Count == 0)
-            DesenharBlocoDiscriminacaoServico(gfx, hDiscriminacao);
+        {
+            DesenharBlocoDiscriminacaoServico(gfx, hDiscriminacao, out discriminacaoExcedente);
+            itensExcedentes = null;
+        }
         else
-            DesenharBlocoItens(gfx, hDiscriminacao);
+        {
+            DesenharBlocoItens(gfx, hDiscriminacao, out itensExcedentes);
+            discriminacaoExcedente = null;
+        }
 
         yMm = yLimiteRodape;
 
-        // 5. Bloco de Valores e Impostos
+        // 3.5 Bloco de Valores e Impostos
         DesenharBlocoValores(gfx);
 
-        // 6. Bloco de Outras Informações
-        DesenharBlocoOutrasInformacoes(gfx, hOutrasInfo);
+        // 3.6 Bloco de Outras Informações
+        DesenharBlocoOutrasInformacoes(gfx, hOutrasInfo, out outrasInfoExcedente);
 
-        // 7. Rodapé do Relatório
-        DesenharBlocoRodape(gfx);
-
-        // 8. Marca d'água (Homologação ou Cancelada)
-        DesenharBlocoWatermark(gfx);
+        // 3.7 Rodapé do Relatório
+        DesenharBlocoRodape(gfx, 1);
     }
 
     #endregion Public Render Method
@@ -299,18 +339,19 @@ internal sealed class DANFSeA4RetratoReport
         yMm += hBloco;
     }
 
-    private void DesenharBlocoDiscriminacaoServico(XGraphics gfx, double altura)
+    private void DesenharBlocoDiscriminacaoServico(XGraphics gfx, double altura, out string? discriminacaoExcedente)
     {
         PdfDrawHelper.DesenharRetangulo(gfx, xMm, yMm, largUtilMm, altura);
         PdfDrawHelper.DesenharTituloBloco(gfx, xMm, yMm, largUtilMm, 4.0, "DISCRIMINAÇÃO DOS SERVIÇOS", preencherSombreado: false, alinhamento: XStringAlignment.Center);
 
         var texto = ObterTextoDiscriminacaoServicos();
-        PdfDrawHelper.DesenharTextoMultiLinhas(gfx, xMm + 2.0, yMm + 5.0, largUtilMm - 4.0, altura - 6.0, texto, fontSizePt: 8.0);
+        var excedente = PdfDrawHelper.DesenharTextoAutoFitComExcedente(gfx, xMm + 2.0, yMm + 5.0, largUtilMm - 4.0, altura - 6.0, texto, maxFontSizePt: 8.0, minFontSizePt: 5.5);
+        discriminacaoExcedente = string.IsNullOrWhiteSpace(excedente) ? null : excedente;
 
         yMm += altura;
     }
 
-    private void DesenharBlocoItens(XGraphics gfx, double altura)
+    private void DesenharBlocoItens(XGraphics gfx, double altura, out List<Servico>? itensExcedentes)
     {
         PdfDrawHelper.DesenharRetangulo(gfx, xMm, yMm, largUtilMm, altura);
         PdfDrawHelper.DesenharTituloBloco(gfx, xMm, yMm, largUtilMm, 4.0, "DISCRIMINAÇÃO DOS SERVIÇOS", preencherSombreado: false, alinhamento: XStringAlignment.Center);
@@ -347,14 +388,22 @@ internal sealed class DANFSeA4RetratoReport
         var fontItem = new XFont(DANFSeConstantes.FontePadrao, 7.0, XFontStyleEx.Regular);
         var formatRight = new XStringFormat { Alignment = XStringAlignment.Far, LineAlignment = XLineAlignment.Near };
 
-        foreach (var item in nota.Servico.ItemsServico)
-        {
-            if (yLinha > yMm + altura - 6.0)
-                break;
+        var excedentesList = new List<Servico>();
+        var todosItens = nota.Servico.ItemsServico;
 
+        for (var i = 0; i < todosItens.Count; i++)
+        {
+            var item = todosItens[i];
             var desc = item.Descricao ?? "";
             var sizeDesc = gfx.MeasureString(desc, fontItem);
             var hItem = Math.Max(PdfDrawHelper.PtToMm(sizeDesc.Height) + 1.5, 4.5);
+
+            if (yLinha + hItem > yMm + altura - 2.0)
+            {
+                for (var j = i; j < todosItens.Count; j++)
+                    excedentesList.Add(todosItens[j]);
+                break;
+            }
 
             xCol = xMm;
             gfx.DrawString(desc, fontItem, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol + 1.0), PdfDrawHelper.MmToPt(yLinha + 0.5), PdfDrawHelper.MmToPt(wItem - 2.0), PdfDrawHelper.MmToPt(hItem)), formatLeft);
@@ -372,6 +421,7 @@ internal sealed class DANFSeA4RetratoReport
             gfx.DrawLine(PdfDrawHelper.PenLinhaTracejada, PdfDrawHelper.MmToPt(xMm), PdfDrawHelper.MmToPt(yLinha), PdfDrawHelper.MmToPt(xMm + largUtilMm), PdfDrawHelper.MmToPt(yLinha));
         }
 
+        itensExcedentes = excedentesList.Count > 0 ? excedentesList : null;
         yMm += altura;
     }
 
@@ -382,7 +432,7 @@ internal sealed class DANFSeA4RetratoReport
         // 1. Banner Valor Total da Nota
         var textoTotal = $"VALOR TOTAL DA NOTA = R$ {nota.Servico.Valores.ValorServicos.ToString("#,##0.00", PtBr)}";
         var rectTotal = new XRect(PdfDrawHelper.MmToPt(xMm), PdfDrawHelper.MmToPt(yCurr), PdfDrawHelper.MmToPt(largUtilMm), PdfDrawHelper.MmToPt(6.0));
-        gfx.DrawRectangle(PdfDrawHelper.PenBorda, PdfDrawHelper.BrushFundoSombreado, rectTotal);
+        gfx.DrawRectangle(PdfDrawHelper.PenBorda, rectTotal);
 
         var fontTotal = new XFont(DANFSeConstantes.FontePadrao, DANFSeConstantes.FonteValorTotalNotaPt, XFontStyleEx.Bold);
         var formatCenter = new XStringFormat { Alignment = XStringAlignment.Center, LineAlignment = XLineAlignment.Center };
@@ -425,18 +475,19 @@ internal sealed class DANFSeA4RetratoReport
         yMm = yCurr;
     }
 
-    private void DesenharBlocoOutrasInformacoes(XGraphics gfx, double altura)
+    private void DesenharBlocoOutrasInformacoes(XGraphics gfx, double altura, out string? outrasInfoExcedente)
     {
         PdfDrawHelper.DesenharRetangulo(gfx, xMm, yMm, largUtilMm, altura);
         PdfDrawHelper.DesenharTituloBloco(gfx, xMm, yMm, largUtilMm, 4.0, "OUTRAS INFORMAÇÕES", preencherSombreado: false, alinhamento: XStringAlignment.Center);
 
         var texto = ObterTextoOutrasInformacoes();
-        PdfDrawHelper.DesenharTextoMultiLinhas(gfx, xMm + 2.0, yMm + 5.0, largUtilMm - 4.0, altura - 6.0, texto, fontSizePt: 8.0);
+        var excedente = PdfDrawHelper.DesenharTextoAutoFitComExcedente(gfx, xMm + 2.0, yMm + 5.0, largUtilMm - 4.0, altura - 6.0, texto, maxFontSizePt: 8.0, minFontSizePt: 5.5);
+        outrasInfoExcedente = string.IsNullOrWhiteSpace(excedente) ? null : excedente;
 
         yMm += altura;
     }
 
-    private void DesenharBlocoRodape(XGraphics gfx)
+    private void DesenharBlocoRodape(XGraphics gfx, int numPagina = 1)
     {
         var fontRodape = new XFont(DANFSeConstantes.FontePadrao, DANFSeConstantes.FonteRodapePt, XFontStyleEx.Italic);
         var yRodape = yMm + 1.0;
@@ -449,7 +500,7 @@ internal sealed class DANFSeA4RetratoReport
             ? mensagens[0]
             : (!string.IsNullOrWhiteSpace(config.SoftwareHouse) ? config.SoftwareHouse : "OpenAC.Net.NFSe - www.openac.net.br");
 
-        var textoCentro = mensagens.Length >= 2 ? mensagens[1] : "";
+        var textoCentro = mensagens.Length >= 2 ? mensagens[1] : (numPagina > 1 ? $"Folha {numPagina}" : "");
         var textoDireita = mensagens.Length >= 3 ? mensagens[2] : $"Impresso em {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
 
         var rectEsquerda = new XRect(PdfDrawHelper.MmToPt(xMm), PdfDrawHelper.MmToPt(yRodape), PdfDrawHelper.MmToPt(largUtilMm / 3.0), PdfDrawHelper.MmToPt(4.0));
@@ -465,6 +516,213 @@ internal sealed class DANFSeA4RetratoReport
         gfx.DrawString(textoDireita, fontRodape, PdfDrawHelper.BrushCinzaEscuro, rectDireita, XStringFormats.CenterRight);
 
         yMm += DANFSeConstantes.AlturaRodapeMm;
+    }
+
+    private void RenderContinuacao(
+        PdfPage page,
+        int numPagina,
+        ref List<Servico>? itensRestantes,
+        ref string? discriminacaoRestante,
+        ref string? outrasInfoRestante)
+    {
+        using var gfx = XGraphics.FromPdfPage(page);
+
+        var xMmCont = config.MargemHorizontalMm;
+        var yMmCont = config.MargemVerticalMm;
+        var largUtilMmCont = DANFSeConstantes.PaginaLarguraMm - (2 * config.MargemHorizontalMm);
+
+        // 1. Sombreamento do cabeçalho
+        var hCab = 18.0;
+        PdfDrawHelper.DesenharFundoSombreado(gfx, xMmCont, yMmCont, largUtilMmCont, hCab);
+
+        // 2. Marca d'água
+        DesenharBlocoWatermark(gfx);
+
+        // 3. Borda Externa da Página
+        var rectBorda = new XRect(
+            PdfDrawHelper.MmToPt(xMmCont),
+            PdfDrawHelper.MmToPt(yMmCont),
+            PdfDrawHelper.MmToPt(largUtilMmCont),
+            PdfDrawHelper.MmToPt(DANFSeConstantes.PaginaAlturaMm - (2 * config.MargemVerticalMm)));
+        gfx.DrawRectangle(PdfDrawHelper.PenBorda, rectBorda);
+
+        // 4. Cabeçalho de Continuação
+        DesenharCabecalhoContinuacao(gfx, xMmCont, yMmCont, largUtilMmCont, hCab, numPagina);
+        yMmCont += hCab;
+
+        var yLimiteRodapeCont = (DANFSeConstantes.PaginaAlturaMm - config.MargemVerticalMm) - DANFSeConstantes.AlturaRodapeMm;
+
+        // 5. Continuação de Itens (se houver)
+        if (itensRestantes != null && itensRestantes.Count > 0)
+        {
+            var hDisponivel = !string.IsNullOrWhiteSpace(outrasInfoRestante)
+                ? (yLimiteRodapeCont - yMmCont) / 2.0
+                : yLimiteRodapeCont - yMmCont;
+
+            DesenharContinuacaoItens(gfx, xMmCont, yMmCont, largUtilMmCont, hDisponivel, ref itensRestantes);
+            yMmCont += hDisponivel;
+        }
+        // 5.1 Continuação de Discriminação em texto livre (se houver)
+        else if (!string.IsNullOrWhiteSpace(discriminacaoRestante))
+        {
+            var hDisponivel = !string.IsNullOrWhiteSpace(outrasInfoRestante)
+                ? (yLimiteRodapeCont - yMmCont) / 2.0
+                : yLimiteRodapeCont - yMmCont;
+
+            PdfDrawHelper.DesenharRetangulo(gfx, xMmCont, yMmCont, largUtilMmCont, hDisponivel);
+            PdfDrawHelper.DesenharTituloBloco(gfx, xMmCont, yMmCont, largUtilMmCont, 4.0, "CONTINUAÇÃO DA DISCRIMINAÇÃO DOS SERVIÇOS", preencherSombreado: false, alinhamento: XStringAlignment.Center);
+
+            var excedenteDisc = PdfDrawHelper.DesenharTextoAutoFitComExcedente(
+                gfx,
+                xMmCont + 2.0,
+                yMmCont + 5.0,
+                largUtilMmCont - 4.0,
+                hDisponivel - 6.0,
+                discriminacaoRestante,
+                maxFontSizePt: 8.0,
+                minFontSizePt: 5.5);
+
+            discriminacaoRestante = string.IsNullOrWhiteSpace(excedenteDisc) ? null : excedenteDisc;
+            yMmCont += hDisponivel;
+        }
+
+        // 6. Continuação de Outras Informações (se houver)
+        if (!string.IsNullOrWhiteSpace(outrasInfoRestante))
+        {
+            var hDisponivel = yLimiteRodapeCont - yMmCont;
+
+            PdfDrawHelper.DesenharRetangulo(gfx, xMmCont, yMmCont, largUtilMmCont, hDisponivel);
+            PdfDrawHelper.DesenharTituloBloco(gfx, xMmCont, yMmCont, largUtilMmCont, 4.0, "CONTINUAÇÃO DE OUTRAS INFORMAÇÕES", preencherSombreado: false, alinhamento: XStringAlignment.Center);
+
+            var excedenteOutras = PdfDrawHelper.DesenharTextoAutoFitComExcedente(
+                gfx,
+                xMmCont + 2.0,
+                yMmCont + 5.0,
+                largUtilMmCont - 4.0,
+                hDisponivel - 6.0,
+                outrasInfoRestante,
+                maxFontSizePt: 8.0,
+                minFontSizePt: 5.5);
+
+            outrasInfoRestante = string.IsNullOrWhiteSpace(excedenteOutras) ? null : excedenteOutras;
+            yMmCont += hDisponivel;
+        }
+
+        // 7. Rodapé de Continuação
+        xMm = xMmCont;
+        yMm = yLimiteRodapeCont;
+        largUtilMm = largUtilMmCont;
+        DesenharBlocoRodape(gfx, numPagina);
+    }
+
+    private void DesenharCabecalhoContinuacao(XGraphics gfx, double x, double y, double w, double h, int numPagina)
+    {
+        PdfDrawHelper.DesenharRetangulo(gfx, x, y, w, h);
+
+        var fontTitulo = new XFont(DANFSeConstantes.FontePadrao, 8.5, XFontStyleEx.Bold);
+        var fontTexto = new XFont(DANFSeConstantes.FontePadrao, 6.5, XFontStyleEx.Regular);
+        var fontBold = new XFont(DANFSeConstantes.FontePadrao, 6.5, XFontStyleEx.Bold);
+
+        // Linha 1: Título e Paginação
+        gfx.DrawString("DANFSe - Documento Auxiliar da NFS-e (Folha de Continuação)", fontTitulo, PdfDrawHelper.BrushPreto,
+            new XRect(PdfDrawHelper.MmToPt(x + 2.0), PdfDrawHelper.MmToPt(y + 1.0), PdfDrawHelper.MmToPt(w - 30.0), PdfDrawHelper.MmToPt(4.0)), XStringFormats.TopLeft);
+
+        gfx.DrawString($"Folha {numPagina}", fontBold, PdfDrawHelper.BrushPreto,
+            new XRect(PdfDrawHelper.MmToPt(x + w - 29.0), PdfDrawHelper.MmToPt(y + 1.0), PdfDrawHelper.MmToPt(28.0), PdfDrawHelper.MmToPt(4.0)), XStringFormats.TopRight);
+
+        // Linha 2: Número NFS-e, Série, Emissão, Código de Verificação
+        var numNfse = !string.IsNullOrWhiteSpace(nota.IdentificacaoNFSe.Numero) ? nota.IdentificacaoNFSe.Numero : "-";
+        var serie = !string.IsNullOrWhiteSpace(nota.IdentificacaoNFSe.Serie) ? nota.IdentificacaoNFSe.Serie : "-";
+        var emissao = nota.IdentificacaoNFSe.DataEmissao.ToString("dd/MM/yyyy HH:mm:ss");
+        var codVerif = !string.IsNullOrWhiteSpace(nota.IdentificacaoNFSe.Chave) ? nota.IdentificacaoNFSe.Chave : "-";
+
+        var dadosNota = $"Nº NFS-e: {numNfse}  |  Série: {serie}  |  Emissão: {emissao}  |  Cód. Verificação: {codVerif}";
+        gfx.DrawString(dadosNota, fontBold, PdfDrawHelper.BrushPreto,
+            new XRect(PdfDrawHelper.MmToPt(x + 2.0), PdfDrawHelper.MmToPt(y + 5.2), PdfDrawHelper.MmToPt(w - 4.0), PdfDrawHelper.MmToPt(3.5)), XStringFormats.TopLeft);
+
+        // Linha 3: Prestador
+        var prestadorTexto = $"Prestador: {PdfDrawHelper.FormatarCNPJouCPF(nota.Prestador.CpfCnpj)} - {nota.Prestador.RazaoSocial}";
+        gfx.DrawString(prestadorTexto, fontTexto, PdfDrawHelper.BrushPreto,
+            new XRect(PdfDrawHelper.MmToPt(x + 2.0), PdfDrawHelper.MmToPt(y + 9.2), PdfDrawHelper.MmToPt(w - 4.0), PdfDrawHelper.MmToPt(3.5)), XStringFormats.TopLeft);
+
+        // Linha 4: Tomador
+        var tomadorNome = !string.IsNullOrWhiteSpace(nota.Tomador.RazaoSocial) ? nota.Tomador.RazaoSocial : nota.Tomador.NomeFantasia;
+        var tomadorTexto = $"Tomador: {PdfDrawHelper.FormatarCNPJouCPF(nota.Tomador.CpfCnpj)} - {tomadorNome}";
+        gfx.DrawString(tomadorTexto, fontTexto, PdfDrawHelper.BrushPreto,
+            new XRect(PdfDrawHelper.MmToPt(x + 2.0), PdfDrawHelper.MmToPt(y + 13.2), PdfDrawHelper.MmToPt(w - 4.0), PdfDrawHelper.MmToPt(3.5)), XStringFormats.TopLeft);
+    }
+
+    private void DesenharContinuacaoItens(XGraphics gfx, double x, double y, double w, double h, ref List<Servico>? itensRestantes)
+    {
+        PdfDrawHelper.DesenharRetangulo(gfx, x, y, w, h);
+        PdfDrawHelper.DesenharTituloBloco(gfx, x, y, w, 4.0, "CONTINUAÇÃO DA DISCRIMINAÇÃO DOS SERVIÇOS (ITENS)", preencherSombreado: false, alinhamento: XStringAlignment.Center);
+
+        var yLinha = y + 4.0;
+        var hHeader = DANFSeConstantes.AlturaLinhaCabecalhoItemMm;
+
+        var wQtde = Math.Round(w * 0.08);
+        var wUnit = Math.Round(w * 0.15);
+        var wTotal = Math.Round(w * 0.15);
+        var wItem = w - wQtde - wUnit - wTotal;
+
+        // Cabeçalhos de Coluna
+        var fontCol = new XFont(DANFSeConstantes.FontePadrao, DANFSeConstantes.FonteLabelCampoPt, XFontStyleEx.Bold);
+        var formatCenter = new XStringFormat { Alignment = XStringAlignment.Center, LineAlignment = XLineAlignment.Center };
+        var formatLeft = new XStringFormat { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Center };
+
+        var xCol = x;
+        gfx.DrawString("ITEM", fontCol, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol + 1.0), PdfDrawHelper.MmToPt(yLinha), PdfDrawHelper.MmToPt(wItem - 2.0), PdfDrawHelper.MmToPt(hHeader)), formatLeft);
+        xCol += wItem;
+
+        gfx.DrawString("QTDE.", fontCol, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol), PdfDrawHelper.MmToPt(yLinha), PdfDrawHelper.MmToPt(wQtde), PdfDrawHelper.MmToPt(hHeader)), formatCenter);
+        xCol += wQtde;
+
+        gfx.DrawString("VALOR UNITÁRIO (R$)", fontCol, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol), PdfDrawHelper.MmToPt(yLinha), PdfDrawHelper.MmToPt(wUnit), PdfDrawHelper.MmToPt(hHeader)), formatCenter);
+        xCol += wUnit;
+
+        gfx.DrawString("VALOR TOTAL (R$)", fontCol, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol), PdfDrawHelper.MmToPt(yLinha), PdfDrawHelper.MmToPt(wTotal), PdfDrawHelper.MmToPt(hHeader)), formatCenter);
+
+        yLinha += hHeader;
+        gfx.DrawLine(PdfDrawHelper.PenBorda, PdfDrawHelper.MmToPt(x), PdfDrawHelper.MmToPt(yLinha), PdfDrawHelper.MmToPt(x + w), PdfDrawHelper.MmToPt(yLinha));
+
+        // Linhas de Itens
+        var fontItem = new XFont(DANFSeConstantes.FontePadrao, 7.0, XFontStyleEx.Regular);
+        var formatRight = new XStringFormat { Alignment = XStringAlignment.Far, LineAlignment = XLineAlignment.Near };
+
+        var excedentesList = new List<Servico>();
+        var itens = itensRestantes!;
+
+        for (var i = 0; i < itens.Count; i++)
+        {
+            var item = itens[i];
+            var desc = item.Descricao ?? "";
+            var sizeDesc = gfx.MeasureString(desc, fontItem);
+            var hItem = Math.Max(PdfDrawHelper.PtToMm(sizeDesc.Height) + 1.5, 4.5);
+
+            if (yLinha + hItem > y + h - 2.0)
+            {
+                for (var j = i; j < itens.Count; j++)
+                    excedentesList.Add(itens[j]);
+                break;
+            }
+
+            xCol = x;
+            gfx.DrawString(desc, fontItem, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol + 1.0), PdfDrawHelper.MmToPt(yLinha + 0.5), PdfDrawHelper.MmToPt(wItem - 2.0), PdfDrawHelper.MmToPt(hItem)), formatLeft);
+            xCol += wItem;
+
+            gfx.DrawString(item.Quantidade.ToString("#,##0.00", PtBr), fontItem, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol), PdfDrawHelper.MmToPt(yLinha + 0.5), PdfDrawHelper.MmToPt(wQtde - 1.0), PdfDrawHelper.MmToPt(hItem)), formatRight);
+            xCol += wQtde;
+
+            gfx.DrawString(item.ValorUnitario.ToString("#,##0.00", PtBr), fontItem, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol), PdfDrawHelper.MmToPt(yLinha + 0.5), PdfDrawHelper.MmToPt(wUnit - 1.0), PdfDrawHelper.MmToPt(hItem)), formatRight);
+            xCol += wUnit;
+
+            gfx.DrawString(item.ValorTotal.ToString("#,##0.00", PtBr), fontItem, PdfDrawHelper.BrushPreto, new XRect(PdfDrawHelper.MmToPt(xCol), PdfDrawHelper.MmToPt(yLinha + 0.5), PdfDrawHelper.MmToPt(wTotal - 1.0), PdfDrawHelper.MmToPt(hItem)), formatRight);
+
+            yLinha += hItem;
+            gfx.DrawLine(PdfDrawHelper.PenLinhaTracejada, PdfDrawHelper.MmToPt(x), PdfDrawHelper.MmToPt(yLinha), PdfDrawHelper.MmToPt(x + w), PdfDrawHelper.MmToPt(yLinha));
+        }
+
+        itensRestantes = excedentesList.Count > 0 ? excedentesList : null;
     }
 
     private void DesenharBlocoWatermark(XGraphics gfx)
