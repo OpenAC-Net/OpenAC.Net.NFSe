@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -405,7 +405,6 @@ internal sealed class ProviderConam : ProviderBase
     {
         // Analisa mensagem de retorno// Analisa mensagem de retorno
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        var sucesso = true;
 
         var xmlElement = xmlRet.Root.ElementAnyNs("Sdt_consultaprotocoloout");
 

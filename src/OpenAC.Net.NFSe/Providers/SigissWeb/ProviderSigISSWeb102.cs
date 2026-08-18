@@ -522,7 +522,7 @@ internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
         if (statusCodeValue != HttpStatusCode.OK)
         {
             // Retorno NÃO é XML → é mensagem pura
-            var statusCodeText = statusCodeValue?.ToString(CultureInfo.InvariantCulture) ?? "0";
+            var statusCodeText = statusCodeValue.HasValue ? ((int)statusCodeValue.Value).ToString(CultureInfo.InvariantCulture) : "0";
             var sucessoHttp = statusCodeValue.HasValue && IsSuccessStatusCode((int)statusCodeValue.Value);
 
             retornoWebservice.Sucesso = sucessoHttp;
@@ -577,7 +577,7 @@ internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
         if (statusCodeValue != HttpStatusCode.OK)
         {
             // Retorno NÃO é XML → é mensagem pura
-            var statusCodeText = statusCodeValue?.ToString(CultureInfo.InvariantCulture) ?? "0";
+            var statusCodeText = statusCodeValue.HasValue ? ((int)statusCodeValue.Value).ToString(CultureInfo.InvariantCulture) : "0";
             var sucessoHttp = statusCodeValue.HasValue && IsSuccessStatusCode((int)statusCodeValue.Value);
 
             retornoWebservice.Sucesso = sucessoHttp;

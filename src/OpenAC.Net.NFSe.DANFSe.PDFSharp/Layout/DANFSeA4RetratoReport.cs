@@ -578,7 +578,7 @@ internal sealed class DANFSeA4RetratoReport
                 yMmCont + 5.0,
                 largUtilMmCont - 4.0,
                 hDisponivel - 6.0,
-                discriminacaoRestante,
+                discriminacaoRestante!,
                 maxFontSizePt: 8.0,
                 minFontSizePt: 5.5);
 
@@ -600,7 +600,7 @@ internal sealed class DANFSeA4RetratoReport
                 yMmCont + 5.0,
                 largUtilMmCont - 4.0,
                 hDisponivel - 6.0,
-                outrasInfoRestante,
+                outrasInfoRestante!,
                 maxFontSizePt: 8.0,
                 minFontSizePt: 5.5);
 

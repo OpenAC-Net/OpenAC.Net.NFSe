@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -366,13 +366,11 @@ internal class ProviderGISS : ProviderABRASF204
         var signedDocument = new SignedXml(doc)
         {
             SigningKey = certificado.GetRSAPrivateKey(),
-            KeyInfo = keyInfo,
-            SignedInfo =
-            {
-                CanonicalizationMethod = SignedXml.XmlDsigC14NTransformUrl,
-                SignatureMethod = SignedXml.XmlDsigRSASHA1Url
-            }
+            KeyInfo = keyInfo
         };
+
+        signedDocument.SignedInfo.CanonicalizationMethod = SignedXml.XmlDsigC14NTransformUrl;
+        signedDocument.SignedInfo.SignatureMethod = SignedXml.XmlDsigRSASHA1Url;
 
         var reference = new Reference
         {

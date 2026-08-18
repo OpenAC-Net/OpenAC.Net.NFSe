@@ -322,7 +322,7 @@ public partial class FormMain : Form, IOpenLog
         {
             if (e.RowIndex < 0) return;
 
-            var municipio = dgvCidades.Rows[e.RowIndex].DataBoundItem as OpenMunicipioNFSe;
+            if (dgvCidades.Rows[e.RowIndex].DataBoundItem is not OpenMunicipioNFSe municipio) return;
             if (FormEdtMunicipio.Editar(municipio).Equals(DialogResult.Cancel)) return;
 
             LoadData();
@@ -847,9 +847,9 @@ public partial class FormMain : Form, IOpenLog
         ExecuteSafe(() =>
         {
             var arquivo = Helpers.OpenFile("Arquivo de cidades NFSe (*.nfse)|*.nfse|Todos os arquivos|*.*", "Selecione o arquivo de cidades");
-            if (arquivo.IsEmpty()) return;
+            if (string.IsNullOrEmpty(arquivo)) return;
 
-            ProviderManager.Load(arquivo);
+            ProviderManager.Load(arquivo!);
             txtArquivoCidades.Text = arquivo;
             LoadData();
         });

@@ -681,20 +681,20 @@ internal static class PdfDrawHelper
     public static string FormatarCNPJouCPF(string? documento)
     {
         if (string.IsNullOrWhiteSpace(documento)) return string.Empty;
-        var num = Regex.Replace(documento, @"\D", "");
+        var num = Regex.Replace(documento!, @"\D", "");
         return num.Length switch
         {
             11 => Convert.ToUInt64(num).ToString(@"000\.000\.000\-00"),
             14 => Convert.ToUInt64(num).ToString(@"00\.000\.000\/0000\-00"),
-            _ => documento
+            _ => documento!
         };
     }
 
     public static string FormatarCEP(string? cep)
     {
         if (string.IsNullOrWhiteSpace(cep)) return string.Empty;
-        var num = Regex.Replace(cep, @"\D", "");
-        return num.Length == 8 ? Convert.ToUInt64(num).ToString(@"00000\-000") : cep;
+        var num = Regex.Replace(cep!, @"\D", "");
+        return num.Length == 8 ? Convert.ToUInt64(num).ToString(@"00000\-000") : cep!;
     }
 
     public static string TruncarTexto(XGraphics gfx, string texto, XFont font, double maxWidthPt)

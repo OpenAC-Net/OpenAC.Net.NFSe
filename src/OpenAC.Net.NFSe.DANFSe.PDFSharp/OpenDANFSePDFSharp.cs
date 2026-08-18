@@ -240,10 +240,10 @@ public class OpenDANFSePDFSharp : OpenDANFSeBase<DANFSePDFSharpOptions, FiltroDF
 
         var sec = doc.SecuritySettings;
         if (!string.IsNullOrEmpty(seguranca.SenhaUsuario))
-            sec.UserPassword = seguranca.SenhaUsuario;
+            sec.UserPassword = seguranca.SenhaUsuario!;
 
         if (!string.IsNullOrEmpty(seguranca.SenhaProprietario))
-            sec.OwnerPassword = seguranca.SenhaProprietario;
+            sec.OwnerPassword = seguranca.SenhaProprietario!;
 
         sec.PermitPrint = seguranca.PermitirImpressao;
         sec.PermitFullQualityPrint = seguranca.PermitirImpressaoAltaQualidade;

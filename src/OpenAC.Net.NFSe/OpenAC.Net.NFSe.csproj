@@ -30,7 +30,9 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>OpenAC.Net.NFSe</PackageId>
-		<Nullable>enable</Nullable>
+		<Nullable>annotations</Nullable>
+		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+		<NoWarn>$(NoWarn);1591;1572;1573;1574;1587;1584;SYSLIB0014;0067</NoWarn>
 		<Description>Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrônica).</Description>
 	</PropertyGroup>	
 

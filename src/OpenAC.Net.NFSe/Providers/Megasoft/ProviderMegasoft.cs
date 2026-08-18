@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Flávio Vodzinski
 // Created          : 04-24-2024
@@ -227,7 +227,7 @@ internal class ProviderMegasoft : ProviderABRASF200
         return tomador;
     }
 
-    protected virtual XElement WriteValoresRps(NotaServico nota)
+    protected override XElement WriteValoresRps(NotaServico nota)
     {
         var valores = new XElement("Valores");
 

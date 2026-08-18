@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rodolfo Duarte
 // Created          : 05-15-2017
@@ -57,8 +57,6 @@ namespace OpenAC.Net.NFSe.Providers;
 /// </summary>
 public class ProviderGIAP100 : ProviderBase
 {
-    private int _numeroLote;
-
     #region Constructors
 
     public ProviderGIAP100(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
