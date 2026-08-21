@@ -33,6 +33,9 @@ using System;
 
 namespace OpenAC.Net.NFSe.Nota;
 
+/// <summary>
+/// Tipos e códigos de dedução admitidos pelos provedores de NFSe.
+/// </summary>
 public static class TipoDeducao
 {
     #region ABRASF
@@ -40,6 +43,9 @@ public static class TipoDeducao
     private static DeducaoABRASF? abrasf;
     public static DeducaoABRASF ABRASF => abrasf ??= new();
 
+    /// <summary>
+    /// Tipos de deduções padronizadas do padrão ABRASF.
+    /// </summary>
     public sealed class DeducaoABRASF
     {
         internal DeducaoABRASF()
@@ -73,6 +79,9 @@ public static class TipoDeducao
     private static DeducaoDSF? dsf;
     public static DeducaoDSF DSF => dsf ??= new DeducaoDSF();
 
+    /// <summary>
+    /// Tipos de deduções aceitas pelo padrão DSF.
+    /// </summary>
     public sealed class DeducaoDSF
     {
         internal DeducaoDSF()

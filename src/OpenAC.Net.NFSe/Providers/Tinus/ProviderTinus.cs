@@ -47,6 +47,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Tinus.
+/// </summary>
 internal sealed class ProviderTinus : ProviderABRASF203
 {
     #region Constructors

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 01-31-2016
@@ -41,6 +41,9 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe;
 
+/// <summary>
+/// Componente principal para emissão, envio, consulta, cancelamento e gerenciamento de NFS-e (Nota Fiscal de Serviço Eletrônica).
+/// </summary>
 public sealed class OpenNFSe : OpenDisposable, IOpenLog
 {
     #region Propriedades
@@ -59,12 +62,19 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
 
     #region Constructors
 
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="OpenNFSe"/> com configurações padrão.
+    /// </summary>
     public OpenNFSe()
     {
         Configuracoes = ConfigNFSe.Default;
         NotasServico = new NotaServicoCollection(Configuracoes);
     }
     
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="OpenNFSe"/> com as configurações especificadas.
+    /// </summary>
+    /// <param name="configuracoes">Configurações personalizadas para o componente.</param>
     public OpenNFSe(ConfigNFSe configuracoes)
     {
         Configuracoes = configuracoes;

@@ -40,6 +40,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunica√ß√£o e envio de mensagens para o webservice do provedor Tinus.
+/// </summary>
 internal sealed class TinusServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
@@ -65,7 +68,7 @@ internal sealed class TinusServiceClient : NFSeSoapServiceClient, IServiceClient
 
     public string ConsultarSituacao(string cabec, string msg)
     {
-        throw new NotImplementedException("OperaÁ„o ConsultarSituacao n„o suportada pelo provedor Tinus.");
+        throw new NotImplementedException("Opera√ß√£o ConsultarSituacao n√£o suportada pelo provedor Tinus.");
     }
 
     public string ConsultarLoteRps(string cabec, string msg)
@@ -76,7 +79,7 @@ internal sealed class TinusServiceClient : NFSeSoapServiceClient, IServiceClient
 
     public string ConsultarSequencialRps(string cabec, string msg)
     {
-        throw new NotImplementedException("OperaÁ„o ConsultarSequencialRps n„o suportada pelo provedor Tinus.");
+        throw new NotImplementedException("Opera√ß√£o ConsultarSequencialRps n√£o suportada pelo provedor Tinus.");
     }
 
     public string ConsultarNFSeRps(string cabec, string msg)
@@ -87,7 +90,7 @@ internal sealed class TinusServiceClient : NFSeSoapServiceClient, IServiceClient
 
     public string ConsultarNFSe(string cabec, string msg)
     {
-        throw new NotImplementedException("OperaÁ„o ConsultarNFSe n„o suportada pelo provedor Tinus.");
+        throw new NotImplementedException("Opera√ß√£o ConsultarNFSe n√£o suportada pelo provedor Tinus.");
     }
 
     public string CancelarNFSe(string cabec, string msg)
@@ -98,12 +101,12 @@ internal sealed class TinusServiceClient : NFSeSoapServiceClient, IServiceClient
 
     public string CancelarNFSeLote(string cabec, string msg)
     {
-        throw new NotImplementedException("OperaÁ„o CancelarNFSeLote n„o suportada pelo provedor Tinus.");
+        throw new NotImplementedException("Opera√ß√£o CancelarNFSeLote n√£o suportada pelo provedor Tinus.");
     }
 
     public string SubstituirNFSe(string cabec, string msg)
     {
-        throw new NotImplementedException("OperaÁ„o SubstituirNFSe n„o suportada pelo provedor Tinus.");
+        throw new NotImplementedException("Opera√ß√£o SubstituirNFSe n√£o suportada pelo provedor Tinus.");
     }
 
     private string Execute(string soapAction, string message, params string[] responseTags)
@@ -112,8 +115,8 @@ internal sealed class TinusServiceClient : NFSeSoapServiceClient, IServiceClient
     }
 
     /// <summary>
-    /// Remove a declaraÁ„o XML (<?xml ...?>) do inÌcio do conte˙do, se existir,
-    /// pois n„o È v·lida dentro de um SOAP body.
+    /// Remove a declara√ß√£o XML (&lt;?xml ...?&gt;) do in√≠cio do conte√∫do, se existir,
+    /// pois n√£o √© v√°lida dentro de um SOAP body.
     /// </summary>
     private static string StripXmlDeclaration(string xml)
     {
@@ -141,8 +144,8 @@ internal sealed class TinusServiceClient : NFSeSoapServiceClient, IServiceClient
     }
 
     /// <summary>
-    /// ReconstrÛi recursivamente um XElement usando apenas os nomes locais dos elementos
-    /// e atributos, removendo todos os prefixos de namespace e declaraÁıes xmlns.
+    /// Reconstr√≥i recursivamente um XElement usando apenas os nomes locais dos elementos
+    /// e atributos, removendo todos os prefixos de namespace e declara√ß√µes xmlns.
     /// </summary>
     private static XElement NormalizeElement(XElement element)
     {

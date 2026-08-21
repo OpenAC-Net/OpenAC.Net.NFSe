@@ -46,6 +46,9 @@ using OpenAC.Net.DFe.Core.Serializer;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSNet.
+/// </summary>
 internal sealed class ProviderISSNet204 : ProviderABRASF204
 {
     #region Constructors

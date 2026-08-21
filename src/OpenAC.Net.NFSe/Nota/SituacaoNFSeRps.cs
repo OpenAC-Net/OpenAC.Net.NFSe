@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Situação do RPS/NFS-e (Normal, Cancelado).
+/// </summary>
+
 
 public enum SituacaoNFSeRps
 {

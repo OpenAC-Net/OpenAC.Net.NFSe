@@ -40,6 +40,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor WebIss.
+/// </summary>
 internal sealed class WebIss2ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

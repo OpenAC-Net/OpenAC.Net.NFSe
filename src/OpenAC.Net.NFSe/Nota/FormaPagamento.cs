@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Define a forma de pagamento do serviço (À Vista, A Prazo, etc.).
+/// </summary>
+
 
 public enum FormaPagamento
 {

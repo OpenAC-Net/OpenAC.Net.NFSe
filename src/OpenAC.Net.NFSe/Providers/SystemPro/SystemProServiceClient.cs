@@ -43,6 +43,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor SystemPro.
+/// </summary>
 internal sealed class SystemProServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

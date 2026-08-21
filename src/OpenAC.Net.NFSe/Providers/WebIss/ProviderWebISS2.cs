@@ -43,6 +43,9 @@ using System.Xml.Linq;
 namespace OpenAC.Net.NFSe.Providers;
 
 // ReSharper disable once InconsistentNaming
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão WebIss.
+/// </summary>
 internal sealed class ProviderWebIss2 : ProviderABRASF202
 {
     #region Constructors

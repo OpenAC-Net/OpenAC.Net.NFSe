@@ -49,10 +49,16 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSDSF.
+/// </summary>
 internal sealed class ProviderISSDSF : ProviderBase
 {
     #region Internal Types
 
+/// <summary>
+/// Tipos de eventos suportados pelo provedor ISSDSF.
+/// </summary>
     private enum TipoEvento
     {
         Erros,

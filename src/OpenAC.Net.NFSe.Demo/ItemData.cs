@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Reflection;
 using OpenAC.Net.Core;
@@ -30,20 +30,24 @@ public sealed class ItemData<T>
         Guard.Against(!enumType.IsEnum, "O tipo de parametro T precisa ser um enum.");
         Guard.Against(!Enum.IsDefined(enumType, value), $"{enumType} o valor {value} não esta definido no enum.");
 
-        var field = enumType.GetField(value.ToString(), BindingFlags.Static | BindingFlags.Public);
-        if (field == null) Description = string.Empty;
+        var field = value != null ? enumType.GetField(value.ToString()!, BindingFlags.Static | BindingFlags.Public) : null;
+        if (field == null)
+        {
+            Description = value?.ToString() ?? string.Empty;
+            return;
+        }
 
         var attribute = field.GetAttribute<DescriptionAttribute>();
-        Description = attribute == null ? value.ToString() : attribute.Description;
+        Description = attribute?.Description ?? value?.ToString() ?? string.Empty;
     }
 
     #endregion Constructors
 
     #region Properties
 
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
-    public T Content { get; set; }
+    public T Content { get; set; } = default!;
 
     #endregion Properties
 

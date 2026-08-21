@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Valores monetários, alíquotas, deduções, descontos e tributos da prestação de serviços.
+/// </summary>
+
 
 public sealed class ValoresServico : GenericClone<ValoresServico>, INotifyPropertyChanged
 {

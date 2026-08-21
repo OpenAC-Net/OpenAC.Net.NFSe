@@ -43,6 +43,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers.Thema;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor Thema.
+/// </summary>
 internal sealed class ThemaServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

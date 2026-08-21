@@ -49,6 +49,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers.ISSCampinas;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padr√£o ISSCampinas.
+/// </summary>
 internal sealed class ProviderISSCampinas203 : ProviderABRASF203
 {
     #region Constructors
@@ -127,7 +130,7 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
 
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
             return;
         }
 
@@ -177,19 +180,19 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
             switch (situacao.GetValue<int>())
             {
                 case 2:
-                    retornoWebservice.Situacao = "2 ñ N„o Processado";
+                    retornoWebservice.Situacao = "2 ‚Äì N√£o Processado";
                     break;
 
                 case 3:
-                    retornoWebservice.Situacao = "3 ñ Processado com Erro";
+                    retornoWebservice.Situacao = "3 ‚Äì Processado com Erro";
                     break;
 
                 case 4:
-                    retornoWebservice.Situacao = "4 ñ Processado com Sucesso";
+                    retornoWebservice.Situacao = "4 ‚Äì Processado com Sucesso";
                     break;
 
                 default:
-                    retornoWebservice.Situacao = "1 ñ N„o Recebido";
+                    retornoWebservice.Situacao = "1 ‚Äì N√£o Recebido";
                     break;
             }
         }
@@ -205,7 +208,7 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
 
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
             return;
         }
 
@@ -256,11 +259,11 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
         var confirmacaoCancelamento = xmlRet.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
         if (confirmacaoCancelamento == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "ConfirmaÁ„o do cancelamento n„o encontrada!" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Confirma√ß√£o do cancelamento n√£o encontrada!" });
             return;
         }
 
-        // Se a nota fiscal cancelada existir na coleÁ„o de Notas Fiscais, atualiza seu status:
+        // Se a nota fiscal cancelada existir na cole√ß√£o de Notas Fiscais, atualiza seu status:
         var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == retornoWebservice.NumeroNFSe);
         if (nota == null) return;
 

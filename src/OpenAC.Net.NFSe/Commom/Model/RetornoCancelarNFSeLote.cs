@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 06-17-2016
@@ -27,11 +27,33 @@
 // DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary></summary>
-// ***********************************************************************
+using System;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno do cancelamento de NFSe em lote.
+/// </summary>
 public sealed class RetornoCancelarNFSeLote : RetornoWebservice
 {
+    /// <summary>
+    /// Número do lote de cancelamento.
+    /// </summary>
     public int Lote { get; internal set; }
+
+    /// <summary>
+    /// Data e hora do cancelamento.
+    /// </summary>
+    public DateTime Data { get; internal set; }
+
+    /// <summary>
+    /// Protocolo do cancelamento.
+    /// </summary>
+    public string Protocolo { get; internal set; } = "";
+
+    /// <summary>
+    /// Coleção de notas de serviço afetadas.
+    /// </summary>
+    public NotaServico[] Notas { get; internal set; } = [];
 }

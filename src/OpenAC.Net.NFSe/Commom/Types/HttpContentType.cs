@@ -31,7 +31,13 @@
 
 namespace OpenAC.Net.NFSe.Commom.Types;
 
+/// <summary>
+/// Constantes com os tipos de conteúdo MIME mais comuns utilizados nas requisições HTTP da NFSe.
+/// </summary>
 public class HttpContentType
 {
+    /// <summary>
+    /// MIME type para documentos XML (application/xml).
+    /// </summary>
     public const string ApplicationXml = "application/xml";
 }

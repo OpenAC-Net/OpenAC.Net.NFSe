@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações sobre a obra e construção civil vinculadas ao serviço prestado.
+/// </summary>
+
 
 public sealed class DadosConstrucaoCivil : GenericClone<DadosConstrucaoCivil>, INotifyPropertyChanged
 {

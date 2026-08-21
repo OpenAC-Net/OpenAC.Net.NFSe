@@ -33,7 +33,10 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados de identificação da NFS-e gerada pela prefeitura/provedor.
+/// </summary>
+
 
 public sealed class IdeNFSe : GenericClone<IdeNFSe>, INotifyPropertyChanged
 {

@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Coleção de itens de serviços prestados.
+/// </summary>
+
 
 public sealed class ServicosCollection : DFeCollection<Servico>, INotifyPropertyChanged
 {

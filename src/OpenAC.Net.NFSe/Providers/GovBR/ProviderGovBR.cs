@@ -41,6 +41,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão GovBR.
+/// </summary>
 internal sealed class ProviderGovBR : ProviderABRASF203
 {
     #region Constructors

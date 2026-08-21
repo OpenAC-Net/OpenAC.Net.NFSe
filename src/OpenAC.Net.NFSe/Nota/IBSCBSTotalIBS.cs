@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Totalizador consolidado do Imposto sobre Bens e Serviços (IBS).
+/// </summary>
+
 
 public sealed class IBSCBSTotalIBS : GenericClone<IBSCBSTotalIBS>
 {

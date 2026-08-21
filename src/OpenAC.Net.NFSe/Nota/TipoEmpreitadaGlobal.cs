@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Tipo de regime de empreitada na construção civil.
+/// </summary>
+
 
 public enum TipoEmpreitadaGlobal
 {

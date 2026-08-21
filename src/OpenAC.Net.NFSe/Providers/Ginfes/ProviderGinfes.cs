@@ -48,10 +48,16 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Ginfes.
+/// </summary>
 internal sealed class ProviderGinfes : ProviderBase
 {
     #region Internal Types
 
+/// <summary>
+/// Formatos de XML suportados para importação/leitura no provedor Ginfes.
+/// </summary>
     private enum LoadXmlFormato
     {
         Indefinido,

@@ -43,6 +43,9 @@ using OpenAC.Net.DFe.Core;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão NFeCidades.
+/// </summary>
 internal sealed class ProviderNFeCidades : ProviderABRASF201
 {
     #region Constructors
