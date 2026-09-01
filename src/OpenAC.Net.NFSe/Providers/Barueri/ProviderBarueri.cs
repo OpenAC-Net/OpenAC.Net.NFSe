@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -126,22 +127,22 @@ namespace OpenAC.Net.NFSe.Providers
             rps.Add(new XElement("DataEmissao", nota.IdentificacaoRps.DataEmissao.ToString("yyyy-MM-dd")));
             rps.Add(new XElement("SituacaoRPS", "N")); // N = Normal
             rps.Add(new XElement("SeriePrestacao", nota.IdentificacaoRps.Serie));
-            rps.Add(new XElement("ValorServico", nota.Servico.Valores.ValorServicos.ToString("0.00")));
-            rps.Add(new XElement("ValorDeducao", nota.Servico.Valores.ValorDeducoes.ToString("0.00")));
+            rps.Add(new XElement("ValorServico", nota.Servico.Valores.ValorServicos.ToString("0.00", CultureInfo.InvariantCulture)));
+            rps.Add(new XElement("ValorDeducao", nota.Servico.Valores.ValorDeducoes.ToString("0.00", CultureInfo.InvariantCulture)));
             rps.Add(new XElement("CodigoServico", nota.Servico.ItemListaServico));
-            rps.Add(new XElement("AliquotaServico", nota.Servico.Valores.Aliquota.ToString("0.0000")));
+            rps.Add(new XElement("AliquotaServico", nota.Servico.Valores.Aliquota.ToString("0.0000", CultureInfo.InvariantCulture)));
 
             rps.Add(new XElement("ISSRetido", nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? "1" : "2"));
             if (nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao)
             {
-                rps.Add(new XElement("ValorISSRetido", nota.Servico.Valores.ValorIssRetido.ToString("0.00")));
+                rps.Add(new XElement("ValorISSRetido", nota.Servico.Valores.ValorIssRetido.ToString("0.00", CultureInfo.InvariantCulture)));
             }
 
-            rps.Add(new XElement("ValorPIS", nota.Servico.Valores.ValorPis.ToString("0.00")));
-            rps.Add(new XElement("ValorCOFINS", nota.Servico.Valores.ValorCofins.ToString("0.00")));
-            rps.Add(new XElement("ValorINSS", nota.Servico.Valores.ValorInss.ToString("0.00")));
-            rps.Add(new XElement("ValorIR", nota.Servico.Valores.ValorIr.ToString("0.00")));
-            rps.Add(new XElement("ValorCSLL", nota.Servico.Valores.ValorCsll.ToString("0.00")));
+            rps.Add(new XElement("ValorPIS", nota.Servico.Valores.ValorPis.ToString("0.00", CultureInfo.InvariantCulture)));
+            rps.Add(new XElement("ValorCOFINS", nota.Servico.Valores.ValorCofins.ToString("0.00", CultureInfo.InvariantCulture)));
+            rps.Add(new XElement("ValorINSS", nota.Servico.Valores.ValorInss.ToString("0.00", CultureInfo.InvariantCulture)));
+            rps.Add(new XElement("ValorIR", nota.Servico.Valores.ValorIr.ToString("0.00", CultureInfo.InvariantCulture)));
+            rps.Add(new XElement("ValorCSLL", nota.Servico.Valores.ValorCsll.ToString("0.00", CultureInfo.InvariantCulture)));
 
             rps.Add(new XElement("Discriminacao", nota.Servico.Discriminacao));
 
