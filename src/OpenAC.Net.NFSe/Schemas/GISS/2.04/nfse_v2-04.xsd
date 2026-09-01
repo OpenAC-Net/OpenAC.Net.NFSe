@@ -831,31 +831,15 @@
 	<xsd:simpleType name="TSTipoRetPISCofins">
 		<xsd:annotation>
 			<xsd:documentation>
-         Tipo de retencao do Pis/Cofins:
-            0 - PIS/COFINS/CSLL Não Retidos;
-			1 - PIS/COFINS Retido;
-			2 - PIS/COFINS Não Retido;
-			3 - PIS/COFINS/CSLL Retidos;
-			4 - PIS/COFINS Retidos, CSLL Não Retido;
-			5 - PIS Retido, COFINS/CSLL Não Retido;
-			6 - COFINS Retido, PIS/CSLL Não Retido;
-			7 - PIS Não Retido, COFINS/CSLL Retidos;
-			8 - PIS/COFINS Não Retidos, CSLL Retido;
-			9 - COFINS Não Retido, PIS/CSLL Retidos;
+        Tipo de retencao do Pis/Cofins:
+        1 - Retido;
+        2 - Não Retido;
       </xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
 			<xsd:whiteSpace value="preserve"/>
-			<xsd:enumeration value="0"/>
 			<xsd:enumeration value="1"/>
 			<xsd:enumeration value="2"/>
-			<xsd:enumeration value="3"/>
-			<xsd:enumeration value="4"/>
-			<xsd:enumeration value="5"/>
-			<xsd:enumeration value="6"/>
-			<xsd:enumeration value="7"/>
-			<xsd:enumeration value="8"/>
-			<xsd:enumeration value="9"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	
@@ -873,40 +857,16 @@
 		<xsd:annotation>
 			<xsd:documentation>
         Código de Situação Tributária do PIS/COFINS (CST):
-        00 - Nenhum; 
-		01 - Operação Tributável com Alíquota Básica;
-		02 - Operação Tributável com Alíquota Diferenciada;
-		03 - Operação Tributável com Alíquota por Unidade de Medida de Produto;
-		04 - Operação Tributável monofásica - Revenda a Alíquota Zero;
-		05 - Operação Tributável por Substituição Tributária;
-		06 - Operação Tributável a Alíquota Zero;
-		07 - Operação Isenta da Contribuição;
-		08 - Operação sem Incidência da Contribuição;
-		09 - Operação com Suspensão da Contribuição;
-		49 - Outras Operações de Saída;
-		50 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Tributada no Mercado Interno;
-		51 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno;
-		52 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita de Exportação;
-		53 - Operação com Direito a Crédito – Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno;
-		54 - Operação com Direito a Crédito – Vinculada a Receitas Tributadas no Mercado Interno e de Exportação;
-		55 - Operação com Direito a Crédito – Vinculada a Receitas Não Tributadas no Mercado Interno e de Exportação;
-		56 - Operação com Direito a Crédito – Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e de Exportação;
-		60 - Crédito Presumido – Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno;
-		61 - Crédito Presumido – Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno;
-		62 - Crédito Presumido – Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação;
-		63 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno;
-		64 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação;
-		65 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação;
-		66 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e de Exportação;
-		67 - Crédito Presumido – Outras Operações;
-		70 - Operação de Aquisição sem Direito a Crédito;
-		71 - Operação de Aquisição com Isenção;
-		72 - Operação de Aquisição com Suspensão;
-		73 - Operação de Aquisição a Alíquota Zero;
-		74 - Operação de Aquisição sem Incidência da Contribuição;
-		75 - Operação de Aquisição por Substituição Tributária;
-		98 - Outras Operações de Entrada;
-		99 - Outras Operações;
+        00 - Nenhum;      
+        01 - Operação Tributável com Alíquota Básica;
+        02 - Operação Tributável com Alíquota Diferenciada;
+        03 - Operação Tributável com Alíquota por Unidade de Medida de Produto;
+        04 - Operação Tributável monofásica - Revenda a Alíquota Zero;
+        05 - Operação Tributável por Substituição Tributária;
+        06 - Operação Tributável a Alíquota Zero;
+        07 - Operação Tributável da Contribuição;
+        08 - Operação sem Incidência da Contribuição;
+        09 - Operação com Suspensão da Contribuição;
       </xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
@@ -921,30 +881,6 @@
 			<xsd:enumeration value="07"/>
 			<xsd:enumeration value="08"/>
 			<xsd:enumeration value="09"/>
-			<xsd:enumeration value="49"/>
-			<xsd:enumeration value="50"/>
-			<xsd:enumeration value="51"/>
-			<xsd:enumeration value="52"/>
-			<xsd:enumeration value="53"/>
-			<xsd:enumeration value="54"/>
-			<xsd:enumeration value="55"/>
-			<xsd:enumeration value="56"/>
-			<xsd:enumeration value="60"/>
-			<xsd:enumeration value="61"/>
-			<xsd:enumeration value="62"/>
-			<xsd:enumeration value="63"/>
-			<xsd:enumeration value="64"/>
-			<xsd:enumeration value="65"/>
-			<xsd:enumeration value="66"/>
-			<xsd:enumeration value="67"/>
-			<xsd:enumeration value="70"/>
-			<xsd:enumeration value="71"/>
-			<xsd:enumeration value="72"/>
-			<xsd:enumeration value="73"/>
-			<xsd:enumeration value="74"/>
-			<xsd:enumeration value="75"/>
-			<xsd:enumeration value="98"/>
-			<xsd:enumeration value="99"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	
@@ -991,12 +927,12 @@
 	<xsd:simpleType name="TSRTCTpOper">
 		<xsd:annotation>
 			<xsd:documentation>
-		Tipo de Operação com Entes Governanementais ou outros serviços sobre bens imóveis:
-		1 – Fornecimento com pagamento posterior;
-		2 –  Recebimento do pagamento com fornecimento já realizado;
-		3 – Fornecimento com pagamento já realizado;
-		4 – Recebimento do pagamento com fornecimento posterior;
-		5 – Fornecimento e recebimento do pagamento concomitantes.
+Tipo de Operação com Entes Governanementais ou outros serviços sobre bens imóveis:
+1 – Fornecimento com pagamento posterior;
+2 –  Recebimento do pagamento com fornecimento já realizado;
+3 – Fornecimento com pagamento já realizado;
+4 – Recebimento do pagamento com fornecimento posterior;
+5 – Fornecimento e recebimento do pagamento concomitantes.
       </xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
@@ -1283,7 +1219,6 @@
         4 - Matriz;
         5 - Filial ou sucursal;
         6 - Outro vínculo;
-		9 - Desconhecido (tipo não informado na nota de origem);
       </xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
@@ -1295,7 +1230,6 @@
 			<xsd:enumeration value="4"/>
 			<xsd:enumeration value="5"/>
 			<xsd:enumeration value="6"/>
-			<xsd:enumeration value="9"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="TSMecAFComExPrest">
@@ -1679,40 +1613,16 @@
 				<xsd:annotation>
 					<xsd:documentation>
             Código de Situação Tributária do PIS/COFINS (CST):
-            00 - Nenhum; 
-			01 - Operação Tributável com Alíquota Básica;
-			02 - Operação Tributável com Alíquota Diferenciada;
-			03 - Operação Tributável com Alíquota por Unidade de Medida de Produto;
-			04 - Operação Tributável monofásica - Revenda a Alíquota Zero;
-			05 - Operação Tributável por Substituição Tributária;
-			06 - Operação Tributável a Alíquota Zero;
-			07 - Operação Isenta da Contribuição;
-			08 - Operação sem Incidência da Contribuição;
-			09 - Operação com Suspensão da Contribuição;
-			49 - Outras Operações de Saída;
-			50 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Tributada no Mercado Interno;
-			51 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno;
-			52 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita de Exportação;
-			53 - Operação com Direito a Crédito – Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno;
-			54 - Operação com Direito a Crédito – Vinculada a Receitas Tributadas no Mercado Interno e de Exportação;
-			55 - Operação com Direito a Crédito – Vinculada a Receitas Não Tributadas no Mercado Interno e de Exportação;
-			56 - Operação com Direito a Crédito – Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e de Exportação;
-			60 - Crédito Presumido – Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno;
-			61 - Crédito Presumido – Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno;
-			62 - Crédito Presumido – Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação;
-			63 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno;
-			64 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação;
-			65 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação;
-			66 - Crédito Presumido – Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e de Exportação;
-			67 - Crédito Presumido – Outras Operações;
-			70 - Operação de Aquisição sem Direito a Crédito;
-			71 - Operação de Aquisição com Isenção;
-			72 - Operação de Aquisição com Suspensão;
-			73 - Operação de Aquisição a Alíquota Zero;
-			74 - Operação de Aquisição sem Incidência da Contribuição;
-			75 - Operação de Aquisição por Substituição Tributária;
-			98 - Outras Operações de Entrada;
-			99 - Outras Operações;
+            00 - Nenhum;      
+            01 - Operação Tributável com Alíquota Básica;
+            02 - Operação Tributável com Alíquota Diferenciada;
+            03 - Operação Tributável com Alíquota por Unidade de Medida de Produto;
+            04 - Operação Tributável monofásica - Revenda a Alíquota Zero;
+            05 - Operação Tributável por Substituição Tributária;
+            06 - Operação Tributável a Alíquota Zero;
+            07 - Operação Tributável da Contribuição;
+            08 - Operação sem Incidência da Contribuição;
+            09 - Operação com Suspensão da Contribuição;
           </xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
@@ -1755,16 +1665,8 @@
 				<xsd:annotation>
 					<xsd:documentation>
             Tipo de retencao do Pis/Cofins:
-            0 - PIS/COFINS/CSLL Não Retidos;
-			1 - PIS/COFINS Retido;
-			2 - PIS/COFINS Não Retido;
-			3 - PIS/COFINS/CSLL Retidos;
-			4 - PIS/COFINS Retidos, CSLL Não Retido;
-			5 - PIS Retido, COFINS/CSLL Não Retido;
-			6 - COFINS Retido, PIS/CSLL Não Retido;
-			7 - PIS Não Retido, COFINS/CSLL Retidos;
-			8 - PIS/COFINS Não Retidos, CSLL Retido;
-			9 - COFINS Não Retido, PIS/CSLL Retidos;
+            1 - Retido;
+            2 - Não Retido;
           </xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
@@ -2622,7 +2524,6 @@
             4 - Matriz;
             5 - Filial ou sucursal;
             6 - Outro vínculo;
-			9 - Desconhecido (tipo não informado na nota de origem);
           </xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>

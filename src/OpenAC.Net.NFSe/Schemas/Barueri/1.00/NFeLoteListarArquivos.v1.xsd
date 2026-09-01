@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.barueri.sp.gov.br/nfe" xmlns="http://www.barueri.sp.gov.br/nfe" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:NS="http://www.barueri.sp.gov.br/nfe" elementFormDefault="qualified">
+	<xs:element name="NFeLoteListarArquivos">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InscricaoMunicipal" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Numero da inscrição municipal do contribuinte na Prefeitura de Barueri.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CPFCNPJContrib" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>CNPJ/CPF do Prestador do contribuinte</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DataEnvioArq" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>Data de envio dos arquivos de remessa ao sistema NFe (AAAA-MM-DD).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="SituacaoArq" type="tsSitucaoArquivoRPS">
+					<xs:annotation>
+						<xs:documentation>Indicar a situação dos arquivos</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="tsSitucaoArquivoRPS">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TODAS" />
+			<!-- Aguardando -->
+			<xs:enumeration value="-2" />
+			<!-- Processando -->
+			<xs:enumeration value="-1" />
+			<!-- Validado -->
+			<xs:enumeration value="0" />
+			<!-- Importado -->
+			<xs:enumeration value="1" />
+			<!-- Erros -->
+			<xs:enumeration value="2" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

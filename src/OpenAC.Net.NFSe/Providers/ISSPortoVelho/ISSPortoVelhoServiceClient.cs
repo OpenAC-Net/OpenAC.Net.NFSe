@@ -30,15 +30,14 @@
 // ***********************************************************************
 
 using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Types;
-using System.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -46,7 +45,8 @@ internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServi
 {
     #region Constructors
 
-    public ISSPortoVelhoServiceClient(ProviderISSPortoVelho provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public ISSPortoVelhoServiceClient(ProviderISSPortoVelho provider, TipoUrl tipoUrl) : base(provider, tipoUrl,
+        SoapVersion.Soap11)
     {
     }
 
@@ -54,28 +54,68 @@ internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServi
 
     #region Methods
 
-    public string Enviar(string cabec, string msg)
+    public string CancelarNFSe(string cabec, string msg)
     {
         var message = new StringBuilder();
-
-        message.Append("<nfse:GerarNfse xmlns:nfse=\"http://nfse.abrasf.org.br\">");
-        message.Append("<nfse:GerarNfseRequest>");
-
-        message.Append("<nfseCabecMsg><![CDATA[");
-        message.Append(cabec);
-        message.Append("]]></nfseCabecMsg>");
-
-        message.Append("<nfseDadosMsg><![CDATA[");
-        message.Append(msg);
-        message.Append("]]></nfseDadosMsg>");
-
-        message.Append("</nfse:GerarNfseRequest>");
-        message.Append("</nfse:GerarNfse>");
-
-        return Execute("GerarNfse", new[] { "GerarNfseResponse", "outputXML" }, message.ToString());
+        message.Append("<nfse:CancelarNfseRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:CancelarNfseRequest>");
+        return Execute("CancelarNfseEnvio", message.ToString(), "CancelarNfseResponse");
     }
 
-    public string EnviarSincrono(string cabec, string msg)
+    public string CancelarNFSeLote(string cabec, string msg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ConsultarLoteRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:ConsultarLoteRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:ConsultarLoteRpsRequest>");
+        return Execute("ConsultarLoteRpsEnvio", message.ToString(), "ConsultarLoteRpsResponse");
+    }
+
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:ConsultarNfseServicoPrestadoRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:ConsultarNfseServicoPrestadoRequest>");
+        return Execute("ConsultarNfseServicoPrestadoEnvio", message.ToString(), "ConsultarNfseServicoPrestadoResponse");
+    }
+
+    public string ConsultarNFSeRps(string cabec, string msg)
+    {
+        var message = new StringBuilder();
+        message.Append("<nfse:ConsultarNfsePorRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:ConsultarNfsePorRpsRequest>");
+        return Execute("ConsultarNfseRpsEnvio", message.ToString(), "ConsultarNfsePorRpsResponse");
+    }
+
+    public string ConsultarSequencialRps(string cabec, string msg)
     {
         throw new NotImplementedException();
     }
@@ -85,112 +125,64 @@ internal sealed class ISSPortoVelhoServiceClient : NFSeSoapServiceClient, IServi
         throw new NotImplementedException();
     }
 
-    public string ConsultarLoteRps(string cabec, string msg)
+    public string Enviar(string cabec, string msg)
     {
         var message = new StringBuilder();
-
-        message.Append("<nfse:ConsultarLoteRps xmlns:nfse=\"http://nfse.abrasf.org.br\">");
-        message.Append("<nfse:ConsultarLoteRpsRequest>");
-
-        message.Append("<nfseCabecMsg><![CDATA[");
-        message.Append(cabec);
-        message.Append("]]></nfseCabecMsg>");
-
-        message.Append("<nfseDadosMsg><![CDATA[");
-        message.Append(msg);
-        message.Append("]]></nfseDadosMsg>");
-
-        message.Append("</nfse:ConsultarLoteRpsRequest>");
-        message.Append("</nfse:ConsultarLoteRps>");
-
-        return Execute("ConsultarLoteRps", new[] { "ConsultarLoteRpsResponse", "outputXML" }, message.ToString());
+        message.Append("<nfse:RecepcionarLoteRpsRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:RecepcionarLoteRpsRequest>");
+        return Execute("EnviarLoteRpsEnvio", message.ToString(), "RecepcionarLoteRpsResponse");
     }
 
-    public string ConsultarSequencialRps(string cabec, string msg)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string ConsultarNFSeRps(string cabec, string msg)
+    public string EnviarSincrono(string cabec, string msg)
     {
         var message = new StringBuilder();
-
-        message.Append("<nfse:ConsultarNfsePorRps xmlns:nfse=\"http://nfse.abrasf.org.br\">");
-        message.Append("<nfse:ConsultarNfsePorRpsRequest>");
-
-        message.Append("<nfseCabecMsg><![CDATA[");
-        message.Append(cabec);
-        message.Append("]]></nfseCabecMsg>");
-
-        message.Append("<nfseDadosMsg><![CDATA[");
-        message.Append(msg);
-        message.Append("]]></nfseDadosMsg>");
-
-        message.Append("</nfse:ConsultarNfsePorRpsRequest>");
-        message.Append("</nfse:ConsultarNfsePorRps>");
-
-        return Execute("ConsultarNfsePorRps", new[] { "ConsultarNfsePorRpsResponse", "outputXML" }, message.ToString());
-    }
-
-    public string ConsultarNFSe(string cabec, string msg)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string CancelarNFSe(string cabec, string msg)
-    {
-        var message = new StringBuilder();
-
-        message.Append("<nfse:CancelarNfse xmlns:nfse=\"http://nfse.abrasf.org.br\">");
-        message.Append("<nfse:CancelarNfseRequest>");
-
-        message.Append("<nfseCabecMsg><![CDATA[");
-        message.Append(cabec);
-        message.Append("]]></nfseCabecMsg>");
-
-        message.Append("<nfseDadosMsg><![CDATA[");
-        message.Append(msg);
-        message.Append("]]></nfseDadosMsg>");
-
-        message.Append("</nfse:CancelarNfseRequest>");
-        message.Append("</nfse:CancelarNfse>");
-
-        return Execute("CancelarNfse", new[] { "CancelarNfseResponse", "outputXML" },message.ToString());
-    }
-
-    public string CancelarNFSeLote(string cabec, string msg)
-    {
-        throw new NotImplementedException();
+        message.Append("<nfse:RecepcionarLoteRpsSincronoRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:RecepcionarLoteRpsSincronoRequest>");
+        return Execute("EnviarLoteRpsSincronoEnvio", message.ToString(), "RecepcionarLoteRpsSincronoResponse");
     }
 
     public string SubstituirNFSe(string cabec, string msg)
     {
-        throw new NotImplementedException();
-    }
-
-    private string Execute(string soapAction, string[] responseTag, string message)
-    {
-        return Execute(soapAction, message, "", responseTag, ["xmlns:ws=\"http://nfse.abrasf.org.br\""]);
+        var message = new StringBuilder();
+        message.Append("<nfse:SubstituirNfseRequest>");
+        message.Append("<nfseCabecMsg>");
+        message.AppendCData(cabec);
+        message.Append("</nfseCabecMsg>");
+        message.Append("<nfseDadosMsg>");
+        message.AppendCData(msg);
+        message.Append("</nfseDadosMsg>");
+        message.Append("</nfse:SubstituirNfseRequest>");
+        return Execute("SubstituirNfseEnvio", message.ToString(), "SubstituirNfseResponse");
     }
 
     protected override string TratarRetorno(XElement xmlDocument, string[] responseTag)
     {
-        var fault = xmlDocument.ElementAnyNs("Fault");
-        if (fault != null)
+        var element = xmlDocument.ElementAnyNs("Fault");
+        if (element != null)
         {
-            var code = fault.ElementAnyNs("faultcode")?.Value;
-            var message = fault.ElementAnyNs("faultstring")?.Value;
-            throw new OpenDFeCommunicationException($"{code} - {message}");
+            var exMessage =
+                $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            throw new OpenDFeCommunicationException(exMessage);
         }
 
-        var outputXml = xmlDocument
-            .Descendants()
-            .FirstOrDefault(x => x.Name.LocalName == "outputXML");
+        return xmlDocument.ElementAnyNs(responseTag[0]).ElementAnyNs("outputXML").Value;
+    }
 
-        if (outputXml == null)
-            throw new OpenDFeCommunicationException("Retorno da NFSe não contém a tag <outputXML>.");
-
-        return outputXml.Value;
+    private string Execute(string soapAction, string message, string responseTag)
+    {
+        return Execute(soapAction, message, "", [responseTag], ["xmlns:nfse=\"http://nfse.abrasf.org.br\""]);
     }
 
     #endregion Methods

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.barueri.sp.gov.br/nfe" xmlns="http://www.barueri.sp.gov.br/nfe" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="NFeLoteEnviarArquivo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InscricaoMunicipal" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Numero da inscrição municipal do contribuinte na Prefeitura de Barueri.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CPFCNPJContrib" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>CNPJ/CPF do contribuinte</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NomeArquivoRPS" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Nome do Arquivo do contribuinte que está sendo enviado para processamento</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ApenasValidaArq" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>Flag para indicar se o arquivo deve gerar NFe. Caso deseje apenas validar o arquivo informar true, valor padrão é false</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ArquivoRPSBase64" type="xs:base64Binary">
+					<xs:annotation>
+						<xs:documentation>Conteúdo do Arquivo do contribuinte em Base64</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

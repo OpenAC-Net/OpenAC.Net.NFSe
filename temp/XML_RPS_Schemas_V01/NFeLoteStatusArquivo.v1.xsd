@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.barueri.sp.gov.br/nfe" xmlns="http://www.barueri.sp.gov.br/nfe" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="NFeLoteStatusArquivo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InscricaoMunicipal" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Numero da inscrição municipal do contribuinte na Prefeitura de Barueri.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CPFCNPJContrib" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>CNPJ/CPF do contribuinte</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ProtocoloRemessa" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Código do protocolo de Remessa retornado pelo método NFeLoteEnviarArquivo.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

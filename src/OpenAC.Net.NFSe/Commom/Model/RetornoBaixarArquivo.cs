@@ -1,14 +1,11 @@
 // ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
-// Created          : 08-17-2016
+// Created          : 01-23-2026
 //
-// Last Modified By : Rafael Dias
-// Last Modified On : 08-17-2016
-// ***********************************************************************
-// <copyright file="TipoUrl.cs" company="OpenAC .Net">
-//		        		   The MIT License (MIT)
-//	     		Copyright (c) 2014 - 2024 Projeto OpenAC .Net
+// <copyright file="RetornoBaixarArquivo.cs" company="OpenAC .Net">
+//				  The MIT License (MIT)
+//		  Copyright (c) 2014 - 2026 Projeto OpenAC .Net
 //
 //	 Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the "Software"),
@@ -29,19 +26,13 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Commom.Types;
+namespace OpenAC.Net.NFSe.Commom.Model;
 
-public enum TipoUrl
+public sealed class RetornoBaixarArquivo : RetornoWebservice
 {
-    Enviar,
-    EnviarSincrono,
-    ConsultarSituacao,
-    ConsultarLoteRps,
-    ConsultarSequencialRps,
-    ConsultarNFSeRps,
-    ConsultarNFSe,
-    CancelarNFSe,
-    CancelarNFSeLote,
-    SubstituirNFSe,
-    Autenticacao
+    public string NomeArquivoRetorno { get; internal set; } = "";
+
+    public string ConteudoBase64 { get; internal set; } = "";
+
+    public byte[] Conteudo { get; internal set; } = [];
 }

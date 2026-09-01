@@ -20,9 +20,9 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
-		<AssemblyVersion>1.7.2</AssemblyVersion>
-		<FileVersion>1.7.2</FileVersion>
-		<Version>1.7.2</Version>
+		<AssemblyVersion>1.71</AssemblyVersion>
+		<FileVersion>1.7.1</FileVersion>
+		<Version>1.7.1</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>embedded</DebugType>
@@ -32,21 +32,102 @@
 		<PackageId>OpenAC.Net.NFSe</PackageId>
 		<Nullable>enable</Nullable>
 		<Description>Biblioteca para emissão e trasmissão de NFSe (Nota Fiscal de Serviço Eletrônica).</Description>
-	</PropertyGroup>	
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net470|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0|AnyCPU'">
+	  <Optimize>False</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net470|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
+	  <Optimize>True</Optimize>
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="OpenAC.Net.Core" Version="1.6.0" />
-		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.2" />				
+		<PackageReference Include="OpenAC.Net.DFe.Core" Version="1.6.0.2" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48'">
 		<Reference Include="System.Drawing" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'net470' or '$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
@@ -82,6 +163,10 @@
 		<None Include="Schemas\AssessorPublico\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\AssessorPublico</PackagePath>
+		</None>
+		<None Include="Schemas\Barueri\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Barueri</PackagePath>
 		</None>
 		<None Include="Schemas\Betha\**\*.*">
 			<Pack>True</Pack>
@@ -166,11 +251,11 @@
 		<None Include="Schemas\ISSVitoria\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\ISSVitoria</PackagePath>
-		</None>		
+		</None>
 		<None Include="Schemas\MetropolisWeb\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\MetropolisWeb</PackagePath>
-		</None>		
+		</None>
 		<None Include="Schemas\Mitra\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Mitra</PackagePath>
@@ -178,7 +263,7 @@
 		<None Include="Schemas\NFeCidades\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\NFeCidades</PackagePath>
-		</None>		
+		</None>
 		<None Include="Schemas\Pronim\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Pronim</PackagePath>
@@ -198,7 +283,7 @@
 		<None Include="Schemas\SigISSWeb\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SigISSWeb</PackagePath>
-		</None>		
+		</None>
 		<None Include="Schemas\SimplISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SimplISS</PackagePath>
@@ -206,7 +291,7 @@
 		<None Include="Schemas\Sintese\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Sintese</PackagePath>
-		</None>		
+		</None>
 		<None Include="Schemas\SmarAPD\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\SmarAPD</PackagePath>
@@ -226,7 +311,7 @@
 		<None Include="Schemas\Tiplan\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Tiplan</PackagePath>
-		</None>		
+		</None>
 		<None Include="Schemas\WebISS\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\WebISS</PackagePath>
@@ -248,11 +333,12 @@
 			<PackagePath>content\Schemas\Megasoft</PackagePath>
 		</None>
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<None Remove="Resources\Municipios.nfse" />
-		<EmbeddedResource Include="Resources\Municipios.nfse" />
-        
+		<EmbeddedResource Include="Resources\Municipios.nfse">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+
 		<None Update="Schemas\Abaco\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -263,6 +349,9 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\AssessorPublico\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\Barueri\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\Betha\**\*.*">
@@ -306,7 +395,7 @@
 		</None>
 		<None Update="Schemas\ISSDSF\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>		
+		</None>
 		<None Update="Schemas\ISSe\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -330,7 +419,7 @@
 		</None>
 		<None Update="Schemas\ISSVitoria\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>		
+		</None>
 		<None Update="Schemas\MetropolisWeb\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -339,13 +428,13 @@
 		</None>
 		<None Update="Schemas\NFeCidades\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>		
+		</None>
 		<None Update="Schemas\Pronim\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\RLZ\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	
+		</None>
 		<None Update="Schemas\SIAPNet\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -372,7 +461,7 @@
 		</None>
 		<None Update="Schemas\Thema\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	
+		</None>
 		<None Update="Schemas\Tiplan\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -392,35 +481,35 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="10.0.7" />
+	  <PackageReference Include="System.Drawing.Common" Version="10.0.1" />
 	  <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
 	  <PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="10.0.7" />
+	  <PackageReference Include="System.Drawing.Common" Version="10.0.1" />
 	  <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
 	  <PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="10.0.7" />
+	  <PackageReference Include="System.Drawing.Common" Version="10.0.1" />
 	  <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
 	  <PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-	  <PackageReference Include="System.Drawing.Common" Version="10.0.7" />
+	  <PackageReference Include="System.Drawing.Common" Version="10.0.1" />
 	  <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
 	  <PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 	  <Folder Include="Schemas\ISSCampinas\2.03\" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 	  <None Update="Schemas\ISSCampinas\2.03\nfse.xsd">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -29,19 +29,20 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.Core.Extensions;
+using OpenAC.Net.NFSe.Configuracao;
+using System.Xml.Linq;
+using OpenAC.Net.NFSe.Nota;
+using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core;
+using System.IO;
+using System.Linq;
+using OpenAC.Net.Core.Extensions;
+using System.Text;
 using OpenAC.Net.DFe.Core.Common;
-using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
-using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Nota;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
@@ -68,73 +69,9 @@ internal sealed class ProviderFiorilli201 : ProviderABRASF201
 
     protected override IServiceClient GetClient(TipoUrl tipo) => new Fiorilli201ServiceClient(this, tipo);
 
-    protected override XElement WriteRps(NotaServico nota)
-    {
-        var rootRps = new XElement("Rps");
-
-        var infServico = new XElement("InfDeclaracaoPrestacaoServico", new XAttribute("Id", $"R{nota.IdentificacaoRps.Numero.OnlyNumbers()}"));
-        rootRps.Add(infServico);
-
-        infServico.Add(WriteRpsRps(nota));
-
-        infServico.AddChild(AddTag(TipoCampo.Dat, "", "Competencia", 10, 10, Ocorrencia.Obrigatoria, nota.Competencia));
-
-        infServico.AddChild(WriteServicosRps(nota));
-        infServico.AddChild(WritePrestadorRps(nota));
-        infServico.AddChild(WriteTomadorRps(nota));
-        infServico.AddChild(WriteIntermediarioRps(nota));
-        infServico.AddChild(WriteConstrucaoCivilRps(nota));
-
-        var regimeEspecialTributacao = nota.RegimeEspecialTributacao == RegimeEspecialTributacao.SimplesNacional
-        ? "6"
-        : ((int)nota.RegimeEspecialTributacao).ToString();
-
-        bool optanteSimplesNacional = false;
-
-        switch (nota.RegimeEspecialTributacao)
-        {
-            case RegimeEspecialTributacao.SimplesNacional:
-            case RegimeEspecialTributacao.MicroEmpresarioIndividual:
-            case RegimeEspecialTributacao.MicroEmpresarioEmpresaPP:
-                optanteSimplesNacional = true;
-                break;
-        }
-
-        if (nota.RegimeEspecialTributacao != RegimeEspecialTributacao.Nenhum)
-            infServico.AddChild(AddTag(TipoCampo.Int, "", "RegimeEspecialTributacao", 1, 1, Ocorrencia.NaoObrigatoria, regimeEspecialTributacao));
-
-        infServico.AddChild(AddTag(TipoCampo.Int, "", "OptanteSimplesNacional", 1, 1, Ocorrencia.Obrigatoria, optanteSimplesNacional ? 1 : 2));
-        infServico.AddChild(AddTag(TipoCampo.Int, "", "IncentivoFiscal", 1, 1, Ocorrencia.Obrigatoria, nota.IncentivadorCultural == NFSeSimNao.Sim ? 1 : 2));
-
-        return rootRps;
-    }
-
     #endregion Methods
 
     #region  Services
-    protected override XElement WriteServicosRps(NotaServico nota)
-    {
-        var servico = new XElement("Servico");
-
-        servico.Add(WriteValoresRps(nota));
-
-        servico.AddChild(AddTag(TipoCampo.Int, "", "IssRetido", 1, 1, Ocorrencia.Obrigatoria, nota.Servico.Valores.IssRetido == SituacaoTributaria.Retencao ? 1 : 2));
-
-        if (nota.Servico.ResponsavelRetencao.HasValue)
-            servico.AddChild(AddTag(TipoCampo.Int, "", "ResponsavelRetencao", 1, 1, Ocorrencia.NaoObrigatoria, (int)nota.Servico.ResponsavelRetencao + 1));
-
-        servico.AddChild(AddTag(TipoCampo.Str, "", "ItemListaServico", 1, 6, Ocorrencia.Obrigatoria, nota.Servico.ItemListaServico));
-        servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoCnae", 1, 7, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoCnae));
-        servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoTributacaoMunicipio", 1, 20, Ocorrencia.NaoObrigatoria, nota.Servico.CodigoTributacaoMunicipio));
-        servico.AddChild(AddTag(TipoCampo.Str, "", "Discriminacao", 1, 2000, Ocorrencia.Obrigatoria, nota.Servico.Discriminacao));
-        servico.AddChild(AddTag(TipoCampo.Str, "", "CodigoMunicipio", 1, 20, Ocorrencia.Obrigatoria, nota.Servico.CodigoMunicipio));
-        servico.AddChild(AddTag(TipoCampo.Int, "", "CodigoPais", 4, 4, Ocorrencia.MaiorQueZero, nota.Servico.CodigoPais));
-        servico.AddChild(AddTag(TipoCampo.Int, "", "ExigibilidadeISS", 1, 1, Ocorrencia.Obrigatoria, (int)nota.Servico.ExigibilidadeIss + 1));
-        servico.AddChild(AddTag(TipoCampo.Int, "", "MunicipioIncidencia", 7, 7, Ocorrencia.MaiorQueZero, nota.Servico.MunicipioIncidencia));
-        servico.AddChild(AddTag(TipoCampo.Str, "", "NumeroProcesso", 1, 30, Ocorrencia.NaoObrigatoria, nota.Servico.NumeroProcesso));
-
-        return servico;
-    }
 
     protected override void PrepararSubstituirNFSe(RetornoSubstituirNFSe retornoWebservice, NotaServicoCollection notas)
     {
