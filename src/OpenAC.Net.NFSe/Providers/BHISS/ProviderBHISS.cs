@@ -40,6 +40,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão BHISS.
+/// </summary>
 internal sealed class ProviderBHISS : ProviderABRASF
 {
     #region Constructors

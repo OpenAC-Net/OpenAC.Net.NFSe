@@ -46,6 +46,9 @@ using OpenAC.Net.NFSe.Nota;
 namespace OpenAC.Net.NFSe.Providers;
 
 // ReSharper disable once InconsistentNaming
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSRio.
+/// </summary>
 internal sealed class ProviderISSRio : ProviderABRASF
 {
     #region Constructors

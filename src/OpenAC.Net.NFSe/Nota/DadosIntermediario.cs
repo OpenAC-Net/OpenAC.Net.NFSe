@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados cadastrais e fiscais do intermediário da prestação de serviço.
+/// </summary>
+
 
 public sealed class DadosIntermediario : GenericClone<DadosIntermediario>, INotifyPropertyChanged
 {

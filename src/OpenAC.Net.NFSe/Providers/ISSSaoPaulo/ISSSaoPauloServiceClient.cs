@@ -41,12 +41,18 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor ISSSaoPaulo.
+/// </summary>
 internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IServiceClient
 {
+    private readonly ProviderISSSaoPaulo provider;
+
     #region Constructors
 
     public ISSSaoPauloServiceClient(ProviderISSSaoPaulo provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap12)
     {
+        this.provider = provider;
     }
 
     #endregion Constructors
@@ -71,7 +77,7 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
 
         var message = new StringBuilder();
         message.Append($"<nfe:{tag}>");
-        message.Append("<nfe:VersaoSchema>1</nfe:VersaoSchema>");
+        message.Append($"<nfe:VersaoSchema>{provider.NumeroLayout}</nfe:VersaoSchema>");
         message.Append("<nfe:MensagemXML>");
         message.AppendCData(msg);
         message.Append("</nfe:MensagemXML>");
@@ -84,7 +90,7 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
     {
         var message = new StringBuilder();
         message.Append("<nfe:EnvioRPSRequest>");
-        message.Append("<nfe:VersaoSchema>1</nfe:VersaoSchema>");
+        message.Append($"<nfe:VersaoSchema>{provider.NumeroLayout}</nfe:VersaoSchema>");
         message.Append("<nfe:MensagemXML>");
         message.AppendCData(msg);
         message.Append("</nfe:MensagemXML>");
@@ -97,7 +103,7 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
     {
         var message = new StringBuilder();
         message.Append("<nfe:ConsultaInformacoesLoteRequest>");
-        message.Append("<nfe:VersaoSchema>1</nfe:VersaoSchema>");
+        message.Append($"<nfe:VersaoSchema>{provider.NumeroLayout}</nfe:VersaoSchema>");
         message.Append("<nfe:MensagemXML>");
         message.AppendCData(msg);
         message.Append("</nfe:MensagemXML>");
@@ -110,7 +116,7 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
     {
         var message = new StringBuilder();
         message.Append("<nfe:ConsultaLoteRequest>");
-        message.Append("<nfe:VersaoSchema>1</nfe:VersaoSchema>");
+        message.Append($"<nfe:VersaoSchema>{provider.NumeroLayout}</nfe:VersaoSchema>");
         message.Append("<nfe:MensagemXML>");
         message.AppendCData(msg);
         message.Append("</nfe:MensagemXML>");
@@ -133,7 +139,7 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
     {
         var message = new StringBuilder();
         message.Append("<nfe:ConsultaNFeRequest>");
-        message.Append("<nfe:VersaoSchema>1</nfe:VersaoSchema>");
+        message.Append($"<nfe:VersaoSchema>{provider.NumeroLayout}</nfe:VersaoSchema>");
         message.Append("<nfe:MensagemXML>");
         message.AppendCData(msg);
         message.Append("</nfe:MensagemXML>");
@@ -146,7 +152,7 @@ internal sealed class ISSSaoPauloServiceClient : NFSeSoapServiceClient, IService
     {
         var message = new StringBuilder();
         message.Append("<nfe:CancelamentoNFeRequest>");
-        message.Append("<nfe:VersaoSchema>1</nfe:VersaoSchema>");
+        message.Append($"<nfe:VersaoSchema>{provider.NumeroLayout}</nfe:VersaoSchema>");
         message.Append("<nfe:MensagemXML>");
         message.AppendCData(msg);
         message.Append("</nfe:MensagemXML>");

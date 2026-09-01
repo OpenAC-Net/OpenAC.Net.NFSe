@@ -1,7 +1,0 @@
-<NFeLoteEnviarArquivo xmlns="http://www.barueri.sp.gov.br/nfe">
-	<InscricaoMunicipal>4492571</InscricaoMunicipal>
-	<CPFCNPJContrib>46523015000135</CPFCNPJContrib>
-	<NomeArquivoRPS>arquivo.txt</NomeArquivoRPS>
-	<ApenasValidaArq>false</ApenasValidaArq>
-	<ArquivoRPSBase64></ArquivoRPSBase64>
-</NFeLoteEnviarArquivo>

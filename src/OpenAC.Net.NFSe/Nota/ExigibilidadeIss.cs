@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Define a exigibilidade do ISSQN (Exigível, Não Incidência, Isenção, Exportação, Imunidade, Suspenso por Decisão Judicial/Administrativa).
+/// </summary>
+
 
 public enum ExigibilidadeIss
 {

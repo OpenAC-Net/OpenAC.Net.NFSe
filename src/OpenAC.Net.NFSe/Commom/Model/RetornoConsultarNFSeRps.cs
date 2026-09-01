@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 06-17-2016
@@ -33,17 +33,38 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno da consulta de NFSe por RPS.
+/// </summary>
 public sealed class RetornoConsultarNFSeRps : RetornoWebservice
 {
+    /// <summary>
+    /// Número do RPS consultado.
+    /// </summary>
     public int NumeroRps { get; internal set; }
 
+    /// <summary>
+    /// Série do RPS consultada.
+    /// </summary>
     public string Serie { get; internal set; } = "";
 
+    /// <summary>
+    /// Tipo do RPS consultado.
+    /// </summary>
     public TipoRps Tipo { get; internal set; }
 
+    /// <summary>
+    /// Nota fiscal de serviço eletrônica localizada.
+    /// </summary>
     public NotaServico? Nota { get; internal set; }
 
+    /// <summary>
+    /// Ano de competência da prestação de serviço.
+    /// </summary>
     public int AnoCompetencia { get; internal set; }
 
+    /// <summary>
+    /// Mês de competência da prestação de serviço.
+    /// </summary>
     public int MesCompetencia { get; internal set; }
 }

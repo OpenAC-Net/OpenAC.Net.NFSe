@@ -31,7 +31,10 @@
 
 using System.ComponentModel;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Tipo do Recibo Provisório de Serviços (RPS, Nota Fiscal Conjugada ou Cupom).
+/// </summary>
+
 
 public enum TipoRps
 {

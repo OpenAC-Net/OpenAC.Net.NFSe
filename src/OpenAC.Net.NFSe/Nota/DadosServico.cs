@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Detalhamento do serviço prestado, incluindo classificação fiscal, discriminação, valores e deduções.
+/// </summary>
+
 
 public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyChanged
 {
@@ -78,6 +81,8 @@ public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyCh
     public string Municipio { get; set; }
 
     public int CodigoPais { get; set; }
+
+    public int PaisPrestacao { get; set; }
 
     public ExigibilidadeIss ExigibilidadeIss { get; set; }
 

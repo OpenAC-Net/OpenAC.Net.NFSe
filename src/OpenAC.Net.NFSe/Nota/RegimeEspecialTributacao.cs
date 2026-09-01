@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Regime especial de tributação do prestador de serviços (Microempresa, Estimativa, Sociedade de Profissionais, Cooperativa, MEI, EPP).
+/// </summary>
+
 
 public enum RegimeEspecialTributacao
 {

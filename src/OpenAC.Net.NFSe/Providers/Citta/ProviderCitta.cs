@@ -42,6 +42,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Citta.
+/// </summary>
 internal sealed class ProviderCitta : ProviderABRASF203
 {
     #region Constructors

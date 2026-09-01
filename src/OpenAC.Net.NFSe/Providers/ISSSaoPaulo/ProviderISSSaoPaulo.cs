@@ -51,6 +51,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSSaoPaulo.
+/// </summary>
 internal sealed class ProviderISSSaoPaulo : ProviderBase
 {
     #region Constructors
@@ -82,9 +85,11 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         // Nota Fiscal
         ret.IdentificacaoNFSe.Numero = rootDoc.ElementAnyNs("ChaveNFe")?.ElementAnyNs("NumeroNFe")?.GetValue<string>() ?? string.Empty;
         ret.IdentificacaoNFSe.Chave = rootDoc.ElementAnyNs("ChaveNFe")?.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+        ret.IdentificacaoNFSe.ChaveNotaNacional = rootDoc.ElementAnyNs("ChaveNFe")?.ElementAnyNs("ChaveNotaNacional")?.GetValue<string>() ?? string.Empty;
         ret.Prestador.InscricaoMunicipal = rootDoc.ElementAnyNs("ChaveNFe")?.ElementAnyNs("InscricaoPrestador")?.GetValue<string>() ?? string.Empty;
 
         ret.IdentificacaoNFSe.DataEmissao = rootDoc.ElementAnyNs("DataEmissaoNFe")?.GetValue<DateTime>() ?? DateTime.MinValue;
+        ret.IdentificacaoNFSe.DataFatoGerador = rootDoc.ElementAnyNs("DataFatoGeradorNFe")?.GetValue<DateTime>();
         ret.NumeroLote = rootDoc.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
 
         // RPS
@@ -163,6 +168,13 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
         ret.Servico.Discriminacao = rootDoc.ElementAnyNs("Discriminacao")?.GetValue<string>() ?? string.Empty;
         ret.Servico.Valores.ValorServicos = rootDoc.ElementAnyNs("ValorServicos")?.GetValue<decimal>() ?? 0;
+        ret.Servico.Valores.ValorInicialCobrado = rootDoc.ElementAnyNs("ValorInicialCobrado")?.GetValue<decimal>();
+        ret.Servico.Valores.ValorFinalCobrado = rootDoc.ElementAnyNs("ValorFinalCobrado")?.GetValue<decimal>();
+        ret.Servico.Valores.ValorIpi = rootDoc.ElementAnyNs("ValorIPI")?.GetValue<decimal>();
+        var exigibilidadeSuspensa = rootDoc.ElementAnyNs("ExigibilidadeSuspensa")?.GetValue<int>();
+        ret.Servico.Valores.ExigibilidadeSuspensa = exigibilidadeSuspensa.HasValue
+            ? exigibilidadeSuspensa.Value == 1
+            : null;
         ret.Servico.Valores.Aliquota = rootDoc.ElementAnyNs("AliquotaServicos")?.GetValue<decimal>() ?? 0;
         ret.Servico.Valores.ValorIss = rootDoc.ElementAnyNs("ValorISS")?.GetValue<decimal>() ?? 0;
         ret.Servico.ItemListaServico = rootDoc.ElementAnyNs("CodigoServico")?.GetValue<string>() ?? string.Empty;
@@ -170,6 +182,28 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         ret.Servico.Valores.AliquotaCargaTributaria = rootDoc.ElementAnyNs("PercentualCargaTributaria")?.GetValue<decimal>() ?? 0;
         ret.Servico.Valores.FonteCargaTributaria = rootDoc.ElementAnyNs("FonteCargaTributaria")?.GetValue<string>() ?? string.Empty;
         ret.ValorCredito = rootDoc.ElementAnyNs("ValorCredito")?.GetValue<decimal>() ?? 0;
+        ret.Servico.CodigoNbs = rootDoc.ElementAnyNs("NBS")?.GetValue<string>() ?? string.Empty;
+        ret.Servico.MunicipioIncidencia = rootDoc.ElementAnyNs("cLocPrestacao")?.GetValue<int>() ?? 0;
+
+        var ibsCbs = rootDoc.ElementAnyNs("IBSCBS");
+        if (ibsCbs != null)
+        {
+            ret.Servico.Valores.IBSCBS = new InfoIBSCBS
+            {
+                FinalidadeNFSe = ibsCbs.ElementAnyNs("finNFSe")?.GetValue<string>(),
+                IndicadorFinal = ibsCbs.ElementAnyNs("indFinal")?.GetValue<string>(),
+                CodigoIndicadorOperacao = ibsCbs.ElementAnyNs("cIndOp")?.GetValue<string>(),
+                IndicadorDestinatario = ibsCbs.ElementAnyNs("indDest")?.GetValue<string>()
+            };
+            ret.Servico.Valores.IBSCBS.Valores.Tributos.SituacaoClassificacao.CodigoClassificacaoTributaria =
+                ibsCbs.ElementAnyNs("valores")?.ElementAnyNs("trib")?.ElementAnyNs("gIBSCBS")
+                    ?.ElementAnyNs("cClassTrib")?.GetValue<string>();
+        }
+
+        var retornoComplementar = rootDoc.ElementAnyNs("RetornoComplementarIBSCBS");
+        ret.XmlRetornoComplementarIBSCBS = retornoComplementar?.ToString(SaveOptions.DisableFormatting) ??
+                                           string.Empty;
+        ret.XmlOriginal = rootDoc.ToString(SaveOptions.DisableFormatting);
 
         switch (rootDoc.ElementAnyNs("ISSRetido")?.GetValue<string>() ?? string.Empty)
         {
@@ -223,6 +257,9 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
     public override string WriteXmlRps(NotaServico nota, bool identado, bool showDeclaration)
     {
+        if (Configuracoes.WebServices.LayoutISSSaoPaulo == LayoutISSSaoPaulo.Layout2)
+            return ISSSaoPauloLayout2.WriteXmlRps(nota, Certificado, identado, showDeclaration);
+
         string tipoRps = nota.IdentificacaoRps.Tipo switch
         {
             TipoRps.RPS => "RPS",
@@ -346,6 +383,12 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        if (Configuracoes.WebServices.LayoutISSSaoPaulo == LayoutISSSaoPaulo.Layout2)
+        {
+            PrepararEnviarLayout2(retornoWebservice, notas);
+            return;
+        }
+
         if (retornoWebservice.Lote == 0)
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
 
@@ -404,20 +447,64 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         {
             nota.NumeroLote = retornoWebservice.Lote;
         }
+
+        if (NumeroLayout == 2)
+            AtualizarChavesRetornadas(xmlRet, notas);
     }
 
     protected override void PrepararEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        if (Configuracoes.WebServices.LayoutISSSaoPaulo == LayoutISSSaoPaulo.Layout2)
+        {
+            if (notas.Count != 1)
+            {
+                retornoWebservice.Erros.Add(new EventoRetorno
+                {
+                    Codigo = "0",
+                    Descricao = "O envio individual do Layout 2 de São Paulo exige exatamente um RPS."
+                });
+                return;
+            }
+
+            var root = CriarRaizPedido("PedidoEnvioRPS");
+            root.Add(CriarCabecalhoRemetente());
+            root.Add(XElement.Parse(WriteXmlRps(notas[0], false, false)));
+            retornoWebservice.XmlEnvio = new XDocument(new XDeclaration("1.0", "UTF-8", null), root)
+                .ToString(SaveOptions.DisableFormatting);
+            return;
+        }
+
         throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
     }
 
     protected override void AssinarEnviarSincrono(RetornoEnviar retornoWebservice)
     {
+        if (Configuracoes.WebServices.LayoutISSSaoPaulo == LayoutISSSaoPaulo.Layout2)
+        {
+            retornoWebservice.XmlEnvio = XmlSigning.AssinarXml(retornoWebservice.XmlEnvio, "PedidoEnvioRPS", "",
+                Certificado);
+            return;
+        }
+
         throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
     }
 
     protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        if (Configuracoes.WebServices.LayoutISSSaoPaulo == LayoutISSSaoPaulo.Layout2)
+        {
+            var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
+            MensagemErro(retornoWebservice, xmlRet, "RetornoEnvioRPS");
+            if (retornoWebservice.Erros.Any())
+                return;
+
+            retornoWebservice.Sucesso =
+                xmlRet.Root?.ElementAnyNs("Cabecalho")?.ElementAnyNs("Sucesso")?.GetValue<bool>() ?? false;
+            if (retornoWebservice.Sucesso)
+                AtualizarChavesRetornadas(xmlRet, notas);
+            return;
+        }
+
         throw new NotImplementedException("Função não implementada/suportada neste Provedor !");
     }
 
@@ -426,10 +513,10 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteBuilder.Append("<PedidoInformacoesLote xmlns=\"http://www.prefeitura.sp.gov.br/nfe\" xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd = \"http://www.w3.org/2001/XMLSchema\">");
-        loteBuilder.Append("<Cabecalho xmlns=\"\" Versao=\"1\">");
+        loteBuilder.Append($"<Cabecalho xmlns=\"\" Versao=\"{NumeroLayout}\">");
         loteBuilder.Append($"<CPFCNPJRemetente><CNPJ>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CNPJ></CPFCNPJRemetente>");
         loteBuilder.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
-        loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8)}</InscricaoPrestador>");
+        loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(TamanhoInscricaoMunicipal)}</InscricaoPrestador>");
         loteBuilder.Append("</Cabecalho>");
         loteBuilder.Append("</PedidoInformacoesLote>");
         retornoWebservice.XmlEnvio = loteBuilder.ToString();
@@ -455,7 +542,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteBuilder.Append("<PedidoConsultaLote xmlns=\"http://www.prefeitura.sp.gov.br/nfe\" xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd = \"http://www.w3.org/2001/XMLSchema\">");
-        loteBuilder.Append("<Cabecalho xmlns=\"\" Versao=\"1\">");
+        loteBuilder.Append($"<Cabecalho xmlns=\"\" Versao=\"{NumeroLayout}\">");
         loteBuilder.Append($"<CPFCNPJRemetente><CNPJ>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CNPJ></CPFCNPJRemetente>");
         loteBuilder.Append($"<NumeroLote>{retornoWebservice.Lote}</NumeroLote>");
         loteBuilder.Append("</Cabecalho>");
@@ -497,6 +584,10 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
             {
                 nota = LoadXml(nfse.ToString());
                 notas.Add(nota);
+            }
+            else if (NumeroLayout == 2)
+            {
+                AtualizarNotaComRetorno(nota, LoadXml(nfse.ToString(SaveOptions.DisableFormatting)));
             }
             else
             {
@@ -566,6 +657,10 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         {
             nota = notas.Load(xmlNFSe.ToString());
         }
+        else if (NumeroLayout == 2)
+        {
+            AtualizarNotaComRetorno(nota, LoadXml(xmlNFSe.ToString(SaveOptions.DisableFormatting)));
+        }
         else
         {
             nota.IdentificacaoNFSe.Numero = numeroNFSe;
@@ -617,7 +712,8 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         }
 
         // Hash Cancelamento
-        var hash = Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8) + retornoWebservice.NumeroNFSe.ZeroFill(12);
+        var hash = Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(TamanhoInscricaoMunicipal) +
+                   retornoWebservice.NumeroNFSe.ZeroFill(12);
         var rsa = (RSA)Certificado.GetRSAPrivateKey();
         var hashBytes = Encoding.ASCII.GetBytes(hash);
         var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
@@ -627,13 +723,13 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteBuilder.Append("<PedidoCancelamentoNFe xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.prefeitura.sp.gov.br/nfe\">");
-        loteBuilder.Append("<Cabecalho xmlns=\"\" Versao=\"1\">");
+        loteBuilder.Append($"<Cabecalho xmlns=\"\" Versao=\"{NumeroLayout}\">");
         loteBuilder.Append($"<CPFCNPJRemetente><CNPJ>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CNPJ></CPFCNPJRemetente>");
         loteBuilder.Append($"<transacao>true</transacao>");
         loteBuilder.Append("</Cabecalho>");
         loteBuilder.Append("<Detalhe xmlns=\"\">");
         loteBuilder.Append("<ChaveNFe>");
-        loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8)}</InscricaoPrestador>");
+        loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(TamanhoInscricaoMunicipal)}</InscricaoPrestador>");
         loteBuilder.Append($"<NumeroNFe>{retornoWebservice.NumeroNFSe}</NumeroNFe>");
         loteBuilder.Append("</ChaveNFe>");
         loteBuilder.Append($"<AssinaturaCancelamento>{hashAssinado}</AssinaturaCancelamento>");
@@ -700,12 +796,111 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
     #region Private Methods
 
+    internal int NumeroLayout => Configuracoes.WebServices.LayoutISSSaoPaulo == LayoutISSSaoPaulo.Layout2 ? 2 : 1;
+
+    private int TamanhoInscricaoMunicipal => NumeroLayout == 2 ? 12 : 8;
+
+    private void PrepararEnviarLayout2(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
+    {
+        if (retornoWebservice.Lote == 0)
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
+        if (notas.Count == 0)
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
+        if (notas.Count > 50)
+        {
+            retornoWebservice.Erros.Add(new EventoRetorno
+            {
+                Codigo = "0",
+                Descricao = "O Layout 2 de São Paulo permite no máximo 50 RPS por lote."
+            });
+        }
+
+        if (retornoWebservice.Erros.Count > 0)
+            return;
+
+        var cabecalho = CriarCabecalhoRemetente();
+        cabecalho.Add(
+            new XElement("transacao", "true"),
+            new XElement("dtInicio", notas.Min(x => x.IdentificacaoRps.DataEmissao)
+                .ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
+            new XElement("dtFim", notas.Max(x => x.IdentificacaoRps.DataEmissao)
+                .ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
+            new XElement("QtdRPS", notas.Count));
+
+        var root = CriarRaizPedido("PedidoEnvioLoteRPS");
+        root.Add(cabecalho);
+        foreach (var nota in notas)
+        {
+            var xmlRps = WriteXmlRps(nota, false, false);
+            root.Add(XElement.Parse(xmlRps));
+            GravarRpsEmDisco(xmlRps,
+                $"Rps-{nota.IdentificacaoRps.DataEmissao:yyyyMMdd}-{nota.IdentificacaoRps.Numero}.xml",
+                nota.IdentificacaoRps.DataEmissao);
+        }
+
+        retornoWebservice.XmlEnvio = new XDocument(new XDeclaration("1.0", "UTF-8", null), root)
+            .ToString(SaveOptions.DisableFormatting);
+    }
+
+    private XElement CriarCabecalhoRemetente()
+    {
+        return new XElement("Cabecalho",
+            new XAttribute("Versao", NumeroLayout),
+            new XElement("CPFCNPJRemetente",
+                new XElement("CNPJ", Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14))));
+    }
+
+    private static XElement CriarRaizPedido(string nome)
+    {
+        XNamespace ns = "http://www.prefeitura.sp.gov.br/nfe";
+        XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
+        XNamespace xsd = "http://www.w3.org/2001/XMLSchema";
+        return new XElement(ns + nome,
+            new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+            new XAttribute(XNamespace.Xmlns + "xsd", xsd));
+    }
+
+    private static void AtualizarChavesRetornadas(XContainer xmlRet, NotaServicoCollection notas)
+    {
+        foreach (var chaveNFeRps in xmlRet.Descendants().Where(x => x.Name.LocalName == "ChaveNFeRPS"))
+        {
+            var chaveRps = chaveNFeRps.ElementAnyNs("ChaveRPS");
+            var numeroRps = chaveRps?.ElementAnyNs("NumeroRPS")?.GetValue<string>() ?? string.Empty;
+            var serieRps = chaveRps?.ElementAnyNs("SerieRPS")?.GetValue<string>() ?? string.Empty;
+            var nota = notas.FirstOrDefault(x =>
+                x.IdentificacaoRps.Numero == numeroRps &&
+                (serieRps.IsEmpty() || x.IdentificacaoRps.Serie == serieRps));
+            if (nota == null)
+                continue;
+
+            var chaveNFe = chaveNFeRps.ElementAnyNs("ChaveNFe");
+            nota.IdentificacaoNFSe.Numero =
+                chaveNFe?.ElementAnyNs("NumeroNFe")?.GetValue<string>() ?? nota.IdentificacaoNFSe.Numero;
+            nota.IdentificacaoNFSe.Chave =
+                chaveNFe?.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? nota.IdentificacaoNFSe.Chave;
+            nota.IdentificacaoNFSe.ChaveNotaNacional =
+                chaveNFe?.ElementAnyNs("ChaveNotaNacional")?.GetValue<string>() ??
+                nota.IdentificacaoNFSe.ChaveNotaNacional;
+        }
+    }
+
+    private static void AtualizarNotaComRetorno(NotaServico destino, NotaServico origem)
+    {
+        destino.IdentificacaoNFSe.Numero = origem.IdentificacaoNFSe.Numero;
+        destino.IdentificacaoNFSe.Chave = origem.IdentificacaoNFSe.Chave;
+        destino.IdentificacaoNFSe.ChaveNotaNacional = origem.IdentificacaoNFSe.ChaveNotaNacional;
+        destino.IdentificacaoNFSe.DataEmissao = origem.IdentificacaoNFSe.DataEmissao;
+        destino.IdentificacaoNFSe.DataFatoGerador = origem.IdentificacaoNFSe.DataFatoGerador;
+        destino.XmlRetornoComplementarIBSCBS = origem.XmlRetornoComplementarIBSCBS;
+        destino.XmlOriginal = origem.XmlOriginal;
+    }
+
     private string ConsultarRPSNFSe(int numeroRPS, string serieRPS, int numeroNFSe)
     {
         var loteBuilder = new StringBuilder();
         loteBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         loteBuilder.Append("<p1:PedidoConsultaNFe xmlns:p1=\"http://www.prefeitura.sp.gov.br/nfe\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
-        loteBuilder.Append("<Cabecalho Versao=\"1\">");
+        loteBuilder.Append($"<Cabecalho Versao=\"{NumeroLayout}\">");
         loteBuilder.Append($"<CPFCNPJRemetente><CNPJ>{Configuracoes.PrestadorPadrao.CpfCnpj.ZeroFill(14)}</CNPJ></CPFCNPJRemetente>");
         loteBuilder.Append("</Cabecalho>");
         loteBuilder.Append("<Detalhe>");
@@ -713,7 +908,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         {
             // RPS
             loteBuilder.Append("<ChaveRPS>");
-            loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8)}</InscricaoPrestador>");
+            loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(TamanhoInscricaoMunicipal)}</InscricaoPrestador>");
             loteBuilder.Append($"<SerieRPS>{serieRPS}</SerieRPS>");
             loteBuilder.Append($"<NumeroRPS>{numeroRPS}</NumeroRPS>");
             loteBuilder.Append("</ChaveRPS>");
@@ -722,7 +917,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         {
             // NFSe
             loteBuilder.Append("<ChaveNFe>");
-            loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(8)}</InscricaoPrestador>");
+            loteBuilder.Append($"<InscricaoPrestador>{Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(TamanhoInscricaoMunicipal)}</InscricaoPrestador>");
             loteBuilder.Append($"<NumeroNFe>{numeroNFSe}</NumeroNFe>");
             loteBuilder.Append("</ChaveNFe>");
         }
@@ -733,17 +928,18 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
 
     protected override string GetSchema(TipoUrl tipo)
     {
+        var sufixo = NumeroLayout == 2 ? "v02" : "v01";
         return tipo switch
         {
-            TipoUrl.Enviar => "PedidoEnvioLoteRPS_v01.xsd",
-            TipoUrl.EnviarSincrono => "PedidoEnvioRPS_v01.xsd",
-            TipoUrl.ConsultarSituacao => "PedidoInformacoesLote_v01.xsd",
-            TipoUrl.ConsultarLoteRps => "PedidoConsultaLote_v01.xsd",
+            TipoUrl.Enviar => $"PedidoEnvioLoteRPS_{sufixo}.xsd",
+            TipoUrl.EnviarSincrono => $"PedidoEnvioRPS_{sufixo}.xsd",
+            TipoUrl.ConsultarSituacao => $"PedidoInformacoesLote_{sufixo}.xsd",
+            TipoUrl.ConsultarLoteRps => $"PedidoConsultaLote_{sufixo}.xsd",
             TipoUrl.ConsultarSequencialRps => "",
-            TipoUrl.ConsultarNFSeRps => "PedidoConsultaNFe_v01.xsd",
-            TipoUrl.ConsultarNFSe => "PedidoConsultaNFe_v01.xsd",
-            TipoUrl.CancelarNFSe => "PedidoCancelamentoNFe_v01.xsd",
-            TipoUrl.CancelarNFSeLote => "PedidoCancelamentoLote_v01.xsd",
+            TipoUrl.ConsultarNFSeRps => $"PedidoConsultaNFe_{sufixo}.xsd",
+            TipoUrl.ConsultarNFSe => $"PedidoConsultaNFe_{sufixo}.xsd",
+            TipoUrl.CancelarNFSe => $"PedidoCancelamentoNFe_{sufixo}.xsd",
+            TipoUrl.CancelarNFSeLote => $"PedidoCancelamentoLote_{sufixo}.xsd",
             TipoUrl.SubstituirNFSe => "",
             _ => throw new ArgumentOutOfRangeException(nameof(tipo), tipo, null),
         };
@@ -752,6 +948,8 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
     protected override IServiceClient GetClient(TipoUrl tipo) => new ISSSaoPauloServiceClient(this, tipo);
 
     protected override string GerarCabecalho() => "";
+
+    protected override bool RemoverDeclaracaoXmlAposAssinatura(TipoUrl tipo) => NumeroLayout == 1;
 
     private string GetHashRps(NotaServico nota)
     {

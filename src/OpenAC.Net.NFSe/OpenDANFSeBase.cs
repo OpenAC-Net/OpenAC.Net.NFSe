@@ -37,14 +37,19 @@ using OpenAC.Net.NFSe.Nota;
 namespace OpenAC.Net.NFSe;
 
 /// <summary>
-/// Classe base para impressão de DANFSe
+/// Classe base abstrata para componentes de impressão do DANFSe.
 /// </summary>
+/// <typeparam name="TOptions">Tipo das opções do DANFSe.</typeparam>
+/// <typeparam name="TFiltro">Tipo da enumeração de filtros de impressão.</typeparam>
 public abstract class OpenDANFSeBase<TOptions, TFiltro> : IOpenLog
     where TFiltro : Enum
     where TOptions : DANFSeOptions<TFiltro>
 {
     #region Properties
 
+    /// <summary>
+    /// Obtém ou define as configurações de impressão do DANFSe.
+    /// </summary>
     public TOptions Configuracoes { get; protected set; }
 
     #endregion Properties
@@ -52,28 +57,35 @@ public abstract class OpenDANFSeBase<TOptions, TFiltro> : IOpenLog
     #region Methods
 
     /// <summary>
-    /// Imprime as NFSe/RPS.
+    /// Imprime as NFSe/RPS especificadas.
     /// </summary>
+    /// <param name="notas">Coleção de notas de serviço para impressão.</param>
     public abstract void Imprimir(NotaServico[] notas);
 
     /// <summary>
-    /// Imprimirs the PDF.
+    /// Gera o PDF do DANFSe para as notas de serviço especificadas e salva em arquivo.
     /// </summary>
+    /// <param name="notas">Coleção de notas de serviço.</param>
     public abstract void ImprimirPDF(NotaServico[] notas);
 
     /// <summary>
-    /// Imprimirs the PDF.
+    /// Gera o PDF do DANFSe para as notas de serviço especificadas gravando no stream fornecido.
     /// </summary>
+    /// <param name="notas">Coleção de notas de serviço.</param>
+    /// <param name="stream">Stream de destino para gravação do PDF.</param>
     public abstract void ImprimirPDF(NotaServico[] notas, Stream stream);
 
     /// <summary>
-    /// Imprimirs the PDF.
+    /// Gera o HTML do DANFSe para as notas de serviço especificadas e salva em arquivo.
     /// </summary>
+    /// <param name="notas">Coleção de notas de serviço.</param>
     public abstract void ImprimirHTML(NotaServico[] notas);
 
     /// <summary>
-    /// Imprimirs the PDF.
+    /// Gera o HTML do DANFSe para as notas de serviço especificadas gravando no stream fornecido.
     /// </summary>
+    /// <param name="notas">Coleção de notas de serviço.</param>
+    /// <param name="stream">Stream de destino para gravação do HTML.</param>
     public abstract void ImprimirHTML(NotaServico[] notas, Stream stream);
 
     #endregion Methods

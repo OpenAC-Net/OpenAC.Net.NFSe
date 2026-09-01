@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net462;net48;netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>OpenAC.Net.NFSe.DANFSe.PDFSharp</AssemblyName>
+        <RootNamespace>OpenAC.Net.NFSe.DANFSe.PDFSharp</RootNamespace>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>OpenAC.snk</AssemblyOriginatorKeyFile>
+        <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2026</Copyright>
+        <Company>OpenAC .Net - Automação Comercial em .Net</Company>
+        <Authors>Projeto OpenAC .Net</Authors>
+        <PackageProjectUrl>https://openac.net.br/</PackageProjectUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageIcon>nuget.png</PackageIcon>
+        <RepositoryUrl>https://github.com/OpenAC-Net/OpenAC.Net.NFSe</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>OpenAC.Net NFSe OpenNFSe DANFSe PDFSharp</PackageTags>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <NeutralLanguage>pt-BR</NeutralLanguage>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+        <Version>1.0.0</Version>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <DebugType>embedded</DebugType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageId>OpenAC.Net.NFSe.DANFSe.PDFSharp</PackageId>
+        <Nullable>enable</Nullable>
+        <Description>Biblioteca para geração e impressão de DANFSe (Documento Auxiliar da NFS-e) em PDF usando PDFsharp (100% Open Source / MIT).</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="PDFsharp" Version="6.2.4" />
+        <PackageReference Include="QRCoder" Version="1.8.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\Fonts\*.ttf" />
+    </ItemGroup>
+
+    <!-- Itens do pacote nuget -->
+    <ItemGroup>
+        <None Include="..\..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="..\..\nuget.png">
+            <Pack>True</Pack>
+            <PackagePath />
+            <Link>nuget.png</Link>
+        </None>
+        <None Include="README.md">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+    </ItemGroup>
+
+</Project>

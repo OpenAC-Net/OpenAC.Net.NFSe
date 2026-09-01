@@ -39,13 +39,13 @@ public class OpenConfig
     {
         var type = typeof(T);
         var value = config.AppSettings.Settings[setting]?.Value;
-        if (value.IsEmpty()) return defaultValue;
+        if (string.IsNullOrEmpty(value)) return defaultValue;
 
         try
         {
             if (type.IsEnum || type.IsGenericType && type.GetGenericArguments()[0].IsEnum)
             {
-                return (T)Enum.Parse(type, value);
+                return (T)Enum.Parse(type, value!);
             }
 
             return (T)Convert.ChangeType(value, type, CultureInfo.InvariantCulture);

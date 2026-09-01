@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Tipo de tributação do serviço prestado (Tributável no município, fora do município, isento, imune, suspenso, etc.).
+/// </summary>
+
 
 public enum TipoTributacao
 {

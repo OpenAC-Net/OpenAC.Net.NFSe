@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados de endereço nacional do prestador, tomador ou intermediário.
+/// </summary>
+
 
 public sealed class Endereco : GenericClone<Endereco>, INotifyPropertyChanged
 {
@@ -72,11 +75,19 @@ public sealed class Endereco : GenericClone<Endereco>, INotifyPropertyChanged
 
     public string Municipio { get; set; }
 
-        public int CodigoPais { get; set; }
-        public int EstadoPaisEstrangeiro { get; set; }
-        public int CidadePaisEstrangeiro { get; set; }
+    public int CodigoPais { get; set; }
+
+    public int EstadoPaisEstrangeiro { get; set; }
+
+    public int CidadePaisEstrangeiro { get; set; }
 
     public string Pais { get; set; }
+
+    public string CodigoPostalExterior { get; set; }
+
+    public string CidadeExterior { get; set; }
+
+    public string EstadoProvinciaExterior { get; set; }
 
     #endregion Propriedades
 }

@@ -39,8 +39,11 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa as informações de configuração, provedor, URLs de webservice e parâmetros de um município para emissão de NFSe.
+/// </summary>
 [DFeRoot("Municipio", Namespace = "https://www.openac.net.br/")]
-public sealed class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
+public sealed partial class OpenMunicipioNFSe : DFeDocument<OpenMunicipioNFSe>
 {
     #region Constructors
 

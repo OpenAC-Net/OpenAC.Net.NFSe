@@ -43,6 +43,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor SimplISS.
+/// </summary>
 internal sealed class SimplISS100ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Fields

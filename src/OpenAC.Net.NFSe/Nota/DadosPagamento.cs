@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações sobre formas de pagamento e parcelamento da NFSe.
+/// </summary>
+
 
 public sealed class DadosPagamento : GenericClone<DadosPagamento>, INotifyPropertyChanged
 {

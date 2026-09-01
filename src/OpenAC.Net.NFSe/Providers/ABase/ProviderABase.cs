@@ -41,6 +41,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ABase.
+/// </summary>
 internal sealed class ProviderABase : ProviderABRASF201
 {
     #region Constructors

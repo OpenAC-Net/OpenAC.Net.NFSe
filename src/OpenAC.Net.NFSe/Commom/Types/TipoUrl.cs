@@ -31,17 +31,63 @@
 
 namespace OpenAC.Net.NFSe.Commom.Types;
 
+/// <summary>
+/// Tipos de operações e endpoints de webservice de NFSe.
+/// </summary>
 public enum TipoUrl
 {
+    /// <summary>
+    /// URL para envio de lote de RPS (assíncrono).
+    /// </summary>
     Enviar,
+
+    /// <summary>
+    /// URL para envio de lote ou RPS no modo síncrono.
+    /// </summary>
     EnviarSincrono,
+
+    /// <summary>
+    /// URL para consulta da situação de processamento do lote de RPS.
+    /// </summary>
     ConsultarSituacao,
+
+    /// <summary>
+    /// URL para consulta do resultado do processamento do lote de RPS.
+    /// </summary>
     ConsultarLoteRps,
+
+    /// <summary>
+    /// URL para consulta do próximo número sequencial de RPS.
+    /// </summary>
     ConsultarSequencialRps,
+
+    /// <summary>
+    /// URL para consulta de NFSe por meio dos dados do RPS emitido.
+    /// </summary>
     ConsultarNFSeRps,
+
+    /// <summary>
+    /// URL para consulta de NFSe por filtros (número, período, tomador, etc.).
+    /// </summary>
     ConsultarNFSe,
+
+    /// <summary>
+    /// URL para cancelamento de NFSe individual.
+    /// </summary>
     CancelarNFSe,
+
+    /// <summary>
+    /// URL para cancelamento de NFSe em lote.
+    /// </summary>
     CancelarNFSeLote,
+
+    /// <summary>
+    /// URL para substituição de NFSe.
+    /// </summary>
     SubstituirNFSe,
-    Autenticacao
+
+    /// <summary>
+    /// URL para autenticação/obtenção de token de acesso.
+    /// </summary>
+    Autenticacao,
 }

@@ -34,7 +34,10 @@ using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core.Document;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Identificação do RPS ou NFS-e que está sendo substituído.
+/// </summary>
+
 
 public sealed class IdeRpsSubtituida : GenericClone<IdeRpsSubtituida>, INotifyPropertyChanged
 {

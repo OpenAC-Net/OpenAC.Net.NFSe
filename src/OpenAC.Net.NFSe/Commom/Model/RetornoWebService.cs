@@ -33,6 +33,9 @@ using System.Collections.Generic;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Classe base abstrata para os retornos das operações de comunicação com os webservices de NFSe.
+/// </summary>
 public abstract class RetornoWebservice
 {
     #region Propriedades
@@ -43,16 +46,34 @@ public abstract class RetornoWebservice
     /// <value><c>true</c> se não teve erro, senão <c>false</c>.</value>
     public bool Sucesso { get; internal set; }
 
+    /// <summary>
+    /// Lista de alertas retornados pelo webservice.
+    /// </summary>
     public List<EventoRetorno> Alertas { get; } = [];
 
+    /// <summary>
+    /// Lista de erros retornados pelo webservice.
+    /// </summary>
     public List<EventoRetorno> Erros { get; } = [];
 
+    /// <summary>
+    /// Mensagem XML enviada na requisição.
+    /// </summary>
     public string XmlEnvio { get; internal set; } = "";
 
+    /// <summary>
+    /// Mensagem XML recebida na resposta.
+    /// </summary>
     public string XmlRetorno { get; internal set; } = "";
 
+    /// <summary>
+    /// Envelope SOAP/HTTP completo enviado.
+    /// </summary>
     public string EnvelopeEnvio { get; internal set; } = "";
 
+    /// <summary>
+    /// Envelope SOAP/HTTP completo recebido.
+    /// </summary>
     public string EnvelopeRetorno { get; internal set; } = "";
 
     #endregion Propriedades

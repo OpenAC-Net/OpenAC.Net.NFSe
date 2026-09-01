@@ -42,6 +42,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor SigISS.
+/// </summary>
 internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors
@@ -102,7 +105,12 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
         return Execute("ConsultarLoteRpsEnvio", message.ToString(), "", ["ConsultarLoteRpsResponse", "ConsultarLoteRpsResult"], ["xmlns:ws=\"" + url + "\""]);
     }
 
-    public string ConsultarNFSe(string cabec, string msg) => throw new NotImplementedException();
+    public string ConsultarNFSe(string cabec, string msg)
+    {
+        var request = new StringBuilder();
+        request.Append(msg);
+        return Execute("ConsultarNotaPrestador", request.ToString(), "", ["ConsultarNotaPrestadorResponse"], ["xmlns:urn=\"urn:sigiss_ws\""]);
+    }
 
     public string ConsultarNFSeRps(string cabec, string msg) => throw new NotImplementedException();
 
@@ -116,7 +124,10 @@ internal sealed class SigISS100ServiceClient : NFSeSoapServiceClient, IServiceCl
     {
         //verifica se o retorno tem os elementos corretos senão da erro.
         var element = xmlDocument.ElementAnyNs(responseTag[0]) ?? throw new OpenDFeCommunicationException($"Primeiro Elemento ({responseTag[0]}) do xml não encontrado");
-        _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
+        if (responseTag.Length > 1)
+        {
+            _ = element.ElementAnyNs(responseTag[1]) ?? throw new OpenDFeCommunicationException($"Dados ({responseTag[1]}) do xml não encontrado");
+        }
 
         return element.ToString();
     }

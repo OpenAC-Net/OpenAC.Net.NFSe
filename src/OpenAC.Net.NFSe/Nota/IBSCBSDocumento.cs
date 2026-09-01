@@ -1,7 +1,10 @@
 using System;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Documento de referência para apuração ou dedução de IBS e CBS.
+/// </summary>
+
 
 public sealed class IBSCBSDocumento : GenericClone<IBSCBSDocumento>
 {

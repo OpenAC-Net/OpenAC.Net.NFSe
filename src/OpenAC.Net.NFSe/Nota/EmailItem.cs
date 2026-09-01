@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Representa um endereço de e-mail para envio e notificação de NFSe.
+/// </summary>
+
 
 public sealed class EmailItem : GenericClone<EmailItem>, INotifyPropertyChanged
 {

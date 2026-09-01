@@ -39,6 +39,9 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Configuracao;
 
+/// <summary>
+/// Configurações de comunicação com os webservices de NFSe dos municípios e provedores.
+/// </summary>
 public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
 {
     #region Fields
@@ -50,7 +53,7 @@ public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
     #region Constructor
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConfigWebServicesNFSe"/> class.
+    /// Inicializa uma nova instância da classe <see cref="ConfigWebServicesNFSe"/>.
     /// </summary>
     internal ConfigWebServicesNFSe()
     {
@@ -66,27 +69,55 @@ public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
     #region Properties
 
     /// <summary>
-    /// Uf do webservice em uso
+    /// Nome do município do webservice em uso.
     /// </summary>
-    /// <value>The uf.</value>
+    /// <value>O nome do município.</value>
     public string Municipio { get; private set; }
 
+    /// <summary>
+    /// Obtém o provedor de NFSe correspondente ao município selecionado.
+    /// </summary>
     public NFSeProvider Provider { get; private set; } = NFSeProvider.Nenhum;
 
-    public string Usuario { get; set; }
-
-    public string Senha { get; set; }
-
-    public string FraseSecreta { get; set; }
-
-        public string ChaveAcesso { get; set; }
-        public string ChavePrivada { get; set; }
-        public string Proxy { get; set; }
+    /// <summary>
+    /// Obtém ou define o layout específico do webservice de São Paulo (quando aplicável).
+    /// </summary>
+    public LayoutISSSaoPaulo LayoutISSSaoPaulo { get; set; }
 
     /// <summary>
-    /// Codigo do municipio do Webservices em uso
+    /// Obtém ou define o usuário de autenticação no webservice.
     /// </summary>
-    /// <value>The uf codigo.</value>
+    public string Usuario { get; set; }
+
+    /// <summary>
+    /// Obtém ou define a senha de autenticação no webservice.
+    /// </summary>
+    public string Senha { get; set; }
+
+    /// <summary>
+    /// Obtém ou define a frase secreta utilizada por alguns provedores para autenticação/assinatura.
+    /// </summary>
+    public string FraseSecreta { get; set; }
+
+    /// <summary>
+    /// Obtém ou define a chave de acesso (API Key / Token) para autenticação em provedores REST/SOAP.
+    /// </summary>
+    public string ChaveAcesso { get; set; }
+
+    /// <summary>
+    /// Obtém ou define a chave privada em formato texto, quando exigida pelo provedor.
+    /// </summary>
+    public string ChavePrivada { get; set; }
+
+    /// <summary>
+    /// Obtém ou define o endereço do servidor proxy (se utilizado).
+    /// </summary>
+    public string Proxy { get; set; }
+
+    /// <summary>
+    /// Código IBGE do município dos webservices em uso.
+    /// </summary>
+    /// <value>O código IBGE do município.</value>
     public int CodigoMunicipio
     {
         get => codigoMunicipio;

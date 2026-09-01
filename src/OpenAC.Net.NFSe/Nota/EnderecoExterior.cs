@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados de endereço no exterior para tomador ou prestador não residente no Brasil.
+/// </summary>
+
 
 public sealed class EnderecoExterior : GenericClone<EnderecoExterior>, INotifyPropertyChanged
 {

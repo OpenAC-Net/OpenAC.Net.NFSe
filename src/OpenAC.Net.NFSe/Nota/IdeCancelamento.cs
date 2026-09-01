@@ -34,7 +34,10 @@ using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core.Document;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações de identificação do cancelamento da NFS-e.
+/// </summary>
+
 
 public sealed class IdeCancelamento : GenericClone<IdeCancelamento>, INotifyPropertyChanged
 {

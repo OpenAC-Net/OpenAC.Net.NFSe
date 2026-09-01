@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados cadastrais, fiscais e endereço do tomador do serviço (cliente).
+/// </summary>
+
 
 public sealed class DadosTomador : GenericClone<DadosTomador>, INotifyPropertyChanged
 {
@@ -62,6 +65,8 @@ public sealed class DadosTomador : GenericClone<DadosTomador>, INotifyPropertyCh
     public string InscricaoEstadual { get; set; }
 
     public string DocEstrangeiro { get; set; }
+
+    public string CodNaoNif { get; set; }
 
     public string RazaoSocial { get; set; }
 

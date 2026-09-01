@@ -32,8 +32,8 @@ namespace OpenAC.Net.NFSe.Providers.Barueri
             message.Append("<NFeLoteEnviarArquivo xmlns=\"http://www.barueri.sp.gov.br/nfe\">");
             message.Append("<VersaoSchema>1</VersaoSchema>");
             message.Append($"<MensagemXML><![CDATA[{msg}]]></MensagemXML>");
-            message.Append("</NFeLoteEnviarArquivo>");   
-            
+            message.Append("</NFeLoteEnviarArquivo>");
+
             var strMessage = message.ToString();
 
             return Execute("http://www.barueri.sp.gov.br/nfe/NFeLoteEnviarArquivo", strMessage, "NFeLoteEnviarArquivoResponse");

@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Tipos de documentos fiscais comprobatórios de dedução da base de cálculo.
+/// </summary>
+
 
 public enum TipoDocumentoDeducao
 {

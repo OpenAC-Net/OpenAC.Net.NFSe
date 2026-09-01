@@ -44,7 +44,7 @@ using OpenAC.Net.NFSe.Providers;
 namespace OpenAC.Net.NFSe.Nota;
 
 /// <summary>
-/// 
+/// Representa uma Nota Fiscal de Serviço Eletrônica (NFS-e) ou Recibo Provisório de Serviços (RPS).
 /// </summary>
 public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChanged
 {
@@ -80,6 +80,7 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
         DestinatarioCBSIBS = new DadosTomador();
         Intermediario = new DadosIntermediario();
         ConstrucaoCivil = new DadosConstrucaoCivil();
+        ComExterior = new DadosComExterior();
         Material = new DadosMateriais();
         Pagamento = new DadosPagamento();
         OrgaoGerador = new IdeOrgaoGerador();
@@ -126,6 +127,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public Endereco EnderecoPrestacao { get; set; }
 
     public DadosConstrucaoCivil ConstrucaoCivil { get; }
+
+    public DadosComExterior ComExterior { get; }
 
     public DadosMateriais Material { get; set; }
 
@@ -182,6 +185,8 @@ public sealed class NotaServico : GenericClone<NotaServico>, INotifyPropertyChan
     public DFeSignature Signature { get; set; }
 
     public string XmlOriginal { get; set; }
+
+    public string XmlRetornoComplementarIBSCBS { get; set; }
 
     public string LinkNFSe { get; set; }
 

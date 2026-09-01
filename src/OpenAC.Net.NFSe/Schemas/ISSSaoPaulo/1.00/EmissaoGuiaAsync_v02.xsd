@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.prefeitura.sp.gov.br/nfe"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://www.prefeitura.sp.gov.br/nfe"
+            xmlns:sig="http://www.w3.org/2000/09/xmldsig#"
+            xmlns:tipos="http://www.prefeitura.sp.gov.br/nfe/tipos"
+            xmlns:async="http://www.prefeitura.sp.gov.br/nfe/tipos">
+
+    <xsd:import namespace="http://www.prefeitura.sp.gov.br/nfe/tipos" schemaLocation="TiposNFe_v02.xsd" />
+    <xsd:import namespace="http://www.prefeitura.sp.gov.br/nfe/tipos" schemaLocation="TiposNFeAsync_v02.xsd" />
+    <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#"        schemaLocation="xmldsig-core-schema_v02.xsd" />
+
+    <xsd:element name="PedidoEmissaoGuiaAsync">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="CPFCNPJRemetente"   type="tipos:tpCPFCNPJ"            minOccurs="1" maxOccurs="1" />
+                <xsd:element name="InscricaoPrestador" type="tipos:tpInscricaoMunicipal" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="TipoEmissaoGuia"    type="async:tpEmissaoGuia"        minOccurs="1" maxOccurs="1" />
+                <xsd:element name="Incidencia"         type="async:tpIncidencia"         minOccurs="1" maxOccurs="1" />
+                <xsd:element name="DataPagamento"      type="xsd:date"                   minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="sig:Signature"       minOccurs="1" maxOccurs="1" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="RetornoEmissaoGuiaAsync">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Cabecalho" minOccurs="1" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Sucesso"         type="tipos:tpSucesso"              minOccurs="1" maxOccurs="1" />
+                            <xsd:element name="InformacoesGuia" type="async:tpInformacoesGuiaAsync" minOccurs="0" maxOccurs="1" />
+                        </xsd:sequence>
+                        <xsd:attribute   name="Versao"          type="tipos:tpVersao" use="required" />
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="Erro" type="async:tpEventoAsync" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

@@ -1,0 +1,1443 @@
+﻿<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.abrasf.org.br/nfse.xsd" 
+        xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+        targetNamespace="http://www.abrasf.org.br/nfse.xsd" 
+        elementFormDefault="qualified">
+
+   <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema_v2.03.xsd"/>
+
+   <element name="CancelarNfseEnvio">
+      <complexType>
+         <sequence>
+            <element name="Pedido" type="tns:tcPedidoCancelamento"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="CancelarNfseEnvioResponse">
+      <complexType>
+         <sequence>
+             <element name="CancelarNfseResposta" type="tns:CancelarNfseResposta"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="ConsultarLoteRpsEnvio">
+      <complexType>
+         <sequence>
+            <element name="Prestador" type="tns:tcIdentificacaoPrestador"/>
+            <element name="Protocolo" type="tns:tsNumeroProtocolo"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="ConsultarLoteRpsEnvioResponse">
+      <complexType>
+         <sequence>
+            <element name="ConsultarLoteRpsResposta" type="tns:ConsultarLoteRpsResposta"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="ConsultarNfseRpsEnvio">
+      <complexType>
+         <sequence>
+            <element name="IdentificacaoRps" type="tns:tcIdentificacaoRps"/>
+            <element name="Prestador" type="tns:tcIdentificacaoPrestador"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="ConsultarNfseRpsEnvioResponse">
+      <complexType>
+         <sequence>
+             <element name="ConsultarNfseRpsResposta" type="tns:ConsultarNfseRpsResposta"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="EnviarLoteRpsEnvio">
+      <complexType>
+         <sequence>
+            <element name="LoteRps" type="tns:tcLoteRps"/>
+            <element minOccurs="0" ref="ds:Signature"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="EnviarLoteRpsEnvioResponse">
+      <complexType>
+         <sequence>
+             <element name="EnviarLoteRpsResposta" type="tns:EnviarLoteRpsResposta"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="EnviarLoteRpsSincronoEnvio">
+      <complexType>
+         <sequence>
+            <element name="LoteRps" type="tns:tcLoteRps"/>
+            <element minOccurs="0" ref="ds:Signature"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="EnviarLoteRpsSincronoEnvioResponse">
+      <complexType>
+         <sequence>
+             <element name="EnviarLoteRpsSincronoResposta" type="tns:EnviarLoteRpsSincronoResposta"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="GerarNfseEnvio">
+      <complexType>
+         <sequence>
+            <element name="Rps" type="tns:tcDeclaracaoPrestacaoServico"/>
+         </sequence>
+      </complexType>
+   </element>
+   
+   <element name="GerarNfseEnvioResponse">
+      <complexType>
+         <sequence>
+             <element name="GerarNfseResposta" type="tns:GerarNfseResposta"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <complexType name="CancelarNfseResposta">
+        <sequence>
+            <element minOccurs="0" name="RetCancelamento" type="tns:tcRetCancelamento"/>
+            <element minOccurs="0" name="ListaMensagemRetorno" type="tns:ListaMensagemRetorno"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="tcRetCancelamento">
+        <sequence>
+            <element name="NfseCancelamento" type="tns:tcCancelamentoNfse"/>
+        </sequence>
+    </complexType>
+
+   <complexType name="ConsultarLoteRpsResposta">
+        <sequence>
+            <element minOccurs="0" name="ListaNfse" type="tns:ListaNfse"/>
+            <element minOccurs="0" name="ListaMensagemRetorno" type="tns:ListaMensagemRetorno"/>
+        </sequence>
+    </complexType>
+
+   <complexType name="ConsultarNfseRpsResposta">
+        <sequence>
+            <element minOccurs="0" name="CompNfse" type="tns:tcCompNfse"/>
+            <element minOccurs="0" name="ListaMensagemRetorno" type="tns:ListaMensagemRetorno"/>
+        </sequence>
+    </complexType>
+
+   <complexType name="EnviarLoteRpsResposta">
+      <sequence>
+         <element minOccurs="0" name="NumeroLote" type="tns:tsNumeroLote"/>
+         <element minOccurs="0" name="DataRecebimento" type="tns:tsDataHora"/>
+         <element minOccurs="0" name="Protocolo" type="tns:tsNumeroProtocolo"/>
+         <element minOccurs="0" name="ListaMensagemRetorno" type="tns:ListaMensagemRetorno"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="EnviarLoteRpsSincronoResposta">
+      <sequence>
+         <element minOccurs="0" name="NumeroLote" type="tns:tsNumeroLote"/>
+         <element minOccurs="0" name="DataRecebimento" type="tns:tsDataHora"/>
+         <element minOccurs="0" name="Protocolo" type="tns:tsNumeroProtocolo"/>
+         <element minOccurs="0" name="ListaNfse" type="tns:ListaNfse"/>
+         <element minOccurs="0" name="ListaMensagemRetorno" type="tns:ListaMensagemRetorno"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="GerarNfseResposta">
+        <sequence>
+            <element minOccurs="0" name="ListaNfse" type="tns:ListaNfse"/>
+            <element minOccurs="0" name="ListaMensagemRetorno" type="tns:ListaMensagemRetorno"/>
+        </sequence>
+    </complexType>
+
+   <complexType name="tcPedidoCancelamento">
+      <sequence>
+         <element name="InfPedidoCancelamento" type="tns:tcInfPedidoCancelamento"/>
+         <element minOccurs="0" ref="ds:Signature"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcInfPedidoCancelamento">
+      <sequence>
+         <element minOccurs="0" name="IdentificacaoNfse" type="tns:tcIdentificacaoNfse"/>
+         <element minOccurs="0" name="CodigoCancelamento" type="tns:tsCodigoCancelamentoNfse"/>
+         <element minOccurs="0" name="ADNChave" type="tns:TSChaveNFSe"/>
+         <element name="ADNCodMotivo" type="tns:TSCodJustCanc"/>
+         <element name="ADNMotivo" type="tns:TSMotivo"/>
+      </sequence>
+      <attribute name="Id" type="tns:tsIdTag"/>
+   </complexType>
+
+   <complexType name="tcIdentificacaoNfse">
+      <sequence>
+         <element name="Numero" type="tns:tsNumeroNfse"/>
+         <element name="CpfCnpj" type="tns:tcCpfCnpj"/>
+         <element minOccurs="0" name="InscricaoMunicipal" type="tns:tsInscricaoMunicipal"/>
+         <element name="CodigoMunicipio" type="tns:tsCodigoMunicipioIbge"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcCpfCnpj">
+      <sequence>
+         <element minOccurs="0" name="Cpf" type="tns:tsCpf"/>
+         <element minOccurs="0" name="Cnpj" type="tns:tsCnpj"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcIdentificacaoPrestador">
+      <sequence>
+         <element name="CpfCnpj" type="tns:tcCpfCnpj"/>
+         <element minOccurs="0" name="InscricaoMunicipal" type="tns:tsInscricaoMunicipal"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcIdentificacaoRps">
+      <sequence>
+         <element name="Numero" type="tns:tsNumeroRps"/>
+         <element name="Serie" type="tns:tsSerieRps"/>
+         <element name="Tipo" type="tns:tsTipoRps"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcLoteRps">
+      <sequence>
+         <element name="NumeroLote" type="tns:tsNumeroLote"/>
+         <element name="CpfCnpj" type="tns:tcCpfCnpj"/>
+         <element minOccurs="0" name="InscricaoMunicipal" type="tns:tsInscricaoMunicipal"/>
+         <element name="QuantidadeRps" type="tns:tsQuantidadeRps"/>
+         <element name="ListaRps" type="tns:ArrayOfRpstcDeclaracaoPrestacaoServico"/>
+      </sequence>
+      <attribute name="Id" type="tns:tsIdTag"/>
+      <attribute name="versao" type="tns:tsVersao" use="required"/>
+   </complexType>
+
+   <complexType name="ArrayOfRpstcDeclaracaoPrestacaoServico">
+      <sequence>
+         <element maxOccurs="unbounded" minOccurs="0" name="Rps" nillable="true" type="tns:tcDeclaracaoPrestacaoServico"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcDeclaracaoPrestacaoServico">
+      <sequence>
+         <element name="InfDeclaracaoPrestacaoServico" type="tns:tcInfDeclaracaoPrestacaoServico"/>
+         <element minOccurs="0" name="IBSCBS" type="tns:TCRTCIBSCBS"/>
+         <element minOccurs="0" ref="ds:Signature"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcInfDeclaracaoPrestacaoServico">
+      <sequence>
+         <element minOccurs="0" name="Rps" type="tns:tcInfRps"/>
+         <element name="Competencia" type="date"/>
+         <element name="Servico" type="tns:tcDadosServico"/>
+         <element name="Prestador" type="tns:tcIdentificacaoPrestador"/>
+         <element minOccurs="0" name="Tomador" type="tns:tcDadosTomador"/>
+         <element minOccurs="0" name="Intermediario" type="tns:tcDadosIntermediario"/>
+         <element minOccurs="0" name="ConstrucaoCivil" type="tns:tcDadosConstrucaoCivil"/>
+         <element minOccurs="0" name="RegimeEspecialTributacao" type="tns:tsRegimeEspecialTributacao"/>
+         <element name="OptanteSimplesNacional" type="tns:tsSimNao"/>
+         <element name="IncentivoFiscal" type="tns:tsSimNao"/>
+	 <element name="regApTribSN" type="tns:tsRegimeApuracaoSimpNac"/>
+         <element minOccurs="0" name="IBSCBS" type="tns:TCRTCInfoIBSCBS"/>
+      </sequence>
+      <attribute name="Id" type="tns:tsIdTag"/>
+   </complexType>
+
+   <complexType name="tcInfRps">
+      <sequence>
+         <element name="IdentificacaoRps" type="tns:tcIdentificacaoRps"/>
+         <element name="DataEmissao" type="date"/>
+         <element name="Status" type="tns:tsStatusRps"/>
+         <element minOccurs="0" name="RpsSubstituido" type="tns:tcIdentificacaoRps"/>
+      </sequence>
+      <attribute name="Id" type="tns:tsIdTag"/>
+   </complexType>
+
+   <complexType name="tcDadosServico">
+      <sequence>
+         <element name="Valores" type="tns:tcValoresDeclaracaoServico"/>
+         <element name="IssRetido" type="tns:tsSimNao"/>
+         <element minOccurs="0" name="ResponsavelRetencao" type="tns:tsResponsavelRetencao"/>
+         <element name="ItemListaServico" type="tns:tsItemListaServico"/>
+         <element minOccurs="0" name="CodigoCnae" type="tns:tsCodigoCnae"/>
+         <element minOccurs="0" name="CodigoTributacaoMunicipio" type="tns:tsCodigoTributacao"/>
+         <element minOccurs="0" name="CodigoNbs" type="tns:tsCodigoNbs"/>
+         <element name="Discriminacao" type="tns:tsDiscriminacao"/>
+         <element name="CodigoMunicipio" type="tns:tsCodigoMunicipioIbge"/>
+         <element minOccurs="0" name="CodigoPais" type="tns:tsCodigoPaisBacen"/>
+         <element name="ExigibilidadeISS" type="tns:tsExigibilidadeISS"/>
+         <element minOccurs="0" name="MunicipioIncidencia" type="tns:tsCodigoMunicipioIbge"/>
+         <element minOccurs="0" name="NumeroProcesso" type="tns:tsNumeroProcesso"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcValoresDeclaracaoServico">
+      <sequence>
+         <element name="ValorServicos" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorDeducoes" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorPis" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorCofins" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorInss" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorIr" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorCsll" type="tns:tsValor"/>
+         <element minOccurs="0" name="OutrasRetencoes" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValTotTributos" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorIss" type="tns:tsValor"/>
+         <element minOccurs="0" name="Aliquota" type="tns:tsAliquota"/>
+         <element minOccurs="0" name="DescontoIncondicionado" type="tns:tsValor"/>
+         <element minOccurs="0" name="DescontoCondicionado" type="tns:tsValor"/>
+         <element minOccurs="0" name="AliquotaPis" type="tns:tsAliquota"/>
+         <element minOccurs="0" name="AliquotaCofins" type="tns:tsAliquota"/>
+         <element minOccurs="0" name="ValorBaseCalculoPisCofins" type="tns:tsValor"/>
+         <element minOccurs="0" name="tpRetPisCofins" type="string"/>
+         <element minOccurs="0" name="CSTPisCofins" type="string"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcDadosTomador">
+      <sequence>
+         <element minOccurs="0" name="IdentificacaoTomador" type="tns:tcIdentificacaoTomador"/>
+         <element minOccurs="0" name="NifTomador" type="tns:tsNif"/>
+         <element minOccurs="0" name="RazaoSocial" type="tns:tsRazaoSocial"/>
+         <element minOccurs="0" name="Endereco" type="tns:tcEndereco"/>
+         <element minOccurs="0" name="Contato" type="tns:tcContato"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcIdentificacaoTomador">
+      <sequence>
+         <element minOccurs="0" name="CpfCnpj" type="tns:tcCpfCnpj"/>
+         <element minOccurs="0" name="InscricaoMunicipal" type="tns:tsInscricaoMunicipal"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcEndereco">
+      <sequence>
+         <element minOccurs="0" name="Endereco" type="tns:tsEndereco"/>
+         <element minOccurs="0" name="Numero" type="tns:tsNumeroEndereco"/>
+         <element minOccurs="0" name="Complemento" type="tns:tsComplementoEndereco"/>
+         <element minOccurs="0" name="Bairro" type="tns:tsBairro"/>
+         <element minOccurs="0" name="CodigoMunicipio" type="tns:tsCodigoMunicipioIbge"/>
+         <element minOccurs="0" name="Uf" type="tns:tsUf"/>
+         <element minOccurs="0" name="CodigoPais" type="tns:tsCodigoPaisBacen"/>
+         <element minOccurs="0" name="Cep" type="tns:tsCep"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcContato">
+      <sequence>
+         <element minOccurs="0" name="Telefone" type="tns:tsTelefone"/>
+         <element minOccurs="0" name="Email" type="tns:tsEmail"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcDadosIntermediario">
+      <sequence>
+         <element name="IdentificacaoIntermediario" type="tns:tcIdentificacaoIntermediario"/>
+         <element name="RazaoSocial" type="tns:tsRazaoSocial"/>
+         <element name="CodigoMunicipio" type="tns:tsCodigoMunicipioIbge"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcIdentificacaoIntermediario">
+      <sequence>
+         <element minOccurs="0" name="CpfCnpj" type="tns:tcCpfCnpj"/>
+         <element minOccurs="0" name="InscricaoMunicipal" type="tns:tsInscricaoMunicipal"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcDadosConstrucaoCivil">
+      <sequence>
+         <element minOccurs="0" name="CodigoObra" type="tns:tsCodigoObra"/>
+         <element name="Art" type="tns:tsArt"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="ListaNfse">
+      <sequence>
+         <element maxOccurs="unbounded" name="CompNfse" type="tns:tcCompNfse"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcCompNfse">
+      <sequence>
+         <element name="Nfse" type="tns:tcNfse"/>
+         <element minOccurs="0" name="NfseCancelamento" type="tns:tcCancelamentoNfse"/>
+         <element minOccurs="0" name="NfseSubstituicao" type="tns:tcSubstituicaoNfse"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcNfse">
+      <sequence>
+         <element name="InfNfse" type="tns:tcInfNfse"/>
+         <element maxOccurs="2" minOccurs="0" ref="ds:Signature"/>
+      </sequence>
+      <attribute name="versao" type="tns:tsVersao" use="required"/>
+   </complexType>
+
+   <complexType name="tcInfNfse">
+      <sequence>
+         <element name="Numero" type="tns:tsNumeroNfse"/>
+         <element name="CodigoVerificacao" type="tns:tsCodigoVerificacao"/>
+         <element name="DataEmissao" type="tns:tsDataHora"/>
+         <element minOccurs="0" name="NfseSubstituida" type="tns:tsNumeroNfse"/>
+         <element minOccurs="0" name="OutrasInformacoes" type="tns:tsOutrasInformacoes"/>
+         <element name="ValoresNfse" type="tns:tcValoresNfse"/>
+         <element minOccurs="0" name="ValorCredito" type="tns:tsValor"/>
+         <element name="PrestadorServico" type="tns:tcDadosPrestador"/>
+         <element minOccurs="0" name="OrgaoGerador" type="tns:tcIdentificacaoOrgaoGerador"/>
+         <element minOccurs="0" name="DeclaracaoPrestacaoServico" type="tns:tcDeclaracaoPrestacaoServico"/>
+      </sequence>
+      <attribute name="Id" type="tns:tsIdTag"/>
+   </complexType>
+
+   <complexType name="tcValoresNfse">
+      <sequence>
+         <element name="BaseCalculo" type="tns:tsValor"/>
+         <element minOccurs="0" name="Aliquota" type="tns:tsAliquota"/>
+         <element minOccurs="0" name="ValorIss" type="tns:tsValor"/>
+         <element minOccurs="0" name="ValorLiquidoNfse" type="tns:tsValor"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcDadosPrestador">
+      <sequence>
+         <element name="IdentificacaoPrestador" type="tns:tcIdentificacaoPrestador"/>
+         <element name="RazaoSocial" type="tns:tsRazaoSocial"/>
+         <element minOccurs="0" name="NomeFantasia" type="tns:tsNomeFantasia"/>
+         <element name="Endereco" type="tns:tcEndereco"/>
+         <element minOccurs="0" name="Contato" type="tns:tcContato"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcIdentificacaoOrgaoGerador">
+      <sequence>
+         <element name="CodigoMunicipio" type="tns:tsCodigoMunicipioIbge"/>
+         <element name="Uf" type="tns:tsUf"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcCancelamentoNfse">
+      <sequence>
+         <element name="Confirmacao" type="tns:tcConfirmacaoCancelamento"/>
+         <element minOccurs="0" ref="ds:Signature"/>
+      </sequence>
+      <attribute name="versao" type="tns:tsVersao" use="required"/>
+   </complexType>
+
+   <complexType name="tcConfirmacaoCancelamento">
+      <sequence>
+         <element name="Pedido" type="tns:tcPedidoCancelamento"/>
+         <element name="DataHora" type="tns:tsDataHora"/>
+      </sequence>
+      <attribute name="Id" type="tns:tsIdTag"/>
+   </complexType>
+
+   <complexType name="tcSubstituicaoNfse">
+      <sequence>
+         <element name="SubstituicaoNfse" type="tns:tcInfSubstituicaoNfse"/>
+         <element minOccurs="0" ref="ds:Signature"/>
+      </sequence>
+      <attribute name="versao" type="tns:tsVersao" use="required"/>
+   </complexType>
+
+   <complexType name="tcInfSubstituicaoNfse">
+      <sequence>
+         <element name="NfseSubstituidora" type="tns:tsNumeroNfse"/>
+      </sequence>
+      <attribute name="Id" type="tns:tsIdTag"/>
+   </complexType>
+
+   <complexType name="ListaMensagemRetorno">
+      <sequence>
+         <element maxOccurs="unbounded" name="MensagemRetorno" type="tns:tcMensagemRetorno"/>
+      </sequence>
+   </complexType>
+
+   <complexType name="tcMensagemRetorno">
+      <sequence>
+         <element name="Codigo" type="tns:tsCodigoMensagemAlerta"/>
+         <element name="Mensagem" type="tns:tsDescricaoMensagemAlerta"/>
+         <element minOccurs="0" name="Correcao" type="tns:tsDescricaoMensagemAlerta"/>
+      </sequence>
+   </complexType>
+
+    <complexType name="TCRTCInfoIBSCBS">
+      <sequence>
+         <element name="finNFSe" type="tns:TSRTCFinNFSe"/>
+         <element minOccurs="0" name="indFinal" type="tns:TSRTCIndFinal"/>
+         <element name="cIndOp" type="tns:TSRTCCodIndOp"/>
+         <element minOccurs="0" name="tpOper" type="tns:TSRTCTpOper"/>
+         <element minOccurs="0" name="gRefNFSe" type="tns:ArrayOfrefNFSeTSChaveNFSe"/>
+         <element minOccurs="0" name="tpEnteGov" type="tns:TSRTCTpEnteGov"/>
+         <element name="indDest" type="tns:TSRTCIndDest"/>
+         <element minOccurs="0" name="dest" type="tns:TCRTCInfoDest"/>
+         <element minOccurs="0" name="imovel" type="tns:TCRTCInfoImovel"/>
+         <element name="valores" type="tns:TCRTCInfoValoresIBSCBS"/>
+      </sequence>
+   </complexType>
+   <complexType name="ArrayOfrefNFSeTSChaveNFSe">
+      <sequence>
+         <element maxOccurs="unbounded" minOccurs="0" name="refNFSe" nillable="true" type="tns:TSChaveNFSe"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCInfoDest">
+      <sequence>
+         <element minOccurs="0" name="CNPJ" type="tns:tsCnpj"/>
+         <element minOccurs="0" name="CPF" type="tns:tsCpf"/>
+         <element minOccurs="0" name="NIF" type="tns:tsNif"/>
+         <element minOccurs="0" name="cNaoNIF" type="tns:TSCodNaoNIF"/>
+         <element name="xNome" type="tns:TSDesc150"/>
+         <element minOccurs="0" name="end" type="tns:TCEnderecoNac"/>
+         <element minOccurs="0" name="fone" type="tns:tsTelefone"/>
+         <element minOccurs="0" name="email" type="tns:tsEmail"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCEnderecoNac">
+      <sequence>
+         <element minOccurs="0" name="endNac" type="tns:TCEnderNac"/>
+         <element minOccurs="0" name="endExt" type="tns:TCEnderExt"/>
+         <element name="xLgr" type="tns:TSLogradouro"/>
+         <element name="nro" type="tns:tsNumeroEndereco"/>
+         <element minOccurs="0" name="xCpl" type="tns:tsComplementoEndereco"/>
+         <element name="xBairro" type="tns:tsBairro"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCEnderNac">
+      <sequence>
+         <element name="cMun" type="tns:TSCodMunIBGE"/>
+         <element name="CEP" type="tns:tsCep"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCEnderExt">
+      <sequence>
+         <element name="cPais" type="tns:TSCodPaisISO"/>
+         <element name="cEndPost" type="tns:TSCodigoEndPostal"/>
+         <element name="xCidade" type="tns:TSCidade"/>
+         <element name="xEstProvReg" type="tns:TSEstadoProvRegiao"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCInfoImovel">
+      <sequence>
+         <element minOccurs="0" name="inscImobFisc" type="tns:TSInscImobFisc"/>
+         <element minOccurs="0" name="cCIB" type="tns:TSCodCIB"/>
+         <element minOccurs="0" name="end" type="tns:TCEnderObraEvento"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCEnderObraEvento">
+      <sequence>
+         <element minOccurs="0" name="CEP" type="tns:tsCep"/>
+         <element minOccurs="0" name="endExt" type="tns:TCEnderExtSimples"/>
+         <element name="xLgr" type="tns:TSLogradouro"/>
+         <element name="nro" type="tns:tsNumeroEndereco"/>
+         <element minOccurs="0" name="xCpl" type="tns:tsComplementoEndereco"/>
+         <element name="xBairro" type="tns:tsBairro"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCEnderExtSimples">
+      <sequence>
+         <element name="cEndPost" type="tns:TSCodigoEndPostal"/>
+         <element name="xCidade" type="tns:TSCidade"/>
+         <element name="xEstProvReg" type="tns:TSEstadoProvRegiao"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCInfoValoresIBSCBS">
+      <sequence>
+         <element minOccurs="0" name="gReeRepRes" type="tns:ArrayOfdocumentosTCRTCListaDoc"/>
+         <element name="trib" type="tns:TCRTCInfoTributosIBSCBS"/>
+      </sequence>
+   </complexType>
+   <complexType name="ArrayOfdocumentosTCRTCListaDoc">
+      <sequence>
+         <element maxOccurs="unbounded" minOccurs="0" name="documentos" nillable="true" type="tns:TCRTCListaDoc"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCListaDoc">
+      <sequence>
+         <element minOccurs="0" name="dFeNacional" type="tns:TCRTCListaDocDFe"/>
+         <element minOccurs="0" name="docFiscalOutro" type="tns:TCRTCListaDocFiscalOutro"/>
+         <element minOccurs="0" name="docOutro" type="tns:TCRTCListaDocOutro"/>
+         <element minOccurs="0" name="fornec" type="tns:TCRTCListaDocFornec"/>
+         <element name="dtEmiDoc" type="tns:TSData"/>
+         <element name="dtCompDoc" type="tns:TSData"/>
+         <element name="tpReeRepRes" type="tns:TSRTCTpReeRepRes"/>
+         <element minOccurs="0" name="xTpReeRepRes" type="tns:TSDesc150"/>
+         <element name="vlrReeRepRes" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCListaDocDFe">
+      <sequence>
+         <element name="tipoChaveDFe" type="tns:TSRTCTipoChaveDFe"/>
+         <element minOccurs="0" name="xTipoChaveDFe" type="tns:TSDesc255"/>
+         <element name="chaveDFe" type="tns:TSRTCChaveDFe"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCListaDocFiscalOutro">
+      <sequence>
+         <element name="cMunDocFiscal" type="tns:TSNum7Dig"/>
+         <element name="nDocFiscal" type="tns:TSDesc255"/>
+         <element name="xDocFiscal" type="tns:TSDesc255"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCListaDocOutro">
+      <sequence>
+         <element name="nDoc" type="tns:TSDesc255"/>
+         <element name="xDoc" type="tns:TSDesc255"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCListaDocFornec">
+      <sequence>
+         <element minOccurs="0" name="CNPJ" type="tns:tsCnpj"/>
+         <element minOccurs="0" name="CPF" type="tns:tsCpf"/>
+         <element minOccurs="0" name="NIF" type="tns:tsNif"/>
+         <element minOccurs="0" name="cNaoNIF" type="tns:TSCodNaoNIF"/>
+         <element name="xNome" type="tns:TSDesc150"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCInfoTributosIBSCBS">
+      <sequence>
+         <element name="gIBSCBS" type="tns:TCRTCInfoTributosSitClas"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCInfoTributosSitClas">
+      <sequence>
+         <element name="CST" type="tns:TSRTCCodSitTrib"/>
+         <element name="cClassTrib" type="tns:TSRTCCodClassTrib"/>
+         <element minOccurs="0" name="cCredPres" type="tns:TSRTCCodCredPres"/>
+         <element minOccurs="0" name="gTribRegular" type="tns:TCRTCInfoTributosTribRegular"/>
+         <element minOccurs="0" name="gDif" type="tns:TCRTCInfoTributosDif"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCInfoTributosTribRegular">
+      <sequence>
+         <element name="CSTReg" type="tns:TSRTCCodSitTrib"/>
+         <element name="cClassTribReg" type="tns:TSRTCCodClassTrib"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCInfoTributosDif">
+      <sequence>
+         <element name="pDifUF" type="tns:TSDec3V2"/>
+         <element name="pDifMun" type="tns:TSDec3V2"/>
+         <element name="pDifCBS" type="tns:TSDec3V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCIBSCBS">
+      <sequence>
+         <element name="cLocalidadeIncid" type="tns:TSCodMunIBGE"/>
+         <element name="xLocalidadeIncid" type="tns:TSDesc600"/>
+         <element minOccurs="0" name="pRedutor" type="tns:TSDec2V2"/>
+         <element name="valores" type="tns:TCRTCValoresIBSCBS"/>
+         <element name="totCIBS" type="tns:TCRTCTotalCIBS"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCValoresIBSCBS">
+      <sequence>
+         <element name="vBC" type="tns:TSDec15V2"/>
+         <element minOccurs="0" name="vCalcReeRepRes" type="tns:TSDec15V2"/>
+         <element name="uf" type="tns:TCRTCValoresIBSCBSUF"/>
+         <element name="mun" type="tns:TCRTCValoresIBSCBSMun"/>
+         <element name="fed" type="tns:TCRTCValoresIBSCBSFed"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCValoresIBSCBSUF">
+      <sequence>
+         <element name="pIBSUF" type="tns:TSDec2V2"/>
+         <element minOccurs="0" name="pRedAliqUF" type="tns:TSDec3V2"/>
+         <element name="pAliqEfetUF" type="tns:TSDec2V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCValoresIBSCBSMun">
+      <sequence>
+         <element name="pIBSMun" type="tns:TSDec2V2"/>
+         <element minOccurs="0" name="pRedAliqMun" type="tns:TSDec3V2"/>
+         <element name="pAliqEfetMun" type="tns:TSDec2V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCValoresIBSCBSFed">
+      <sequence>
+         <element name="pCBS" type="tns:TSDec2V2"/>
+         <element minOccurs="0" name="pRedAliqCBS" type="tns:TSDec3V2"/>
+         <element name="pAliqEfetCBS" type="tns:TSDec2V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalCIBS">
+      <sequence>
+         <element name="vTotNF" type="tns:TSDec15V2"/>
+         <element name="gIBS" type="tns:TCRTCTotalIBS"/>
+         <element name="gCBS" type="tns:TCRTCTotalCBS"/>
+         <element minOccurs="0" name="gTribRegular" type="tns:TCRTCTotalTribRegular"/>
+         <element minOccurs="0" name="gTribCompraGov" type="tns:TCRTCTotalTribCompraGov"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalIBS">
+      <sequence>
+         <element name="vIBSTot" type="tns:TSDec15V2"/>
+         <element minOccurs="0" name="gIBSCredPres" type="tns:TCRTCTotalIBSCredPres"/>
+         <element name="gIBSUFTot" type="tns:TCRTCTotalIBSUF"/>
+         <element name="gIBSMunTot" type="tns:TCRTCTotalIBSMun"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalIBSCredPres">
+      <sequence>
+         <element name="pCredPresIBS" type="tns:TSDec2V2"/>
+         <element name="vCredPresIBS" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalIBSUF">
+      <sequence>
+         <element minOccurs="0" name="vDifUF" type="tns:TSDec15V2"/>
+         <element name="vIBSUF" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalIBSMun">
+      <sequence>
+         <element minOccurs="0" name="vDifMun" type="tns:TSDec15V2"/>
+         <element name="vIBSMun" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalCBS">
+      <sequence>
+         <element minOccurs="0" name="gCBSCredPres" type="tns:TCRTCTotalCBSCredPres"/>
+         <element minOccurs="0" name="vDifCBS" type="tns:TSDec15V2"/>
+         <element name="vCBS" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalCBSCredPres">
+      <sequence>
+         <element name="pCredPresCBS" type="tns:TSDec2V2"/>
+         <element name="vCredPresCBS" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalTribRegular">
+      <sequence>
+         <element name="pAliqEfeRegIBSUF" type="tns:TSDec2V2"/>
+         <element name="vTribRegIBSUF" type="tns:TSDec15V2"/>
+         <element name="pAliqEfeRegIBSMun" type="tns:TSDec2V2"/>
+         <element name="vTribRegIBSMun" type="tns:TSDec15V2"/>
+         <element name="pAliqEfeRegCBS" type="tns:TSDec2V2"/>
+         <element name="vTribRegCBS" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+   <complexType name="TCRTCTotalTribCompraGov">
+      <sequence>
+         <element name="pIBSUF" type="tns:TSDec2V2"/>
+         <element name="vIBSUF" type="tns:TSDec15V2"/>
+         <element name="pIBSMun" type="tns:TSDec2V2"/>
+         <element name="vIBSMun" type="tns:TSDec15V2"/>
+         <element name="pCBS" type="tns:TSDec2V2"/>
+         <element name="vCBS" type="tns:TSDec15V2"/>
+      </sequence>
+   </complexType>
+
+   <simpleType name="tsNumeroNfse">
+      <restriction base="nonNegativeInteger">
+         <minInclusive value="0"/>
+         <totalDigits value="15"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCpf">
+      <restriction base="string">
+         <maxLength value="11"/>
+         <minLength value="11"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCnpj">
+      <restriction base="string">
+         <maxLength value="14"/>
+         <minLength value="14"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsInscricaoMunicipal">
+      <restriction base="string">
+         <maxLength value="15"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoMunicipioIbge">
+      <restriction base="int">
+         <maxInclusive value="2147483647"/>
+         <minInclusive value="-2147483648"/>
+         <totalDigits value="7"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoCancelamentoNfse">
+      <restriction base="byte">
+         <pattern value="1|2|3|4|5"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsIdTag">
+      <restriction base="string">
+         <maxLength value="255"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsNumeroProtocolo">
+      <restriction base="string">
+         <maxLength value="50"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsNumeroRps">
+      <restriction base="nonNegativeInteger">
+         <minInclusive value="0"/>
+         <totalDigits value="15"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsSerieRps">
+      <restriction base="string">
+         <maxLength value="5"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsTipoRps">
+      <restriction base="byte">
+         <pattern value="1|2|3"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsNumeroLote">
+      <restriction base="nonNegativeInteger">
+         <minInclusive value="0"/>
+         <totalDigits value="15"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsQuantidadeRps">
+      <restriction base="int">
+         <maxInclusive value="2147483647"/>
+         <minInclusive value="-2147483648"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsStatusRps">
+      <restriction base="byte">
+         <pattern value="1|2"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsValor">
+      <restriction base="decimal">
+         <fractionDigits value="2"/>
+         <totalDigits value="15"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsAliquota">
+      <restriction base="decimal">
+         <fractionDigits value="2"/>
+         <totalDigits value="4"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsSimNao">
+      <restriction base="byte">
+         <pattern value="1|2"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+     <simpleType name="tsRegimeApuracaoSimpNac">
+      <restriction base="byte">
+         <pattern value="1|2|3"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsResponsavelRetencao">
+      <restriction base="byte">
+         <pattern value="1|2"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsItemListaServico">
+      <restriction base="string">
+         <enumeration value="01.01"/>
+         <enumeration value="01.02"/>
+         <enumeration value="01.03"/>
+         <enumeration value="01.04"/>
+         <enumeration value="01.05"/>
+         <enumeration value="01.06"/>
+         <enumeration value="01.07"/>
+         <enumeration value="01.08"/>
+         <enumeration value="02.01"/>
+         <enumeration value="03.02"/>
+         <enumeration value="03.03"/>
+         <enumeration value="03.04"/>
+         <enumeration value="03.05"/>
+         <enumeration value="04.01"/>
+         <enumeration value="04.02"/>
+         <enumeration value="04.03"/>
+         <enumeration value="04.04"/>
+         <enumeration value="04.05"/>
+         <enumeration value="04.06"/>
+         <enumeration value="04.07"/>
+         <enumeration value="04.08"/>
+         <enumeration value="04.09"/>
+         <enumeration value="04.10"/>
+         <enumeration value="04.11"/>
+         <enumeration value="04.12"/>
+         <enumeration value="04.13"/>
+         <enumeration value="04.14"/>
+         <enumeration value="04.15"/>
+         <enumeration value="04.16"/>
+         <enumeration value="04.17"/>
+         <enumeration value="04.18"/>
+         <enumeration value="04.19"/>
+         <enumeration value="04.20"/>
+         <enumeration value="04.21"/>
+         <enumeration value="04.22"/>
+         <enumeration value="04.23"/>
+         <enumeration value="05.01"/>
+         <enumeration value="05.02"/>
+         <enumeration value="05.03"/>
+         <enumeration value="05.04"/>
+         <enumeration value="05.05"/>
+         <enumeration value="05.06"/>
+         <enumeration value="05.07"/>
+         <enumeration value="05.08"/>
+         <enumeration value="05.09"/>
+         <enumeration value="06.01"/>
+         <enumeration value="06.02"/>
+         <enumeration value="06.03"/>
+         <enumeration value="06.04"/>
+         <enumeration value="06.05"/>
+         <enumeration value="07.01"/>
+         <enumeration value="07.02"/>
+         <enumeration value="07.03"/>
+         <enumeration value="07.04"/>
+         <enumeration value="07.05"/>
+         <enumeration value="07.06"/>
+         <enumeration value="07.07"/>
+         <enumeration value="07.08"/>
+         <enumeration value="07.09"/>
+         <enumeration value="07.10"/>
+         <enumeration value="07.11"/>
+         <enumeration value="07.12"/>
+         <enumeration value="07.13"/>
+         <enumeration value="07.16"/>
+         <enumeration value="07.17"/>
+         <enumeration value="07.18"/>
+         <enumeration value="07.19"/>
+         <enumeration value="07.20"/>
+         <enumeration value="07.21"/>
+         <enumeration value="07.22"/>
+         <enumeration value="08.01"/>
+         <enumeration value="08.02"/>
+         <enumeration value="09.01"/>
+         <enumeration value="09.02"/>
+         <enumeration value="09.03"/>
+         <enumeration value="10.01"/>
+         <enumeration value="10.02"/>
+         <enumeration value="10.03"/>
+         <enumeration value="10.04"/>
+         <enumeration value="10.05"/>
+         <enumeration value="10.06"/>
+         <enumeration value="10.07"/>
+         <enumeration value="10.08"/>
+         <enumeration value="10.09"/>
+         <enumeration value="10.10"/>
+         <enumeration value="11.01"/>
+         <enumeration value="11.02"/>
+         <enumeration value="11.03"/>
+         <enumeration value="11.04"/>
+         <enumeration value="12.01"/>
+         <enumeration value="12.02"/>
+         <enumeration value="12.03"/>
+         <enumeration value="12.04"/>
+         <enumeration value="12.05"/>
+         <enumeration value="12.06"/>
+         <enumeration value="12.07"/>
+         <enumeration value="12.08"/>
+         <enumeration value="12.09"/>
+         <enumeration value="12.10"/>
+         <enumeration value="12.11"/>
+         <enumeration value="12.12"/>
+         <enumeration value="12.13"/>
+         <enumeration value="12.14"/>
+         <enumeration value="12.15"/>
+         <enumeration value="12.16"/>
+         <enumeration value="12.17"/>
+         <enumeration value="13.02"/>
+         <enumeration value="13.03"/>
+         <enumeration value="13.04"/>
+         <enumeration value="13.05"/>
+         <enumeration value="14.01"/>
+         <enumeration value="14.02"/>
+         <enumeration value="14.03"/>
+         <enumeration value="14.04"/>
+         <enumeration value="14.05"/>
+         <enumeration value="14.06"/>
+         <enumeration value="14.07"/>
+         <enumeration value="14.08"/>
+         <enumeration value="14.09"/>
+         <enumeration value="14.10"/>
+         <enumeration value="14.11"/>
+         <enumeration value="14.12"/>
+         <enumeration value="14.13"/>
+         <enumeration value="15.01"/>
+         <enumeration value="15.02"/>
+         <enumeration value="15.03"/>
+         <enumeration value="15.04"/>
+         <enumeration value="15.05"/>
+         <enumeration value="15.06"/>
+         <enumeration value="15.07"/>
+         <enumeration value="15.08"/>
+         <enumeration value="15.09"/>
+         <enumeration value="15.10"/>
+         <enumeration value="15.11"/>
+         <enumeration value="15.12"/>
+         <enumeration value="15.13"/>
+         <enumeration value="15.14"/>
+         <enumeration value="15.15"/>
+         <enumeration value="15.16"/>
+         <enumeration value="15.17"/>
+         <enumeration value="15.18"/>
+         <enumeration value="16.01"/>
+         <enumeration value="17.01"/>
+         <enumeration value="17.02"/>
+         <enumeration value="17.03"/>
+         <enumeration value="17.04"/>
+         <enumeration value="17.05"/>
+         <enumeration value="17.06"/>
+         <enumeration value="17.08"/>
+         <enumeration value="17.09"/>
+         <enumeration value="17.10"/>
+         <enumeration value="17.11"/>
+         <enumeration value="17.12"/>
+         <enumeration value="17.13"/>
+         <enumeration value="17.14"/>
+         <enumeration value="17.15"/>
+         <enumeration value="17.16"/>
+         <enumeration value="17.17"/>
+         <enumeration value="17.18"/>
+         <enumeration value="17.19"/>
+         <enumeration value="17.20"/>
+         <enumeration value="17.21"/>
+         <enumeration value="17.22"/>
+         <enumeration value="17.23"/>
+         <enumeration value="17.24"/>
+         <enumeration value="18.01"/>
+         <enumeration value="19.01"/>
+         <enumeration value="20.01"/>
+         <enumeration value="20.02"/>
+         <enumeration value="20.03"/>
+         <enumeration value="21.01"/>
+         <enumeration value="22.01"/>
+         <enumeration value="23.01"/>
+         <enumeration value="24.01"/>
+         <enumeration value="25.01"/>
+         <enumeration value="25.02"/>
+         <enumeration value="25.03"/>
+         <enumeration value="25.04"/>
+         <enumeration value="26.01"/>
+         <enumeration value="27.01"/>
+         <enumeration value="28.01"/>
+         <enumeration value="29.01"/>
+         <enumeration value="30.01"/>
+         <enumeration value="31.01"/>
+         <enumeration value="32.01"/>
+         <enumeration value="33.01"/>
+         <enumeration value="34.01"/>
+         <enumeration value="35.01"/>
+         <enumeration value="36.01"/>
+         <enumeration value="37.01"/>
+         <enumeration value="38.01"/>
+         <enumeration value="39.01"/>
+         <enumeration value="40.01"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoCnae">
+      <restriction base="int">
+         <maxInclusive value="2147483647"/>
+         <minInclusive value="-2147483648"/>
+         <totalDigits value="7"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoTributacao">
+      <restriction base="string">
+         <maxLength value="20"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoNbs">
+      <restriction base="string">
+         <maxLength value="9"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsDiscriminacao">
+      <restriction base="string">
+         <maxLength value="2000"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoPaisBacen">
+      <restriction base="string">
+         <maxLength value="4"/>
+         <minLength value="4"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsExigibilidadeISS">
+      <restriction base="byte">
+         <pattern value="1|2|3|4|5|6|7"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsNumeroProcesso">
+      <restriction base="string">
+         <maxLength value="30"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsNif">
+      <restriction base="string">
+         <maxLength value="40"/>
+         <minLength value="0"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsRazaoSocial">
+      <restriction base="string">
+         <maxLength value="150"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsNomeFantasia">
+      <restriction base="string">
+         <maxLength value="60"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsEndereco">
+      <restriction base="string">
+         <maxLength value="125"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsNumeroEndereco">
+      <restriction base="string">
+         <maxLength value="60"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsComplementoEndereco">
+      <restriction base="string">
+         <maxLength value="156"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsBairro">
+      <restriction base="string">
+         <maxLength value="60"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsUf">
+      <restriction base="string">
+         <maxLength value="2"/>
+         <minLength value="2"/>
+         <enumeration value="AC"/>
+         <enumeration value="AL"/>
+         <enumeration value="AM"/>
+         <enumeration value="AP"/>
+         <enumeration value="BA"/>
+         <enumeration value="CE"/>
+         <enumeration value="DF"/>
+         <enumeration value="ES"/>
+         <enumeration value="GO"/>
+         <enumeration value="MA"/>
+         <enumeration value="MG"/>
+         <enumeration value="MS"/>
+         <enumeration value="MT"/>
+         <enumeration value="PA"/>
+         <enumeration value="PB"/>
+         <enumeration value="PE"/>
+         <enumeration value="PI"/>
+         <enumeration value="PR"/>
+         <enumeration value="RJ"/>
+         <enumeration value="RN"/>
+         <enumeration value="RO"/>
+         <enumeration value="RR"/>
+         <enumeration value="RS"/>
+         <enumeration value="SC"/>
+         <enumeration value="SE"/>
+         <enumeration value="SP"/>
+         <enumeration value="TO"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCep">
+      <restriction base="string">
+         <maxLength value="8"/>
+         <minLength value="8"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsTelefone">
+      <restriction base="string">
+         <pattern value="[0-9]{6,20}"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsEmail">
+      <restriction base="string">
+         <maxLength value="80"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoObra">
+      <restriction base="string">
+         <maxLength value="30"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsArt">
+      <restriction base="string">
+         <maxLength value="30"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsRegimeEspecialTributacao">
+      <restriction base="byte">
+         <pattern value="1|2|3|4|5|6"/>
+         <maxInclusive value="127"/>
+         <minInclusive value="-128"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSChaveNFSe">
+      <restriction base="string">
+         <pattern value="[0-9]{50}"/>
+         <maxLength value="50"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSCodJustCanc">
+      <restriction base="string">
+         <enumeration value="1"/>
+         <enumeration value="2"/>
+         <enumeration value="9"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSMotivo">
+      <restriction base="string">
+         <pattern value="[!-\uFFFD]{1}[ -\uFFFD]{0,}[!-\uFFFD]{1}|[!-\uFFFD]{1}"/>
+         <maxLength value="255"/>
+         <minLength value="15"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCFinNFSe">
+      <restriction base="string">
+         <enumeration value="0"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCIndFinal">
+      <restriction base="string">
+         <enumeration value="0"/>
+         <enumeration value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCCodIndOp">
+      <restriction base="string">
+         <pattern value="[0-9]{6}"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCTpOper">
+      <restriction base="string">
+         <enumeration value="1"/>
+         <enumeration value="2"/>
+         <enumeration value="3"/>
+         <enumeration value="4"/>
+         <enumeration value="5"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCTpEnteGov">
+      <restriction base="string">
+         <enumeration value="1"/>
+         <enumeration value="2"/>
+         <enumeration value="3"/>
+         <enumeration value="4"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCIndDest">
+      <restriction base="string">
+         <enumeration value="0"/>
+         <enumeration value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSCodNaoNIF">
+      <restriction base="string">
+         <enumeration value="0"/>
+         <enumeration value="1"/>
+         <enumeration value="2"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSDesc150">
+      <restriction base="string">
+         <pattern value="[!-\uFFFD]{1}[ -\uFFFD]{0,}[!-\uFFFD]{1}|[!-\uFFFD]{1}"/>
+         <maxLength value="150"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSCodPaisISO">
+      <restriction base="string">
+         <pattern value="[A-Z]{2}"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSCodigoEndPostal">
+      <restriction base="string">
+         <maxLength value="11"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSCidade">
+      <restriction base="string">
+         <maxLength value="60"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSEstadoProvRegiao">
+      <restriction base="string">
+         <maxLength value="60"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSLogradouro">
+      <restriction base="string">
+         <pattern value="[!-\uFFFD]{1}[ -\uFFFD]{0,}[!-\uFFFD]{1}|[!-\uFFFD]{1}"/>
+         <maxLength value="255"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSInscImobFisc">
+      <restriction base="string">
+         <maxLength value="30"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSCodCIB">
+      <restriction base="string">
+         <maxLength value="8"/>
+         <minLength value="8"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCTipoChaveDFe">
+      <restriction base="string">
+         <enumeration value="1"/>
+         <enumeration value="2"/>
+         <enumeration value="3"/>
+         <enumeration value="9"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSDesc255">
+      <restriction base="string">
+         <pattern value="[!-\uFFFD]{1}[ -\uFFFD]{0,}[!-\uFFFD]{1}|[!-\uFFFD]{1}"/>
+         <maxLength value="255"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCChaveDFe">
+      <restriction base="string">
+         <maxLength value="50"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSNum7Dig">
+      <restriction base="string">
+         <pattern value="[0-9]{7}"/>
+         <maxLength value="7"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSData">
+      <restriction base="string">
+         <pattern value="(((20(([02468][048])|([13579][26]))-02-29))|(20[0-9][0-9])-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCTpReeRepRes">
+      <restriction base="string">
+         <enumeration value="01"/>
+         <enumeration value="02"/>
+         <enumeration value="03"/>
+         <enumeration value="04"/>
+         <enumeration value="99"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSDec15V2">
+      <restriction base="string">
+         <pattern value="0|0\.[0-9]{2}|[1-9]{1}[0-9]{0,14}(\.[0-9]{2})?"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSDec3V2">
+      <restriction base="string">
+         <pattern value="0|0\.[0-9]{2}|[1-9]{1}[0-9]{0,2}(\.[0-9]{2})?"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSDesc600">
+      <restriction base="string">
+         <pattern value="[!-\uFFFD]{1}[ -\uFFFD]{0,}[!-\uFFFD]{1}|[!-\uFFFD]{1}"/>
+         <maxLength value="600"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSDec2V2">
+      <restriction base="string">
+         <pattern value="0|0\.[0-9]{2}|[1-9]{1}[0-9]{0,1}(\.[0-9]{2})?"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCCodSitTrib">
+      <restriction base="string">
+         <pattern value="[0-9]{3}"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCCodClassTrib">
+      <restriction base="string">
+         <pattern value="[0-9]{6}"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSRTCCodCredPres">
+      <restriction base="string">
+         <pattern value="[0-9]{2}"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsDataHora">
+      <restriction base="dateTime"/>
+   </simpleType>
+   <simpleType name="tsOutrasInformacoes">
+      <restriction base="string">
+         <maxLength value="255"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoVerificacao">
+      <restriction base="string">
+         <maxLength value="9"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsCodigoMensagemAlerta">
+      <restriction base="string">
+         <maxLength value="4"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsDescricaoMensagemAlerta">
+      <restriction base="string">
+         <maxLength value="200"/>
+         <minLength value="1"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="tsVersao">
+      <restriction base="string">
+         <pattern value="[1-9]{1}[0-9]{0,1}\.[0-9]{2}"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="TSCodMunIBGE">
+      <restriction base="string">
+         <pattern value="[0-9]{7}"/>
+      </restriction>
+   </simpleType>
+</schema>
+
