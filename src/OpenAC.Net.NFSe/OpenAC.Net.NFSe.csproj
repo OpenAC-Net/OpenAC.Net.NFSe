@@ -86,6 +86,10 @@
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\AssessorPublico</PackagePath>
 		</None>
+		<None Include="Schemas\Barueri\**\*.*">
+			<Pack>True</Pack>
+			<PackagePath>content\Schemas\Barueri</PackagePath>
+		</None>
 		<None Include="Schemas\Betha\**\*.*">
 			<Pack>True</Pack>
 			<PackagePath>content\Schemas\Betha</PackagePath>
@@ -273,6 +277,9 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\AssessorPublico\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Schemas\Barueri\**\*.*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Schemas\Betha\**\*.*">

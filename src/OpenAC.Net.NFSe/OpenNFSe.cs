@@ -156,6 +156,39 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     }
 
     /// <summary>
+    /// Baixa o arquivo de retorno do lote (NFeLoteBaixarArquivo).
+    /// </summary>
+    /// <param name="nomeArquivoRetorno">Nome do arquivo de retorno (ex.: RETxxxx.TXT).</param>
+    /// <returns>Retorno do download.</returns>
+    public RetornoBaixarArquivo BaixarArquivoRps(string nomeArquivoRetorno)
+    {
+        Guard.Against<ArgumentException>(nomeArquivoRetorno.IsEmpty(), "Nome do arquivo de retorno não pode ser vazio.");
+
+        var provider = ProviderManager.GetProvider(Configuracoes);
+        var oldProtocol = ServicePointManager.SecurityProtocol;
+
+        try
+        {
+            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
+
+            if (provider is ProviderBarueri barueri)
+                return barueri.BaixarArquivoRps(nomeArquivoRetorno);
+
+            throw new NotImplementedException("Provedor não suporta NFeLoteBaixarArquivo.");
+        }
+        catch (Exception exception)
+        {
+            this.Log().Error("[BaixarArquivoRps]", exception);
+            throw;
+        }
+        finally
+        {
+            ServicePointManager.SecurityProtocol = oldProtocol;
+            provider.Dispose();
+        }
+    }
+
+    /// <summary>
     /// Consulta o lote de Rps
     ///
     /// Obs.: Nem todos provedores suportam este metodo.

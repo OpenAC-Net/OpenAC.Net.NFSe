@@ -322,4 +322,9 @@ public enum NFSeProvider : sbyte
     /// Provedor Tinus.
     /// </summary>
     Tinus = 57,
+
+    /// <summary>
+    /// Provedor Barueri - SP.
+    /// </summary>
+    Barueri = 58,
 }

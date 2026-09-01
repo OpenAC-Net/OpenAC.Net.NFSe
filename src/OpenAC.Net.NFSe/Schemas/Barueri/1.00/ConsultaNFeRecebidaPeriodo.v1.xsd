@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.barueri.sp.gov.br/nfe" xmlns="http://www.barueri.sp.gov.br/nfe" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" >
+	<xs:element name="NFeRecebidaPeriodo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CPFCNPJTomador" type="xs:string" />
+				<xs:element name="DataInicial" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>Intervalo inical de data em que a nota foi emitida para o tomador (AAAA-MM-DD).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DataFinal" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>Data Final em que a nota foi emitida para o tomador (AAAA-MM-DD).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CPFCNPJPrestador" type="xs:string" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>CNPJ/CPF do Prestador do Serviço, ou seja, aquele que emitiu a nota ao Tomador</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Pagina" type="xs:unsignedShort">
+					<xs:annotation>
+						<xs:documentation>Número da pagina que deseja consulta, caso a pesquisa excede o número de registros permitido o resultado é disponibilizado em páginas</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

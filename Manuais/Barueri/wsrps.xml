@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.barueri.sp.gov.br/nfe" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.barueri.sp.gov.br/nfe" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.barueri.sp.gov.br/nfe">
+      <s:element name="NFeLoteEnviarArquivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="VersaoSchema" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensagemXML" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NFeLoteEnviarArquivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NFeLoteEnviarArquivoResult" type="tns:NFeLoteEnviarArquivoResposta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="NFeLoteEnviarArquivoResposta">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ListaMensagemRetorno" type="tns:MensagemRetorno" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProtocoloRemessa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MensagemRetorno">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Codigo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mensagem" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Correcao" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="NFeLoteStatusArquivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="VersaoSchema" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensagemXML" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NFeLoteStatusArquivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NFeLoteStatusArquivoResult" type="tns:NFeLoteStatusArquivoResposta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="NFeLoteStatusArquivoResposta">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ListaMensagemRetorno" type="tns:MensagemRetorno" />
+          <s:element minOccurs="1" maxOccurs="1" name="ListaNfeArquivosRPS" type="tns:eInfoArquivosRPS" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="eInfoArquivosRPS">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="NomeArquivoOrginal" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataEnvioArq" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodigoRemessa" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApenasValidaArq" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="SituacaoArq" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeArqRetorno" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="NFeLoteBaixarArquivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="VersaoSchema" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensagemXML" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NFeLoteBaixarArquivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NFeLoteBaixarArquivoResult" type="tns:NFeLoteBaixarArquivoResposta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="NFeLoteBaixarArquivoResposta">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ListaMensagemRetorno" type="tns:MensagemRetorno" />
+          <s:element minOccurs="0" maxOccurs="1" name="ArquivoRPSBase64" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="NFeLoteListarArquivos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="VersaoSchema" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensagemXML" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NFeLoteListarArquivosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NFeLoteListarArquivosResult" type="tns:NFeLoteListarArquivosResposta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="NFeLoteListarArquivosResposta">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ListaMensagemRetorno" type="tns:MensagemRetorno" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ListaNfeArquivosRPS" type="tns:eInfoArquivosRPS" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="NFeLoteEnviarArquivoSoapIn">
+    <wsdl:part name="parameters" element="tns:NFeLoteEnviarArquivo" />
+  </wsdl:message>
+  <wsdl:message name="NFeLoteEnviarArquivoSoapOut">
+    <wsdl:part name="parameters" element="tns:NFeLoteEnviarArquivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="NFeLoteStatusArquivoSoapIn">
+    <wsdl:part name="parameters" element="tns:NFeLoteStatusArquivo" />
+  </wsdl:message>
+  <wsdl:message name="NFeLoteStatusArquivoSoapOut">
+    <wsdl:part name="parameters" element="tns:NFeLoteStatusArquivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="NFeLoteBaixarArquivoSoapIn">
+    <wsdl:part name="parameters" element="tns:NFeLoteBaixarArquivo" />
+  </wsdl:message>
+  <wsdl:message name="NFeLoteBaixarArquivoSoapOut">
+    <wsdl:part name="parameters" element="tns:NFeLoteBaixarArquivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="NFeLoteListarArquivosSoapIn">
+    <wsdl:part name="parameters" element="tns:NFeLoteListarArquivos" />
+  </wsdl:message>
+  <wsdl:message name="NFeLoteListarArquivosSoapOut">
+    <wsdl:part name="parameters" element="tns:NFeLoteListarArquivosResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsRPSSoap">
+    <wsdl:operation name="NFeLoteEnviarArquivo">
+      <wsdl:input message="tns:NFeLoteEnviarArquivoSoapIn" />
+      <wsdl:output message="tns:NFeLoteEnviarArquivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteStatusArquivo">
+      <wsdl:input message="tns:NFeLoteStatusArquivoSoapIn" />
+      <wsdl:output message="tns:NFeLoteStatusArquivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteBaixarArquivo">
+      <wsdl:input message="tns:NFeLoteBaixarArquivoSoapIn" />
+      <wsdl:output message="tns:NFeLoteBaixarArquivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteListarArquivos">
+      <wsdl:input message="tns:NFeLoteListarArquivosSoapIn" />
+      <wsdl:output message="tns:NFeLoteListarArquivosSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsRPSSoap" type="tns:wsRPSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="NFeLoteEnviarArquivo">
+      <soap:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteEnviarArquivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteStatusArquivo">
+      <soap:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteStatusArquivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteBaixarArquivo">
+      <soap:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteBaixarArquivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteListarArquivos">
+      <soap:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteListarArquivos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsRPSSoap12" type="tns:wsRPSSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="NFeLoteEnviarArquivo">
+      <soap12:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteEnviarArquivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteStatusArquivo">
+      <soap12:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteStatusArquivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteBaixarArquivo">
+      <soap12:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteBaixarArquivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NFeLoteListarArquivos">
+      <soap12:operation soapAction="http://www.barueri.sp.gov.br/nfe/NFeLoteListarArquivos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsRPS">
+    <wsdl:port name="wsRPSSoap" binding="tns:wsRPSSoap">
+      <soap:address location="https://www.barueri.sp.gov.br/nfeservice/wsrps.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsRPSSoap12" binding="tns:wsRPSSoap12">
+      <soap12:address location="https://www.barueri.sp.gov.br/nfeservice/wsrps.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
