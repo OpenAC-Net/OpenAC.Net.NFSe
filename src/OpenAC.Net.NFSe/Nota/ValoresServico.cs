@@ -59,13 +59,19 @@ public sealed class ValoresServico : GenericClone<ValoresServico>, INotifyProper
 
     public decimal ValorPis { get; set; }
 
+    public bool RetencaoPis { get; set; }
+
     public decimal ValorCofins { get; set; }
+
+    public bool RetencaoCofins { get; set; }
 
     public decimal ValorInss { get; set; }
 
     public decimal ValorIr { get; set; }
 
     public decimal ValorCsll { get; set; }
+
+    public bool RetencaoCsll { get; set; }
 
     public SituacaoTributaria IssRetido { get; set; }
 

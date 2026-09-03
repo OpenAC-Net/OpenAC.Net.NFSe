@@ -146,6 +146,12 @@ internal sealed class ProviderSigISS100 : ProviderBase
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "irrf", 1, 15, Ocorrencia.NaoObrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorIr)));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "csll", 1, 15, Ocorrencia.NaoObrigatoria, FormataDecimalModeloSigiss(nota.Servico.Valores.ValorCsll)));
 
+        //sem essas flags a prefeitura assume pis/cofins/csll como debito de apuracao propria
+        //(nao retido), mesmo com valor informado
+        notaTag.AddChild(AddTag(TipoCampo.Int, "", "retencao_pis", 1, 1, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.RetencaoPis ? 1 : 0));
+        notaTag.AddChild(AddTag(TipoCampo.Int, "", "retencao_cofins", 1, 1, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.RetencaoCofins ? 1 : 0));
+        notaTag.AddChild(AddTag(TipoCampo.Int, "", "retencao_csll", 1, 1, Ocorrencia.NaoObrigatoria, nota.Servico.Valores.RetencaoCsll ? 1 : 0));
+
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "dps_serv_cnbs", 1, 15, Ocorrencia.Obrigatoria, nota.Servico.CodigoNbs));
 
         //Campos novos IBS/CBS (Reforma Tributaria) - Marilia
