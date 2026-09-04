@@ -58,7 +58,7 @@ internal sealed class ProviderISSCampinas203 : ProviderABRASF203
 
     public ProviderISSCampinas203(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)
     {
-        Name = "ISSDSF203";
+        Name = "ISSCampinas";
     }
 
     #endregion Constructors
