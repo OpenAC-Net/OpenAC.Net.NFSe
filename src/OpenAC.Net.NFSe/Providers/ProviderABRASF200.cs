@@ -452,9 +452,9 @@ public abstract class ProviderABRASF200 : ProviderBase
                 serie = "00000";
                 break;
 
-            case 5208707: //Goiania/GO
-                serie = "UNICA";
-                break;
+           // case 5208707: //Goiania/GO
+              //  serie = "UNICA";
+              //  break;
         }
 
         indRps.AddChild(AddTag(TipoCampo.Str, "", "Serie", 1, 5, Ocorrencia.Obrigatoria, serie));
