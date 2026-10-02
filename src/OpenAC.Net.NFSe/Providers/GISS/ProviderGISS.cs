@@ -77,8 +77,8 @@ internal class ProviderGISS : ProviderABRASF204
 
     protected XElement? WriteTribRps(NotaServico nota)
     {
-        if (string.IsNullOrWhiteSpace(nota.Servico.Valores.TipoRetencaoPisCofins))
-            return null;
+        /*if (string.IsNullOrWhiteSpace(nota.Servico.Valores.TipoRetencaoPisCofins))
+            return null;*/
         
         var trib = new XElement("trib");
         var tribFed = WriteTribFedRps(nota);
