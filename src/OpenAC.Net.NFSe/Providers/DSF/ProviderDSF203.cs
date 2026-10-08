@@ -72,8 +72,11 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
         return new DSF203ServiceClient(this, tipo, null);
     }
 
+
     protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+
+       
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
         MensagemErro(retornoWebservice, xmlRet.Root, "EnviarLoteRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
@@ -90,26 +93,31 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
         {
             nota.NumeroLote = retornoWebservice.Lote;
         }
+        
     }
 
-    protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
+    /// <inheritdoc />
+    protected override void TratarRetornoEnviarSincrono(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
+        // Analisa mensagem de retorno
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet.Root, "ConsultarLoteRpsResposta");
+        MensagemErro(retornoWebservice, xmlRet, "EnviarLoteRpsSincronoResposta");
         if (retornoWebservice.Erros.Any()) return;
 
-        var retornoLote = xmlRet.Root.ElementAnyNs("ConsultarLoteRpsResposta");
-        var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
+        retornoWebservice.Data = xmlRet.Root?.ElementAnyNs("DataRecebimento")?.GetValue<DateTime>() ?? DateTime.MinValue;
+        retornoWebservice.Protocolo = xmlRet.Root?.ElementAnyNs("Protocolo")?.GetValue<string>() ?? string.Empty;
+        retornoWebservice.Sucesso = !retornoWebservice.Protocolo.IsEmpty();
+        MensagemErro(retornoWebservice, xmlRet, "EnviarLoteRpsSincronoResposta");
+
+        if (!retornoWebservice.Sucesso) return;
+
+        var listaNfse = xmlRet.Root.ElementAnyNs("ListaNfse");
+
         if (listaNfse == null)
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
-
-        retornoWebservice.Sucesso = true;
-        retornoWebservice.Situacao = retornoLote.ElementAnyNs("Situacao")?.GetValue<string>();
-
-        var notasServico = new List<NotaServico>();
 
         foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
         {
@@ -117,120 +125,130 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
             var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
             var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
             var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
-            var numeroRps = nfse?.ElementAnyNs("DeclaracaoPrestacaoServico")?
+            var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
                 .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
                 .ElementAnyNs("Rps")?
                 .ElementAnyNs("IdentificacaoRps")?
-                .ElementAnyNs("Numero")?
-                .GetValue<string>() ?? string.Empty;
+                .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
 
-            GravarNFSeEmDisco(compNfse.ToString(), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
+            GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
 
             var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
             if (nota == null)
             {
-                nota = LoadXml(compNfse.ToString());
+                nota = notas.Load(compNfse.ToString());
             }
             else
             {
                 nota.IdentificacaoNFSe.Numero = numeroNFSe;
                 nota.IdentificacaoNFSe.Chave = chaveNFSe;
-                nota.XmlOriginal = compNfse.AsString();
+                nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                nota.XmlOriginal = compNfse.ToString();
             }
 
-            notas.Add(nota);
-            notasServico.Add(nota);
+            nota.Protocolo = retornoWebservice.Protocolo;
         }
-
-        retornoWebservice.Notas = notasServico.ToArray();
     }
 
-    protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
+    /// <inheritdoc />
+    protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
     {
+        // Analisa mensagem de retorno
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet.Root, "ConsultarNfseRpsResposta");
+
+        retornoWebservice.Lote = xmlRet.Root?.ElementAnyNs("NumeroLote")?.GetValue<int>() ?? 0;
+
+        var retornoLote = xmlRet.ElementAnyNs("ConsultarLoteRpsResposta");
+        var situacao = retornoLote?.ElementAnyNs("Situacao");
+        if (situacao != null)
+        {
+            switch (situacao.GetValue<int>())
+            {
+                case 2:
+                    retornoWebservice.Situacao = "2 – Não Processado";
+                    break;
+
+                case 3:
+                    retornoWebservice.Situacao = "3 – Processado com Erro";
+                    break;
+
+                case 4:
+                    retornoWebservice.Situacao = "4 – Processado com Sucesso";
+                    break;
+
+                default:
+                    retornoWebservice.Situacao = "1 – Não Recebido";
+                    break;
+            }
+        }
+
+        MensagemErro(retornoWebservice, xmlRet, "ConsultarLoteRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
 
-        var compNfse = xmlRet.Root.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
+        retornoWebservice.Sucesso = true;
 
-        if (compNfse == null)
+        if (notas == null) return;
+
+        var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
+
+        if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal não encontrada! (CompNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe não encontrada! (ListaNfse)" });
             return;
         }
 
-        var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
-        var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
-        var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
-        var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
-        var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
-            .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
-            .ElementAnyNs("Rps")?
-            .ElementAnyNs("IdentificacaoRps")?
-            .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
+        var notasFiscais = new List<NotaServico>();
 
-        GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
-
-        var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
-
-        if (nota == null)
+        foreach (var compNfse in listaNfse.ElementsAnyNs("CompNfse"))
         {
-            nota = notas.Load(compNfse.ToString());
-        }
-        else
-        {
-            nota.IdentificacaoNFSe.Numero = numeroNFSe;
-            nota.IdentificacaoNFSe.Chave = chaveNFSe;
-            nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
-            nota.XmlOriginal = compNfse.ToString();
+            var nfse = compNfse.ElementAnyNs("Nfse").ElementAnyNs("InfNfse");
+            var numeroNFSe = nfse.ElementAnyNs("Numero")?.GetValue<string>() ?? string.Empty;
+            var chaveNFSe = nfse.ElementAnyNs("CodigoVerificacao")?.GetValue<string>() ?? string.Empty;
+            var dataNFSe = nfse.ElementAnyNs("DataEmissao")?.GetValue<DateTime>() ?? DateTime.Now;
+            var numeroRps = nfse.ElementAnyNs("DeclaracaoPrestacaoServico")?
+                .ElementAnyNs("InfDeclaracaoPrestacaoServico")?
+                .ElementAnyNs("Rps")?
+                .ElementAnyNs("IdentificacaoRps")?
+                .ElementAnyNs("Numero").GetValue<string>() ?? string.Empty;
 
-            var nfseCancelamento = compNfse.ElementAnyNs("NfseCancelamento");
+            GravarNFSeEmDisco(compNfse.AsString(true), $"NFSe-{numeroNFSe}-{chaveNFSe}-.xml", dataNFSe);
 
-            if (nfseCancelamento != null)
+            var nota = notas.FirstOrDefault(x => x.IdentificacaoRps.Numero == numeroRps);
+            if (nota == null)
             {
-                nota.Situacao = SituacaoNFSeRps.Cancelado;
-
-                var confirmacaoCancelamento = nfseCancelamento
-                    .ElementAnyNs("Confirmacao");
-
-                if (confirmacaoCancelamento != null)
-                {
-                    var pedido = confirmacaoCancelamento.ElementAnyNs("Pedido");
-
-                    if (pedido != null)
-                    {
-                        var codigoCancelamento = pedido
-                            .ElementAnyNs("InfPedidoCancelamento")
-                            .ElementAnyNs("CodigoCancelamento")
-                            .GetValue<string>();
-
-                        nota.Cancelamento.Pedido.CodigoCancelamento = codigoCancelamento;
-                    }
-                }
-
-                nota.Cancelamento.DataHora = confirmacaoCancelamento
-                    .ElementAnyNs("DataHora")
-                    .GetValue<DateTime>();
+                nota = notas.Load(compNfse.ToString());
             }
+            else
+            {
+                nota.IdentificacaoNFSe.Numero = numeroNFSe;
+                nota.IdentificacaoNFSe.Chave = chaveNFSe;
+                nota.IdentificacaoNFSe.DataEmissao = dataNFSe;
+                nota.XmlOriginal = compNfse.ToString();
+            }
+
+            nota.Protocolo = retornoWebservice.Protocolo;
+            notasFiscais.Add(nota);
         }
 
-        retornoWebservice.Nota = nota;
-        retornoWebservice.Sucesso = true;
+        retornoWebservice.Notas = notasFiscais.ToArray();
     }
 
+    /// <inheritdoc />
     protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
     {
+        // Analisa mensagem de retorno
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet.Root, "CancelarNfseResposta");
+        MensagemErro(retornoWebservice, xmlRet, "CancelarNfseResposta");
         if (retornoWebservice.Erros.Any()) return;
 
-        var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
+        var confirmacaoCancelamento = xmlRet.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
         if (confirmacaoCancelamento == null)
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Confirmação do cancelamento não encontrada!" });
             return;
         }
 
+        // Se a nota fiscal cancelada existir na coleção de Notas Fiscais, atualiza seu status:
         var nota = notas.FirstOrDefault(x => x.IdentificacaoNFSe.Numero.Trim() == retornoWebservice.NumeroNFSe);
         if (nota == null) return;
 
@@ -241,6 +259,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
         nota.Cancelamento.Pedido.CodigoCancelamento = retornoWebservice.CodigoCancelamento;
         nota.Cancelamento.DataHora = retornoWebservice.Data;
         nota.Cancelamento.MotivoCancelamento = retornoWebservice.Motivo;
+        nota.Cancelamento.Signature = confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature") != null ? DFeSignature.Load(confirmacaoCancelamento.ElementAnyNs("Pedido").ElementAnyNs("Signature")?.ToString()) : null;
     }
 
     protected override void AssinarConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice)
