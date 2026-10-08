@@ -92,6 +92,8 @@ public sealed class ValoresServico : GenericClone<ValoresServico>, INotifyProper
     
     public decimal? AliquotaTotalMunicipal { get; set; }
 
+    public decimal? AliquotaTotalSimplesNacional { get; set; }
+
     public decimal BaseCalculo { get; set; }
 
     public decimal Aliquota { get; set; }

@@ -83,25 +83,29 @@ internal class ProviderGISS : ProviderABRASF204
 
     protected XElement? WriteTribRps(NotaServico nota)
     {
-        if (string.IsNullOrWhiteSpace(nota.Servico.Valores.TipoRetencaoPisCofins))
-            return null;
-        
         var trib = new XElement("trib");
+
         var tribFed = WriteTribFedRps(nota);
         if (tribFed != null)
             trib.AddChild(tribFed);
-        
+
         var tribTot = WriteTribTotRps(nota);
         if (tribTot != null)
             trib.AddChild(tribTot);
 
+        if (tribTot == null && tribFed == null)
+            trib = null;
+
         return trib;
     }
 
-    protected XElement WriteTribFedRps(NotaServico nota)
+    protected XElement? WriteTribFedRps(NotaServico nota)
     {
+        if (string.IsNullOrWhiteSpace(nota.Servico.Valores.TipoRetencaoPisCofins))
+            return null;
+
         var valores = nota.Servico.Valores;
-        
+
         var tribFed = new XElement("tribFed");
         var piscofins = new XElement("piscofins");
         piscofins.AddChild(AddTag(TipoCampo.StrNumber, "", "CST", 1, 1, Ocorrencia.Obrigatoria, valores.CstPisCofins));
@@ -111,7 +115,7 @@ internal class ProviderGISS : ProviderABRASF204
         piscofins.AddChild(AddTag(TipoCampo.De2, "", "vPis", 1, 1, Ocorrencia.Obrigatoria, valores.ValorPis));
         piscofins.AddChild(AddTag(TipoCampo.De2, "", "vCofins", 1, 1, Ocorrencia.Obrigatoria, valores.ValorCofins));
         piscofins.AddChild(AddTag(TipoCampo.StrNumber, "", "tpRetPisCofins", 1, 1, Ocorrencia.Obrigatoria, valores.TipoRetencaoPisCofins));
-        
+
         tribFed.AddChild(piscofins);
 
         return tribFed;
@@ -120,17 +124,21 @@ internal class ProviderGISS : ProviderABRASF204
     protected XElement? WriteTribTotRps(NotaServico nota)
     {
         var valores = nota.Servico.Valores;
-        
-        if (!valores.AliquotaTotalEstadual.HasValue &&  !valores.AliquotaTotalEstadual.HasValue && valores.AliquotaTotalMunicipal.HasValue)
-            return null;
-        
+
         var totTrib = new XElement("totTrib");
-        var pTotTrib = new XElement("pTotTrib");
-        pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribFed", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalEstadual ?? 0));
-        pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribEst", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalEstadual ?? 0));
-        pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribMun", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalMunicipal ?? 0));
-        
-        totTrib.AddChild(pTotTrib);
+
+        if (valores.AliquotaTotalFederal.HasValue && valores.AliquotaTotalEstadual.HasValue && valores.AliquotaTotalMunicipal.HasValue)
+        {
+            var pTotTrib = new XElement("pTotTrib");
+            pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribFed", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalFederal));
+            pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribEst", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalEstadual));
+            pTotTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribMun", 1, 1, Ocorrencia.Obrigatoria, valores.AliquotaTotalMunicipal));
+            totTrib.AddChild(pTotTrib);
+        }
+        else if (valores.AliquotaTotalSimplesNacional.HasValue)
+            totTrib.AddChild(AddTag(TipoCampo.De2, "", "pTotTribSN", 1, 15, Ocorrencia.Obrigatoria, valores.AliquotaTotalSimplesNacional));
+        else
+            totTrib = null;
 
         return totTrib;
     }
