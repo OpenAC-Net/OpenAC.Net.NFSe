@@ -33,7 +33,10 @@ using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 using OpenAC.Net.DFe.Core.Document;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados do pedido de cancelamento de uma NFS-e.
+/// </summary>
+
 
 public sealed class PedidoCancelamento : GenericClone<PedidoCancelamento>, INotifyPropertyChanged
 {

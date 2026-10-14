@@ -38,6 +38,9 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Configuracao;
 
+/// <summary>
+/// Configurações de diretórios e caminhos para gravação dos arquivos da NFSe, RPS, Lotes e mensagens SOAP.
+/// </summary>
 public sealed class ConfigArquivosNFSe : DFeArquivosConfigBase
 {
     #region Constructor
@@ -69,48 +72,72 @@ public sealed class ConfigArquivosNFSe : DFeArquivosConfigBase
     #region Properties
 
     /// <summary>
-    /// Gets or sets a value indicating whether [emissao path n fe].
+    /// Indica se o caminho de emissão da NFSe será utilizado na estrutura de pastas.
     /// </summary>
-    /// <value><c>true</c> if [emissao path n fe]; otherwise, <c>false</c>.</value>
+    /// <value><c>true</c> se deve incluir data de emissão no caminho; senão, <c>false</c>.</value>
     public bool EmissaoPathNFSe { get; set; }
 
     /// <summary>
-    /// Gets or sets the path n fe.
+    /// Obtém ou define o diretório base para salvar as notas fiscais de serviço eletrônicas (NFSe).
     /// </summary>
-    /// <value>The path n fe.</value>
+    /// <value>O caminho do diretório de NFSe.</value>
     public string PathNFSe { get; set; }
 
     /// <summary>
-    /// Gets or sets the path lote.
+    /// Obtém ou define o diretório base para salvar os lotes de RPS enviados.
     /// </summary>
-    /// <value>The path lote.</value>
+    /// <value>O caminho do diretório de Lotes.</value>
     public string PathLote { get; set; }
 
     /// <summary>
-    /// Gets or sets the path lote.
+    /// Obtém ou define o diretório base para salvar os recibos provisórios de serviço (RPS).
     /// </summary>
-    /// <value>The path lote.</value>
+    /// <value>O caminho do diretório de RPS.</value>
     public string PathRps { get; set; }
 
     #endregion Properties
 
     #region Methods
 
+    /// <summary>
+    /// Obtém o caminho completo para gravação de mensagens SOAP de acordo com a data e CNPJ.
+    /// </summary>
+    /// <param name="data">Data de referência.</param>
+    /// <param name="cnpj">CNPJ do prestador (opcional).</param>
+    /// <returns>Caminho do diretório de arquivos SOAP.</returns>
     public string GetPathSoap(DateTime data, string cnpj = "")
     {
         return GetPath(PathNFSe, "SOAP", cnpj, data);
     }
 
+    /// <summary>
+    /// Obtém o caminho completo para gravação das notas de serviço (NFSe).
+    /// </summary>
+    /// <param name="data">Data de referência.</param>
+    /// <param name="cnpj">CNPJ do prestador (opcional).</param>
+    /// <returns>Caminho do diretório de NFSe.</returns>
     public string GetPathNFSe(DateTime data, string cnpj = "")
     {
         return GetPath(PathNFSe, "NFSe", cnpj, data, "NFSe");
     }
 
+    /// <summary>
+    /// Obtém o caminho completo para gravação de arquivos de lote de RPS.
+    /// </summary>
+    /// <param name="data">Data de referência.</param>
+    /// <param name="cnpj">CNPJ do prestador (opcional).</param>
+    /// <returns>Caminho do diretório de lotes.</returns>
     public string GetPathLote(DateTime data, string cnpj = "")
     {
         return GetPath(PathLote, "Lote", cnpj, data);
     }
 
+    /// <summary>
+    /// Obtém o caminho completo para gravação de arquivos de RPS individuais.
+    /// </summary>
+    /// <param name="data">Data de referência.</param>
+    /// <param name="cnpj">CNPJ do prestador (opcional).</param>
+    /// <returns>Caminho do diretório de RPS.</returns>
     public string GetPathRps(DateTime data, string cnpj = "")
     {
         return GetPath(PathRps, "Rps", cnpj, data, "Rps");

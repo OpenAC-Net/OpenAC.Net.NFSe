@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Coleção de deduções da base de cálculo do ISS.
+/// </summary>
+
 
 public sealed class DeducoesCollection : DFeCollection<Deducao>, INotifyPropertyChanged
 {

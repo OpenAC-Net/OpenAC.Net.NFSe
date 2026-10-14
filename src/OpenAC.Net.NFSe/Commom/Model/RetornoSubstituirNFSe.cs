@@ -33,13 +33,28 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno da substituição de NFSe.
+/// </summary>
 public sealed class RetornoSubstituirNFSe : RetornoWebservice
 {
+    /// <summary>
+    /// Código do motivo de cancelamento da nota substituída.
+    /// </summary>
     public string CodigoCancelamento { get; internal set; } = "";
 
+    /// <summary>
+    /// Número da NFSe substituída.
+    /// </summary>
     public string NumeroNFSe { get; internal set; } = "";
 
+    /// <summary>
+    /// Motivo da substituição.
+    /// </summary>
     public string Motivo { get; internal set; } = "";
 
+    /// <summary>
+    /// Nova nota fiscal de serviço gerada.
+    /// </summary>
     public NotaServico? Nota { get; internal set; }
 }

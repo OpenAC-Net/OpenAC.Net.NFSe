@@ -22,7 +22,7 @@ public static class InputBox
 
         form.Text = title;
         label.Text = promptText;
-        textBox.Text = value.ToString();
+        textBox.Text = value?.ToString() ?? string.Empty;
 
         buttonOk.Text = @"OK";
         buttonCancel.Text = @"Cancelar";
@@ -69,7 +69,7 @@ public static class InputBox
         }
         catch (Exception)
         {
-            value = default(T);
+            value = default(T)!;
         }
 
         return dialogResult;

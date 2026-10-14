@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Detalhamento de valores e bases de cálculo para IBS e CBS.
+/// </summary>
+
 
 public sealed class IBSCBSValores : GenericClone<IBSCBSValores>
 {
@@ -17,6 +20,11 @@ public sealed class IBSCBSValores : GenericClone<IBSCBSValores>
     /// a base de calculo do ISSQN, do IBS e da CBS.
     /// </summary>
     public decimal ValorCalculadoReeRepRes { get; set; }
+
+    /// <summary>
+    /// Valor da base de calculo do IBS e da CBS.
+    /// </summary>
+    public decimal ValorBaseCalculo { get; set; }
 
     /// <summary>
     /// Grupo de informacoes relativas aos valores do IBS Estadual.

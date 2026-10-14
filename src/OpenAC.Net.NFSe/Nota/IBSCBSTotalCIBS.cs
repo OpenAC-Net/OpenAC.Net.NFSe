@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Totalizador conjunto consolidado de IBS e CBS.
+/// </summary>
+
 
 public sealed class IBSCBSTotalCIBS : GenericClone<IBSCBSTotalCIBS>
 {

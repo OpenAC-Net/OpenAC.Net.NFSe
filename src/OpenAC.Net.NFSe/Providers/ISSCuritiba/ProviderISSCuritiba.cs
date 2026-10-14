@@ -48,6 +48,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSCuritiba.
+/// </summary>
 internal sealed class ProviderISSCuritiba : ProviderBase
 {
     #region Constructors

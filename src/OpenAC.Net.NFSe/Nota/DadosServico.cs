@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Detalhamento do serviço prestado, incluindo classificação fiscal, discriminação, valores e deduções.
+/// </summary>
+
 
 public sealed class DadosServico : GenericClone<DadosServico>, INotifyPropertyChanged
 {

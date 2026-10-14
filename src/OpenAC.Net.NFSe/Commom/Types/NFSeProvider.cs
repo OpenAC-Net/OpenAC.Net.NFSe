@@ -317,4 +317,14 @@ public enum NFSeProvider : sbyte
     /// Provedor Prodata.
     /// </summary>
     Prodata = 56,
+
+    /// <summary>
+    /// Provedor Tinus.
+    /// </summary>
+    Tinus = 57,
+
+    /// <summary>
+    /// Provedor ISSSalvador.
+    /// </summary>
+    ISSSalvador = 58,
 }

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 06-17-2016
@@ -33,13 +33,28 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno da consulta de lote de RPS.
+/// </summary>
 public sealed class RetornoConsultarLoteRps : RetornoWebservice
 {
+    /// <summary>
+    /// Número do lote consultado.
+    /// </summary>
     public int Lote { get; internal set; }
 
+    /// <summary>
+    /// Protocolo do lote consultado.
+    /// </summary>
     public string Protocolo { get; internal set; } = "";
 
+    /// <summary>
+    /// Situação do lote de RPS consultado.
+    /// </summary>
     public string Situacao { get; internal set; } = "";
 
+    /// <summary>
+    /// Coleção de notas de serviço retornadas.
+    /// </summary>
     public NotaServico[] Notas { get; internal set; } = [];
 }

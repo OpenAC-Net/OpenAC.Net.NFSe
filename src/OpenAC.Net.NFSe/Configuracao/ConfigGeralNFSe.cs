@@ -33,12 +33,15 @@ using OpenAC.Net.DFe.Core.Common;
 
 namespace OpenAC.Net.NFSe.Configuracao;
 
+/// <summary>
+/// Configurações gerais do componente OpenNFSe.
+/// </summary>
 public sealed class ConfigGeralNFSe : DFeGeralConfigBase
 {
     #region Constructor
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConfigGeralNFSe"/> class.
+    /// Inicializa uma nova instância da classe <see cref="ConfigGeralNFSe"/>.
     /// </summary>
     internal ConfigGeralNFSe()
     {

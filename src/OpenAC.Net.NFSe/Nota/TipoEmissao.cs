@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Tipo de emissão da NFSe (Normal ou em Contingência).
+/// </summary>
+
 
 public enum TipoEmissao
 {

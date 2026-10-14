@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Identificação do fornecedor associado à dedução ou prestação do serviço.
+/// </summary>
+
 
 public sealed class IdeFornecedor
 {

@@ -10,6 +10,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor FintelISS.
+/// </summary>
 internal sealed class FintelISS204ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

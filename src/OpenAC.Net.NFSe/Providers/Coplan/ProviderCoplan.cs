@@ -42,6 +42,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Coplan.
+/// </summary>
 internal sealed class ProviderCoplan : ProviderABRASF201
 {
     #region Constructors

@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Identificação do órgão municipal gerador da NFS-e.
+/// </summary>
+
 
 public sealed class IdeOrgaoGerador : GenericClone<IdeOrgaoGerador>, INotifyPropertyChanged
 {

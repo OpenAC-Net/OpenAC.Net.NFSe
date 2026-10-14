@@ -38,6 +38,9 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Sintese.
+/// </summary>
 internal sealed class ProviderSintese204 : ProviderABRASF204
 {
     #region Constructors

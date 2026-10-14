@@ -32,6 +32,7 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
@@ -44,6 +45,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Tiplan.
+/// </summary>
 internal sealed class ProviderTiplan203 : ProviderABRASF203
 {
     #region Constructors
@@ -84,7 +88,60 @@ internal sealed class ProviderTiplan203 : ProviderABRASF203
         servico.AddChild(AddTag(TipoCampo.Int, "", "MunicipioIncidencia", 7, 7, Ocorrencia.MaiorQueZero, nota.Servico.MunicipioIncidencia));
         servico.AddChild(AddTag(TipoCampo.Str, "", "NumeroProcesso", 1, 30, Ocorrencia.NaoObrigatoria, nota.Servico.NumeroProcesso));
 
+        var ibsCbs = WriteIBSCBS(nota);
+        if (ibsCbs != null)
+            servico.Add(ibsCbs);
+
         return servico;
+    }
+
+    private XElement? WriteIBSCBS(NotaServico nota)
+    {
+        var info = nota.Servico.Valores.IBSCBS;
+        if (info == null)
+            return null;
+
+        var indicadorFinal = info.IndicadorFinal ?? string.Empty;
+        var codigoOperacao = !string.IsNullOrWhiteSpace(info.CodigoIndicadorOperacao)
+            ? info.CodigoIndicadorOperacao
+            : nota.Servico.CodigoIndicadorOperacao;
+        var classificacao = !string.IsNullOrWhiteSpace(info.Valores.Tributos.SituacaoClassificacao.CodigoClassificacaoTributaria)
+            ? info.Valores.Tributos.SituacaoClassificacao.CodigoClassificacaoTributaria
+            : nota.Servico.CodigoClassificacaoTributaria;
+        var situacaoInformada = info.Valores.Tributos.SituacaoClassificacao.CodigoSituacaoTributaria ?? string.Empty;
+
+        var algumInformado = !string.IsNullOrWhiteSpace(indicadorFinal) ||
+                             !string.IsNullOrWhiteSpace(codigoOperacao) ||
+                             !string.IsNullOrWhiteSpace(classificacao) ||
+                             !string.IsNullOrWhiteSpace(situacaoInformada);
+
+        if (!algumInformado)
+            return null;
+
+        if (indicadorFinal is not ("0" or "1"))
+            throw new OpenException("IBS/CBS da Tiplan: OperacaoUsoConsumoPessoal deve ser 0 ou 1.");
+
+        if (!PossuiSomenteDigitos(codigoOperacao, 6))
+            throw new OpenException("IBS/CBS da Tiplan: Operacao (cIndOp) deve conter exatamente 6 dígitos.");
+
+        if (!PossuiSomenteDigitos(classificacao, 6))
+            throw new OpenException("IBS/CBS da Tiplan: ClassificacaoTributaria deve conter exatamente 6 dígitos.");
+
+        var situacao = classificacao.Substring(0, 3);
+        if (!string.IsNullOrWhiteSpace(situacaoInformada) && situacaoInformada != situacao)
+            throw new OpenException("IBS/CBS da Tiplan: SituacaoTributaria deve corresponder aos três primeiros dígitos da ClassificacaoTributaria.");
+
+        return new XElement("IBSCBS",
+            new XElement("OperacaoUsoConsumoPessoal", indicadorFinal),
+            new XElement("Operacao", codigoOperacao),
+            new XElement("ValoresTributos",
+                new XElement("SituacaoTributaria", situacao),
+                new XElement("ClassificacaoTributaria", classificacao)));
+    }
+
+    private static bool PossuiSomenteDigitos(string valor, int tamanho)
+    {
+        return valor?.Length == tamanho && valor.All(c => c >= '0' && c <= '9');
     }
 
     /// <inheritdoc />

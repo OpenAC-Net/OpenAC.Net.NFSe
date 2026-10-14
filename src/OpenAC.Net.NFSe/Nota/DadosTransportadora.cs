@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados da transportadora associada à prestação de serviços de transporte.
+/// </summary>
+
 
 public sealed class DadosTransportadora : GenericClone<DadosTransportadora>, INotifyPropertyChanged
 {

@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados cadastrais, fiscais e endereço do prestador de serviços.
+/// </summary>
+
 
 public sealed class DadosPrestador : GenericClone<DadosPrestador>, INotifyPropertyChanged
 {

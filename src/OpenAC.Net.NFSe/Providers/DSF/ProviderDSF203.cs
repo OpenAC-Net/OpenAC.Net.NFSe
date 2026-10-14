@@ -46,6 +46,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padr√£o DSF.
+/// </summary>
 internal sealed class ProviderDSF203 : ProviderABRASF203
 {
     #region Constructors
@@ -72,7 +75,7 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "EnviarLoteRpsResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "EnviarLoteRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var rootElement = xmlRet.Root.ElementAnyNs("EnviarLoteRpsResposta");
@@ -92,14 +95,14 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoConsultarLoteRps(RetornoConsultarLoteRps retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "ConsultarLoteRpsResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "ConsultarLoteRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var retornoLote = xmlRet.Root.ElementAnyNs("ConsultarLoteRpsResposta");
         var listaNfse = retornoLote?.ElementAnyNs("ListaNfse");
         if (listaNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n„o encontrada! (ListaNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lista de NFSe n√£o encontrada! (ListaNfse)" });
             return;
         }
 
@@ -145,14 +148,14 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoConsultarNFSeRps(RetornoConsultarNFSeRps retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "ConsultarNfseRpsResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "ConsultarNfseRpsResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var compNfse = xmlRet.Root.ElementAnyNs("ConsultarNfseRpsResposta")?.ElementAnyNs("CompNfse");
 
         if (compNfse == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal n„o encontrada! (CompNfse)" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Nota Fiscal n√£o encontrada! (CompNfse)" });
             return;
         }
 
@@ -218,13 +221,13 @@ internal sealed class ProviderDSF203 : ProviderABRASF203
     protected override void TratarRetornoCancelarNFSe(RetornoCancelar retornoWebservice, NotaServicoCollection notas)
     {
         var xmlRet = XDocument.Parse(retornoWebservice.XmlRetorno);
-        MensagemErro(retornoWebservice, xmlRet, "CancelarNfseResposta");
+        MensagemErro(retornoWebservice, xmlRet.Root, "CancelarNfseResposta");
         if (retornoWebservice.Erros.Any()) return;
 
         var confirmacaoCancelamento = xmlRet.Root.ElementAnyNs("CancelarNfseResposta")?.ElementAnyNs("RetCancelamento")?.ElementAnyNs("NfseCancelamento")?.ElementAnyNs("Confirmacao");
         if (confirmacaoCancelamento == null)
         {
-            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "ConfirmaÁ„o do cancelamento n„o encontrada!" });
+            retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Confirma√ß√£o do cancelamento n√£o encontrada!" });
             return;
         }
 

@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Documento fiscal de fornecedor para comprovação de IBS e CBS.
+/// </summary>
+
 
 public sealed class IBSCBSDocumentoFornecedor : GenericClone<IBSCBSDocumentoFornecedor>
 {

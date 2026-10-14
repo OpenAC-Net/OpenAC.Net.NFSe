@@ -4,7 +4,7 @@ namespace OpenAC.Net.NFSe.Demo;
 
 public static class Helpers
 {
-    public static string OpenFile(string filters, string title = "Abrir")
+    public static string? OpenFile(string filters, string title = "Abrir")
     {
         using var ofd = new OpenFileDialog();
         ofd.CheckPathExists = true;
@@ -19,7 +19,7 @@ public static class Helpers
         return ofd.FileName;
     }
 
-    public static string[] OpenFiles(string filters, string title = "Abrir")
+    public static string[]? OpenFiles(string filters, string title = "Abrir")
     {
         using var ofd = new OpenFileDialog();
         ofd.CheckPathExists = true;

@@ -31,7 +31,10 @@
 
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Coleção de eventos associados ao RPS.
+/// </summary>
+
 
 public sealed class EventoRpsCollection : DFeCollection<EventoRps>
 {

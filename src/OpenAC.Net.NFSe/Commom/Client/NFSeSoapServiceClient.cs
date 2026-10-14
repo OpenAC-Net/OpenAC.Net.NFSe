@@ -44,13 +44,26 @@ using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Commom.Client;
 
+/// <summary>
+/// Cliente base para comunicação com serviços web de NFSe que utilizam o protocolo SOAP (1.1 ou 1.2).
+/// </summary>
 public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 {
     #region Inner Types
 
+    /// <summary>
+    /// Versão do protocolo SOAP utilizado na comunicação.
+    /// </summary>
     public enum SoapVersion
     {
+        /// <summary>
+        /// Protocolo SOAP 1.1 (Content-Type: text/xml com cabeçalho SOAPAction).
+        /// </summary>
         Soap11,
+
+        /// <summary>
+        /// Protocolo SOAP 1.2 (Content-Type: application/soap+xml com parâmetro action).
+        /// </summary>
         Soap12,
     }
 
@@ -59,11 +72,11 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
     #region Constructors
 
     /// <summary>
-    /// 
+    /// Inicializa uma nova instância da classe <see cref="NFSeSoapServiceClient"/>.
     /// </summary>
-    /// <param name="provider"></param>
-    /// <param name="tipoUrl"></param>
-    /// <param name="message"></param>
+    /// <param name="provider">Instância do provedor de NFSe associado.</param>
+    /// <param name="tipoUrl">Tipo de URL do serviço SOAP.</param>
+    /// <param name="message">Versão do protocolo SOAP a ser utilizada.</param>
     protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, SoapVersion message) : base(provider, tipoUrl, provider.Certificado)
     {
         Guard.Against<ArgumentException>(!Enum.IsDefined(typeof(SoapVersion), message), "Versão Soap não definida.");
@@ -72,12 +85,12 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
     }
 
     /// <summary>
-    /// 
+    /// Inicializa uma nova instância da classe <see cref="NFSeSoapServiceClient"/> com certificado digital explícito.
     /// </summary>
-    /// <param name="provider"></param>
-    /// <param name="tipoUrl"></param>
-    /// <param name="certificado"></param>
-    /// <param name="message"></param>
+    /// <param name="provider">Instância do provedor de NFSe associado.</param>
+    /// <param name="tipoUrl">Tipo de URL do serviço SOAP.</param>
+    /// <param name="certificado">Certificado digital para autenticação mTLS.</param>
+    /// <param name="message">Versão do protocolo SOAP a ser utilizada.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     protected NFSeSoapServiceClient(ProviderBase provider, TipoUrl tipoUrl, X509Certificate2? certificado, SoapVersion message) : base(provider, tipoUrl, certificado)
     {
@@ -90,14 +103,29 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
 
     #region Properties
 
+    /// <summary>
+    /// Obtém a versão do protocolo SOAP em uso.
+    /// </summary>
     protected SoapVersion MessageVersion { get; }
 
+    /// <summary>
+    /// Obtém ou define o encoding utilizado para a mensagem SOAP.
+    /// </summary>
     protected Encoding CharSet { get; set; } = Encoding.UTF8;
 
     #endregion Properties
 
     #region Methods
 
+    /// <summary>
+    /// Monta o envelope SOAP e envia a requisição HTTP POST para o webservice.
+    /// </summary>
+    /// <param name="soapAction">Ação SOAP (SOAPAction).</param>
+    /// <param name="message">Corpo XML da mensagem.</param>
+    /// <param name="soapHeader">Cabeçalho SOAP opcional.</param>
+    /// <param name="responseTag">Tags esperadas no retorno.</param>
+    /// <param name="soapNamespaces">Namespaces a serem adicionados ao envelope SOAP.</param>
+    /// <returns>XML da resposta processada.</returns>
     protected virtual string Execute(string soapAction, string message, string soapHeader, string[] responseTag, string[] soapNamespaces)
     {
         var envelope = new StringBuilder();
@@ -157,6 +185,12 @@ public abstract class NFSeSoapServiceClient : NFSeHttpServiceClient
         throw new OpenDFeCommunicationException("Erro ao processar o retorno(2) => " + EnvelopeRetorno);
     }
 
+    /// <summary>
+    /// Trata e extrai a resposta XML útil do corpo do envelope SOAP recebido.
+    /// </summary>
+    /// <param name="xmlDocument">Elemento Body do envelope SOAP.</param>
+    /// <param name="responseTag">Lista de tags de resposta esperadas.</param>
+    /// <returns>String contendo o XML da resposta tratada.</returns>
     protected abstract string TratarRetorno(XElement xmlDocument, string[] responseTag);
 
     #endregion Methods

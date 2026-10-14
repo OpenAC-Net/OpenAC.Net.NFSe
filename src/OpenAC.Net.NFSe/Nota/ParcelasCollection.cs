@@ -31,7 +31,10 @@
 
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Coleção de parcelas de pagamento da NFSe.
+/// </summary>
+
 
 public sealed class ParcelasCollection : DFeCollection<Parcelas>
 {

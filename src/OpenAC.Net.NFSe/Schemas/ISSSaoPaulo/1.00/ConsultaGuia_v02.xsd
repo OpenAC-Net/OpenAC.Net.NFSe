@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.prefeitura.sp.gov.br/nfe"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://www.prefeitura.sp.gov.br/nfe"
+            xmlns:tipos="http://www.prefeitura.sp.gov.br/nfe/tipos"
+            xmlns:async="http://www.prefeitura.sp.gov.br/nfe/tipos">
+
+    
+    <xsd:import namespace="http://www.prefeitura.sp.gov.br/nfe/tipos" schemaLocation="TiposNFe_v02.xsd" />
+    <xsd:import namespace="http://www.prefeitura.sp.gov.br/nfe/tipos" schemaLocation="TiposNFeAsync_v02.xsd" />
+
+    <!--
+    ===========================================================================
+    == ELEMENTOS
+    ===========================================================================
+    -->
+
+    <xsd:element name="PedidoConsultaGuia">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="CPFCNPJRemetente"    type="tipos:tpCPFCNPJ"              minOccurs="1" maxOccurs="1" />
+                <xsd:element name="InscricaoPrestador"  type="tipos:tpInscricaoMunicipal"   minOccurs="1" maxOccurs="1" />
+                <xsd:element name="Incidencia"          type="async:tpIncidencia"           minOccurs="1" maxOccurs="1" />
+                <xsd:element name="Situacao"            type="tns:tpConsultaSituacaoGuias"  minOccurs="1" maxOccurs="1" />
+                <xsd:element name="TipoEmissao"         type="async:tpEmissaoGuia"          minOccurs="0" maxOccurs="1" />                
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+
+    <xsd:element name="RetornoConsultaGuia">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Cabecalho" minOccurs="1" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Sucesso" type="tipos:tpSucesso" minOccurs="1" maxOccurs="1" />
+                        </xsd:sequence>
+                        <xsd:attribute   name="Versao"  type="tipos:tpVersao" use="required" />
+                    </xsd:complexType>
+                </xsd:element>
+
+                <xsd:element name="Guia" type="tns:tpGuia"          minOccurs="0" maxOccurs="unbounded" />
+                <xsd:element name="Erro" type="async:tpEventoAsync" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <!--
+    ===========================================================================
+    == TIPOS SIMPLES E DE SUPORTE
+    ===========================================================================
+    -->
+    
+    <xsd:complexType name="tpGuias">
+        <xsd:sequence>
+            <xsd:element name="Guia" type="tns:tpGuia" minOccurs="1" maxOccurs="unbounded"  />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    
+    <xsd:complexType name="tpGuia">
+        <xsd:sequence>
+            <xsd:element name="InscricaoPrestador"  type="tipos:tpInscricaoMunicipal"   minOccurs="1" maxOccurs="1" />
+            <xsd:element name="NumeroGuia"          type="tipos:tpNumero"               minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Incidencia"          type="async:tpIncidencia"           minOccurs="1" maxOccurs="1" />
+            <xsd:element name="ValorTotal"          type="tipos:tpValor"                minOccurs="0" maxOccurs="1" />
+            <xsd:element name="ValorIss"            type="tipos:tpValor"                minOccurs="0" maxOccurs="1" />
+            <xsd:element name="ValorTotalPagamento" type="tipos:tpValor"                minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Status"              type="tns:tpStatusGuia"             minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Situacao"            type="tns:tpConsultaSituacaoGuias"  minOccurs="1" maxOccurs="1" />
+            <xsd:element name="Referencia"          type="async:tpEmissaoGuia"          minOccurs="0" maxOccurs="1" />
+            <xsd:element name="DataEmissao"         type="xsd:date"                     minOccurs="0" maxOccurs="1" />
+            <xsd:element name="DataVencimento"      type="xsd:date"                     minOccurs="0" maxOccurs="1" />
+            <xsd:element name="DataPagamento"       type="xsd:date"                     minOccurs="0" maxOccurs="1" />
+            <xsd:element name="DataQuitacao"        type="xsd:date"                     minOccurs="0" maxOccurs="1" />
+            <xsd:element name="DataCancelamento"    type="xsd:date"                     minOccurs="0" maxOccurs="1" />
+            <xsd:element name="LinhaDigitavel"      type="xsd:string"                   minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    
+    <xsd:simpleType name="tpConsultaSituacaoGuias">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>Guias pendentes de pagamento</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Guias quitadas</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+                <xsd:annotation>
+                    <xsd:documentation>Guias canceladas</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="4">
+                <xsd:annotation>
+                    <xsd:documentation>Guias pendente de emissao</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="tpStatusGuia">
+        <xsd:simpleContent>
+            <xsd:extension base="tns:tpStatusGuiaEnum">
+                <xsd:attribute name="nome" type="xsd:string" use="optional"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="tpStatusGuiaEnum">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="0">
+                <xsd:annotation>
+                    <xsd:documentation>Normal</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>Cancelada</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Quitada</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+                <xsd:annotation>
+                    <xsd:documentation>Aproveitada</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="4">
+                <xsd:annotation>
+                    <xsd:documentation>Alterada</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="5">
+                <xsd:annotation>
+                    <xsd:documentation>QuitadaPorRDT</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="6">
+                <xsd:annotation>
+                    <xsd:documentation>QuitadaPorSubstituicao</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="7">
+                <xsd:annotation>
+                    <xsd:documentation>QuitadaPorRetificacao</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
+
+<!--
+Normal                  = 0
+Cancelada               = 1
+Quitada                 = 2
+Aproveitada             = 3
+Alterada                = 4
+QuitadaPorRDT           = 5
+QuitadaPorSubstituicao  = 6
+QuitadaPorRetificacao   = 7
+-->

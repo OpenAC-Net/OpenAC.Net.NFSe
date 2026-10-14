@@ -41,6 +41,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão AssessorPublico.
+/// </summary>
 internal sealed class ProviderAssessorPublico : ProviderABRASF201
 {
     #region Constructors

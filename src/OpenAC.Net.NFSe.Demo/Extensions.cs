@@ -53,27 +53,30 @@ public static class Extensions
 
     public static void EnumDataSource<T>(this ComboBox cmb, T valorPadrao) where T : struct
     {
-        var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString(), value)).ToArray();
+        var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString()!, value)).ToArray();
         cmb.DataSource = list;
         cmb.SelectedItem = list.SingleOrDefault(x => x.Content.Equals(valorPadrao));
     }
         
     public static void EnumDataSourceSorted<T>(this ComboBox cmb, T valorPadrao) where T : struct
     {
-        var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString(), value)).ToArray();
+        var list = (from T value in Enum.GetValues(typeof(T)) select new ItemData<T>(value.ToString()!, value)).ToArray();
         cmb.DataSource = list.OrderBy(p => p.Description).ToList(); 
         cmb.SelectedItem = list.SingleOrDefault(x => x.Content.Equals(valorPadrao));
     }
 
     public static T? GetSelectedValue<T>(this ComboBox cmb)
     {
-        return ((ItemData<T>)cmb.SelectedItem).Content;
+        return cmb.SelectedItem is ItemData<T> item ? item.Content : default;
     }
 
     public static void SetSelectedValue<T>(this ComboBox cmb, T valor)
     {
-        var dataSource = (ItemData<T>[])cmb.DataSource;
-        cmb.SelectedItem = dataSource.SingleOrDefault(x => x.Content.Equals(valor));
+        if (cmb.DataSource is System.Collections.IEnumerable enumerable)
+        {
+            var dataSource = enumerable.OfType<ItemData<T>>();
+            cmb.SelectedItem = dataSource.SingleOrDefault(x => x.Content != null && x.Content.Equals(valor));
+        }
     }
 
     public static void MunicipiosDataSource(this ComboBox cmb)

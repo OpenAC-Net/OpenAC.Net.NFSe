@@ -46,6 +46,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão SimplISS.
+/// </summary>
 internal sealed class ProviderSimplISS203 : ProviderABRASF203
 {
     #region Constructors

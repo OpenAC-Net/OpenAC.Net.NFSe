@@ -43,6 +43,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor GIAP.
+/// </summary>
 internal sealed class GIAPServiceClient100 : NFSeHttpServiceClient, IServiceClient
 {
     #region Constructors

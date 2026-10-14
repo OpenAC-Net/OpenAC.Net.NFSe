@@ -33,19 +33,43 @@ using System;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno da solicitação de cancelamento de NFSe.
+/// </summary>
 public sealed class RetornoCancelar : RetornoWebservice
 {
+    /// <summary>
+    /// Data e hora do cancelamento.
+    /// </summary>
     public DateTime Data { get; internal set; }
 
+    /// <summary>
+    /// Número da NFSe cancelada.
+    /// </summary>
     public string NumeroNFSe { get; internal set; } = "";
 
+    /// <summary>
+    /// Série da NFSe cancelada.
+    /// </summary>
     public string SerieNFSe { get; internal set; } = "";
 
+    /// <summary>
+    /// Valor da NFSe cancelada.
+    /// </summary>
     public decimal ValorNFSe { get; internal set; }
 
+    /// <summary>
+    /// Código do motivo de cancelamento.
+    /// </summary>
     public string CodigoCancelamento { get; internal set; } = "";
     
+    /// <summary>
+    /// Código de verificação da NFSe.
+    /// </summary>
     public string CodigoVerificacao { get; internal set; } = "";
     
+    /// <summary>
+    /// Motivo ou justificativa do cancelamento.
+    /// </summary>
     public string Motivo { get; internal set; } = "";
 }

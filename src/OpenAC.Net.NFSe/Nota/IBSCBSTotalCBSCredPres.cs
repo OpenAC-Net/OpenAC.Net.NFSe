@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Totalizador de crédito presumido da CBS.
+/// </summary>
+
 
 public sealed class IBSCBSTotalCBSCredPres : GenericClone<IBSCBSTotalCBSCredPres>
 {

@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados de endereço nacional do prestador, tomador ou intermediário.
+/// </summary>
+
 
 public sealed class Endereco : GenericClone<Endereco>, INotifyPropertyChanged
 {

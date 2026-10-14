@@ -46,6 +46,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão SigISS.
+/// </summary>
 internal sealed class ProviderSigISS100 : ProviderBase
 {
     #region Constructors

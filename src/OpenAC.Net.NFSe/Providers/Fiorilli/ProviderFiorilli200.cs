@@ -42,6 +42,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Fiorilli.
+/// </summary>
 internal sealed class ProviderFiorilli200 : ProviderABRASF200
 {
     #region Constructors

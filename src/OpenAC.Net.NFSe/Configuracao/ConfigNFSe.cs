@@ -34,12 +34,15 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Configuracao;
 
+/// <summary>
+/// Configurações gerais, de certificados, web services e arquivos do componente OpenNFSe.
+/// </summary>
 public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
 {
     #region Constructor
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConfigNFSe"/> class.
+    /// Inicializa uma nova instância da classe <see cref="ConfigNFSe"/>.
     /// </summary>
     public ConfigNFSe()
     {
@@ -54,12 +57,15 @@ public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebService
 
     #region Properties
     
+    /// <summary>
+    /// Obtém uma nova instância de configuração padrão.
+    /// </summary>
     public static ConfigNFSe Default { get; } = new();
 
     /// <summary>
-    /// Gets the prestado padrão.
+    /// Obtém ou define os dados padrão do prestador de serviço.
     /// </summary>
-    /// <value>The prestado padrão.</value>
+    /// <value>Os dados do prestador padrão.</value>
     public DadosPrestador PrestadorPadrao { get; set; }
 
     #endregion Properties

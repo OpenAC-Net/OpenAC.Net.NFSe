@@ -1,0 +1,2188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.prefeitura.sp.gov.br/nfe/tipos"
+    xmlns:tipos="http://www.prefeitura.sp.gov.br/nfe/tipos"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema_v02.xsd" />
+	<!-- Tipos Simples -->
+	<xs:simpleType name="tpAliquota">
+		<xs:annotation>
+			<xs:documentation>Tipo utilizado para valor de alíquota</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="5" />
+			<xs:fractionDigits value="4" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpAssinatura">
+		<xs:annotation>
+			<xs:documentation>Assinatura digital do RPS emitido.</xs:documentation>
+			<xs:documentation>O RPS deverá ser assinado digitalmente. O contribuinte deverá assinar uma cadeia de caracteres (ASCII) com informações do RPS emitido.</xs:documentation>
+			<xs:documentation>O certificado digital utilizado na assinatura de cancelamento deverá ser o mesmo utilizado na assinatura da mensagem XML. A cadeia de caracteres a ser assinada deverá conter 86 posições com as informações apresentadas a seguir:</xs:documentation>
+			<xs:documentation>Inscrição Municipal (CCM) do Prestador com 8 caracteres. Caso o CCM do Prestador tenha menos de 8 caracteres, o mesmo deverá ser completado com zeros à esquerda.</xs:documentation>
+			<xs:documentation>Série do RPS com 5 posições. Caso a Série do RPS tenha menos de 5 caracteres, o mesmo deverá ser completado com espaços em branco à direita.</xs:documentation>
+			<xs:documentation>Número do RPS com 12 posições. Caso o Número do RPS tenha menos de 12 caracteres, o mesmo deverá ser completado com zeros à esquerda.</xs:documentation>
+			<xs:documentation>Data da emissão do RPS no formato AAAAMMDD.</xs:documentation>
+			<xs:documentation>Tipo de Tributação do RPS com uma posição (sendo T: para Tributação no municipio de São Paulo; F: para Tributação fora do municipio de São Paulo; I: para Isento; J: para ISS Suspenso por Decisão Judicial).</xs:documentation>
+			<xs:documentation>Status do RPS com uma posição (sendo N: Normal, C: Cancelado; E: Extraviado).</xs:documentation>
+			<xs:documentation>ISS Retido com uma posição (sendo S: ISS Retido; N: Nota Fiscal sem ISS Retido).</xs:documentation>
+			<xs:documentation>Valor dos Serviços com 15 posições e sem separador de milhar e decimal.</xs:documentation>
+			<xs:documentation>Valor das Deduções com 15 posições e sem separador de milhar e decimal.</xs:documentation>
+			<xs:documentation>Código do Serviço com 5 posições.</xs:documentation>
+			<xs:documentation>CPF/CNPJ do tomador com 14 posições. Sem formatação (ponto, traço, barra, ....). Completar com zeros à esquerda caso seja necessário. Se o Indicador do CPF/CNPJ for 3 (não-informado), preencher com 14 zeros.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:base64Binary">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpAssinaturaCancelamento">
+		<xs:annotation>
+			<xs:documentation>Assinatura digital de cancelamento da NFS-e.</xs:documentation>
+			<xs:documentation>Cada NFS-e a ser cancelada deverá ter sua respectiva assinatura de cancelamento. O contribuinte deverá assinar uma cadeia de caracteres (ASCII) com informações da NFS-e a ser cancelada.</xs:documentation>
+			<xs:documentation>O certificado digital utilizado na assinatura de cancelamento deverá ser o mesmo utilizado na assinatura da mensagem XML. A cadeia de caracteres a ser assinada deverá conter 20 posições com as informações apresentadas a seguir:</xs:documentation>
+			<xs:documentation>Inscrição Municipal (CCM) do Prestador com 8 caracteres. Caso o CCM do Prestador tenha menos de 8 caracteres, o mesmo deverá ser completado com zeros à esquerda.</xs:documentation>
+			<xs:documentation>Número da NFS-e RPS com 12 posições. Caso o Número da NFS-e tenha menos de 12 caracteres, o mesmo deverá ser completado com zeros à esquerda.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:base64Binary">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpBairro">
+		<xs:annotation>
+			<xs:documentation>Tipo bairro.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="30" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCCIB">
+		<xs:annotation>
+			<xs:documentation>Cadastro de imóveis. Obrigatório para construção civil.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="preserve"/>
+			<xs:pattern value="[0-9A-Z]{8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpClassificacaoTributaria">
+		<xs:annotation>
+			<xs:documentation>Tipo do código de classificação Tributária do IBS e da CBS.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCEP">
+		<xs:annotation>
+			<xs:documentation>Tipo CEP.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:pattern value="[0-9]{7,8}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCidade">
+		<xs:annotation>
+			<xs:documentation>Tipo Código do Município segundo tabela IBGE.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:pattern value="[0-9]{7}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpChaveNotaNacional">
+		<xs:annotation>
+			<xs:documentation>Tipo da chave da Nota Nacional.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9A-Z]{50}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCNPJ">
+		<xs:annotation>
+			<xs:documentation>Tipo CNPJ.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9A-Z]{12}[0-9]{2}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCodigoServico">
+		<xs:annotation>
+			<xs:documentation>Tipo código de serviço.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:pattern value="[0-9]{4,5}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCodigoEvento">
+		<xs:annotation>
+			<xs:documentation>Tipo código de evento.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:short">
+			<xs:pattern value="[0-9]{3,4}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCodigoEndPostal">
+		<xs:annotation>
+			<xs:documentation>Código de endereçamento postal</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCodigoNBS">
+		<xs:annotation>
+			<xs:documentation>Código da lista de Nomenclatura Brasileira de Serviços (NBS).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{9}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCodigoNCM">
+		<xs:annotation>
+			<xs:documentation>Código da lista de Nomenclatura Comum do Mercosul (NCM).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCodigoPaisISO">
+		<xs:annotation>
+			<xs:documentation>Tipo Código do País segundo tabela ISO.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCodigoVerificacao">
+		<xs:annotation>
+			<xs:documentation>Tipo Código de verificação da NFS-e.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="8" />
+			<xs:maxLength value="8" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpComplementoEndereco">
+		<xs:annotation>
+			<xs:documentation>Tipo complemento do endereço.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="30" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpEnteGov">
+		<xs:annotation>
+			<xs:documentation>Tipo do ente da compra governamental.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>União.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>Estados.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>Distrito Federal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>Municípios.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCPF">
+		<xs:annotation>
+			<xs:documentation>Tipo CPF.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{0}|[0-9]{11}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpDescricaoEvento">
+		<xs:annotation>
+			<xs:documentation>Tipo descrição do evento.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="300" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpDiscriminacao">
+		<xs:annotation>
+			<xs:documentation>Tipo Discriminação Serviços.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="2000" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpEmail">
+		<xs:annotation>
+			<xs:documentation>Tipo E-mail.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="75" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpEstadoProvinciaRegiao">
+		<xs:annotation>
+			<xs:documentation>Estado, província ou região</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpFonteCargaTributaria">
+		<xs:annotation>
+			<xs:documentation>Tipo utilizado para a fonte da carga tributária.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="10" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpInscricaoEstadual">
+		<xs:annotation>
+			<xs:documentation>Tipo Inscrição Estadual.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:pattern value="[0-9]{1,19}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpInscricaoMunicipal">
+		<xs:annotation>
+			<xs:documentation>Tipo padrão referente a inscrição municipal.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:pattern value="[0-9]{1,12}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpLogradouro">
+		<xs:annotation>
+			<xs:documentation>Endereço.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="50" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpNaoNIF">
+		<xs:annotation>
+			<xs:documentation>Tipo do motivo para não informação do NIF.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>0 - Não informado na nota de origem;</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>1 - Dispensado do NIF;</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>2 - Não exigência do NIF;</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpNaoSim">
+		<xs:annotation>
+			<xs:documentation>Tipo de Não ou Sim.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:pattern value="[01]{1}" />
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>Não.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Sim.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpNIF">
+		<xs:annotation>
+			<xs:documentation>Tipo NIF (Número de Identificação Fiscal) - fornecido por um órgão de administração tributária no exterior.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="40" />
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpNomeCidade">
+		<xs:annotation>
+			<xs:documentation>Nome da Cidade</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpNumero">
+		<xs:annotation>
+			<xs:documentation>Tipo número.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:pattern value="[0-9]{1,12}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpNumeroEndereco">
+		<xs:annotation>
+			<xs:documentation>Tipo número do endereço.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="10" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpOpcaoSimples">
+		<xs:annotation>
+			<xs:documentation>Tipo referente às possíveis opções de escolha pelo Simples.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>Não-optante pelo Simples Federal nem Municipal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Optante pelo Simples Federal (Alíquota de 1,0%).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>Optante pelo Simples Federal (Alíquota de 0,5%).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>Optante pelo Simples Municipal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>Optante pelo Simples Nacional - DAS.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation>Optante pelo Simples Nacional - DAMSP.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpPercentualCargaTributaria">
+		<xs:annotation>
+			<xs:documentation>Tipo utilizado para o valor do percentual da carga tributária.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="7" />
+			<xs:fractionDigits value="4" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpQuantidade">
+		<xs:annotation>
+			<xs:documentation>Tipo padrão para quantidades.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:pattern value="[0-9]{1,15}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpRazaoSocialObrigatorio">
+		<xs:annotation>
+			<xs:documentation>Tipo Razão Social.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="75" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpRazaoSocial">
+		<xs:annotation>
+			<xs:documentation>Tipo Razão Social.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="75" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpReferencia">
+		<xs:annotation>
+			<xs:documentation>Tipo de referência da nota.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>Nota fiscal referenciada para emissão de nota de multa e juros.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Nota fiscal de pagamento parcelado antecipado.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpSerieRPS">
+		<xs:annotation>
+			<xs:documentation>Tipo série de documento.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="5" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpStatusNFe">
+		<xs:annotation>
+			<xs:documentation>Tipo referente aos possíveis status de NFS-e.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>Normal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>Cancelada.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>Extraviada.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpSucesso">
+		<xs:annotation>
+			<xs:documentation>Tipo que indica se o pedido do serviço obteve sucesso.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpTempoProcessamento">
+		<xs:annotation>
+			<xs:documentation>Tipo referente ao tempo de processamento do lote.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:pattern value="[0-9]{1,15}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpTipoLogradouro">
+		<xs:annotation>
+			<xs:documentation>Tipo do endereço (Rua, Av, ...).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="3" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpTipoNotaReferenciada">
+		<xs:annotation>
+			<xs:documentation>Tipo de nota fiscal referenciada.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>NFTS.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpTipoRPS">
+		<xs:annotation>
+			<xs:documentation>Tipo referente aos possíveis tipos de RPS.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RPS">
+				<xs:annotation>
+					<xs:documentation>Recibo Provisório de Serviços.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RPS-M">
+				<xs:annotation>
+					<xs:documentation>Recibo Provisório de Serviços proveniente de Nota Fiscal Conjugada (Mista).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RPS-C">
+				<xs:annotation>
+					<xs:documentation>Cupom.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpTributacaoNFe">
+		<xs:annotation>
+			<xs:documentation>Tipo referente aos modos de tributação da NFe.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="1" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpUF">
+		<xs:annotation>
+			<xs:documentation>Tipo UF.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="2" />
+			<xs:maxLength value="2" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpValor">
+		<xs:annotation>
+			<xs:documentation>Tipo utilizado para valores com 15 dígitos, sendo 13 de corpo e 2 decimais.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="15" />
+			<xs:fractionDigits value="2" />
+			<xs:minInclusive value="0" />
+			<xs:pattern value="0|0\.[0-9]{2}|[1-9]{1}[0-9]{0,12}(\.[0-9]{0,2})?" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpVersao">
+		<xs:annotation>
+			<xs:documentation>Tipo Versão do Schema.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:pattern value="[0-9]{1,3}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpFinNFSe">
+		<xs:annotation>
+			<xs:documentation>Indicador da finalidade da emissão de NFS-e.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>0 = NFS-e regular.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCIndOp">
+		<xs:annotation>
+			<xs:documentation>Código indicador da operação.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpOper">
+		<xs:annotation>
+			<xs:documentation>Tipo de Operação com Entes Governamentais ou outros serviços sobre bens imóveis.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Fornecimento com pagamento posterior.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>Recebimento do pagamento com fornecimento já realizado.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>Fornecimento com pagamento já realizado.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>Recebimento do pagamento com fornecimento posterior.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation>Fornecimento e recebimento do pagamento concomitantes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpIndDest">
+		<xs:annotation>
+			<xs:documentation>Indica o Destinatário dos serviços.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>O destinatário é o próprio tomador/adquirente identificado na NFS-e (tomador = adquirente = destinatário).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>O destinatário não é o próprio adquirente, podendo ser outra pessoa, física ou jurídica (ou equiparada), ou um estabelecimento diferente do indicado como tomador (tomador = adquirente ≠ destinatário).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpCObra">
+		<xs:annotation>
+			<xs:documentation>Identificação da obra, do Cadastro Nacional de Obras, ou do Cadastro Específico do INSS.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpInscImobFisc">
+		<xs:annotation>
+			<xs:documentation>Inscrição Imobiliária fiscal (código fornecido pela prefeitura para identificação da obra ou para fins de recolhimento do IPTU). Exemplos: SQL ou INCRA.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpTipoChaveDFE">
+		<xs:annotation>
+			<xs:documentation>Documento fiscal a que se refere a chaveDfe que seja um dos documentos do Repositório Nacional:</xs:documentation>
+			<xs:documentation>1 - NFS-e.</xs:documentation>
+			<xs:documentation>2 - NF-e.</xs:documentation>
+			<xs:documentation>3 - CT-e.</xs:documentation>
+			<xs:documentation>9 - Outro.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>NF-e.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>CT-e.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation>Outro.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpXTipoChaveDFe">
+		<xs:annotation>
+			<xs:documentation>Descrição da DF -e a que se refere a chaveDfe que seja um dos documentos do Repositório Nacional. Deve ser preenchido apenas quando tipoChaveDFe = 9 (Outro).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpChaveDFe">
+		<xs:annotation>
+			<xs:documentation>Chave do Documento Fiscal eletrônico do repositório nacional referenciado para os casos de operações já tributadas.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpNumeroDescricaoDocumento">
+		<xs:annotation>
+			<xs:documentation>Tipo para o número e descrição de documentos, fiscais ou não.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpReeRepRes">
+		<xs:annotation>
+			<xs:documentation>Tipo de valor incluído neste documento, recebido por motivo de estarem relacionadas a operações de terceiros, objeto de reembolso, repasse ou ressarcimento pelo recebedor, já tributados e aqui referenciados.</xs:documentation>
+			<xs:documentation>01 = Repasse de remuneração por intermediação de imóveis a demais corretores envolvidos na operação.</xs:documentation>
+			<xs:documentation>02 = Repasse de valores a fornecedor relativo a fornecimento intermediado por agência de turismo.</xs:documentation>
+			<xs:documentation>03 = Reembolso ou ressarcimento recebido por agência de propaganda e publicidade por valores pagos relativos a serviços de produção externa por conta e ordem de terceiro.</xs:documentation>
+			<xs:documentation>04 = Reembolso ou ressarcimento recebido por agência de propaganda e publicidade por valores pagos relativos a serviços de mídia por conta e ordem de terceiro.</xs:documentation>
+			<xs:documentation>99 = Outros reembolsos ou ressarcimentos recebidos por valores pagos relativos a operações por conta e ordem de terceiro.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>01 = Repasse de remuneração por intermediação de imóveis a demais corretores envolvidos na operação</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>02 = Repasse de valores a fornecedor relativo a fornecimento intermediado por agência de turismo.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>03 = Reembolso ou ressarcimento recebido por agência de propaganda e publicidade por valores pagos relativos a serviços de produção externa por conta e ordem de terceiro.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>04 = Reembolso ou ressarcimento recebido por agência de propaganda e publicidade por valores pagos relativos a serviços de mídia por conta e ordem de terceiro.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="99">
+				<xs:annotation>
+					<xs:documentation>99 = Outros reembolsos ou ressarcimentos recebidos por valores pagos relativos a operações por conta e ordem de terceiro</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpXTpReeRepRes">
+		<xs:annotation>
+			<xs:documentation>Descrição do reembolso ou ressarcimento quando a opção é 99 - Outros reembolsos ou ressarcimentos recebidos por valores pagos relativos a operações por conta e ordem de terceiro.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="150"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tpXNomeEvt">
+		<xs:annotation>
+			<xs:documentation>Tipo Nome do evento cultural, artístico, esportivo.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Grupos -->
+	<xs:group name="gpCPFCNPJNIF">
+		<xs:annotation>
+			<xs:documentation>Grupo que representa um CPF/CNPJ/NIF.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="CPF" type="tipos:tpCPF" minOccurs="1" maxOccurs="1" />
+			<xs:element name="CNPJ" type="tipos:tpCNPJ" minOccurs="1" maxOccurs="1" />
+			<xs:element name="NIF" type="tipos:tpNIF" minOccurs="1" maxOccurs="1" />
+			<xs:element name="NaoNIF" type="tipos:tpNaoNIF" minOccurs="1" maxOccurs="1" />
+		</xs:choice>
+	</xs:group>
+	<xs:group name="gpEnderecoBaseIBSCBS">
+		<xs:annotation>
+			<xs:documentation>Grupo do endereço base do IBSCBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="xLgr" type="tipos:tpLogradouro" minOccurs="1" maxOccurs="1" />
+			<xs:element name="nro" type="tipos:tpNumeroEndereco" minOccurs="1" maxOccurs="1" />
+			<xs:element name="xCpl" type="tipos:tpComplementoEndereco" minOccurs="0" maxOccurs="1" />
+			<xs:element name="xBairro" type="tipos:tpBairro" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="gpPrestacao">
+		<xs:annotation>
+			<xs:documentation>Grupo do local de prestação do serviço.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="cLocPrestacao" type="tipos:tpCidade" minOccurs="1" maxOccurs="1" />
+			<xs:element name="cPaisPrestacao" type="tipos:tpCodigoPaisISO" minOccurs="1" maxOccurs="1" />
+		</xs:choice>
+	</xs:group>
+	<xs:simpleType name="tpRetencaoPisCofins">
+		<xs:annotation>
+			<xs:documentation>Tipo de retenção para os tributos federais conforme numerados.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>PIS/COFINS/CSLL Não Retidos.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>PIS/COFINS/CSLL Retidos.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>PIS/COFINS Retidos, CSLL Não Retido.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation>PIS Retido, COFINS/CSLL Não Retido.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation>COFINS Retido, PIS/CSLL Não Retidos.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="7">
+				<xs:annotation>
+					<xs:documentation>PIS Não Retido, COFINS/CSLL Retidos.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8">
+				<xs:annotation>
+					<xs:documentation>PIS/COFINS Não Retidos, CSLL Retido.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation>COFINS Não Retido, PIS/CSLL Retidos.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Tipos Complexos -->
+	<xs:complexType name="tpEvento">
+		<xs:sequence>
+			<xs:element name="Codigo" type="tipos:tpCodigoEvento" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código do evento.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Descricao" type="tipos:tpDescricaoEvento" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Descrição do evento.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs ="0" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Chave para identificação da origem do evento.</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ChaveRPS" type="tipos:tpChaveRPS" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Chave do RPS.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ChaveNFe" type="tipos:tpChaveNFe" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Chave da NFe.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpCPFCNPJ">
+		<xs:annotation>
+			<xs:documentation>Tipo que representa um CPF/CNPJ.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="CPF" type="tipos:tpCPF" minOccurs="1" maxOccurs="1" />
+			<xs:element name="CNPJ" type="tipos:tpCNPJ" minOccurs="1" maxOccurs="1" />
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="tpCPFCNPJNIF">
+		<xs:annotation>
+			<xs:documentation>Tipo que representa um CPF/CNPJ/NIF.</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="tipos:gpCPFCNPJNIF" />
+	</xs:complexType>
+	<xs:complexType name="tpChaveNFeRPS">
+		<xs:annotation>
+			<xs:documentation>Tipo que representa a chave de uma NFS-e e a Chave do RPS que a mesma substitui.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ChaveNFe" type ="tipos:tpChaveNFe" minOccurs ="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Chave da NFS-e gerada.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChaveRPS" type ="tipos:tpChaveRPS" minOccurs ="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Chave do RPS substituído.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpChaveNFe">
+		<xs:annotation>
+			<xs:documentation>Chave de identificação da NFS-e.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="InscricaoPrestador" type="tipos:tpInscricaoMunicipal" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Inscrição municipal do prestador de serviços.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumeroNFe" type="tipos:tpNumero" minOccurs ="1" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Número da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodigoVerificacao" type="tipos:tpCodigoVerificacao" minOccurs ="0" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Código de verificação da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChaveNotaNacional" type="tipos:tpChaveNotaNacional" minOccurs ="0" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Chave da Nota Nacional.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpChaveRPS">
+		<xs:annotation>
+			<xs:documentation>Tipo que define a chave identificadora de um RPS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="InscricaoPrestador" type="tipos:tpInscricaoMunicipal" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Inscrição municipal do prestador de serviços.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SerieRPS" type="tipos:tpSerieRPS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Série do RPS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumeroRPS" type="tipos:tpNumero" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Número do RPS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpEnderecoExterior">
+		<xs:annotation>
+			<xs:documentation>Tipo endereço no exterior.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cPais" type="tipos:tpCodigoPaisISO" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código do país (Tabela de Países ISO).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cEndPost" type="tipos:tpCodigoEndPostal" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código alfanumérico do Endereçamento Postal no exterior do prestador do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xCidade" type="tipos:tpNomeCidade" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nome da cidade no exterior do prestador do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xEstProvReg" type="tipos:tpEstadoProvinciaRegiao" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Estado, província ou região da cidade no exterior do prestador do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpEnderecoNacional">
+		<xs:annotation>
+			<xs:documentation>Tipo endereço no nacional.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cMun" type="tipos:tpCidade" minOccurs="1" maxOccurs="1" />
+			<xs:element name="CEP" type="tipos:tpCEP" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpEndereco">
+		<xs:annotation>
+			<xs:documentation>Tipo Endereço.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TipoLogradouro" type="tipos:tpTipoLogradouro" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Logradouro" type="tipos:tpLogradouro" minOccurs="0" maxOccurs="1" />
+			<xs:element name="NumeroEndereco" type="tipos:tpNumeroEndereco" minOccurs="0" maxOccurs="1" />
+			<xs:element name="ComplementoEndereco" type="tipos:tpComplementoEndereco" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Bairro" type="tipos:tpBairro" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Cidade" type="tipos:tpCidade" minOccurs="0" maxOccurs="1" />
+			<xs:element name="UF" type="tipos:tpUF" minOccurs="0" maxOccurs="1" />
+			<xs:element name="CEP" type="tipos:tpCEP" minOccurs="0" maxOccurs="1" />
+			<xs:element name="EnderecoExterior" type="tipos:tpEnderecoExterior" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpEnderecoIBSCBS">
+		<xs:annotation>
+			<xs:documentation>Tipo Endereço para o IBSCBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="endNac" type="tipos:tpEnderecoNacional" minOccurs="1" maxOccurs="1" />
+				<xs:element name="endExt" type="tipos:tpEnderecoExterior" minOccurs="1" maxOccurs="1" />
+			</xs:choice>
+			<xs:group ref="tipos:gpEnderecoBaseIBSCBS" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpEnderecoSimplesIBSCBS">
+		<xs:annotation>
+			<xs:documentation>Tipo Endereço simplificado para o IBSCBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="CEP" type="tipos:tpCEP" minOccurs="1" maxOccurs="1" />
+				<xs:element name="endExt" type="tipos:tpEnderecoExterior" minOccurs="1" maxOccurs="1" />
+			</xs:choice>
+			<xs:group ref="tipos:gpEnderecoBaseIBSCBS" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpInformacoesLote">
+		<xs:annotation>
+			<xs:documentation>Informações do lote processado.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NumeroLote" type="tipos:tpNumero" minOccurs ="0" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Número de lote.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InscricaoPrestador" type="tipos:tpInscricaoMunicipal" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Inscrição municipal do prestador dos RPS contidos no lote.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CPFCNPJRemetente" type="tipos:tpCPFCNPJ" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>CNPJ do remetente autorizado a transmitir a mensagem XML.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataEnvioLote" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data/hora de envio do lote.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="QtdNotasProcessadas" type="tipos:tpQuantidade" minOccurs ="1" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Quantidade de RPS do lote.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TempoProcessamento" type="tipos:tpTempoProcessamento" minOccurs ="1" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Tempo de processamento do lote.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorTotalServicos" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor total dos serviços dos RPS contidos na mensagem XML.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorTotalDeducoes" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor total das deduções dos RPS contidos na mensagem XML.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpInformacoesPessoa">
+		<xs:annotation>
+			<xs:documentation>Tipo de informações de pessoa.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="tipos:gpCPFCNPJNIF" />
+			<xs:element name="xNome" type="tipos:tpRazaoSocialObrigatorio" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nome.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="end" type="tipos:tpEnderecoIBSCBS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Endereço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email" type="tipos:tpEmail" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Endereço eletrônico.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpGRefNFSe">
+		<xs:annotation>
+			<xs:documentation>Grupo com Ids da nota nacional referenciadas, associadas a NFSE.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="refNFSe" type="tipos:tpChaveNotaNacional" minOccurs="1" maxOccurs="99" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpGrupoReeRepRes">
+		<xs:annotation>
+			<xs:documentation>Grupo de informações relativas a valores incluídos neste documento e recebidos por </xs:documentation>
+			<xs:documentation>motivo de estarem relacionadas a operações de terceiros, objeto de reembolso, repasse ou </xs:documentation>
+			<xs:documentation>ressarcimento pelo recebedor, já tributados e aqui referenciados.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="documentos" type="tipos:tpDocumento" minOccurs="1" maxOccurs="100" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpImovelObra">
+		<xs:annotation>
+			<xs:documentation>Tipo de imovel/obra.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="inscImobFisc" type="tipos:tpInscImobFisc" minOccurs="0" maxOccurs="1" />
+			<xs:choice>
+				<xs:element name="cCIB" type="tipos:tpCCIB" minOccurs="1" maxOccurs="1" />
+				<xs:element name="cObra" type="tipos:tpCObra" minOccurs="1" maxOccurs="1" />
+				<xs:element name="end" type="tipos:tpEnderecoSimplesIBSCBS" minOccurs="1" maxOccurs="1" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpDocumento">
+		<xs:annotation>
+			<xs:documentation>Tipo de documento referenciado nos casos de reembolso, repasse e ressarcimento que serão considerados na base de cálculo do ISSQN, do IBS e da CBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="dFeNacional" type="tipos:tpDFeNacional" minOccurs="1" maxOccurs="1" />
+				<xs:element name="docFiscalOutro" type="tipos:tpDocFiscalOutro" minOccurs="1" maxOccurs="1" />
+				<xs:element name="docOutro" type="tipos:tpDocOutro" minOccurs="1" maxOccurs="1" />
+			</xs:choice>
+			<xs:element name="fornec" type="tipos:tpFornecedor" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dtEmiDoc" type="xs:date" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data da emissão do documento dedutível. Ano, mês e dia (AAAA-MM-DD).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dtCompDoc" type="xs:date" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data da competência do documento dedutível. Ano, mês e dia (AAAA-MM-DD).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tpReeRepRes" type="tipos:tpReeRepRes" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tipo de valor incluído neste documento, recebido por motivo de estarem relacionadas a operações de </xs:documentation>
+					<xs:documentation>terceiros, objeto de reembolso, repasse ou ressarcimento pelo recebedor, já tributados e aqui referenciado.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xTpReeRepRes" type="tipos:tpXTpReeRepRes" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Descrição do reembolso ou ressarcimento quando a opção é </xs:documentation>
+					<xs:documentation>"99 - Outros reembolsos ou ressarcimentos recebidos por valores pagos relativos a operações por conta e ordem de terceiro"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vlrReeRepRes" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor monetário (total ou parcial, conforme documento informado) utilizado para não inclusão na base de cálculo do ISS e do IBS e da CBS da NFS-e que está sendo emitida (R$).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpDFeNacional">
+		<xs:annotation>
+			<xs:documentation>Tipo de documento do repositório nacional.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="tipoChaveDFe" type="tipos:tpTipoChaveDFE" minOccurs="1" maxOccurs="1" />
+			<xs:element name="xTipoChaveDFe" type="tipos:tpXTipoChaveDFe" minOccurs="0" maxOccurs="1" />
+			<xs:element name="chaveDFe" type="tipos:tpChaveDFe" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpDocFiscalOutro">
+		<xs:annotation>
+			<xs:documentation>Grupo de informações de documento fiscais, eletrônicos ou não, que não se encontram no repositório nacional.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cMunDocFiscal" type="tipos:tpCidade" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código do município emissor do documento fiscal que não se encontra no repositório nacional.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nDocFiscal" type="tipos:tpNumeroDescricaoDocumento" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Número do documento fiscal que não se encontra no repositório nacional.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xDocFiscal" type="tipos:tpNumeroDescricaoDocumento" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Descrição do documento fiscal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpDocOutro">
+		<xs:annotation>
+			<xs:documentation>Grupo de informações de documento não fiscal.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="nDoc" type="tipos:tpNumeroDescricaoDocumento" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Número do documento não fiscal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xDoc" type="tipos:tpNumeroDescricaoDocumento" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Descrição do documento não fiscal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpFornecedor">
+		<xs:annotation>
+			<xs:documentation>Grupo de informações do fornecedor do documento referenciado.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="tipos:gpCPFCNPJNIF" />
+			<xs:element name="xNome" type="tipos:tpRazaoSocialObrigatorio" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nome do fornecedor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpAtividadeEvento">
+		<xs:annotation>
+			<xs:documentation>Tipo de informações relativas à atividades de eventos.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="xNomeEvt" type="tipos:tpXNomeEvt" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nome do evento cultural, artístico, esportivo.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dtIniEvt" type="xs:date" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data de início da atividade de evento. Ano, Mês e Dia (AAAA-MM-DD).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dtFimEvt" type="xs:date" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data de fim da atividade de evento. Ano, Mês e Dia (AAAA-MM-DD).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="end" type="tipos:tpEnderecoSimplesIBSCBS" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Endereço do Evento.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpIBSCBS">
+		<xs:annotation>
+			<xs:documentation>Tipo das informações do IBS/CBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="finNFSe" type="tipos:tpFinNFSe" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicador da finalidade da emissão de NFS-e.</xs:documentation>
+					<xs:documentation>0 = NFS-e regular.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="indFinal" type="tipos:tpNaoSim" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indica operação de uso ou consumo pessoal. (0-Não ou 1-Sim).</xs:documentation>
+					<xs:documentation>0 - Não.</xs:documentation>
+					<xs:documentation>1 - Sim.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cIndOp" type="tipos:tpCIndOp" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código indicador da operação de fornecimento, conforme tabela "código indicador de operação".</xs:documentation>
+					<xs:documentation>Referente à tabela de indicador da operação publicada no ANEXO AnexoVII-IndOp_IBSCBS_V1.00.00-.xlsx.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tpOper" type="tipos:tpOper" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tipo de Operação com Entes Governamentais ou outros serviços sobre bens imóveis.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="gRefNFSe" type="tipos:tpGRefNFSe" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Grupo de NFS-e referenciadas.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tpEnteGov" type="tipos:tpEnteGov" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tipo do ente da compra governamental.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="indDest" type="tipos:tpIndDest" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indica o Destinatário dos serviços.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dest" type="tipos:tpInformacoesPessoa" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Destinatário.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="valores" type="tipos:tpValores" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informações relacionadas aos valores do serviço prestado para IBS e à CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="imovelobra" type="tipos:tpImovelObra" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informações sobre o Tipo de Imóvel/Obra.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpGIBSCBS">
+		<xs:annotation>
+			<xs:documentation>Informações relacionadas ao IBS e à CBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cClassTrib" type="tipos:tpClassificacaoTributaria" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código de classificação Tributária do IBS e da CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="gTribRegular" type="tipos:tpGTribRegular" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpGTribRegular">
+		<xs:annotation>
+			<xs:documentation>Informações relacionadas à tributação regular.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cClassTribReg" type="tipos:tpClassificacaoTributaria" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código de classificação Tributária do IBS e da CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpRetornoComplementarIBSCBS">
+		<xs:annotation>
+			<xs:documentation>Informações complementares referente ao IBS e à CBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Adquirente" type="tipos:tpInformacoesPessoa" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Adquirente.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorBCIBSCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da base de cálculo (BC) do IBS/CBS antes das reducões para cálculo do tributo bruto.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqEstadualIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota do IBS de competência do Estado.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercRedEstadualIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Percentual de redução de alíquota estadual do IBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqEfetivaEstadualIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota efetiva estadual do IBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorEstadualIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do Tributo do IBS da UF calculado.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqMunicipalIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota do IBS de competência do Município.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercRedMunicipalIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Percentual de redução de aliquota municipal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqEfetivaMunicipalIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota efetiva municipal do IBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorMunicipalIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do Tributo do IBS do Município calculado.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do IBS Total.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota da CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercRedCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Percentual da redução de alíquota para a CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqEfetivaCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota efetiva CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do Tributo da CBS calculado. Total Valor da CBS da União.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercDiferimentoEstadual" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Percentual de diferimento estadual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorDiferimentoEstadual" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Total do Diferimento do IBS estadual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercDiferimentoMunicipal" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Percentual de diferimento municipal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorDiferimentoMunicipal" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Total do Diferimento do IBS municipal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercDiferimentoCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Percentual de diferimento da CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorDiferimentoCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Total do Diferimento CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodigoClassCredPresumidoIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código e classificação do crédito presumido IBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercCredPresumidoIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota do Crédito Presumido para o IBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCredPresumidoIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do Crédito Presumido para o IBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodigoClassCredPresumidoCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código de Classificação do Crédito Presumido CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPercCredPresumidoCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota de crédito presumido para a CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCredPresumidoCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do Crédito Presumido CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqEstadualRegularIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota efetiva de tributação regular do IBS estadual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqMunicipalRegularIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota efetiva de tributação regular do IBS municipal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqRegularCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Alíquota efetiva de tributação regular da CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorEstadualRegularIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da tributação regular do IBS estadual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorMunicipalRegularIBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da tributação regular do IBS municipal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorRegularCBS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da tributação regular da CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorTotalReeRepRes" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor total dos valores não inclusos na base de cálculo, somatória dos valores informados pelo contribuinte no campo vlrReeRepRes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqEstadualIBSCompraGov" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da alíquota estadual para o IBS, referente a compra governamental.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorEstadualBSCompraGov" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do IBS estadual referente a compra governamental</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqMunicipalIBSCompraGov" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da alíquota municipal para o IBS, referente a compra governamental.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorMunicipalIBSCompraGov" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do IBS municipal referente a compra governamental</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorAliqCBSCompraGov" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da alíquota da CBS, referente a compra governamental.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCBSCompraGov" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da CBS referente a compra governamental</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpTrib">
+		<xs:annotation>
+			<xs:documentation>Informações relacionadas aos tributos IBS e à CBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="gIBSCBS" type="tipos:tpGIBSCBS" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpValores">
+		<xs:annotation>
+			<xs:documentation>Informações relacionadas aos valores do serviço prestado para IBS e à CBS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="gReeRepRes" type="tipos:tpGrupoReeRepRes" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Grupo de informações relativas a valores incluídos neste documento e recebidos por </xs:documentation>
+					<xs:documentation>motivo de estarem relacionadas a operações de terceiros, objeto de reembolso, repasse ou </xs:documentation>
+					<xs:documentation>ressarcimento pelo recebedor, já tributados e aqui referenciados.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="trib" type="tipos:tpTrib" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Grupo de informações relacionados aos tributos IBS e CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpNFe">
+		<xs:annotation>
+			<xs:documentation>Tipo que representa uma NFS-e</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Assinatura" type="tipos:tpAssinatura" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Assinatura digital da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChaveNFe" type="tipos:tpChaveNFe" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Chave de identificação da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataEmissaoNFe" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data de emissão da NFS-e</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumeroLote" type="tipos:tpNumero" minOccurs ="0" maxOccurs ="1">
+				<xs:annotation>
+					<xs:documentation>Número de lote gerador da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChaveRPS" type="tipos:tpChaveRPS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Chave do RPS que originou a NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TipoRPS" type="tipos:tpTipoRPS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tipo do RPS emitido.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataEmissaoRPS" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data de emissão do RPS que originou a NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataFatoGeradorNFe" type="xs:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data do fato gerador da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CPFCNPJPrestador" type="tipos:tpCPFCNPJ" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>CPF/CNPJ do Prestador do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RazaoSocialPrestador" type="tipos:tpRazaoSocial" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nome/Razão Social do Prestador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EnderecoPrestador" type="tipos:tpEndereco" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Endereço do Prestador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EmailPrestador" type="tipos:tpEmail" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>E-mail do Prestador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusNFe" type="tipos:tpStatusNFe" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Status da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataCancelamento" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data de cancelamento da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TributacaoNFe" type="tipos:tpTributacaoNFe" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tributação da NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OpcaoSimples" type="tipos:tpOpcaoSimples" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Opção pelo Simples.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumeroGuia" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Número da guia vinculada a NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataQuitacaoGuia" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Data de quitação da guia vinculada a NFS-e.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorServicos" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor dos serviços prestados.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorDeducoes" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor das deduções.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPIS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da retenção do PIS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCOFINS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da retenção do COFINS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorINSS" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da retenção do INSS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorIR" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da retenção do IR.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCSLL" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da retenção do CSLL.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodigoServico" type="tipos:tpCodigoServico" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AliquotaServicos" type="tipos:tpAliquota" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da alíquota.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorISS" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do ISS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCredito" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do crédito gerado.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISSRetido" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Retenção do ISS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CPFCNPJTomador" type="tipos:tpCPFCNPJNIF" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>CPF/CNPJ do tomador do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InscricaoMunicipalTomador" type="tipos:tpInscricaoMunicipal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Inscrição Municipal do Tomador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InscricaoEstadualTomador" type="tipos:tpInscricaoEstadual" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Inscrição Estadual do tomador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RazaoSocialTomador" type="tipos:tpRazaoSocial" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nome/Razão Social do tomador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EnderecoTomador" type="tipos:tpEndereco" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Endereço do tomador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EmailTomador" type="tipos:tpEmail" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>E-mail do tomador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CPFCNPJIntermediario" type="tipos:tpCPFCNPJ" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>CNPJ do intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InscricaoMunicipalIntermediario" type="tipos:tpInscricaoMunicipal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Inscrição Municipal do intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISSRetidoIntermediario" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Retenção do ISS pelo intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EmailIntermediario" type="tipos:tpEmail" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>E-mail do intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Discriminacao" type="tipos:tpDiscriminacao" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Descrição dos serviços.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCargaTributaria" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da carga tributária total em R$.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PercentualCargaTributaria" type="tipos:tpPercentualCargaTributaria" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor percentual da carga tributária.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FonteCargaTributaria" type="tipos:tpFonteCargaTributaria" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Fonte de informação da carga tributária.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodigoCEI" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código do CEI - Cadastro específico do INSS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MatriculaObra" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código que representa a matrícula da obra no sistema de cadastro de obras.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MunicipioPrestacao" type="tipos:tpCidade" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código da cidade do município da prestação do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumeroEncapsulamento" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código que representa o número do encapsulamento da obra.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorTotalRecebido" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do total recebido.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RetencaoPisCofins" type="tipos:tpRetencaoPisCofins" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tipo de retenção para os tributos federais PIS/COFINS e CSLL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="ValorInicialCobrado" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Valor inicial cobrado pela prestação do serviço, antes de tributos, multa e juros.</xs:documentation>
+						<xs:documentation>"Valor dos serviços antes dos tributos". Corresponde ao valor cobrado pela prestação do serviço, antes de tributos, multa e juros.</xs:documentation>
+						<xs:documentation>Informado para realizar o cálculo dos tributos do início para o fim.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ValorFinalCobrado" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Valor final cobrado pela prestação do serviço, incluindo todos os tributos.</xs:documentation>
+						<xs:documentation>"Valor total na nota". Corresponde ao valor final cobrado pela prestação do serviço, incluindo todos os tributos, multa e juros.</xs:documentation>
+						<xs:documentation>Informado para realizar o cálculo dos impostos do fim para o início.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="ValorMulta" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da multa.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorJuros" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor dos juros.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorIPI" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor de IPI.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExigibilidadeSuspensa" type="tipos:tpNaoSim" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indica se é uma emissão com exigibilidade suspensa.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PagamentoParceladoAntecipado" type="tipos:tpNaoSim" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indica de nota fiscal de pagamento parcelado antecipado (realizado antes do fornecimento).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NCM" type="tipos:tpCodigoNCM" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o número NCM (Nomenclatura Comum do Mercosul).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NBS" type="tipos:tpCodigoNBS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o número NBS (Nomenclatura Brasileira de Serviços).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="atvEvento" type="tipos:tpAtividadeEvento" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informações dos Tipos de evento.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="tipos:gpPrestacao" minOccurs="0" />
+			<xs:element name="IBSCBS" type="tipos:tpIBSCBS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informações declaradas pelo emitente referentes ao IBS e à CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RetornoComplementarIBSCBS" type="tipos:tpRetornoComplementarIBSCBS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informações complementares referentes ao IBS e à CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tpRPS">
+		<xs:annotation>
+			<xs:documentation>Tipo que representa um RPS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Assinatura" type="tipos:tpAssinatura" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Assinatura digital do RPS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChaveRPS" type="tipos:tpChaveRPS" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe a chave do RPS emitido.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TipoRPS" type="tipos:tpTipoRPS" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o Tipo do RPS emitido.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataEmissao" type="xs:date" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe a Data de emissão do RPS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusRPS" type="tipos:tpStatusNFe" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o Status do RPS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TributacaoRPS" type="tipos:tpTributacaoNFe" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o tipo de tributação do RPS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorDeducoes" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o valor das deduções.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorPIS" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o valor da retenção do PIS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCOFINS" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o valor da retenção do COFINS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorINSS" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o valor da retenção do INSS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorIR" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o valor da retenção do IR.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCSLL" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o valor da retenção do CSLL.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodigoServico" type="tipos:tpCodigoServico" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o código do serviço do RPS. Este código deve pertencer à lista de serviços.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AliquotaServicos" type="tipos:tpAliquota" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o valor da alíquota. Obs. O conteúdo deste campo será ignorado caso a tributação ocorra no município (Situação do RPS = T ).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISSRetido" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe a retenção.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CPFCNPJTomador" type="tipos:tpCPFCNPJNIF" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o CPF/CNPJ do tomador do serviço. O conteúdo deste campo será ignorado caso o campo InscricaoMunicipalTomador esteja preenchido.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InscricaoMunicipalTomador" type="tipos:tpInscricaoMunicipal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe a Inscrição Municipal do Tomador. ATENÇÃO: Este campo só deverá ser preenchido para tomadores estabelecidos no município de São Paulo (CCM). Quando este campo for preenchido, seu conteúdo será considerado como prioritário com relação ao campo de CPF/CNPJ do Tomador, sendo utilizado para identificar o Tomador e recuperar seus dados da base de dados da Prefeitura.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InscricaoEstadualTomador" type="tipos:tpInscricaoEstadual" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe a inscrição estadual do tomador. Este campo será ignorado caso seja fornecido um CPF/CNPJ ou a Inscrição Municipal do tomador pertença ao município de São Paulo.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RazaoSocialTomador" type="tipos:tpRazaoSocial" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o Nome/Razão Social do tomador. Este campo é obrigatório apenas para tomadores Pessoa Jurídica (CNPJ). Este campo será ignorado caso seja fornecido um CPF/CNPJ ou a Inscrição Municipal do tomador pertença ao município de São Paulo.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EnderecoTomador" type="tipos:tpEndereco" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o endereço do tomador. Os campos do endereço são obrigatórios apenas para tomadores pessoa jurídica (CNPJ informado). O conteúdo destes campos será ignorado caso seja fornecido um CPF/CNPJ ou a Inscrição Municipal do tomador pertença ao município de São Paulo.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EmailTomador" type="tipos:tpEmail" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o e-mail do tomador.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CPFCNPJIntermediario" type="tipos:tpCPFCNPJ" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>CNPJ do intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InscricaoMunicipalIntermediario" type="tipos:tpInscricaoMunicipal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Inscrição Municipal do intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISSRetidoIntermediario" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Retenção do ISS pelo intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EmailIntermediario" type="tipos:tpEmail" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>E-mail do intermediário de serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Discriminacao" type="tipos:tpDiscriminacao" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe a discriminação dos serviços.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorCargaTributaria" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da carga tributária total em R$.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PercentualCargaTributaria" type="tipos:tpPercentualCargaTributaria" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor percentual da carga tributária.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FonteCargaTributaria" type="tipos:tpFonteCargaTributaria" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Fonte de informação da carga tributária.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodigoCEI" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código do CEI - Cadastro específico do INSS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MatriculaObra" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código que representa a matrícula da obra no sistema de cadastro de obras.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MunicipioPrestacao" type="tipos:tpCidade" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código da cidade do município da prestação do serviço.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumeroEncapsulamento" type="tipos:tpNumero" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Código que representa o número do encapsulamento da obra.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorTotalRecebido" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor do total recebido.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RetencaoPisCofins" type="tipos:tpRetencaoPisCofins" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tipo de retenção para os tributos federais PIS/COFINS e CSLL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="ValorInicialCobrado" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Valor inicial cobrado pela prestação do serviço, antes de tributos, multa e juros.</xs:documentation>
+						<xs:documentation>"Valor dos serviços antes dos tributos". Corresponde ao valor cobrado pela prestação do serviço, antes de tributos, multa e juros.</xs:documentation>
+						<xs:documentation>Informado para realizar o cálculo dos tributos do início para o fim.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ValorFinalCobrado" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Valor final cobrado pela prestação do serviço, incluindo todos os tributos.</xs:documentation>
+						<xs:documentation>"Valor total na nota". Corresponde ao valor final cobrado pela prestação do serviço, incluindo todos os tributos, multa e juros.</xs:documentation>
+						<xs:documentation>Informado para realizar o cálculo dos impostos do fim para o início.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="ValorMulta" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor da multa.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorJuros" type="tipos:tpValor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor dos juros.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValorIPI" type="tipos:tpValor" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Valor de IPI.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExigibilidadeSuspensa" type="tipos:tpNaoSim" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe se é uma emissão com exigibilidade suspensa.</xs:documentation>
+					<xs:documentation>0 - Não.</xs:documentation>
+					<xs:documentation>1 - Sim.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PagamentoParceladoAntecipado" type="tipos:tpNaoSim" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe a nota fiscal de pagamento parcelado antecipado (realizado antes do fornecimento).</xs:documentation>
+					<xs:documentation>0 - Não.</xs:documentation>
+					<xs:documentation>1 - Sim.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NCM" type="tipos:tpCodigoNCM" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o número NCM (Nomenclatura Comum do Mercosul).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NBS" type="tipos:tpCodigoNBS" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informe o número NBS (Nomenclatura Brasileira de Serviços).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="atvEvento" type="tipos:tpAtividadeEvento" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informações dos Tipos de evento.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="tipos:gpPrestacao" />
+			<xs:element name="IBSCBS" type="tipos:tpIBSCBS" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Informações declaradas pelo emitente referentes ao IBS e à CBS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

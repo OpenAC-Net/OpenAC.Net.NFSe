@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="unqualified"
+           xmlns="http://www.prefeitura.sp.gov.br/nfe/tipos"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.prefeitura.sp.gov.br/nfe/tipos">
+
+    <xsd:include schemaLocation="TiposNFe_v02.xsd"/>
+
+    
+    <xsd:complexType name="tpEventoAsync">
+        <xsd:sequence>
+            <xsd:element name="Codigo" type="tpCodigoEvento" minOccurs="1" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Código do evento.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Descricao" type="tpDescricaoEvento" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Descrição do evento.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="tpInformacoesLoteAsync">
+        <xsd:annotation>
+            <xsd:documentation>Informações do lote processado.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="NumeroProtocolo" type="tpNumeroProtocoloAsync" minOccurs="1" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Número do protocolo do lote.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element name="DataRecebimento" type="xsd:dateTime" minOccurs="1" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Data/hora de envio do lote.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="tpInformacoesGuiaAsync">
+        <xsd:sequence>
+            <xsd:element name="NumeroProtocolo" type="tpNumeroProtocoloAsync" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="DataRecebimento" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:simpleType name="tpNumeroProtocoloAsync">
+        <xsd:annotation>
+            <xsd:documentation>Tipo do Número de Protocolo.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:minLength value="32" />
+            <xsd:maxLength value="32" />
+            <xsd:whiteSpace value="collapse" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name="tpIncidencia">
+        <xsd:annotation>
+            <xsd:documentation>Incidência no formato YYYY-MM com ano de 1900 até 2099.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="^((19|20)\d\d)-(0?[1-9]|1[012])$"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <!-- TODO: Should I move it to NFE Main types? -->
+    <xsd:simpleType name="tpSituacaoLote">
+        <xsd:annotation>
+            <xsd:documentation>Tipo referente as possíveis situações do lote assíncrono.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="enviado">
+                <xsd:annotation>
+                    <xsd:documentation>Lote enviado (0).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="invalidado">
+                <xsd:annotation>
+                    <xsd:documentation>Lote invalidado (1).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="verificado">
+                <xsd:annotation>
+                    <xsd:documentation>Lote verificado (2).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="processado">
+                <xsd:annotation>
+                    <xsd:documentation>Lote processado (3).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name="tpSituacaoGuia">
+        <xsd:annotation>
+            <xsd:documentation>Tipo referente as possíveis situações da emissão de guia assíncrona.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="solicitada">
+                <xsd:annotation>
+                    <xsd:documentation>Emissao solicitada (0).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="invalidada">
+                <xsd:annotation>
+                    <xsd:documentation>Emissao invalidada (1).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="verificada">
+                <xsd:annotation>
+                    <xsd:documentation>Emissao verificada (2).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="processada">
+                <xsd:annotation>
+                    <xsd:documentation>Emissao processada (3).</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name="tpEmissaoGuia">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>Guia de NFS-e emitidas</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Guia de NFS-e recebidas (exceto rejeitadas)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+              <xsd:annotation>
+                <xsd:documentation>Guia de NFS-e Emitidas e Recebidas (exceto rejeitadas)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="4">
+              <xsd:annotation>
+                <xsd:documentation>Guia de NFS-e recebidas aceitas</xsd:documentation>
+              </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="5">
+              <xsd:annotation>
+                <xsd:documentation>Guia de NFS-e recebidas sem manifestação do tomador</xsd:documentation>
+              </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="6">
+              <xsd:annotation>
+                <xsd:documentation>Guia de NFS-e recebidas rejeitadas</xsd:documentation>
+              </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="7">
+              <xsd:annotation>
+                <xsd:documentation>Guia de NFTS emitidas</xsd:documentation>
+              </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="8">
+              <xsd:annotation>
+                <xsd:documentation>Todas (NFS-e emitidas, NFTS emitidas e NFS-e recebidas, exceto rejeitadas)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

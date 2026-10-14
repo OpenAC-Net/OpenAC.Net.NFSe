@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Totalizador de tributação de IBS e CBS para compras governamentais.
+/// </summary>
+
 
 public sealed class IBSCBSTotalTribCompraGov : GenericClone<IBSCBSTotalTribCompraGov>
 {

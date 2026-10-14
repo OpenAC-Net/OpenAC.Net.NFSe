@@ -33,13 +33,28 @@ using System;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno do envio de lote de RPS.
+/// </summary>
 public sealed class RetornoEnviar : RetornoWebservice
 {
+    /// <summary>
+    /// Número do lote enviado.
+    /// </summary>
     public int Lote { get; internal set; }
 
+    /// <summary>
+    /// Data de recebimento do lote.
+    /// </summary>
     public DateTime Data { get; internal set; }
 
+    /// <summary>
+    /// Número do protocolo de recebimento do lote.
+    /// </summary>
     public string Protocolo { get; internal set; } = "";
 
+    /// <summary>
+    /// Indica se o envio foi síncrono.
+    /// </summary>
     public bool Sincrono { get; internal set; }
 }

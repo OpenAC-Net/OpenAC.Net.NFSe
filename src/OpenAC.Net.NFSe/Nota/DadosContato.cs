@@ -32,7 +32,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações de contato (telefone e e-mail) do participante.
+/// </summary>
+
 
 public sealed class DadosContato : GenericClone<DadosContato>, INotifyPropertyChanged
 {

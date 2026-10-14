@@ -1,7 +1,10 @@
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações de comércio exterior e prestação de serviços fora do país.
+/// </summary>
+
 
 public sealed class DadosComExterior : GenericClone<DadosComExterior>, INotifyPropertyChanged
 {

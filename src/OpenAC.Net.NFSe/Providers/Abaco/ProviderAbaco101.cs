@@ -39,6 +39,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Abaco.
+/// </summary>
 internal sealed class ProviderAbaco101 : ProviderAbaco
 {
     #region Constructors

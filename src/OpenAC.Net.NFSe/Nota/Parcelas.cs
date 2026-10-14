@@ -33,7 +33,10 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações de uma parcela de pagamento da NFSe.
+/// </summary>
+
 
 public sealed class Parcelas : GenericClone<Parcelas>, INotifyPropertyChanged
 {

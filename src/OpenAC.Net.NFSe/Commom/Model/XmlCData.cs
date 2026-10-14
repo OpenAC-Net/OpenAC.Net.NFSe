@@ -5,7 +5,9 @@ using System.Xml.Serialization;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
-/// <inheritdoc />
+/// <summary>
+/// Encapsula um valor de texto XML para ser serializado dentro de um bloco CDATA (&lt;![CDATA[ ... ]]&gt;).
+/// </summary>
 [XmlSchemaProvider("GenerateSchema")]
 public sealed class XmlCData : IXmlSerializable
 {
@@ -18,7 +20,7 @@ public sealed class XmlCData : IXmlSerializable
     #region Properties
 
     /// <summary>
-    ///
+    /// Obtém ou define o conteúdo textual do bloco CDATA (sem cabeçalhos XML).
     /// </summary>
     public string? Value
     {
@@ -37,10 +39,10 @@ public sealed class XmlCData : IXmlSerializable
     }
 
     /// <summary>
-    ///
+    /// Gera o esquema XML compatível para o tipo string.
     /// </summary>
-    /// <param name="xs"></param>
-    /// <returns></returns>
+    /// <param name="xs">Conjunto de esquemas XML.</param>
+    /// <returns>Nome qualificado do esquema XML.</returns>
     public static XmlQualifiedName GenerateSchema(XmlSchemaSet xs)
     {
         return XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).QualifiedName;
@@ -89,20 +91,20 @@ public sealed class XmlCData : IXmlSerializable
     #region Operators
 
     /// <summary>
-    ///
+    /// Converte implicitamente uma instância de <see cref="XmlCData"/> para <see cref="string"/>.
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="value">Instância de XmlCData.</param>
+    /// <returns>Valor em formato string.</returns>
     public static implicit operator string?(XmlCData? value)
     {
         return value?.Value;
     }
 
     /// <summary>
-    ///
+    /// Converte implicitamente uma <see cref="string"/> para uma instância de <see cref="XmlCData"/>.
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="value">Valor em string.</param>
+    /// <returns>Nova instância de XmlCData.</returns>
     public static implicit operator XmlCData?(string? value)
     {
         return value == null ? null : new XmlCData { Value = value };

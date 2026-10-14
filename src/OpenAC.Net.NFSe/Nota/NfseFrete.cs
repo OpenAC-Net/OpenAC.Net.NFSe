@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Modalidade de frete da prestação de serviços de transporte.
+/// </summary>
+
 
 public enum NfseFrete
 {

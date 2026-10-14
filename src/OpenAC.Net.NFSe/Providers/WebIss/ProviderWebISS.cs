@@ -41,6 +41,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão WebIss.
+/// </summary>
 internal sealed class ProviderWebIss : ProviderABRASF
 {
     #region Constructors

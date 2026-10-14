@@ -33,7 +33,10 @@ using System;
 using System.ComponentModel;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Dados de identificação do Recibo Provisório de Serviços (RPS).
+/// </summary>
+
 
 public sealed class IdeRps : GenericClone<IdeRps>, INotifyPropertyChanged
 {

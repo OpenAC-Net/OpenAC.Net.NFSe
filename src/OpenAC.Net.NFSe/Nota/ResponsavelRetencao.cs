@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Define o responsável pela retenção do ISS (Tomador ou Intermediário).
+/// </summary>
+
 
 public enum ResponsavelRetencao
 {

@@ -45,6 +45,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSPortoVelho.
+/// </summary>
 internal sealed class ProviderISSPortoVelho : ProviderABRASF200
 {
     #region Constructors

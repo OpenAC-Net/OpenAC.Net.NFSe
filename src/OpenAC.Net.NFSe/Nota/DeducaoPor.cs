@@ -29,7 +29,10 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Define o critério de cálculo da dedução (por valor monetário ou percentual).
+/// </summary>
+
 
 public enum DeducaoPor
 {

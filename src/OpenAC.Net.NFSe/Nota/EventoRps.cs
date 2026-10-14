@@ -32,7 +32,10 @@
 using System;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Representa um evento ou histórico associado ao processamento do RPS/NFSe.
+/// </summary>
+
 
 public sealed class EventoRps : GenericClone<EventoRps>
 {

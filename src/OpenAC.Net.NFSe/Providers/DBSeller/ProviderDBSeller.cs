@@ -39,6 +39,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão DBSeller.
+/// </summary>
 internal sealed class ProviderDBSeller : ProviderABRASF
 {
     #region Constructors

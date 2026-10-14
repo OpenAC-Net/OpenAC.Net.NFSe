@@ -45,6 +45,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers.ISSCampinas;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor ISSCampinas.
+/// </summary>
 internal sealed class ISSCampinas203ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Fields

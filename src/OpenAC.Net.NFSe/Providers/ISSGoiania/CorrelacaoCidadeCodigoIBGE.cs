@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Tabela de correlação entre nomes de municípios e códigos IBGE para o provedor ISS Goiânia.
+/// </summary>
 internal static class CorrelacaoCidadeGoianiaXCodigoIBGE
 {
     public static string GetCodigoCidadeFromCodigoIBGE(string codigoIBGE)

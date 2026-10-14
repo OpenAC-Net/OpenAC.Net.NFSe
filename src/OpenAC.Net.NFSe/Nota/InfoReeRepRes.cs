@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações de renegociação, repasse ou ressarcimento de tributos IBS e CBS.
+/// </summary>
+
 
 public sealed class InfoReeRepRes : GenericClone<InfoReeRepRes>
 {

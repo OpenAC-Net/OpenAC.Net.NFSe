@@ -43,6 +43,9 @@ using OpenAC.Net.NFSe.Providers.Thema;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Thema.
+/// </summary>
 internal sealed class ProviderThema : ProviderABRASF
 {
     #region Constructors

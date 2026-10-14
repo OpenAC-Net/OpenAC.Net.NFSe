@@ -37,6 +37,9 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSVitoria.
+/// </summary>
 internal sealed class ProviderISSVitoria : ProviderABRASF200
 {
     #region Constructors

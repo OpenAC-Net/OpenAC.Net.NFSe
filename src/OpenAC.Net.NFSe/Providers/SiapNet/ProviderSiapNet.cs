@@ -37,6 +37,9 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão SiapNet.
+/// </summary>
 internal sealed class ProviderSiapNet : ProviderABRASF201
 {
     #region Constructors

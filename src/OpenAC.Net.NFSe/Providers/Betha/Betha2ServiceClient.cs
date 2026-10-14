@@ -41,6 +41,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor Betha.
+/// </summary>
 internal sealed class Betha2ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

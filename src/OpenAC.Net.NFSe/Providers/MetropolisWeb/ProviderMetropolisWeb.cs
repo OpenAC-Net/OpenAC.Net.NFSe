@@ -37,6 +37,9 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão MetropolisWeb.
+/// </summary>
 internal sealed class ProviderMetropolisWeb : ProviderABRASF
 {
     #region Construtor

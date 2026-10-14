@@ -45,6 +45,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão FissLex.
+/// </summary>
 internal sealed class ProviderFissLex : ProviderABRASF
 {
     #region Fields

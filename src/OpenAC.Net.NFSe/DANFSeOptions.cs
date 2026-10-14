@@ -36,10 +36,18 @@ using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe;
 
+/// <summary>
+/// Opções de configuração para impressão do DANFSe.
+/// </summary>
+/// <typeparam name="TFiltro">Tipo da enumeração de filtros de impressão.</typeparam>
 public class DANFSeOptions<TFiltro> : DFeOptionsBase<TFiltro> where TFiltro : Enum
 {
     #region Constructors
 
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="DANFSeOptions{TFiltro}"/>.
+    /// </summary>
+    /// <param name="configuracoes">Configurações do componente NFSe.</param>
     protected DANFSeOptions(ConfigNFSe configuracoes)
     {
         NFSe = configuracoes;
@@ -49,11 +57,25 @@ public class DANFSeOptions<TFiltro> : DFeOptionsBase<TFiltro> where TFiltro : En
 
     #region Properties
 
+    /// <summary>
+    /// Obtém as configurações do componente NFSe associadas.
+    /// </summary>
     public ConfigNFSe NFSe { get; }
 
+    /// <summary>
+    /// Obtém ou define a imagem do logotipo da prefeitura a ser exibida no DANFSe.
+    /// </summary>
     public Image LogoPrefeitura { get; set; }
 
+    /// <summary>
+    /// Obtém ou define o layout de impressão a ser utilizado para o DANFSe.
+    /// </summary>
     public LayoutImpressao Layout { get; set; }
+
+    /// <summary>
+    /// Obtém ou define a URL do site da prefeitura/provedor a ser impresso no DANFSe.
+    /// </summary>
+    public string Site { get; set; } = "";
 
     #endregion Properties
 }

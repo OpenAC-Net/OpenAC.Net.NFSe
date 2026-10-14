@@ -46,6 +46,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão SigISS.
+/// </summary>
 internal sealed class ProviderSigISS103 : ProviderBase
 {
     #region Constructors

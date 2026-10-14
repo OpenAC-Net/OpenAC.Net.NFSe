@@ -41,6 +41,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor Ginfes.
+/// </summary>
 internal sealed class GinfesServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Documento fiscal eletrônico (DFe) vinculado à operação de IBS e CBS.
+/// </summary>
+
 
 public sealed class IBSCBSDocumentoDFe : GenericClone<IBSCBSDocumentoDFe>
 {

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 06-17-2016
@@ -31,9 +31,18 @@
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno da consulta de sequencial de RPS.
+/// </summary>
 public sealed class RetornoConsultarSequencialRps : RetornoWebservice
 {
-    public string Serie { get; internal set; }
+    /// <summary>
+    /// Série do RPS consultada.
+    /// </summary>
+    public string Serie { get; internal set; } = "";
 
+    /// <summary>
+    /// Último número de RPS utilizado/registrado.
+    /// </summary>
     public int UltimoNumero { get; internal set; }
 }

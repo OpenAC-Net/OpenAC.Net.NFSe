@@ -42,6 +42,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 namespace OpenAC.Net.NFSe.Providers;
 
 // ReSharper disable once InconsistentNaming
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor WebIss.
+/// </summary>
 internal sealed class WebIssServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

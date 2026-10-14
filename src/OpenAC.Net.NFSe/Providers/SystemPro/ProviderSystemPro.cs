@@ -43,6 +43,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão SystemPro.
+/// </summary>
 internal sealed class ProviderSystemPro : ProviderABRASF201
 {
     #region Constructors

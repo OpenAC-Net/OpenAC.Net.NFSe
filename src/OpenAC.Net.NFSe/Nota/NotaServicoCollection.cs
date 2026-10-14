@@ -41,7 +41,7 @@ using OpenAC.Net.NFSe.Providers;
 namespace OpenAC.Net.NFSe.Nota;
 
 /// <summary>
-/// 
+/// Coleção de notas fiscais de serviço eletrônicas (NFS-e).
 /// </summary>
 public sealed class NotaServicoCollection : DFeCollection<NotaServico>
 {

@@ -42,6 +42,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Cliente de comunicação e envio de mensagens para o webservice do provedor Fiorilli.
+/// </summary>
 internal sealed class Fiorilli200ServiceClient : NFSeSoapServiceClient, IServiceClient
 {
     #region Constructors

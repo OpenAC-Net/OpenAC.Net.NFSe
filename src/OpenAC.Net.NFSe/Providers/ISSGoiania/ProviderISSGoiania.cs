@@ -45,6 +45,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSGoiania.
+/// </summary>
 internal sealed class ProviderISSGoiania : ProviderABRASF200
 {
     #region Constructors

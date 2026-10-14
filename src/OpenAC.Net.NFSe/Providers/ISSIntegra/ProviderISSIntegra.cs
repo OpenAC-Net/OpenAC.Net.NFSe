@@ -43,6 +43,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão ISSIntegra.
+/// </summary>
 internal sealed class ProviderISSIntegra : ProviderABRASF
 {
     #region Constructors

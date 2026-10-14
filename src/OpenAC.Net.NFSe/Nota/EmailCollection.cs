@@ -31,7 +31,10 @@
 
 using OpenAC.Net.DFe.Core.Collection;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Coleção de endereços de e-mail para envio da NFSe.
+/// </summary>
+
 
 public sealed class EmailCollection : DFeCollection<EmailItem>
 {

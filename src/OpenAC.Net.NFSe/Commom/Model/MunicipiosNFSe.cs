@@ -38,7 +38,7 @@ namespace OpenAC.Net.NFSe.Commom.Model;
 /// Classe usada apenas para salvar o xml dos Municipios.
 /// </summary>
 [DFeRoot("OpenNFSe", Namespace = "https://www.openac.net.br/")]
-internal sealed class MunicipiosNFSe : DFeDocument<MunicipiosNFSe>
+internal sealed partial class MunicipiosNFSe : DFeDocument<MunicipiosNFSe>
 {
     [DFeCollection("Municipios")]
     [DFeItem(typeof(OpenMunicipioNFSe), "Municipio")]

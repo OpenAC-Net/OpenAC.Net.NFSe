@@ -41,6 +41,9 @@ using OpenAC.Net.NFSe.Commom.Types;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Pronim.
+/// </summary>
 internal sealed class ProviderPronim203 : ProviderABRASF203
 {
     #region Constructors

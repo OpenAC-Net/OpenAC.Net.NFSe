@@ -1,6 +1,9 @@
 using OpenAC.Net.Core.Generics;
 
-namespace OpenAC.Net.NFSe.Nota;
+namespace OpenAC.Net.NFSe.Nota;/// <summary>
+/// Informações consolidadas de tributos incidentes de IBS e CBS.
+/// </summary>
+
 
 public sealed class InfoTributosIBSCBS : GenericClone<InfoTributosIBSCBS>
 {

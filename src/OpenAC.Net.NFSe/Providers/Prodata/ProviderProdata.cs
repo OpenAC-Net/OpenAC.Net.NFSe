@@ -43,6 +43,9 @@ using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão Prodata.
+/// </summary>
 internal sealed class ProviderProdata : ProviderABRASF201
 {
     #region Constructors

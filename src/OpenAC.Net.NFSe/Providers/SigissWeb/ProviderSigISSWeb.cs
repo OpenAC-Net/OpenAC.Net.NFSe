@@ -45,6 +45,9 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Providers;
 
+/// <summary>
+/// Provedor de NFSe para o sistema/padrão SigissWeb.
+/// </summary>
 internal class ProviderSigISSWeb : ProviderBase
 {
     public ProviderSigISSWeb(ConfigNFSe config, OpenMunicipioNFSe municipio) : base(config, municipio)

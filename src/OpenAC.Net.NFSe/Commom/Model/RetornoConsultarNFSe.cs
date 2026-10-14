@@ -34,29 +34,68 @@ using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Commom.Model;
 
+/// <summary>
+/// Representa o retorno da consulta de NFSe por filtros.
+/// </summary>
 public sealed class RetornoConsultarNFSe : RetornoWebservice
 {
+    /// <summary>
+    /// Data inicial do período consultado.
+    /// </summary>
     public DateTime? Inicio { get; internal set; }
 
+    /// <summary>
+    /// Data final do período consultado.
+    /// </summary>
     public DateTime? Fim { get; internal set; }
 
+    /// <summary>
+    /// Número da NFSe consultada.
+    /// </summary>
     public int NumeroNFse { get; internal set; }
 
+    /// <summary>
+    /// Série da NFSe consultada.
+    /// </summary>
     public string SerieNFse { get; internal set; } = "";
 
+    /// <summary>
+    /// Número da página consultada.
+    /// </summary>
     public int Pagina { get; internal set; }
 
+    /// <summary>
+    /// Número da próxima página disponível.
+    /// </summary>
     public int ProximaPagina { get; internal set; }
 
+    /// <summary>
+    /// CPF ou CNPJ do tomador consultado.
+    /// </summary>
     public string CPFCNPJTomador { get; internal set; } = "";
 
+    /// <summary>
+    /// Inscrição Municipal do tomador consultado.
+    /// </summary>
     public string IMTomador { get; internal set; } = "";
 
+    /// <summary>
+    /// Razão social ou nome do intermediário consultado.
+    /// </summary>
     public string NomeIntermediario { get; internal set; } = "";
 
+    /// <summary>
+    /// CPF ou CNPJ do intermediário consultado.
+    /// </summary>
     public string CPFCNPJIntermediario { get; internal set; } = "";
 
+    /// <summary>
+    /// Inscrição Municipal do intermediário consultado.
+    /// </summary>
     public string IMIntermediario { get; internal set; } = "";
 
+    /// <summary>
+    /// Coleção de notas de serviço localizadas.
+    /// </summary>
     public NotaServico[] Notas { get; internal set; } = [];
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using OpenAC.Net.Core;
@@ -14,7 +14,7 @@ public partial class FormEdtMunicipio : Form
 {
     #region Fields
 
-    private OpenMunicipioNFSe target;
+    private OpenMunicipioNFSe target = null!;
 
     #endregion Fields
 
@@ -36,7 +36,7 @@ public partial class FormEdtMunicipio : Form
         tbpParametros.Controls.Clear();
 
         var provider = ((ComboBox)sender).GetSelectedValue<NFSeProvider>();
-        if (provider != null && ParametrosProvider.Parametros.ContainsKey(provider))
+        if (ParametrosProvider.Parametros.ContainsKey(provider))
         {
             foreach(var parametro in ParametrosProvider.Parametros[provider])
             {
@@ -72,7 +72,7 @@ public partial class FormEdtMunicipio : Form
         Guard.Against<ArgumentNullException>(municipio == null, nameof(municipio));
 
         using var form = new FormEdtMunicipio();
-        form.target = municipio;
+        form.target = municipio!;
         form.LoadTarget();
 
         return form.ShowDialog();
@@ -114,7 +114,7 @@ public partial class FormEdtMunicipio : Form
 
         foreach (var param in target.Parametros)
         {
-            var control = controls.SingleOrDefault(x => ((ParametroProvider)x.Tag).Nome == param.Key);
+            var control = controls.SingleOrDefault(x => x.Tag is ParametroProvider pp && pp.Nome == param.Key);
             if (control == null) continue;
             if (control is CheckBox checkBox)
                 checkBox.Checked = true;

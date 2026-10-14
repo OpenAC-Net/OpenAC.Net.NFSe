@@ -40,6 +40,9 @@ public static class NaturezaOperacao
 {
     #region InnerTypes
 
+    /// <summary>
+    /// Naturezas de operação padronizadas do padrão ABRASF.
+    /// </summary>
     public sealed class NtABRASF
     {
         #region Constructors
@@ -91,6 +94,9 @@ public static class NaturezaOperacao
         #endregion Properties
     }
 
+    /// <summary>
+    /// Naturezas de operação do padrão DSF.
+    /// </summary>
     public sealed class NtDSF
     {
         #region Constructors
@@ -136,6 +142,9 @@ public static class NaturezaOperacao
         #endregion Properties
     }
 
+    /// <summary>
+    /// Naturezas de operação do provedor SigISS.
+    /// </summary>
     public sealed class NtSigiss
     {
         #region Constructors
@@ -214,6 +223,9 @@ public static class NaturezaOperacao
         #endregion Properties
     }
 
+    /// <summary>
+    /// Naturezas de operação do provedor Thema.
+    /// </summary>
     public sealed class NtThema
     {
         #region Constructors
