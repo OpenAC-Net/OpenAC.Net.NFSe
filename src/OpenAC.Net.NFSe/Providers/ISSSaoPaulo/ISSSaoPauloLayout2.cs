@@ -200,6 +200,7 @@ public static class ISSSaoPauloLayout2
             new XElement("finNFSe", info.FinalidadeNFSe),
             new XElement("indFinal", info.IndicadorFinal),
             new XElement("cIndOp", codigoOperacao),
+            string.IsNullOrWhiteSpace(info.TipoOperacao) ? null : new XElement("tpOper", info.TipoOperacao),
             new XElement("indDest", info.IndicadorDestinatario),
             new XElement("valores",
                 new XElement("trib",
@@ -326,6 +327,8 @@ public static class ISSSaoPauloLayout2
             throw new OpenException("Layout 2 de São Paulo: indFinal deve ser 0 ou 1.");
         if (!PossuiSomenteDigitos(ObterCodigoOperacao(nota), 6))
             throw new OpenException("Layout 2 de São Paulo: cIndOp deve conter exatamente 6 dígitos.");
+        if (!string.IsNullOrWhiteSpace(info.TipoOperacao) && info.TipoOperacao is not ("1" or "2" or "3" or "4" or "5"))
+            throw new OpenException("Layout 2 de São Paulo: tpOper deve ser um código entre 1 e 5.");
         if (info.IndicadorDestinatario is not ("0" or "1"))
             throw new OpenException("Layout 2 de São Paulo: indDest deve ser 0 ou 1.");
         if (!PossuiSomenteDigitos(ObterClassificacaoTributaria(nota), 6))

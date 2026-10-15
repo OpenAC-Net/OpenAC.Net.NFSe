@@ -191,11 +191,19 @@ public class TestProviderISSSaoPaulo
         Assert.Contains("máximo de 50 RPS", erro.Message);
     }
 
-    [Fact]
-    public void XmlLayout2ValidaNoXsdDistribuido()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("1")]
+    [InlineData("2")]
+    [InlineData("3")]
+    [InlineData("4")]
+    [InlineData("5")]
+    public void XmlLayout2ValidaNoXsdDistribuido(string? tipoOperacao)
     {
         using var certificado = CriarCertificado();
-        var rps = XElement.Parse(ISSSaoPauloLayout2.WriteXmlRps(CriarNotaExemploOficial(),
+        var nota = CriarNotaExemploOficial();
+        nota.Servico.Valores.IBSCBS!.TipoOperacao = tipoOperacao;
+        var rps = XElement.Parse(ISSSaoPauloLayout2.WriteXmlRps(nota,
             certificado, false, false));
         XNamespace ns = "http://www.prefeitura.sp.gov.br/nfe";
         var raiz = new XElement(ns + "PedidoEnvioRPS",
@@ -254,6 +262,74 @@ public class TestProviderISSSaoPaulo
             Assert.True(string.IsNullOrEmpty(nota.IdentificacaoNFSe.ChaveNotaNacional));
             Assert.True(string.IsNullOrEmpty(nota.XmlRetornoComplementarIBSCBS));
         }
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("2")]
+    [InlineData("3")]
+    [InlineData("4")]
+    [InlineData("5")]
+    public void TipoOperacaoSegueOrdemDoLayout2(string tipoOperacao)
+    {
+        using var certificado = CriarCertificado();
+        var nota = CriarNotaExemploOficial();
+        nota.Servico.Valores.IBSCBS!.TipoOperacao = tipoOperacao;
+        var rps = XElement.Parse(ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false));
+        var ibsCbs = rps.Element("IBSCBS")!;
+
+        Assert.Equal(tipoOperacao, ibsCbs.Element("tpOper")?.Value);
+        Assert.Equal(new[] { "finNFSe", "indFinal", "cIndOp", "tpOper", "indDest", "valores" },
+            ibsCbs.Elements().Select(elemento => elemento.Name.LocalName));
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void TipoOperacaoNaoInformadoPreservaXmlAnterior(string? tipoOperacao)
+    {
+        using var certificado = CriarCertificado();
+        var nota = CriarNotaExemploOficial();
+        var original = ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false);
+        nota.Servico.Valores.IBSCBS!.TipoOperacao = tipoOperacao;
+
+        Assert.Equal(original, ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false));
+    }
+
+    [Theory]
+    [InlineData("0")]
+    [InlineData("6")]
+    [InlineData("01")]
+    [InlineData("abc")]
+    public void TipoOperacaoInvalidoNaoGeraXml(string tipoOperacao)
+    {
+        using var certificado = CriarCertificado();
+        var nota = CriarNotaExemploOficial();
+        nota.Servico.Valores.IBSCBS!.TipoOperacao = tipoOperacao;
+
+        var erro = Assert.ThrowsAny<Exception>(() =>
+            ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false));
+
+        Assert.Contains("tpOper", erro.Message);
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("5")]
+    public void RetornoLayout2PreservaTipoOperacao(string tipoOperacao)
+    {
+        var config = new ConfigNFSe();
+        config.WebServices.CodigoMunicipio = 3550308;
+        config.WebServices.LayoutISSSaoPaulo = LayoutISSSaoPaulo.Layout2;
+        var openNFSe = new OpenNFSe(config);
+        var xml = "<NFe><ChaveNFe><InscricaoPrestador>123456789012</InscricaoPrestador>" +
+                  "<NumeroNFe>987</NumeroNFe><CodigoVerificacao>ABC123</CodigoVerificacao>" +
+                  "</ChaveNFe><IBSCBS><tpOper>" + tipoOperacao + "</tpOper></IBSCBS></NFe>";
+
+        var nota = openNFSe.NotasServico.Load(xml);
+
+        Assert.Equal(tipoOperacao, nota.Servico.Valores.IBSCBS?.TipoOperacao);
     }
 
     private static ConfigNFSe CriarConfiguracao(byte[] pfx)
