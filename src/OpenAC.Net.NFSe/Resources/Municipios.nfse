@@ -9668,18 +9668,21 @@
       <UrlHomologacao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
+          <Url>https://testemarilia.sigiss.com.br/testemarilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
+          <Url>https://testemarilia.sigiss.com.br/testemarilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
+          <Url>https://testemarilia.sigiss.com.br/testemarilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
@@ -9689,6 +9692,7 @@
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
+          <Url>https://testemarilia.sigiss.com.br/testemarilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>
@@ -9703,21 +9707,21 @@
       <UrlProducao>
         <Item>
           <TipoUrl>Enviar</TipoUrl>
-          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php</Url>
+          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>EnviarSincrono</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSe</TipoUrl>
-          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php</Url>
+          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>CancelarNFSeLote</TipoUrl>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSe</TipoUrl>
-          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php</Url>
+          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarNFSeRps</TipoUrl>
@@ -9727,7 +9731,7 @@
         </Item>
         <Item>
           <TipoUrl>ConsultarSituacao</TipoUrl>
-          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php</Url>
+          <Url>https://marilia.sigiss.com.br/marilia/ws/sigiss_ws.php?wsdl</Url>
         </Item>
         <Item>
           <TipoUrl>ConsultarSequencialRps</TipoUrl>

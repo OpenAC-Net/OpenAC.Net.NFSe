@@ -324,7 +324,8 @@ public abstract class NFSeHttpServiceClient : IDisposable
 
             var response = client.SendAsync(request).GetAwaiter().GetResult();
             StatusCode = response.StatusCode;
-            EnvelopeRetorno = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var bytesRetorno = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+            EnvelopeRetorno = DecodificarResposta(bytesRetorno, response.Content.Headers.ContentType?.CharSet);
 
             GravarEnvio(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
             client.Dispose();
@@ -332,6 +333,40 @@ public abstract class NFSeHttpServiceClient : IDisposable
         catch (Exception ex) when (ex is not OpenDFeCommunicationException)
         {
             throw new OpenDFeCommunicationException("Erro no Execute HttpContent => " + ex.Message, ex);
+        }
+    }
+
+    /// <summary>
+    /// Decodifica os bytes da resposta HTTP em string.
+    /// A maioria dos provedores responde em UTF-8, e vários (ex.: SigISS) declaram um encoding
+    /// divergente (ISO-8859-1) no header/prólogo enquanto o corpo é realmente UTF-8 — por isso não dá
+    /// para confiar no encoding declarado. Como uma sequência de bytes UTF-8 válida praticamente nunca
+    /// coincide com texto acentuado em single-byte, tentamos UTF-8 primeiro e só caímos no encoding
+    /// declarado (header) quando os bytes não são UTF-8 válido, usando ISO-8859-1 como padrão nesse caso.
+    /// </summary>
+    /// <param name="bytes">Bytes brutos do corpo da resposta.</param>
+    /// <param name="headerCharset">Charset informado no header Content-Type, se houver.</param>
+    /// <returns>Conteúdo da resposta decodificado.</returns>
+    protected virtual string DecodificarResposta(byte[] bytes, string? headerCharset)
+    {
+        if (bytes.Length == 0) return "";
+
+        try
+        {
+            return new UTF8Encoding(false, true).GetString(bytes).Trim('﻿');
+        }
+        catch (DecoderFallbackException)
+        {
+            // Bytes não são UTF-8 válido: é um encoding single-byte. ISO-8859-1 é o padrão dos
+            // webservices fiscais; respeita o charset do header se ele informar algo válido.
+            var encoding = Encoding.GetEncoding("ISO-8859-1");
+            if (!string.IsNullOrWhiteSpace(headerCharset))
+            {
+                try { encoding = Encoding.GetEncoding(headerCharset.Trim('"')); }
+                catch { /* charset do header inválido: mantém ISO-8859-1 */ }
+            }
+
+            return encoding.GetString(bytes).Trim('﻿');
         }
     }
 
