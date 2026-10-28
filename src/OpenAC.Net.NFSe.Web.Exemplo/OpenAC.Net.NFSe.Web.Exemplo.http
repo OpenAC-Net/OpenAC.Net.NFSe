@@ -1,0 +1,16 @@
+@host = http://localhost:5000
+
+### Estado do exemplo
+GET {{host}}/
+
+### Consulta em homologação (configure certificado e prestador antes)
+GET {{host}}/nfse/1
+
+### Consulta de lote
+GET {{host}}/lotes/1/PROTOCOLO
+
+### Gerar DANFSe a partir de XML autorizado
+POST {{host}}/danfse
+Content-Type: application/json
+
+{"xml":"<substitua pelo XML de uma NFS-e autorizada>"}

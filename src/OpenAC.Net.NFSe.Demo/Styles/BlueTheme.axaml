@@ -1,0 +1,117 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <SolidColorBrush x:Key="InkBrush" Color="#142D50" />
+        <SolidColorBrush x:Key="MutedBrush" Color="#607A99" />
+        <SolidColorBrush x:Key="LineBrush" Color="#DCE7F7" />
+    </Styles.Resources>
+    <Style Selector="Window">
+        <Setter Property="Background" Value="#F3F7FE" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="avares://Avalonia.Fonts.Inter/Assets#Inter" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="20" />
+    </Style>
+    <Style Selector="TextBlock.heading">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+        <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+    </Style>
+    <Style Selector="TextBlock.label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="#456486" />
+        <Setter Property="Margin" Value="0,0,0,6" />
+    </Style>
+    <Style Selector="TextBox">
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Background" Value="#F8FAFE" />
+        <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+        <Setter Property="Padding" Value="10,8" />
+    </Style>
+    <Style Selector="TextBox.code">
+        <Setter Property="FontFamily" Value="DejaVu Sans Mono,Consolas,Menlo,monospace" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="#F8FAFE" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+    </Style>
+    <Style Selector="ComboBox">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+        <Setter Property="Background" Value="#F8FAFE" />
+    </Style>
+    <Style Selector="NumericUpDown">
+        <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+        <Setter Property="Background" Value="#F8FAFE" />
+    </Style>
+    <Style Selector="TabItem">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+    <Style Selector="Button">
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Padding" Value="13,8" />
+        <Setter Property="Background" Value="#EDF4FF" />
+        <Setter Property="Foreground" Value="#2456A4" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="#2563EB" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#1D4ED8" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#1E40AF" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#F0F5FD" />
+        <Setter Property="Foreground" Value="#93A9C6" />
+    </Style>
+    <Style Selector="ListBox.navigation">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style Selector="ListBox.navigation ListBoxItem">
+        <Setter Property="Foreground" Value="#B6CEF0" />
+        <Setter Property="Padding" Value="16,13" />
+        <Setter Property="Margin" Value="0,3" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style Selector="ListBox.navigation ListBoxItem:selected">
+        <Setter Property="Background" Value="#24508C" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="ListBox.navigation ListBoxItem:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#1D4276" />
+    </Style>
+    <Style Selector="ListBox.navigation ListBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="#24508C" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+</Styles>

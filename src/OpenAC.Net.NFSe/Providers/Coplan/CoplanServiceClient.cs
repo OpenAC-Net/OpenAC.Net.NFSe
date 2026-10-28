@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 05-16-2018
@@ -48,30 +48,15 @@ namespace OpenAC.Net.NFSe.Providers;
 /// </summary>
 internal sealed class CoplanServiceClient : NFSeSoapServiceClient, IServiceClient
 {
-    #region Fields
-
-    private bool expect100Continue;
-
-    #endregion Fields
-
     #region Constructors
 
     public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider,
         tipoUrl, certificado, SoapVersion.Soap11)
     {
-        expect100Continue = ServicePointManager.Expect100Continue;
-        ServicePointManager.Expect100Continue = false;
     }
 
     public CoplanServiceClient(ProviderCoplan provider, TipoUrl tipoUrl) : base(provider, tipoUrl, SoapVersion.Soap11)
     {
-        expect100Continue = ServicePointManager.Expect100Continue;
-        ServicePointManager.Expect100Continue = false;
-    }
-
-    ~CoplanServiceClient()
-    {
-        ServicePointManager.Expect100Continue = expect100Continue;
     }
 
     #endregion Constructors

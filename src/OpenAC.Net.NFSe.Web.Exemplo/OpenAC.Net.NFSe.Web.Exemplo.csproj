@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../OpenAC.Net.NFSe.Web/OpenAC.Net.NFSe.Web.csproj" />
+    <ProjectReference Include="../OpenAC.Net.NFSe.DANFSe.PDFSharp.Web/OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.csproj" />
+  </ItemGroup>
+</Project>
