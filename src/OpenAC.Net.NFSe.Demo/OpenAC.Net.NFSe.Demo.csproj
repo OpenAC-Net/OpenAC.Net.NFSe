@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
- 
- <PropertyGroup>
+  <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
-	 <Nullable>enable</Nullable>
-	 <LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationIcon>Assets/openac.ico</ApplicationIcon>
   </PropertyGroup>
-  
   <ItemGroup>
-    <PackageReference Include="NLog" Version="6.2.0" />
-    <PackageReference Include="NLog.Windows.Forms" Version="6.1.4" />
-    <PackageReference Include="OpenAC.Net.Core" Version="1.6.0" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.7.0.1" />
+    <AvaloniaResource Include="Assets/**" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.4" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.4" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.4" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.11" />
+    <PackageReference Include="NLog" Version="6.2.2" />
   </ItemGroup>
-  
   <ItemGroup>
-	<ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.PDFSharp\OpenAC.Net.NFSe.DANFSe.PDFSharp.csproj" />
-	<ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj" />
+    <ProjectReference Include="../OpenAC.Net.NFSe/OpenAC.Net.NFSe.csproj" />
+    <ProjectReference Include="../OpenAC.Net.NFSe.DANFSe.PDFSharp/OpenAC.Net.NFSe.DANFSe.PDFSharp.csproj" />
   </ItemGroup>
 </Project>

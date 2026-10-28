@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 09-03-2022
@@ -30,13 +30,13 @@
 // ***********************************************************************
 
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
+using OpenAC.Net.NFSe.Storage;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Attributes;
@@ -275,32 +275,15 @@ public abstract class NFSeHttpServiceClient : IDisposable
         {
             if (content == null && method == HttpMethod.Post) throw new ArgumentNullException(nameof(content));
 
+            using var request = new HttpRequestMessage(method, Url) { Content = content };
+
             if (!EnvelopeEnvio.IsEmpty())
                 GravarEnvio(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
 
-            var handler = new HttpClientHandler();
-
-            if (!ValidarCertificadoServidor())
-                handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
-
-            //if (Url.ToLower().StartsWith("https://"))
-            //    handler.SslProtocols = (SslProtocols)Provider.Configuracoes.WebServices.Protocolos;
-
-            if (Certificado != null)
-                handler.ClientCertificates.Add(Certificado);
-
-            if (!string.IsNullOrWhiteSpace(Provider.Configuracoes.WebServices.Proxy))
-            {
-                var webProxy = new WebProxy(Provider.Configuracoes.WebServices.Proxy, true);
-                handler.Proxy = webProxy;
-            }
-
-            var client = new HttpClient(handler);
-
-            if (Provider.TimeOut.HasValue)
-                client.Timeout = Provider.TimeOut.Value;
-
-            var request = new HttpRequestMessage(method, Url);
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(
+                Provider.Configuracoes.OperationToken.Value);
+            timeout.CancelAfter(Provider.TimeOut ?? TimeSpan.FromSeconds(100));
+            request.Headers.ExpectContinue = false;
 
             var assemblyName = GetType().Assembly.GetName();
             var productValue = new ProductInfoHeaderValue(assemblyName.Name!, assemblyName.Version!.ToString());
@@ -319,18 +302,16 @@ public abstract class NFSeHttpServiceClient : IDisposable
                     break;
             }
 
-            if (content != null)
-                request.Content = content;
-
-            var response = client.SendAsync(request).GetAwaiter().GetResult();
+            var transport = Provider.Configuracoes.HttpTransport ?? DesktopNFSeHttpTransport.Instancia;
+            using var response = transport.SendAsync(request, Provider.Configuracoes, Certificado,
+                ValidarCertificadoServidor(), timeout.Token).ConfigureAwait(false).GetAwaiter().GetResult();
             StatusCode = response.StatusCode;
             var bytesRetorno = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
             EnvelopeRetorno = DecodificarResposta(bytesRetorno, response.Content.Headers.ContentType?.CharSet);
 
             GravarEnvio(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
-            client.Dispose();
         }
-        catch (Exception ex) when (ex is not OpenDFeCommunicationException)
+        catch (Exception ex) when (ex is not OpenDFeCommunicationException && ex is not OperationCanceledException)
         {
             throw new OpenDFeCommunicationException("Erro no Execute HttpContent => " + ex.Message, ex);
         }
@@ -402,10 +383,10 @@ public abstract class NFSeHttpServiceClient : IDisposable
     {
         if (Provider.Configuracoes.WebServices.Salvar == false) return;
 
-        var path = Provider.Configuracoes.Arquivos.GetPathSoap(DateTime.Now,
-            Provider.Configuracoes.PrestadorPadrao.CpfCnpj);
-        nomeArquivo = Path.Combine(path, nomeArquivo);
-        File.WriteAllText(nomeArquivo, conteudoArquivo, Encoding.UTF8);
+        Provider.Configuracoes.DocumentStore.SaveAsync(new NFSeDocument(
+            nomeArquivo.Contains("_retorno") ? NFSeTipoDocumento.RespostaSoap : NFSeTipoDocumento.SolicitacaoSoap,
+            conteudoArquivo, nomeArquivo, Provider.Configuracoes.PrestadorPadrao.CpfCnpj, DateTime.Now),
+            Provider.Configuracoes, Provider.Configuracoes.OperationToken.Value).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     /// <inheritdoc />

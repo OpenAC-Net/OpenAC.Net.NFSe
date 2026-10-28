@@ -55,12 +55,18 @@ public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebService
 
     #endregion Constructor
 
+    internal OpenAC.Net.NFSe.Commom.Client.INFSeHttpTransport? HttpTransport { get; set; }
+    internal OpenAC.Net.NFSe.Storage.INFSeDocumentStore DocumentStore { get; set; } =
+        OpenAC.Net.NFSe.Storage.DesktopNFSeDocumentStore.Instancia;
+    internal System.Func<System.Security.Cryptography.X509Certificates.X509Certificate2>? CertificateResolver { get; set; }
+    internal System.Threading.AsyncLocal<System.Threading.CancellationToken> OperationToken { get; } = new();
+
     #region Properties
     
     /// <summary>
     /// Obtém uma nova instância de configuração padrão.
     /// </summary>
-    public static ConfigNFSe Default { get; } = new();
+    public static ConfigNFSe Default => new();
 
     /// <summary>
     /// Obtém ou define os dados padrão do prestador de serviço.

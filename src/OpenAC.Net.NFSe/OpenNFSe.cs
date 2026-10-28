@@ -30,7 +30,9 @@
 // ***********************************************************************
 
 using System;
-using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using OpenAC.Net.NFSe.Commom.Client;
+using OpenAC.Net.NFSe.Storage;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.Core.Logging;
@@ -44,7 +46,7 @@ namespace OpenAC.Net.NFSe;
 /// <summary>
 /// Componente principal para emissão, envio, consulta, cancelamento e gerenciamento de NFS-e (Nota Fiscal de Serviço Eletrônica).
 /// </summary>
-public sealed class OpenNFSe : OpenDisposable, IOpenLog
+public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
 {
     #region Propriedades
 
@@ -81,6 +83,15 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         NotasServico = new NotaServicoCollection(Configuracoes);
     }
 
+    /// <summary>Inicializa o componente com transporte, persistência e certificado fornecidos pelo host.</summary>
+    public OpenNFSe(ConfigNFSe configuracoes, INFSeHttpTransport transport, INFSeDocumentStore documentStore,
+        Func<X509Certificate2>? certificateResolver = null) : this(configuracoes)
+    {
+        Configuracoes.HttpTransport = transport ?? throw new ArgumentNullException(nameof(transport));
+        Configuracoes.DocumentStore = documentStore ?? throw new ArgumentNullException(nameof(documentStore));
+        Configuracoes.CertificateResolver = certificateResolver;
+    }
+
     #endregion Constructors
 
     #region Methods
@@ -99,11 +110,9 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
             $"Quantidade atual: {NotasServico.Count}");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
 
             var ret = sincrono
                 ? provider.EnviarSincrono(lote, NotasServico)
@@ -113,12 +122,11 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         }
         catch (Exception exception)
         {
-            this.Log().Error("[Enviar]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[Enviar]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -136,21 +144,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<ArgumentException>(lote < 1, "Lote não pode ser Zero ou negativo.");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultarSituacao(lote, protocolo);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultarSituacao]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarSituacao]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -167,21 +172,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     public RetornoConsultarLoteRps ConsultarLoteRps(int lote, string protocolo)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultarLoteRps(lote, protocolo, NotasServico);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultarLoteRps]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarLoteRps]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -199,21 +201,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<ArgumentNullException>(serie.IsEmpty(), "Serie não pode ser vazia ou nulo.");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultarSequencialRps(serie);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultarSequencialRps]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarSequencialRps]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -231,21 +230,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     public RetornoConsultarNFSeRps ConsultaNFSeRps(int numero, string serie, TipoRps tipo)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultaNFSeRps(numero, serie, tipo, NotasServico, 0, 0);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultarNFSeRps]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSeRps]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -265,21 +261,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     public RetornoConsultarNFSeRps ConsultaNFSeRps(int numero, string serie, TipoRps tipo, int mesCompetencia, int anoCompetencia)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultaNFSeRps(numero, serie, tipo, NotasServico, mesCompetencia, anoCompetencia);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultarNFSeRps]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSeRps]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -298,21 +291,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<OpenException>(numeroNfse < 1, "O número da NFSe não pode ser zero ou negativo.");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultaNFSe(NotasServico, numeroNfse: numeroNfse, pagina: pagina);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultarNFSe]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSe]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -331,21 +321,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<OpenException>(numeroNfse < 1, "O número da NFSe não pode ser zero ou negativo.");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultaNFSe(NotasServico, numeroNfse: numeroNfse, serieNfse: serieNfse);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultarNFSe]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSe]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -365,21 +352,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<OpenException>(inicio.Date > fim.Date, "A data inicial não pode ser maior que a data final.");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultaNFSe(NotasServico, inicio, fim, pagina: pagina);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultaNFSePeriodo]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultaNFSePeriodo]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -399,21 +383,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<OpenException>(cnpjTomador.IsEmpty(), "O CNPJ/CPF do tomador não pode ser vazio.");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultaNFSe(NotasServico, cnpjTomador: cnpjTomador, imTomador: imTomador, pagina: pagina);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultaNFSeTomador]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultaNFSeTomador]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -435,22 +416,19 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<OpenException>(cnpjInter.IsEmpty(), "O CNPJ/CPF do intermediário não pode ser vazio.");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.ConsultaNFSe(NotasServico, nomeInter: nomeInter, cnpjInter: cnpjInter, imInter: imInter,
                 pagina: pagina);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[ConsultaNFSeIntermediario]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultaNFSeIntermediario]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -467,21 +445,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     public RetornoCancelar CancelarNFSe(string codigoCancelamento, string numeroNFSe, string motivo)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, "", 0, motivo, "", NotasServico);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[CancelarNFSe]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -502,22 +477,19 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         string motivo, string? codigoVerificacao = null)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.CancelarNFSe(codigoCancelamento, numeroNFSe, serie, valor, motivo, codigoVerificacao,
                 NotasServico);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[CancelarNFSe]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -533,22 +505,19 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
     public RetornoCancelarNFSeLote CancelarNFSeLote(int lote)
     {
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             Guard.Against<ArgumentException>(NotasServico.Count < 1, "ERRO: Nenhuma NFS-e carregada ao componente");
             return provider.CancelarNFSeLote(lote, NotasServico);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[CancelarNFSe]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }
@@ -569,21 +538,18 @@ public sealed class OpenNFSe : OpenDisposable, IOpenLog
         Guard.Against<ArgumentException>(NotasServico.Count < 1, "ERRO: Nenhuma RPS carregada ao componente");
 
         var provider = ProviderManager.GetProvider(Configuracoes);
-        var oldProtocol = ServicePointManager.SecurityProtocol;
 
         try
         {
-            ServicePointManager.SecurityProtocol = Configuracoes.WebServices.Protocolos;
             return provider.SubstituirNFSe(NotasServico, codigoCancelamento, numeroNFSe, motivo);
         }
         catch (Exception exception)
         {
-            this.Log().Error("[SubstituirNFSe]", exception);
+            if (Configuracoes.HttpTransport == null) this.Log().Error("[SubstituirNFSe]", exception);
             throw;
         }
         finally
         {
-            ServicePointManager.SecurityProtocol = oldProtocol;
             provider.Dispose();
         }
     }

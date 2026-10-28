@@ -25,6 +25,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj" />
+      <ProjectReference Include="..\OpenAC.Net.NFSe.Web\OpenAC.Net.NFSe.Web.csproj" />
+      <ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.PDFSharp.Web\OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.csproj" />
       <ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.PDFSharp\OpenAC.Net.NFSe.DANFSe.PDFSharp.csproj" />
     </ItemGroup>
 

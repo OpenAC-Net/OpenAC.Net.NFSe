@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>OpenAC.Net.NFSe.DANFSe.PDFSharp.Web</AssemblyName>
+    <RootNamespace>OpenAC.Net.NFSe.DANFSe.PDFSharp.Web</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>OpenAC.Net.NFSe.DANFSe.PDFSharp.Web</PackageId>
+    <AssemblyVersion>1.8.1</AssemblyVersion>
+    <FileVersion>1.8.1</FileVersion>
+    <Version>1.8.1</Version>
+    <Authors>Projeto OpenAC .Net</Authors>
+    <Company>OpenAC .Net - Automação Comercial em .Net</Company>
+    <Copyright>Copyright © Projeto OpenAC .Net 2014 - 2026</Copyright>
+    <Description>Integração ASP.NET Core para geração de DANFSe municipal em PDF com PDFSharp.</Description>
+    <PackageTags>OpenAC.Net NFSe Municipal DANFSe PDFSharp ASP.NET Core Web</PackageTags>
+    <PackageProjectUrl>https://openac.net.br/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/OpenAC-Net/OpenAC.Net.NFSe</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>nuget.png</PackageIcon>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\OpenAC.Net.NFSe.DANFSe.PDFSharp\OpenAC.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\OpenAC.Net.NFSe.DANFSe.PDFSharp\OpenAC.Net.NFSe.DANFSe.PDFSharp.csproj" />
+    <ProjectReference Include="..\OpenAC.Net.NFSe.Web\OpenAC.Net.NFSe.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="/" />
+    <None Include="..\..\nuget.png" Pack="true" PackagePath="/" Link="nuget.png" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.7.0.1" />
+  </ItemGroup>
+
+</Project>

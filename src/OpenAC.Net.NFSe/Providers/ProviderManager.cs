@@ -234,6 +234,21 @@ public static class ProviderManager
 
     #endregion Public
 
+    /// <summary>Lê um catálogo sem alterar os municípios em uso pelo processo.</summary>
+    public static OpenMunicipioNFSe[] ReadCatalog(Stream stream)
+    {
+        if (stream == null) throw new ArgumentNullException(nameof(stream));
+        return MunicipiosNFSe.Load(stream).Municipios;
+    }
+
+    /// <summary>Grava um catálogo independente sem alterar os municípios em uso.</summary>
+    public static void WriteCatalog(Stream stream, OpenMunicipioNFSe[] municipios)
+    {
+        if (stream == null) throw new ArgumentNullException(nameof(stream));
+        if (municipios == null) throw new ArgumentNullException(nameof(municipios));
+        new MunicipiosNFSe { Municipios = municipios }.Save(stream, DFeSaveOptions.None);
+    }
+
     #region Private
 
     private static bool CheckBaseType(Type providerType)

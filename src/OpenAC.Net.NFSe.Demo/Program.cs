@@ -1,20 +1,18 @@
-using System;
-using System.Text;
-using System.Windows.Forms;
+using Avalonia;
 
 namespace OpenAC.Net.NFSe.Demo;
 
 internal static class Program
 {
-    /// <summary>
-    /// The main entry point for the application.
-    /// </summary>
     [STAThread]
-    static void Main()
+    public static void Main(string[] args)
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(new FormMain());
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
+
+    public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>()
+        .UsePlatformDetect()
+        .WithInterFont()
+        .LogToTrace();
 }
