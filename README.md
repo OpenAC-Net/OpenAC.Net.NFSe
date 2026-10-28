@@ -30,11 +30,23 @@ Desenvolvida pelo time **OpenAC .Net**, a biblioteca abstrai as particularidades
 - **Impressão do DANFSe em PDF**:
   - Motor de impressão **`OpenAC.Net.NFSe.DANFSe.PDFSharp`** baseado em **PDFsharp 6.x** e **QRCoder**.
   - **100% Open Source / MIT**, sem custos de licença ou marcas d'água de terceiros.
-  - **Native AOT Safe & Multiplataforma**: Fontes TrueType embutidas, pronto para Docker, Linux (Alpine/Debian/Ubuntu), Windows e macOS.
+  - Fontes TrueType embutidas e geração de PDF em memória para Windows, Linux e macOS.
   - Suporte à customização de cabeçalhos, logos da prefeitura e do prestador, discriminação de itens em tabela ou texto livre e criptografia por senha.
 - **Assinatura e Validação Digital**:
   - Assinatura digital XML com certificados A1 e A3 (`DFeSignature`).
   - Validação de esquemas XML / Schemas XSD oficiais.
+- **Comunicação HTTP**:
+  - Reutilização de conexões por certificado, TLS, proxy e validação do servidor.
+  - Transporte substituível por `INFSeHttpTransport` e armazenamento por `INFSeDocumentStore`.
+  - Métodos `Async` com `CancellationToken`, preservando a API síncrona existente.
+- **Integração ASP.NET Core**:
+  - Registro por escopo com `AddOpenNFSeWeb` e clientes independentes por empresa.
+  - `IHttpClientFactory`, timeouts por operação, retentativas para métodos HTTP seguros e circuit breaker.
+  - Logs, rastreamento e métricas de operações.
+  - DANFSe em memória e respostas HTTP para Minimal APIs.
+- **Demo Avalonia**:
+  - Interface Fluent com tema azul para Windows, Linux e macOS.
+  - Operações fiscais, configurações, catálogo de municípios e geração de DANFSe.
 - **Alta Performance**:
   - Serialização e desserialização XML baseada em *Source Generators* (`OpenAC.Net.DFe.Core`).
 - **Suporte à Reforma Tributária (IBS / CBS)**:
@@ -93,6 +105,26 @@ dotnet add package OpenAC.Net.NFSe.DANFSe.PDFSharp
 Install-Package OpenAC.Net.NFSe.DANFSe.PDFSharp
 ```
 
+### 3. Integração Web e DANFSe para ASP.NET Core
+
+Os projetos Web suportam .NET 8, 9 e 10:
+
+```bash
+dotnet add package OpenAC.Net.NFSe.Web
+dotnet add package OpenAC.Net.NFSe.DANFSe.PDFSharp.Web
+```
+
+Para usar os projetos diretamente a partir deste repositório, adicione referências aos respectivos arquivos `.csproj` em `src`.
+
+### Compatibilidade
+
+| Projeto | Frameworks |
+| :--- | :--- |
+| `OpenAC.Net.NFSe` | .NET Framework 4.6.2, 4.7.0 e 4.8; .NET Standard 2.0; .NET 6, 7, 8, 9 e 10 |
+| `OpenAC.Net.NFSe.DANFSe.PDFSharp` | .NET Framework 4.6.2 e 4.8; .NET Standard 2.0; .NET 8, 9 e 10 |
+| `OpenAC.Net.NFSe.Web` e `OpenAC.Net.NFSe.DANFSe.PDFSharp.Web` | .NET 8, 9 e 10 |
+| Demo Avalonia e exemplo ASP.NET Core | .NET 8 |
+
 ---
 
 ## 🛠️ Como Usar
@@ -103,7 +135,7 @@ Install-Package OpenAC.Net.NFSe.DANFSe.PDFSharp
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe;
 
-var openNFSe = new OpenNFSe();
+using var openNFSe = new OpenNFSe();
 
 // Configurações Gerais
 openNFSe.Configuracoes.Geral.RetirarAcentos = true;
@@ -179,7 +211,7 @@ nota.Servico.Valores.ValorIss = 50.00M;
 nota.Servico.Valores.ValorLiquidoNfse = 2450.00M;
 
 // Envio do Lote de RPS
-var retorno = openNFSe.Enviar(lote: 1, sincronico: false);
+var retorno = openNFSe.Enviar(lote: 1, sincrono: false);
 
 if (retorno.Sucesso)
 {
@@ -243,13 +275,13 @@ openNFSe.ImprimirPDF(@"C:\NFSe\Danfse_Protegido.pdf", opt =>
 
 ```csharp
 // Consulta de NFS-e por Número do RPS
-var retornoRps = openNFSe.ConsultarNFSePorRps(numeroRps: 100, serieRps: "1", tipoRps: TipoRps.RPS);
+var retornoRps = openNFSe.ConsultaNFSeRps(numero: 100, serie: "1", tipo: TipoRps.RPS);
 
 // Consulta de Situação do Lote
-var retornoSituacao = openNFSe.ConsultarSituacaoLoteRps(protocolo: "123456789", lote: 1);
+var retornoSituacao = openNFSe.ConsultarSituacao(lote: 1, protocolo: "123456789");
 
 // Consulta de Lote de RPS
-var retornoLote = openNFSe.ConsultarLoteRps(protocolo: "123456789", lote: 1);
+var retornoLote = openNFSe.ConsultarLoteRps(lote: 1, protocolo: "123456789");
 ```
 
 ---
@@ -271,20 +303,143 @@ if (retornoCancelamento.Sucesso)
 
 ---
 
+### 6. Operações Assíncronas e CancellationToken
+
+O componente também implementa `IOpenNFSeClient`, com versões assíncronas das operações municipais:
+
+```csharp
+using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(100));
+
+var retornoConsulta = await openNFSe.ConsultaNFSeAsync(
+    numeroNfse: 100,
+    cancellationToken: cancellation.Token);
+
+// Após preencher NotasServico, envie o lote:
+var retornoEnvio = await openNFSe.EnviarAsync(
+    lote: 1,
+    sincrono: false,
+    cancellationToken: cancellation.Token);
+```
+
+Os provedores municipais continuam síncronos internamente. Os métodos `Async` executam em uma thread de trabalho e propagam o cancelamento até a requisição HTTP. Operações assíncronas são serializadas por cliente; use clientes independentes para processar empresas ou operações em paralelo e mantenha suas configurações e notas estáveis durante a execução.
+
+As operações e os formatos aceitos dependem do provedor e da versão cadastrados para o município. No envio, `sincrono` seleciona a modalidade de processamento do lote pelo provedor; o sufixo `Async` identifica a API com cancelamento do componente.
+
+---
+
+## 🌐 ASP.NET Core e Multiempresa
+
+Exemplo de registro em `Program.cs`, com configurações fornecidas pelo host:
+
+```csharp
+using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.NFSe;
+using OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.Service;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOpenNFSeWeb(config =>
+{
+    config.WebServices.Ambiente = DFeTipoAmbiente.Homologacao;
+    config.WebServices.CodigoMunicipio = builder.Configuration.GetValue<int>("NFSe:Municipio");
+    config.PrestadorPadrao.CpfCnpj = builder.Configuration["NFSe:CpfCnpj"] ?? "";
+    config.PrestadorPadrao.InscricaoMunicipal = builder.Configuration["NFSe:InscricaoMunicipal"] ?? "";
+    config.Certificados.Certificado = builder.Configuration["NFSe:Certificado"] ?? "";
+    config.Certificados.Senha = builder.Configuration["NFSe:SenhaCertificado"] ?? "";
+    config.Arquivos.PathSchemas = Path.Combine(AppContext.BaseDirectory, "Schemas");
+}, options =>
+{
+    options.TimeoutOperacao = TimeSpan.FromSeconds(100);
+    options.TimeoutTentativa = TimeSpan.FromSeconds(30);
+    options.PersistenciaHabilitada = false;
+});
+
+builder.Services.AddOpenDANFSeWeb(options => options.ForcarDownload = true);
+
+var app = builder.Build();
+
+app.MapGet("/nfse/{numero:int}", async (
+    int numero, IOpenNFSeClient client, CancellationToken cancellationToken) =>
+    await client.ConsultaNFSeAsync(numero, cancellationToken: cancellationToken));
+
+app.MapGet("/nfse/{numero:int}/pdf", async (
+    int numero, IOpenNFSeClient client, IOpenDANFSeWeb danfse,
+    CancellationToken cancellationToken) =>
+{
+    var retorno = await client.ConsultaNFSeAsync(numero, cancellationToken: cancellationToken);
+    if (!retorno.Sucesso || retorno.Notas.Length == 0)
+        return Results.BadRequest(retorno);
+
+    return await danfse.GerarResultadoAsync(retorno.Notas, cancellationToken: cancellationToken);
+});
+
+app.Run();
+```
+
+`IOpenNFSeClient` é criado por escopo, com configuração e notas independentes. Configure o certificado explicitamente por `CertificadoBytes` ou caminho PFX/P12 existente. A integração Web valida a chave privada e a validade do certificado e não abre seleção interativa.
+
+Para várias empresas, implemente `INFSeConfigurationProvider<ConfigNFSe>` e `INFSeCertificateProvider` e registre:
+
+```csharp
+builder.Services.AddOpenNFSeWebMultiTenant<EmpresaConfigurationProvider, EmpresaCertificateProvider>();
+```
+
+Resolva `IOpenNFSeClientFactory` no consumidor e crie um cliente para a empresa autenticada:
+
+```csharp
+using var client = await factory.CreateAsync(empresaId, cancellationToken);
+var retorno = await client.ConsultaNFSeAsync(numero, cancellationToken: cancellationToken);
+```
+
+Os providers devem retornar configurações novas por cliente e ser seguros para concorrência. Handlers são isolados por empresa, certificado, endpoint, TLS, proxy e regras de comunicação. O catálogo de municípios é compartilhado pelo processo e deve ser configurado na inicialização do host.
+
+As tentativas automáticas seguem `WebServices.Tentativas` e `IntervaloTentativas`, apenas para métodos HTTP seguros. POSTs, inclusive consultas SOAP, emissão e cancelamento, não são repetidos automaticamente. Rejeições fiscais permanecem em `RetornoWebservice`; falhas técnicas de transporte geram `NFSeTechnicalException`, e cancelamentos geram `OperationCanceledException`.
+
+A persistência Web é desabilitada por padrão. Para ativar, configure `PersistenciaHabilitada`, `CaminhoDocumentos` e as flags de salvamento correspondentes. O armazenamento separa documentos por empresa e categoria, sem sobrescrever arquivos em colisões de nome. O DANFSe Web gera PDFs em memória e devolve `byte[]`, stream ou `IResult`.
+
+Consulte os detalhes de [configuração Web](src/OpenAC.Net.NFSe.Web/README.md), [DANFSe Web](src/OpenAC.Net.NFSe.DANFSe.PDFSharp.Web/README.md) e o [exemplo ASP.NET Core](src/OpenAC.Net.NFSe.Web.Exemplo/README.md).
+
+---
+
+## 🖥️ Demo Avalonia com Tema Azul
+
+O demo usa Avalonia Fluent e segue a organização do NFSe.Nacional, com navegação entre **Operações**, **Configurações** e **Municípios**. Funciona em Windows, Linux e macOS com .NET 8.
+
+Execute a partir da raiz do repositório:
+
+```bash
+dotnet run --project src/OpenAC.Net.NFSe.Demo/OpenAC.Net.NFSe.Demo.csproj
+```
+
+- **Operações**: carregar XML, gerar RPS de exemplo, enviar lotes, consultar, cancelar/substituir notas e gerar ou visualizar DANFSe.
+- **Configurações**: certificado, prestador, ambiente, autenticação do provedor, timeout e caminhos de arquivos.
+- **Municípios**: pesquisar, cadastrar, editar, copiar, excluir, selecionar, importar e exportar o catálogo, com URLs por ambiente e parâmetros do provedor.
+
+Resultados, XMLs, envelopes HTTP/SOAP e logs aparecem em abas. A interface apresenta progresso e permite cancelar a operação. O ambiente inicial é homologação.
+
+As configurações ficam em `LocalApplicationData/OpenAC.Net/NFSe.Demo/opennfse.config`. O demo importa um `opennfse.config` legado do diretório de trabalho na primeira execução. Senhas e chaves de autenticação devem ser informadas a cada execução e não são gravadas pelo novo demo. Veja o [guia do demo](src/OpenAC.Net.NFSe.Demo/README.md).
+
+---
+
 ## 📁 Estrutura da Solução
 
 - **`OpenAC.Net.NFSe`**: Biblioteca principal contendo o core, provedores municipais, webservices, serializadores e modelos de dados.
 - **`OpenAC.Net.NFSe.DANFSe.PDFSharp`**: Gerador e impressor do DANFSe em PDF via PDFsharp 6.x e QRCoder (100% MIT / Open Source).
-- **`OpenAC.Net.NFSe.Demo`**: Aplicativo de demonstração Windows Forms completo com exemplos de preenchimento, testes de cidades e impressão.
+- **`OpenAC.Net.NFSe.Web`**: Integração ASP.NET Core com DI, fábrica multiempresa, transporte HTTP, resiliência, observabilidade e persistência opcional.
+- **`OpenAC.Net.NFSe.DANFSe.PDFSharp.Web`**: Geração de DANFSe em memória e respostas HTTP para ASP.NET Core.
+- **`OpenAC.Net.NFSe.Web.Exemplo`**: Exemplo de API com consultas, emissão e geração de DANFSe.
+- **`OpenAC.Net.NFSe.Demo`**: Aplicativo Avalonia com tema azul, operações fiscais, configurações e cadastro de municípios.
 - **`OpenAC.Net.NFSe.Test`**: Suíte de testes unitários e de integração com xUnit.
 
 ---
 
 ## 📚 Documentação e Guias
 
-- [📖 Guia Completo do DANFSe PDFSharp](docs/DANFSE_PDFSHARP.md): Arquitetura, opções de layout, marcas d'água, logos e criptografia.
-- [🔄 Guia de Migração para PDFSharp](docs/MIGRACAO_DANFSE.md): Como migrar do QuestPDF / FastReport para o PDFSharp sem complicações.
-- [🏛️ Referência de Provedores e Cidades](docs/PROVEDORES.md): Lista de provedores, cidades atendidas e resolução automática de municípios.
+- [Integração ASP.NET Core e multiempresa](src/OpenAC.Net.NFSe.Web/README.md): Transporte, certificados, timeouts, resiliência, métricas e persistência.
+- [DANFSe Web](src/OpenAC.Net.NFSe.DANFSe.PDFSharp.Web/README.md): Geração em memória e retorno de PDF por HTTP.
+- [DANFSe PDFSharp](src/OpenAC.Net.NFSe.DANFSe.PDFSharp/README.md): Uso e opções do gerador de PDF.
+- [Demo Avalonia](src/OpenAC.Net.NFSe.Demo/README.md): Operações, configurações e catálogo de municípios.
+- [Exemplo ASP.NET Core](src/OpenAC.Net.NFSe.Web.Exemplo/README.md): Configuração e execução da API de demonstração.
 
 ---
 
