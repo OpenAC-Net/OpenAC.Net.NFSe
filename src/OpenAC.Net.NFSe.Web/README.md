@@ -60,8 +60,28 @@ Logs, `ActivitySource` e métricas usam o nome `OpenAC.Net.NFSe.Web`. Métricas:
 
 A persistência Web é desabilitada por padrão, mesmo quando as flags legadas de salvamento estão habilitadas. Para ativar, configure `PersistenciaHabilitada`, `CaminhoDocumentos` e as flags correspondentes de `Geral`, `WebServices` e `Arquivos`.
 
-`FileSystemNFSeDocumentStore` usa a raiz do host, separa diretórios por hash da empresa, categoria e mês e evita sobrescritas por colisão de nome. Pode ser substituído por uma implementação de `INFSeDocumentStore`, por exemplo para armazenamento de objetos. O transporte também pode ser substituído por `INFSeHttpTransport`; registre suas implementações antes de `AddOpenNFSeWeb`.
+`FileSystemNFSeDocumentStore` usa a raiz do host, separa diretórios por hash da empresa, categoria e mês e evita sobrescritas por colisão de nome. Pode ser substituído por uma implementação de `IDFeDocumentStore`, por exemplo para armazenamento de objetos. O transporte também pode ser substituído por `IDFeHttpTransport`; registre suas implementações antes de `AddOpenNFSeWeb`.
 
 O catálogo de municípios continua sendo compartilhado pelo processo. Carregue e configure o catálogo na inicialização do host; não o modifique durante requisições concorrentes.
 
 Veja também [o exemplo ASP.NET Core](../OpenAC.Net.NFSe.Web.Exemplo/README.md) e [o DANFSe Web](../OpenAC.Net.NFSe.DANFSe.PDFSharp.Web/README.md).
+
+
+## Infraestrutura compartilhada
+
+A partir do DFe.Core 1.8.0, os clientes herdam `DFeHttpServiceClient`.
+O envio desktop e os adaptadores web usam `DFeHttpTransportBase`, com leitura do corpo
+incluída no timeout. `DFeHttpResponse` centraliza BOM, UTF-8 válido e fallback de charset.
+A política Polly do host continua sendo a única camada de retentativas no web.
+O desktop mantém um único envio por operação, cookies desabilitados e nenhuma
+descompactação automática; a subclasse desktop apenas seleciona essa política do Core.
+
+`ConfigNFSe` herda os contratos `HttpTransport`, `DocumentStore` e `OperationToken` do Core.
+`NFSeDocument` implementa `IDFeDocument`, mantendo os metadados usados pelo host para
+isolar empresas. `NFSeCategorias` preserva os nomes anteriores das pastas web:
+`Rps`, `NFSe`, `SolicitacaoSoap`, `RespostaSoap`, `SolicitacaoTecnica` e `RespostaTecnica`.
+No desktop, RPS, NFSe, SOAP e mensagens técnicas continuam usando os métodos de caminho
+originais. A gravação e o tratamento de colisões são delegados ao DFe.Core.
+
+Provedores municipais continuam com suas APIs síncronas e adaptações assíncronas existentes;
+a unificação do transporte não converte automaticamente cada implementação fiscal em async.

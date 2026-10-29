@@ -1,20 +1,18 @@
+using OpenAC.Net.DFe.Core.Storage;
+using OpenAC.Net.DFe.Core.Http;
 using System.Collections.Concurrent;
 using System.Net;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
-using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.Service;
 using OpenAC.Net.NFSe.Storage;
 using OpenAC.Net.NFSe.Web.Accessor;
 using OpenAC.Net.NFSe.Web.Client;
-using OpenAC.Net.NFSe.Web.Configuration;
 using OpenAC.Net.NFSe.Web.Exception;
 using OpenAC.Net.NFSe.Web.Provider;
 using Xunit;
@@ -118,7 +116,7 @@ public class TestWebServices
     public async Task WebOperationTimeoutCancelsUnderlyingRequest()
     {
         var services = Services();
-        services.AddSingleton<INFSeHttpTransport>(new TestCommunication.CallbackTransport(async (_, token) =>
+        services.AddSingleton<IDFeHttpTransport>(new TestCommunication.CallbackTransport(async (_, token) =>
         {
             await Task.Delay(Timeout.InfiniteTimeSpan, token); throw new InvalidOperationException();
         }));
@@ -132,7 +130,7 @@ public class TestWebServices
     public async Task TechnicalTransportFailureIsNotReturnedAsFiscalRejection()
     {
         var services = Services();
-        services.AddSingleton<INFSeHttpTransport>(new TestCommunication.CallbackTransport((_, _) => throw new HttpRequestException("offline")));
+        services.AddSingleton<IDFeHttpTransport>(new TestCommunication.CallbackTransport((_, _) => throw new HttpRequestException("offline")));
         services.AddOpenNFSeWeb(Configure);
         using var provider = services.BuildServiceProvider();
         using var client = await provider.GetRequiredService<IOpenNFSeClientFactory>().CreateAsync();
@@ -153,9 +151,9 @@ public class TestWebServices
                 using var provider = services.BuildServiceProvider();
                 var factory = provider.GetRequiredService<IOpenNFSeClientFactory>();
                 using var first = await factory.CreateAsync("tenant-a"); using var second = await factory.CreateAsync("tenant-b");
-                var store = provider.GetRequiredService<INFSeDocumentStore>();
-                var document = new NFSeDocument(NFSeTipoDocumento.NFSe, "xml", "../../NFSe.xml", "", DateTime.Today);
-                await store.SaveAsync(document, first.Configuracoes); await store.SaveAsync(document, second.Configuracoes);
+                var store = provider.GetRequiredService<IDFeDocumentStore>();
+                await store.SaveAsync(new NFSeDocument(first.Configuracoes, NFSeCategorias.NFSe, "xml", "../../NFSe.xml", "", DateTime.Today));
+                await store.SaveAsync(new NFSeDocument(second.Configuracoes, NFSeCategorias.NFSe, "xml", "../../NFSe.xml", "", DateTime.Today));
                 if (!enabled) Assert.False(Directory.Exists(root));
                 else
                 {
@@ -185,6 +183,30 @@ public class TestWebServices
         Assert.Equal(document.NomeArquivo, file.FileDownloadName);
     }
 
+    [Fact]
+    public async Task WebTimeoutIncludesResponseBodyRead()
+    {
+        var services = Services();
+        services.AddSingleton<IHttpMessageHandlerBuilderFilter>(new StubFilter { ContentFactory = () => new SlowContent() });
+        services.AddOpenNFSeWeb(config =>
+        {
+            Configure(config);
+            config.WebServices.TimeOut = TimeSpan.FromMilliseconds(100);
+        });
+        using var provider = services.BuildServiceProvider();
+        using var client = await provider.GetRequiredService<IOpenNFSeClientFactory>().CreateAsync();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => SendAsync(provider, client.Configuracoes, HttpMethod.Get));
+    }
+
+    private sealed class SlowContent : HttpContent
+    {
+        protected override Task SerializeToStreamAsync(Stream stream, TransportContext? context) =>
+            SerializeToStreamAsync(stream, context, CancellationToken.None);
+        protected override Task SerializeToStreamAsync(Stream stream, TransportContext? context, CancellationToken cancellationToken) =>
+            Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken);
+        protected override bool TryComputeLength(out long length) { length = 0; return false; }
+    }
+
     private static ServiceCollection Services(string? root = null)
     {
         var services = new ServiceCollection(); services.AddLogging();
@@ -203,7 +225,7 @@ public class TestWebServices
         using var certificate = new X509Certificate2(config.Certificados.CertificadoBytes, (string?)null, X509KeyStorageFlags.EphemeralKeySet);
         using var request = new HttpRequestMessage(method, "https://example.invalid/nfse");
         if (method == HttpMethod.Post) request.Content = new StringContent("<xml/>");
-        using var response = await provider.GetRequiredService<INFSeHttpTransport>().SendAsync(request, config, certificate, true);
+        using var response = await config.HttpTransport.SendAsync(request, new DFeHttpTransportOptions(config.WebServices, certificate));
     }
     private static byte[] CreateCertificate()
     {
@@ -233,6 +255,7 @@ public class TestWebServices
     {
         public ConcurrentBag<string> Names { get; } = [];
         public HttpStatusCode StatusCode { get; init; } = HttpStatusCode.OK;
+        public Func<HttpContent> ContentFactory { get; init; } = () => new StringContent("test");
         private int calls;
         public int Calls => calls;
         public Action<HttpMessageHandlerBuilder> Configure(Action<HttpMessageHandlerBuilder> next) => builder =>
@@ -242,7 +265,7 @@ public class TestWebServices
         private sealed class StubHandler(StubFilter owner) : HttpMessageHandler
         {
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            { Interlocked.Increment(ref owner.calls); return Task.FromResult(new HttpResponseMessage(owner.StatusCode) { Content = new StringContent("test") }); }
+            { Interlocked.Increment(ref owner.calls); return Task.FromResult(new HttpResponseMessage(owner.StatusCode) { Content = owner.ContentFactory() }); }
         }
     }
 }

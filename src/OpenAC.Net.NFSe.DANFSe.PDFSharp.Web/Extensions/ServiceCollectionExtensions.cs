@@ -1,9 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using OpenAC.Net.NFSe.DANFSe.PDFSharp.Web;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.Configuration;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.Service;
-using OpenAC.Net.NFSe.Web;
 using OpenAC.Net.NFSe.Web.Provider;
 
 // ReSharper disable once CheckNamespace

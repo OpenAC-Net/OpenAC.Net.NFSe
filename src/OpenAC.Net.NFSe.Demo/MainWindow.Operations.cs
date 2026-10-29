@@ -1,6 +1,5 @@
 using System.Globalization;
 using Avalonia.Platform.Storage;
-using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp;
 using OpenAC.Net.NFSe.Nota;
 

@@ -1,8 +1,8 @@
+using OpenAC.Net.DFe.Core.Storage;
+using OpenAC.Net.DFe.Core.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Storage;
 using OpenAC.Net.NFSe.Web.Common;
 using OpenAC.Net.NFSe.Web.Configuration;
 using OpenAC.Net.NFSe.Web.Provider;
@@ -11,7 +11,7 @@ using OpenAC.Net.NFSe.Web.Transport;
 namespace OpenAC.Net.NFSe.Web.Client;
 
 internal sealed class OpenNFSeClientFactory(INFSeConfigurationProvider<ConfigNFSe> configurations,
-    INFSeCertificateProvider certificates, INFSeHttpTransport transport, INFSeDocumentStore store,
+    INFSeCertificateProvider certificates, IDFeHttpTransport transport, IDFeDocumentStore store,
     ILoggerFactory logs, IOptions<OpenNFSeWebOptions> options, NFSeHttpClientRegistry registry) : IOpenNFSeClientFactory
 {
     public async ValueTask<IOpenNFSeClient> CreateAsync(string tenantId = NFSeTenant.Padrao,

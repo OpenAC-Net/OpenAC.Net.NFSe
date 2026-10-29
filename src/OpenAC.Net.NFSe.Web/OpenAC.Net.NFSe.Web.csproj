@@ -38,7 +38,6 @@
     <ProjectReference Include="..\OpenAC.Net.NFSe\OpenAC.Net.NFSe.csproj" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.11.0" />
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.7.0.1" />
   </ItemGroup>
 
   <ItemGroup>

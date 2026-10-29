@@ -37,7 +37,8 @@ namespace OpenAC.Net.NFSe.Configuracao;
 /// <summary>
 /// Configurações gerais, de certificados, web services e arquivos do componente OpenNFSe.
 /// </summary>
-public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe, ConfigArquivosNFSe>
+public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebServicesNFSe, ConfigCertificadosNFSe,
+    ConfigArquivosNFSe>
 {
     #region Constructor
 
@@ -51,18 +52,22 @@ public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebService
         Certificados = new ConfigCertificadosNFSe();
         Arquivos = new ConfigArquivosNFSe();
         PrestadorPadrao = new DadosPrestador();
+        HttpTransport = OpenAC.Net.NFSe.Commom.Client.DesktopNFSeHttpTransport.Instancia;
     }
 
     #endregion Constructor
 
-    internal OpenAC.Net.NFSe.Commom.Client.INFSeHttpTransport? HttpTransport { get; set; }
-    internal OpenAC.Net.NFSe.Storage.INFSeDocumentStore DocumentStore { get; set; } =
-        OpenAC.Net.NFSe.Storage.DesktopNFSeDocumentStore.Instancia;
-    internal System.Func<System.Security.Cryptography.X509Certificates.X509Certificate2>? CertificateResolver { get; set; }
-    internal System.Threading.AsyncLocal<System.Threading.CancellationToken> OperationToken { get; } = new();
+    internal System.Func<System.Security.Cryptography.X509Certificates.X509Certificate2>? CertificateResolver
+    {
+        get;
+        set;
+    }
+
+    internal bool TransportePersonalizado => !ReferenceEquals(HttpTransport,
+        OpenAC.Net.NFSe.Commom.Client.DesktopNFSeHttpTransport.Instancia);
 
     #region Properties
-    
+
     /// <summary>
     /// Obtém uma nova instância de configuração padrão.
     /// </summary>

@@ -1,8 +1,4 @@
-using System;
-using System.IO;
-using OpenAC.Net.NFSe.DANFSe.PDFSharp;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Extensions;
-using OpenAC.Net.NFSe.Nota;
 using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;

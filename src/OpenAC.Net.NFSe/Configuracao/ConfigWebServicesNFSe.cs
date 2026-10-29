@@ -109,10 +109,6 @@ public sealed class ConfigWebServicesNFSe : DFeWebserviceConfigBase
     /// </summary>
     public string ChavePrivada { get; set; }
 
-    /// <summary>
-    /// Obtém ou define o endereço do servidor proxy (se utilizado).
-    /// </summary>
-    public string Proxy { get; set; }
 
     /// <summary>
     /// Código IBGE do município dos webservices em uso.

@@ -1,3 +1,4 @@
+using OpenAC.Net.DFe.Core.Http;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Security;
@@ -29,14 +30,15 @@ internal sealed class NFSeHttpClientRegistry : INFSeTenantContextAccessor, IDisp
     public string GetTenant(ConfigNFSe configuration) =>
         tenants.TryGetValue(configuration, out var tenant) ? tenant.Value : NFSeTenant.Padrao;
 
-    public string Register(ConfigNFSe configuration, X509Certificate2? certificate,
-        bool validateServerCertificate, Uri endpoint)
+    public string Register(string tenant, DFeHttpTransportOptions options, Uri endpoint)
     {
-        var protocols = (SslProtocols)configuration.WebServices.Protocolos;
-        var proxy = configuration.WebServices.Proxy ?? "";
-        var tentativas = Math.Max(1, configuration.WebServices.Tentativas);
-        var intervalo = TimeSpan.FromMilliseconds(Math.Max(0, configuration.WebServices.IntervaloTentativas));
-        var identity = $"{GetTenant(configuration)}|{certificate?.Thumbprint}|{(int)protocols}|{endpoint.Authority}|{proxy}|{validateServerCertificate}|{tentativas}|{intervalo.Ticks}";
+        var protocols = options.Protocols;
+        var certificate = options.Certificate;
+        var validateServerCertificate = options.ValidateServerCertificate;
+        var proxy = options.Proxy;
+        var tentativas = options.Attempts;
+        var intervalo = options.RetryDelay;
+        var identity = $"{tenant}|{certificate?.Thumbprint}|{(int)protocols}|{endpoint.Authority}|{proxy}|{validateServerCertificate}|{tentativas}|{intervalo.Ticks}";
         var name = "OpenAC.Net.NFSe:" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(identity)));
         if (!registrations.ContainsKey(name))
         {

@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Assembly         : OpenAC.Net.NFSe
 // Author           : Rafael Dias
 // Created          : 05-16-2018
@@ -30,7 +30,6 @@
 // ***********************************************************************
 
 using System;
-using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Linq;

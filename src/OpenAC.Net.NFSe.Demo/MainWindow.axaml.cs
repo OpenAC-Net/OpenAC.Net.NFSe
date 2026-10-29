@@ -8,7 +8,6 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using OpenAC.Net.NFSe.Commom.Model;
-using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Demo;
 

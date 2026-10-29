@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
-using OpenAC.Net.NFSe.Providers;
 
 namespace OpenAC.Net.NFSe.Commom;
 

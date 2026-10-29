@@ -1,8 +1,5 @@
-using System;
 using System.Configuration;
 using System.Globalization;
-using System.IO;
-using OpenAC.Net.Core.Extensions;
 
 namespace OpenAC.Net.NFSe.Demo;
 
