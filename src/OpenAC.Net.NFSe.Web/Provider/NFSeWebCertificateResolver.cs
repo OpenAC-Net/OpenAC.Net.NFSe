@@ -11,14 +11,21 @@ internal static class NFSeWebCertificateResolver
         ArgumentNullException.ThrowIfNull(configuration);
 
         if (configuration.CertificadoBytes is { Length: > 0 } certificateBytes)
-            return Load(certificateBytes, configuration.Senha);
+            return LoadAndValidate(certificateBytes, configuration);
 
         if (!string.IsNullOrWhiteSpace(configuration.Certificado) && File.Exists(configuration.Certificado))
-            return Load(File.ReadAllBytes(configuration.Certificado), configuration.Senha);
+            return LoadAndValidate(File.ReadAllBytes(configuration.Certificado), configuration);
 
         throw new InvalidOperationException(
             "O certificado da NFS-e deve ser configurado explicitamente por CertificadoBytes ou por um arquivo existente. " +
             "A biblioteca Web não realiza seleção interativa de certificados.");
+    }
+
+    private static X509Certificate2 LoadAndValidate(byte[] bytes, ConfigCertificadosNFSe configuration)
+    {
+        var certificate = Load(bytes, configuration.Senha);
+        try { configuration.ValidarCertificado(certificate); return certificate; }
+        catch { certificate.Dispose(); throw; }
     }
 
     private static X509Certificate2 Load(byte[] certificateBytes, string? password)

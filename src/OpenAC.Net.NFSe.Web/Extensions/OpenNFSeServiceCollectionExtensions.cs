@@ -35,7 +35,7 @@ public static class OpenNFSeServiceCollectionExtensions
         {
             var configuration = new ConfigNFSe();
             configure(configuration);
-            OpenNFSeClientFactory.ValidateCertificate(configuration, provider.GetRequiredService<IOptions<OpenNFSeWebOptions>>().Value);
+            OpenNFSeClientFactory.ValidateCertificate(configuration);
             provider.GetRequiredService<NFSeHttpClientRegistry>().Bind(configuration, NFSeTenant.Padrao);
             return ActivatorUtilities.CreateInstance<OpenNFSeWebClient>(provider, configuration);
         });
@@ -58,10 +58,7 @@ public static class OpenNFSeServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(services);
         services.AddOptions<OpenNFSeWebOptions>().Configure(configure ?? (_ => { }))
-            .Validate(options => options.TimeoutOperacao > TimeSpan.Zero && options.TimeoutTentativa > TimeSpan.Zero
-                && options.TempoVidaConexaoPool > TimeSpan.Zero && options.TempoVidaHandler >= TimeSpan.FromSeconds(1)
-                && options.MargemExpiracaoCertificado >= TimeSpan.Zero
-                && options.TimeoutsPorOperacao.Values.All(timeout => timeout > TimeSpan.Zero), "Os tempos configurados são inválidos.")
+            .Validate(options => options.TimeoutsPorOperacao.Values.All(timeout => timeout > TimeSpan.Zero), "Os tempos configurados são inválidos.")
             .ValidateOnStart();
         services.AddHttpClient();
         services.TryAddSingleton<NFSeHttpClientRegistry>();

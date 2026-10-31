@@ -12,7 +12,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Configuracao;
 
 namespace OpenAC.Net.NFSe.DANFSe.PDFSharp.Extensions;

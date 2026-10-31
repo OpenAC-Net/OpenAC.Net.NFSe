@@ -302,7 +302,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
                     break;
             }
 
-            var transport = Provider.Configuracoes.HttpTransport ?? DesktopNFSeHttpTransport.Instancia;
+            var transport = Provider.Configuracoes.ProviderHttpTransport ?? DesktopNFSeHttpTransport.Instancia;
             using var response = transport.SendAsync(request, Provider.Configuracoes, Certificado,
                 ValidarCertificadoServidor(), timeout.Token).ConfigureAwait(false).GetAwaiter().GetResult();
             StatusCode = response.StatusCode;
@@ -383,7 +383,7 @@ public abstract class NFSeHttpServiceClient : IDisposable
     {
         if (Provider.Configuracoes.WebServices.Salvar == false) return;
 
-        Provider.Configuracoes.DocumentStore.SaveAsync(new NFSeDocument(
+        Provider.Configuracoes.ProviderDocumentStore.SaveAsync(new NFSeDocument(
             nomeArquivo.Contains("_retorno") ? NFSeTipoDocumento.RespostaSoap : NFSeTipoDocumento.SolicitacaoSoap,
             conteudoArquivo, nomeArquivo, Provider.Configuracoes.PrestadorPadrao.CpfCnpj, DateTime.Now),
             Provider.Configuracoes, Provider.Configuracoes.OperationToken.Value).ConfigureAwait(false).GetAwaiter().GetResult();

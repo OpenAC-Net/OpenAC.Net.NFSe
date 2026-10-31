@@ -39,10 +39,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
         <PackageReference Include="PDFsharp" Version="6.2.4" />
-        <PackageReference Include="QRCoder" Version="1.8.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400">
+        <PackageReference Include="QRCoder" Version="1.8.1" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.403">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

@@ -26,10 +26,6 @@ jobs:
     - name: Setup NuGet
       uses: nuget/setup-nuget@v2
 
-    - name: Restore NuGet packages
-      run: nuget restore OpenAC.Net.NFSe.sln
-      working-directory: src
-
     # Install the .NET SDK indicated in the global.json file
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -37,6 +33,11 @@ jobs:
         dotnet-version: |
           8.x
           9.x
+          10.x
+    - name: Restore NuGet packages
+      run: nuget restore OpenAC.Net.NFSe.sln
+      working-directory: src
+
     - run: dotnet msbuild OpenAC.Net.NFSe.sln -property:Configuration=Release -property:platform="Any CPU"
       working-directory: src
     - run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }}

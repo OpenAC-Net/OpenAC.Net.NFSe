@@ -14,12 +14,12 @@ services.AddOpenNFSeWeb(config =>
     config.Certificados.CertificadoBytes = bytesPfx;
     config.Certificados.Senha = senhaPfx;
     config.Arquivos.PathSchemas = caminhoSchemas;
+    config.WebServices.TimeoutOperacao = TimeSpan.FromSeconds(100);
+    config.WebServices.TimeoutTentativa = TimeSpan.FromSeconds(30);
+    config.Arquivos.Salvar = config.WebServices.Salvar = false;
 }, options =>
 {
-    options.TimeoutOperacao = TimeSpan.FromSeconds(100);
-    options.TimeoutTentativa = TimeSpan.FromSeconds(30);
     options.TimeoutsPorOperacao[nameof(IOpenNFSeClient.EnviarAsync)] = TimeSpan.FromMinutes(2);
-    options.PersistenciaHabilitada = false;
 });
 ```
 
@@ -50,7 +50,9 @@ Os handlers HTTP são separados por empresa, certificado, endpoint, TLS, proxy e
 
 As operações municipais existentes continuam disponíveis na API síncrona de `OpenNFSe`. Os métodos `Async` executam esses provedores em uma thread de trabalho e propagam o cancelamento até o HTTP; eles ainda ocupam uma thread durante a comunicação síncrona do provedor. Operações assíncronas são serializadas por cliente. Use clientes independentes para concorrência e não altere sua configuração ou suas notas durante uma operação.
 
-Timeouts de operação, de tentativa e do provedor são limites cumulativos: prevalece o primeiro a expirar. O timeout próprio do provedor é configurado por `AjustaAguardaConsultaRet` e `AguardarConsultaRet`, em segundos.
+`WebServices.TimeoutOperacao` e `WebServices.TimeOut` compartilham o mesmo valor no Core. `WebServices.TimeoutTentativa` limita cada envio HTTP. `AjustaAguardaConsultaRet` e `AguardarConsultaRet` continuam sendo o fallback quando `TimeOut` não é informado. O Web mantém apenas a opção específica `TimeoutsPorOperacao`.
+
+`WebServices.TempoVidaHandler`, `TempoVidaConexaoPool` e `CircuitBreakerHabilitado` configuram a política compartilhada do Core. A margem é definida por `Certificados.MargemValidadeCertificado`. Alterar o perfil da empresa cria uma identidade de pool diferente.
 
 Tentativas seguem `WebServices.Tentativas` e `IntervaloTentativas`. Repetição automática é permitida somente para métodos HTTP seguros. POSTs, inclusive consultas SOAP, emissão, cancelamento e substituição, não são repetidos automaticamente. Respostas fiscais continuam em `RetornoWebservice`; falhas de transporte são expostas como `NFSeTechnicalException`. Cancelamento mantém `OperationCanceledException`.
 
@@ -58,9 +60,9 @@ Logs, `ActivitySource` e métricas usam o nome `OpenAC.Net.NFSe.Web`. Métricas:
 
 ## Documentos
 
-A persistência Web é desabilitada por padrão, mesmo quando as flags legadas de salvamento estão habilitadas. Para ativar, configure `PersistenciaHabilitada`, `CaminhoDocumentos` e as flags correspondentes de `Geral`, `WebServices` e `Arquivos`.
+A persistência respeita `Arquivos.Salvar` para RPS/notas e `WebServices.Salvar` para mensagens técnicas, sem uma flag Web adicional.
 
-`FileSystemNFSeDocumentStore` usa a raiz do host, separa diretórios por hash da empresa, categoria e mês e evita sobrescritas por colisão de nome. Pode ser substituído por uma implementação de `INFSeDocumentStore`, por exemplo para armazenamento de objetos. O transporte também pode ser substituído por `INFSeHttpTransport`; registre suas implementações antes de `AddOpenNFSeWeb`.
+`FileSystemNFSeDocumentStore` preserva `Arquivos.PathRps`, `PathNFSe`, `PathLote` e as regras de organização fiscal, acrescentando o hash da empresa a cada raiz. A gravação é delegada ao Core. Pode ser substituído por uma implementação de `INFSeDocumentStore`, por exemplo para armazenamento de objetos. O transporte também pode ser substituído por `INFSeHttpTransport`; registre suas implementações antes de `AddOpenNFSeWeb`.
 
 O catálogo de municípios continua sendo compartilhado pelo processo. Carregue e configure o catálogo na inicialização do host; não o modifique durante requisições concorrentes.
 

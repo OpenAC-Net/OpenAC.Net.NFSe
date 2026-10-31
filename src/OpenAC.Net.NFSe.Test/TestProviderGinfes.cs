@@ -1,29 +1,29 @@
-using System.Reflection;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
-using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
+// Os testes usam as instâncias estáticas de SetupOpenNFSe.
+[NotInParallel("SetupOpenNFSe")]
 public class TestProviderGinfes : IDisposable
 {
     private readonly Stream rps;
     
     public TestProviderGinfes()
     {
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         rps = assembly.GetManifestResourceStream("OpenAC.Net.NFSe.Test.Resources.RpsGinfes.xml") ?? new MemoryStream();
     }
 
-    [Fact]
-    public void TestarGeracaoLeituraRps()
+    [Test]
+    public async Task TestarGeracaoLeituraRps()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
 
         openNFSe.NotasServico.Clear();
         openNFSe.NotasServico.Load(rps);
 
-        Assert.True(openNFSe.NotasServico.Count == 1, "Erro ao carregar a Rps");
+        await Assert.That(openNFSe.NotasServico.Count == 1).IsTrue().Because("Erro ao carregar a Rps");
 
         var rpsGerada = openNFSe.NotasServico[0].GetXml();
 
@@ -31,18 +31,18 @@ public class TestProviderGinfes : IDisposable
         var xml = XDocument.Load(rps);
         var rpsOriginal = xml.AsString(true);
 
-        Assert.True(rpsGerada == rpsOriginal, "Erro na Geração do Xml da Rps");
+        await Assert.That(rpsGerada == rpsOriginal).IsTrue().Because("Erro na Geração do Xml da Rps");
     }
 
-    [Fact]
-    public void TestarGeracaoLeituraNFSe()
+    [Test]
+    public async Task TestarGeracaoLeituraNFSe()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
 
         openNFSe.NotasServico.Clear();
         openNFSe.NotasServico.Load(rps);
 
-        Assert.True(openNFSe.NotasServico.Count == 1, "Erro ao carregar a NFSe");
+        await Assert.That(openNFSe.NotasServico.Count == 1).IsTrue().Because("Erro ao carregar a NFSe");
 
         var nfseGerada = openNFSe.NotasServico[0].GetXml();
 
@@ -50,7 +50,7 @@ public class TestProviderGinfes : IDisposable
         var xml = XDocument.Load(rps);
         var nfseOriginal = xml.AsString(true);
 
-        Assert.True(nfseGerada == nfseOriginal, "Erro na Geração do Xml da NFSe");
+        await Assert.That(nfseGerada == nfseOriginal).IsTrue().Because("Erro na Geração do Xml da NFSe");
     }
 
     public void Dispose()

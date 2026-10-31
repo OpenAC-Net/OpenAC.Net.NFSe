@@ -1,16 +1,14 @@
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
-using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
 public class TestProviderTiplan203
 {
-    [Fact]
-    public void CamposNulosPreservamXmlLegado()
+    [Test]
+    public async Task CamposNulosPreservamXmlLegado()
     {
         var nota = CriarNota();
         var xmlSemGrupo = nota.GetXml();
@@ -18,13 +16,13 @@ public class TestProviderTiplan203
         nota.Servico.Valores.IBSCBS = new InfoIBSCBS();
         var xmlComObjetoVazio = nota.GetXml();
 
-        Assert.Equal(xmlSemGrupo, xmlComObjetoVazio);
-        Assert.DoesNotContain("<IBSCBS>", xmlSemGrupo);
-        Assert.Contains("<CodigoNbs>118054000</CodigoNbs>", xmlSemGrupo);
+        await Assert.That(xmlComObjetoVazio).IsEqualTo(xmlSemGrupo);
+        await Assert.That(xmlSemGrupo).DoesNotContain("<IBSCBS>");
+        await Assert.That(xmlSemGrupo).Contains("<CodigoNbs>118054000</CodigoNbs>");
     }
 
-    [Fact]
-    public void GrupoCompletoEhGeradoNaOrdemOficial()
+    [Test]
+    public async Task GrupoCompletoEhGeradoNaOrdemOficial()
     {
         var nota = CriarNota(3303302);
         PreencherGrupoCompleto(nota);
@@ -34,27 +32,26 @@ public class TestProviderTiplan203
         var nomes = grupo.Elements().Select(x => x.Name.LocalName).ToArray();
         var valoresTributos = grupo.Elements().Single(x => x.Name.LocalName == "ValoresTributos");
 
-        Assert.Equal(new[] { "OperacaoUsoConsumoPessoal", "Operacao", "ValoresTributos" }, nomes);
-        Assert.Equal("1", grupo.Elements().Single(x => x.Name.LocalName == "OperacaoUsoConsumoPessoal").Value);
-        Assert.Equal("123456", grupo.Elements().Single(x => x.Name.LocalName == "Operacao").Value);
-        Assert.Equal("200", valoresTributos.Elements().Single(x => x.Name.LocalName == "SituacaoTributaria").Value);
-        Assert.Equal("200001",
-            valoresTributos.Elements().Single(x => x.Name.LocalName == "ClassificacaoTributaria").Value);
+        await Assert.That(nomes).IsEquivalentTo(new[] { "OperacaoUsoConsumoPessoal", "Operacao", "ValoresTributos" }, TUnit.Assertions.Enums.CollectionOrdering.Matching);
+        await Assert.That(grupo.Elements().Single(x => x.Name.LocalName == "OperacaoUsoConsumoPessoal").Value).IsEqualTo("1");
+        await Assert.That(grupo.Elements().Single(x => x.Name.LocalName == "Operacao").Value).IsEqualTo("123456");
+        await Assert.That(valoresTributos.Elements().Single(x => x.Name.LocalName == "SituacaoTributaria").Value).IsEqualTo("200");
+        await Assert.That(valoresTributos.Elements().Single(x => x.Name.LocalName == "ClassificacaoTributaria").Value).IsEqualTo("200001");
     }
 
-    public static IEnumerable<object?[]> ConfiguracoesParciais()
+    public static IEnumerable<(string? IndicadorFinal, string? Operacao, string? Classificacao)> ConfiguracoesParciais()
     {
-        yield return new object?[] { "1", null, null };
-        yield return new object?[] { null, "123456", null };
-        yield return new object?[] { null, null, "200001" };
-        yield return new object?[] { "1", "123456", null };
-        yield return new object?[] { "1", null, "200001" };
-        yield return new object?[] { null, "123456", "200001" };
+        yield return ("1", null, null);
+        yield return (null, "123456", null);
+        yield return (null, null, "200001");
+        yield return ("1", "123456", null);
+        yield return ("1", null, "200001");
+        yield return (null, "123456", "200001");
     }
 
-    [Theory]
-    [MemberData(nameof(ConfiguracoesParciais))]
-    public void ConfiguracaoParcialEhRecusada(string? indicadorFinal, string? operacao, string? classificacao)
+    [Test]
+    [MethodDataSource(nameof(ConfiguracoesParciais))]
+    public async Task ConfiguracaoParcialEhRecusada(string? indicadorFinal, string? operacao, string? classificacao)
     {
         var nota = CriarNota();
         nota.Servico.Valores.IBSCBS = new InfoIBSCBS
@@ -65,27 +62,27 @@ public class TestProviderTiplan203
         nota.Servico.Valores.IBSCBS.Valores.Tributos.SituacaoClassificacao.CodigoClassificacaoTributaria =
             classificacao;
 
-        var erro = Assert.ThrowsAny<Exception>(() => nota.GetXml());
-        Assert.Contains("IBS/CBS da Tiplan", erro.Message);
+        var erro = await Assert.That(() => nota.GetXml()).Throws<Exception>();
+        await Assert.That(erro!.Message).Contains("IBS/CBS da Tiplan");
     }
 
-    [Fact]
-    public void SituacaoInformadaDiferenteDaClassificacaoEhRecusada()
+    [Test]
+    public async Task SituacaoInformadaDiferenteDaClassificacaoEhRecusada()
     {
         var nota = CriarNota();
         PreencherGrupoCompleto(nota);
         nota.Servico.Valores.IBSCBS!.Valores.Tributos.SituacaoClassificacao.CodigoSituacaoTributaria = "999";
 
-        var erro = Assert.ThrowsAny<Exception>(() => nota.GetXml());
-        Assert.Contains("três primeiros dígitos", erro.Message);
+        var erro = await Assert.That(() => nota.GetXml()).Throws<Exception>();
+        await Assert.That(erro!.Message).Contains("três primeiros dígitos");
     }
 
-    [Fact]
-    public void XmlCompletoValidaNoXsdDistribuido()
+    [Test]
+    public async Task XmlCompletoValidaNoXsdDistribuido()
     {
         var nota = CriarNota();
         PreencherGrupoCompleto(nota);
-        ValidarXml(nota.GetXml(), ObterSchema());
+        await ValidarXml(nota.GetXml(), ObterSchema());
     }
 
     private static NotaServico CriarNota(int codigoMunicipio = 3501608)
@@ -148,7 +145,7 @@ public class TestProviderTiplan203
         return Path.Combine(AppContext.BaseDirectory, "Schemas", "Tiplan", "2.03", "nfse.xsd");
     }
 
-    private static void ValidarXml(string xml, string schema)
+    private static async Task ValidarXml(string xml, string schema)
     {
         var erros = new List<string>();
         var settings = new XmlReaderSettings
@@ -163,6 +160,6 @@ public class TestProviderTiplan203
         {
         }
 
-        Assert.True(erros.Count == 0, string.Join(Environment.NewLine, erros));
+        await Assert.That(erros).IsEmpty().Because(string.Join(Environment.NewLine, erros));
     }
 }

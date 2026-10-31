@@ -87,8 +87,8 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
     public OpenNFSe(ConfigNFSe configuracoes, INFSeHttpTransport transport, INFSeDocumentStore documentStore,
         Func<X509Certificate2>? certificateResolver = null) : this(configuracoes)
     {
-        Configuracoes.HttpTransport = transport ?? throw new ArgumentNullException(nameof(transport));
-        Configuracoes.DocumentStore = documentStore ?? throw new ArgumentNullException(nameof(documentStore));
+        Configuracoes.ProviderHttpTransport = transport ?? throw new ArgumentNullException(nameof(transport));
+        Configuracoes.ProviderDocumentStore = documentStore ?? throw new ArgumentNullException(nameof(documentStore));
         Configuracoes.CertificateResolver = certificateResolver;
     }
 
@@ -122,7 +122,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[Enviar]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[Enviar]", exception);
             throw;
         }
         finally
@@ -151,7 +151,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarSituacao]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultarSituacao]", exception);
             throw;
         }
         finally
@@ -179,7 +179,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarLoteRps]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultarLoteRps]", exception);
             throw;
         }
         finally
@@ -208,7 +208,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarSequencialRps]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultarSequencialRps]", exception);
             throw;
         }
         finally
@@ -237,7 +237,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSeRps]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultarNFSeRps]", exception);
             throw;
         }
         finally
@@ -268,7 +268,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSeRps]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultarNFSeRps]", exception);
             throw;
         }
         finally
@@ -298,7 +298,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSe]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultarNFSe]", exception);
             throw;
         }
         finally
@@ -328,7 +328,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultarNFSe]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultarNFSe]", exception);
             throw;
         }
         finally
@@ -359,7 +359,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultaNFSePeriodo]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultaNFSePeriodo]", exception);
             throw;
         }
         finally
@@ -390,7 +390,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultaNFSeTomador]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultaNFSeTomador]", exception);
             throw;
         }
         finally
@@ -424,7 +424,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[ConsultaNFSeIntermediario]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[ConsultaNFSeIntermediario]", exception);
             throw;
         }
         finally
@@ -452,7 +452,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
             throw;
         }
         finally
@@ -485,7 +485,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
             throw;
         }
         finally
@@ -513,7 +513,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[CancelarNFSe]", exception);
             throw;
         }
         finally
@@ -545,7 +545,7 @@ public sealed partial class OpenNFSe : OpenDisposable, IOpenLog, IOpenNFSeClient
         }
         catch (Exception exception)
         {
-            if (Configuracoes.HttpTransport == null) this.Log().Error("[SubstituirNFSe]", exception);
+            if (Configuracoes.ProviderHttpTransport == null) this.Log().Error("[SubstituirNFSe]", exception);
             throw;
         }
         finally

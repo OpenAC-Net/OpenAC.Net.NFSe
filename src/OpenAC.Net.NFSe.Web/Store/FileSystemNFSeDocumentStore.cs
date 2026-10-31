@@ -1,26 +1,40 @@
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Storage;
 using OpenAC.Net.NFSe.Web.Accessor;
-using OpenAC.Net.NFSe.Web.Configuration;
 
 namespace OpenAC.Net.NFSe.Web.Store;
 
-/// <summary>Persistência opcional relativa à raiz do host, isolada por empresa e categoria.</summary>
-public sealed class FileSystemNFSeDocumentStore(IHostEnvironment environment,
-    IOptions<OpenNFSeWebOptions> options, INFSeTenantContextAccessor tenants) : INFSeDocumentStore
+/// <summary>Preserva os diretórios fiscais configurados e acrescenta a identidade da empresa.</summary>
+public sealed class FileSystemNFSeDocumentStore(INFSeTenantContextAccessor tenants) : INFSeDocumentStore
 {
     /// <inheritdoc />
-    public Task SaveAsync(NFSeDocument document, ConfigNFSe configuration, CancellationToken cancellationToken = default)
+    public Task SaveAsync(NFSeDocument document, ConfigNFSe configuration,
+        CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        if (!options.Value.PersistenciaHabilitada) return Task.CompletedTask;
+        var fiscal = document.Tipo is NFSeTipoDocumento.NFSe or NFSeTipoDocumento.Rps;
+        if (fiscal ? !configuration.Arquivos.Salvar : !configuration.WebServices.Salvar) return Task.CompletedTask;
         var tenant = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(tenants.GetTenant(configuration))));
-        var directory = Path.Combine(environment.ContentRootPath, options.Value.CaminhoDocumentos, "Tenants", tenant,
-            document.Tipo.ToString(), document.Data.ToString("yyyyMM"));
-        return DesktopNFSeDocumentStore.SaveToDirectoryAsync(document, directory, cancellationToken);
+        var source = configuration.Arquivos;
+        var isolated = new ConfigNFSe();
+        isolated.DocumentStore = configuration.DocumentStore;
+        var files = isolated.Arquivos;
+        files.PathSalvar = Scope(source.PathSalvar, source.PathSalvar, tenant);
+        files.PathRps = Scope(source.PathRps, source.PathSalvar, tenant);
+        files.PathNFSe = Scope(source.PathNFSe, source.PathSalvar, tenant);
+        files.PathLote = Scope(source.PathLote, source.PathSalvar, tenant);
+        files.AdicionarLiteral = source.AdicionarLiteral;
+        files.SepararPorCNPJ = source.SepararPorCNPJ;
+        files.SepararPorModelo = source.SepararPorModelo;
+        files.SepararPorAno = source.SepararPorAno;
+        files.SepararPorMes = source.SepararPorMes;
+        files.SepararPorDia = source.SepararPorDia;
+        lock (source.OrdenacaoPath) files.OrdenacaoPath.AddRange(source.OrdenacaoPath);
+        return DesktopNFSeDocumentStore.Instancia.SaveAsync(document, isolated, cancellationToken);
     }
+
+    private static string Scope(string path, string fallback, string tenant) =>
+        Path.Combine(Path.GetFullPath(string.IsNullOrWhiteSpace(path) ? fallback : path), tenant);
 }

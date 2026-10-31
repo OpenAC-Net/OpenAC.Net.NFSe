@@ -347,11 +347,9 @@ builder.Services.AddOpenNFSeWeb(config =>
     config.Certificados.Certificado = builder.Configuration["NFSe:Certificado"] ?? "";
     config.Certificados.Senha = builder.Configuration["NFSe:SenhaCertificado"] ?? "";
     config.Arquivos.PathSchemas = Path.Combine(AppContext.BaseDirectory, "Schemas");
-}, options =>
-{
-    options.TimeoutOperacao = TimeSpan.FromSeconds(100);
-    options.TimeoutTentativa = TimeSpan.FromSeconds(30);
-    options.PersistenciaHabilitada = false;
+    config.WebServices.TimeoutOperacao = TimeSpan.FromSeconds(100);
+    config.WebServices.TimeoutTentativa = TimeSpan.FromSeconds(30);
+    config.Arquivos.Salvar = config.WebServices.Salvar = false;
 });
 
 builder.Services.AddOpenDANFSeWeb(options => options.ForcarDownload = true);
@@ -395,7 +393,7 @@ Os providers devem retornar configurações novas por cliente e ser seguros para
 
 As tentativas automáticas seguem `WebServices.Tentativas` e `IntervaloTentativas`, apenas para métodos HTTP seguros. POSTs, inclusive consultas SOAP, emissão e cancelamento, não são repetidos automaticamente. Rejeições fiscais permanecem em `RetornoWebservice`; falhas técnicas de transporte geram `NFSeTechnicalException`, e cancelamentos geram `OperationCanceledException`.
 
-A persistência Web é desabilitada por padrão. Para ativar, configure `PersistenciaHabilitada`, `CaminhoDocumentos` e as flags de salvamento correspondentes. O armazenamento separa documentos por empresa e categoria, sem sobrescrever arquivos em colisões de nome. O DANFSe Web gera PDFs em memória e devolve `byte[]`, stream ou `IResult`.
+A persistência respeita `Arquivos.Salvar` e `WebServices.Salvar`. O armazenamento preserva os diretórios fiscais configurados, acrescenta o hash da empresa e delega a gravação ao Core, preservando arquivos em colisões de nome. As políticas HTTP e a margem de validade dos certificados também vêm das configurações do Core. O DANFSe Web gera PDFs em memória e devolve `byte[]`, stream ou `IResult`.
 
 Consulte os detalhes de [configuração Web](src/OpenAC.Net.NFSe.Web/README.md), [DANFSe Web](src/OpenAC.Net.NFSe.DANFSe.PDFSharp.Web/README.md) e o [exemplo ASP.NET Core](src/OpenAC.Net.NFSe.Web.Exemplo/README.md).
 

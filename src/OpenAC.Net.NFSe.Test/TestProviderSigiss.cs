@@ -1,12 +1,13 @@
-﻿using OpenAC.Net.NFSe.Nota;
-using Xunit;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Test;
 
+// Os testes usam as instâncias estáticas de SetupOpenNFSe.
+[NotInParallel("SetupOpenNFSe")]
 public class TestProviderSigiss
 {
-    [Fact]
-    public void EmissaoNota()
+    [Test]
+    public async Task EmissaoNota()
     {
         var openNFSe = SetupOpenNFSe.Sigiss;
 
@@ -39,11 +40,11 @@ public class TestProviderSigiss
         var retorno = openNFSe.Enviar(0);
         var retornoconsulta = openNFSe.ConsultaNFSe(int.Parse(retorno.Protocolo));
 
-        Assert.True(retorno.Sucesso);
+        await Assert.That(retorno.Sucesso).IsTrue();
     }
 
-    [Fact]
-    public void ConsultarNota()
+    [Test]
+    public async Task ConsultarNota()
     {
         var openNFSe = SetupOpenNFSe.Sigiss;
 
@@ -62,11 +63,11 @@ public class TestProviderSigiss
         var retorno = openNFSe.ConsultaNFSe(50000);//nao existe
         //var retorno2 = openNFSe.ConsultaNFSe(42219);//recusado
         //var retorno3 = openNFSe.ConsultaNFSe(42218);//sucesso        
-        Assert.True(retorno.Sucesso);
+        await Assert.That(retorno.Sucesso).IsTrue();
     }
 
-    [Fact]
-    public void CancelarNota()
+    [Test]
+    public async Task CancelarNota()
     {
         var openNFSe = SetupOpenNFSe.Sigiss;
 
@@ -79,6 +80,6 @@ public class TestProviderSigiss
 
         //enviando requisicao de cancelamento
         var retorno = openNFSe.CancelarNFSe("email@email.com", "42216", "teste desenvolvimento danilo breda");
-        Assert.True(retorno.Sucesso);
+        await Assert.That(retorno.Sucesso).IsTrue();
     }
 }

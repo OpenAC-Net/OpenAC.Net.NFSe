@@ -21,16 +21,14 @@ internal sealed class OpenNFSeClientFactory(INFSeConfigurationProvider<ConfigNFS
         var configuration = await configurations.GetConfigurationAsync(tenantId, cancellationToken).ConfigureAwait(false)
             ?? throw new InvalidOperationException("O provider não retornou a configuração da empresa.");
         await certificates.ConfigureAsync(tenantId, configuration.Certificados, cancellationToken).ConfigureAwait(false);
-        ValidateCertificate(configuration, options.Value);
+        ValidateCertificate(configuration);
         registry.Bind(configuration, tenantId);
         return new OpenNFSeWebClient(configuration, transport, store, logs.CreateLogger<OpenNFSeWebClient>(), options, tenantId);
     }
 
-    internal static void ValidateCertificate(ConfigNFSe configuration, OpenNFSeWebOptions options)
+    internal static void ValidateCertificate(ConfigNFSe configuration)
     {
         using var certificate = NFSeWebCertificateResolver.Resolve(configuration.Certificados);
-        if (!certificate.HasPrivateKey || certificate.NotBefore > DateTime.Now ||
-            certificate.NotAfter <= DateTime.Now.Add(options.MargemExpiracaoCertificado))
-            throw new InvalidOperationException("O certificado deve possuir chave privada e estar dentro da validade exigida.");
+        configuration.Certificados.ValidarCertificado(certificate);
     }
 }

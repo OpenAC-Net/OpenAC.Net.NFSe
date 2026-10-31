@@ -1,18 +1,15 @@
-using System;
-using System.IO;
-using OpenAC.Net.NFSe.DANFSe.PDFSharp;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Extensions;
-using OpenAC.Net.NFSe.Nota;
-using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
+// Os testes usam as instâncias estáticas de SetupOpenNFSe.
+[NotInParallel("SetupOpenNFSe")]
 public class TestDANFSePDFSharp
 {
     private const string OutDir = "/mnt/e/Programacao/OpenAC .Net/OpenAC.Net.NFSe/exemplos";
 
-    [Fact]
-    public void TestGerarPDFSimples()
+    [Test]
+    public async Task TestGerarPDFSimples()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
         openNFSe.NotasServico.Clear();
@@ -61,13 +58,13 @@ public class TestDANFSePDFSharp
 
         var pdfBytes = openNFSe.GerarPDF();
 
-        Assert.NotNull(pdfBytes);
-        Assert.True(pdfBytes.Length > 0);
-        Assert.True(pdfBytes[0] == (byte)'%' && pdfBytes[1] == (byte)'P' && pdfBytes[2] == (byte)'D' && pdfBytes[3] == (byte)'F');
+        await Assert.That(pdfBytes).IsNotNull();
+        await Assert.That(pdfBytes.Length > 0).IsTrue();
+        await Assert.That(pdfBytes[0] == (byte)'%' && pdfBytes[1] == (byte)'P' && pdfBytes[2] == (byte)'D' && pdfBytes[3] == (byte)'F').IsTrue();
     }
 
-    [Fact]
-    public void TestGerarPDFComItensServico()
+    [Test]
+    public async Task TestGerarPDFComItensServico()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
         openNFSe.NotasServico.Clear();
@@ -111,12 +108,12 @@ public class TestDANFSePDFSharp
         });
 
         var pdfBytes = ms.ToArray();
-        Assert.NotNull(pdfBytes);
-        Assert.True(pdfBytes.Length > 0);
+        await Assert.That(pdfBytes).IsNotNull();
+        await Assert.That(pdfBytes.Length > 0).IsTrue();
     }
 
-    [Fact]
-    public void GerarExemplosArquivosPDF()
+    [Test]
+    public async Task GerarExemplosArquivosPDF()
     {
         Directory.CreateDirectory(OutDir);
 
@@ -192,7 +189,7 @@ public class TestDANFSePDFSharp
             o.Homologacao = false;
             o.MensagemRodape = "Desenvolvido por OpenAC.Net | www.openac.net.br";
         });
-        Assert.True(File.Exists(path1));
+        await Assert.That(File.Exists(path1)).IsTrue();
 
         // 2. Exemplo com Tabela de Itens
         openNFSe.NotasServico.Clear();
@@ -271,7 +268,7 @@ public class TestDANFSePDFSharp
             o.ExibirQRCode = true;
             o.Homologacao = false;
         });
-        Assert.True(File.Exists(path2));
+        await Assert.That(File.Exists(path2)).IsTrue();
 
         // 3. Exemplo de Homologação (Marca d'água SEM VALOR FISCAL / AMBIENTE DE HOMOLOGAÇÃO)
         var path3 = Path.Combine(OutDir, "danfse_homologacao.pdf");
@@ -281,7 +278,7 @@ public class TestDANFSePDFSharp
             o.CabecalhoLinha2 = "SECRETARIA MUNICIPAL DE FINANÇAS";
             o.Homologacao = true;
         });
-        Assert.True(File.Exists(path3));
+        await Assert.That(File.Exists(path3)).IsTrue();
 
         // 4. Exemplo de Nota Cancelada (Marca d'água NOTA CANCELADA)
         var path4 = Path.Combine(OutDir, "danfse_cancelada.pdf");
@@ -291,7 +288,7 @@ public class TestDANFSePDFSharp
             o.CabecalhoLinha2 = "SECRETARIA MUNICIPAL DE FINANÇAS";
             o.Cancelada = true;
         });
-        Assert.True(File.Exists(path4));
+        await Assert.That(File.Exists(path4)).IsTrue();
 
         // 5. Exemplo de Nota com Muitos Itens (Folha de Continuação)
         openNFSe.NotasServico.Clear();
@@ -326,11 +323,11 @@ public class TestDANFSePDFSharp
             o.CabecalhoLinha2 = "SECRETARIA MUNICIPAL DA FAZENDA";
             o.ExibirQRCode = true;
         });
-        Assert.True(File.Exists(path5));
+        await Assert.That(File.Exists(path5)).IsTrue();
     }
 
-    [Fact]
-    public void TestGerarPDFComMuitosItensServico_GeraPaginaDeContinuacao()
+    [Test]
+    public async Task TestGerarPDFComMuitosItensServico_GeraPaginaDeContinuacao()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
         openNFSe.NotasServico.Clear();
@@ -360,11 +357,11 @@ public class TestDANFSePDFSharp
         using var readMs = new MemoryStream(ms.ToArray());
         using var pdfDoc = PdfSharp.Pdf.IO.PdfReader.Open(readMs, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
 
-        Assert.True(pdfDoc.PageCount > 1);
+        await Assert.That(pdfDoc.PageCount > 1).IsTrue();
     }
 
-    [Fact]
-    public void TestGerarPDFComTextoLongoDiscriminacao_GeraPaginaDeContinuacao()
+    [Test]
+    public async Task TestGerarPDFComTextoLongoDiscriminacao_GeraPaginaDeContinuacao()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
         openNFSe.NotasServico.Clear();
@@ -392,11 +389,11 @@ public class TestDANFSePDFSharp
         using var readMs = new MemoryStream(ms.ToArray());
         using var pdfDoc = PdfSharp.Pdf.IO.PdfReader.Open(readMs, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
 
-        Assert.True(pdfDoc.PageCount > 1);
+        await Assert.That(pdfDoc.PageCount > 1).IsTrue();
     }
 
-    [Fact]
-    public void TestGerarPDFComTextoLongoOutrasInformacoes_GeraPaginaDeContinuacao()
+    [Test]
+    public async Task TestGerarPDFComTextoLongoOutrasInformacoes_GeraPaginaDeContinuacao()
     {
         var openNFSe = SetupOpenNFSe.Ginfes;
         openNFSe.NotasServico.Clear();
@@ -424,6 +421,6 @@ public class TestDANFSePDFSharp
         using var readMs = new MemoryStream(ms.ToArray());
         using var pdfDoc = PdfSharp.Pdf.IO.PdfReader.Open(readMs, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
 
-        Assert.True(pdfDoc.PageCount > 1);
+        await Assert.That(pdfDoc.PageCount > 1).IsTrue();
     }
 }

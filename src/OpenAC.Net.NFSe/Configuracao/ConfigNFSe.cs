@@ -55,11 +55,10 @@ public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebService
 
     #endregion Constructor
 
-    internal OpenAC.Net.NFSe.Commom.Client.INFSeHttpTransport? HttpTransport { get; set; }
-    internal OpenAC.Net.NFSe.Storage.INFSeDocumentStore DocumentStore { get; set; } =
+    internal OpenAC.Net.NFSe.Commom.Client.INFSeHttpTransport? ProviderHttpTransport { get; set; }
+    internal OpenAC.Net.NFSe.Storage.INFSeDocumentStore ProviderDocumentStore { get; set; } =
         OpenAC.Net.NFSe.Storage.DesktopNFSeDocumentStore.Instancia;
     internal System.Func<System.Security.Cryptography.X509Certificates.X509Certificate2>? CertificateResolver { get; set; }
-    internal System.Threading.AsyncLocal<System.Threading.CancellationToken> OperationToken { get; } = new();
 
     #region Properties
     

@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.7.0.1" />
+    <PackageReference Include="OpenAC.Net.DFe.Core" Version="1.8.0-beta.8" />
   </ItemGroup>
 
 </Project>

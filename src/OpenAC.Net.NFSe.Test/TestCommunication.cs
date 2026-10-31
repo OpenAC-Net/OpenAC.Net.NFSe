@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.NFSe.Commom.Client;
@@ -7,50 +6,49 @@ using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Providers;
 using OpenAC.Net.NFSe.Storage;
-using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
 public class TestCommunication
 {
-    [Fact]
-    public void DefaultClientsHaveIndependentConfiguration()
+    [Test]
+    public async Task DefaultClientsHaveIndependentConfiguration()
     {
         using var first = new OpenNFSe();
         using var second = new OpenNFSe();
         first.Configuracoes.PrestadorPadrao.CpfCnpj = "11111111111111";
-        Assert.NotSame(first.Configuracoes, second.Configuracoes);
-        Assert.NotSame(ConfigNFSe.Default, ConfigNFSe.Default);
-        Assert.NotEqual(first.Configuracoes.PrestadorPadrao.CpfCnpj, second.Configuracoes.PrestadorPadrao.CpfCnpj);
+        await Assert.That(second.Configuracoes).IsNotSameReferenceAs(first.Configuracoes);
+        await Assert.That(ConfigNFSe.Default).IsNotSameReferenceAs(ConfigNFSe.Default);
+        await Assert.That(second.Configuracoes.PrestadorPadrao.CpfCnpj).IsNotEqualTo(first.Configuracoes.PrestadorPadrao.CpfCnpj);
     }
 
-    [Theory]
-    [InlineData("UTF-8", false)]
-    [InlineData("ISO-8859-1", false)]
-    [InlineData("ISO-8859-1", true)]
-    public void HttpPreservesAuthenticationEncodingAndErrorBodies(string declaredCharset, bool latin1)
+    [Test]
+    [Arguments("UTF-8", false)]
+    [Arguments("ISO-8859-1", false)]
+    [Arguments("ISO-8859-1", true)]
+    public async Task HttpPreservesAuthenticationEncodingAndErrorBodies(string declaredCharset, bool latin1)
     {
         var bytes = (latin1 ? Encoding.Latin1 : Encoding.UTF8).GetBytes("Serviço não autorizado");
         var responseContent = new TrackedContent(bytes);
         responseContent.Headers.ContentType = new("text/xml") { CharSet = declaredCharset };
-        var transport = new CallbackTransport((request, _) =>
+        var transport = new CallbackTransport(async (request, _) =>
         {
-            Assert.Equal("Basic", request.Headers.Authorization?.Scheme);
-            Assert.Equal(Convert.ToBase64String(Encoding.UTF8.GetBytes("user:password")), request.Headers.Authorization?.Parameter);
-            Assert.False(request.Headers.ExpectContinue);
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = responseContent });
+            await Assert.That(request.Headers.Authorization?.Scheme).IsEqualTo("Basic");
+            await Assert.That(request.Headers.Authorization?.Parameter).IsEqualTo(Convert.ToBase64String(Encoding.UTF8.GetBytes("user:password")));
+            await Assert.That(request.Headers.ExpectContinue).IsFalse();
+            return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = responseContent };
         });
         var configuration = CreateConfiguration();
         using var component = new OpenNFSe(configuration, transport, new NullStore());
         using var provider = ProviderManager.GetProvider(configuration);
         using var client = new ProbeClient(provider);
         client.Post();
-        Assert.Equal("Serviço não autorizado", client.EnvelopeRetorno);
-        Assert.Equal(HttpStatusCode.InternalServerError, client.LastStatus);
-        Assert.True(responseContent.Disposed);
+        await Assert.That(client.EnvelopeRetorno).IsEqualTo("Serviço não autorizado");
+        await Assert.That(client.LastStatus).IsEqualTo(HttpStatusCode.InternalServerError);
+        await Assert.That(responseContent.Disposed).IsTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task CancellationReachesHttpThroughMunicipalProvider()
     {
         var started = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -65,10 +63,10 @@ public class TestCommunication
         var pending = component.ConsultaNFSeAsync(1, cancellationToken: cancellation.Token);
         await started.Task.WaitAsync(TimeSpan.FromSeconds(10));
         cancellation.Cancel();
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => pending.WaitAsync(TimeSpan.FromSeconds(10)));
+        await Assert.That(async () => { await pending.WaitAsync(TimeSpan.FromSeconds(10)); }).Throws<OperationCanceledException>();
     }
 
-    [Fact]
+    [Test]
     public async Task ConcurrentFileNamesPreserveAllDocuments()
     {
         var directory = Path.Combine(Path.GetTempPath(), "nfse-store-" + Guid.NewGuid().ToString("N"));
@@ -76,35 +74,38 @@ public class TestCommunication
         {
             var document = new NFSeDocument(NFSeTipoDocumento.NFSe, "documento", "NFSe.xml", "", DateTime.Today);
             await Task.WhenAll(Enumerable.Range(0, 12).Select(_ => DesktopNFSeDocumentStore.SaveToDirectoryAsync(document, directory)));
-            Assert.Equal(12, Directory.GetFiles(directory).Length);
-            Assert.All(Directory.GetFiles(directory), file => Assert.Equal("documento", File.ReadAllText(file)));
+            await Assert.That(Directory.GetFiles(directory).Length).IsEqualTo(12);
+            foreach (var file in Directory.GetFiles(directory))
+            {
+                await Assert.That(File.ReadAllText(file)).IsEqualTo("documento");
+            }
         }
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
     }
 
-    [Fact]
+    [Test]
     public async Task InvalidStorageDestinationDoesNotLoopForever()
     {
         var filename = Path.GetTempFileName();
         try
         {
             var document = new NFSeDocument(NFSeTipoDocumento.NFSe, "xml", "NFSe.xml", "", DateTime.Today);
-            await Assert.ThrowsAsync<IOException>(() => DesktopNFSeDocumentStore.SaveToDirectoryAsync(document, filename));
+            await Assert.That(() => DesktopNFSeDocumentStore.SaveToDirectoryAsync(document, filename)).ThrowsExactly<IOException>();
         }
         finally { File.Delete(filename); }
     }
 
-    [Fact]
-    public void ReadingCatalogDoesNotChangeLiveMunicipalities()
+    [Test]
+    public async Task ReadingCatalogDoesNotChangeLiveMunicipalities()
     {
         var before = ProviderManager.Municipios.ToArray();
         using var stream = new MemoryStream();
         ProviderManager.WriteCatalog(stream, [before[0]]);
         stream.Position = 0;
         var loaded = ProviderManager.ReadCatalog(stream);
-        Assert.Single(loaded);
-        Assert.Equal(before[0].Codigo, loaded[0].Codigo);
-        Assert.Equal(before, ProviderManager.Municipios.ToArray());
+        await Assert.That(loaded).HasSingleItem();
+        await Assert.That(loaded[0].Codigo).IsEqualTo(before[0].Codigo);
+        await Assert.That(ProviderManager.Municipios.ToArray()).IsEquivalentTo(before, TUnit.Assertions.Enums.CollectionOrdering.Matching);
     }
 
     internal static ConfigNFSe CreateConfiguration()

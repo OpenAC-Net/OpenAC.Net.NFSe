@@ -3,16 +3,15 @@ using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;
-using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
 public class TestConsultaRpsISSSaoPaulo
 {
-    [Theory]
-    [InlineData(LayoutISSSaoPaulo.Layout1)]
-    [InlineData(LayoutISSSaoPaulo.Layout2)]
-    public void ConsultaSemNotaPreservaAlertasENaoAutorizaRps(LayoutISSSaoPaulo layout)
+    [Test]
+    [Arguments(LayoutISSSaoPaulo.Layout1)]
+    [Arguments(LayoutISSSaoPaulo.Layout2)]
+    public async Task ConsultaSemNotaPreservaAlertasENaoAutorizaRps(LayoutISSSaoPaulo layout)
     {
         var config = CriarConfiguracao(layout);
         var notas = new NotaServicoCollection(config);
@@ -25,20 +24,20 @@ public class TestConsultaRpsISSSaoPaulo
 
         var retorno = TratarRetorno(config, notas, xml);
 
-        Assert.False(retorno.Sucesso);
-        Assert.Null(retorno.Nota);
-        Assert.Equal("0", Assert.Single(retorno.Erros).Codigo);
-        Assert.Equal("Consulta do RPS não retornou uma NFS-e.", retorno.Erros[0].Descricao);
-        Assert.Equal("100", Assert.Single(retorno.Alertas).Codigo);
-        Assert.Same(nota, Assert.Single(notas));
-        Assert.True(string.IsNullOrEmpty(nota.IdentificacaoNFSe.Numero));
-        Assert.Equal(xml, retorno.XmlRetorno);
+        await Assert.That(retorno.Sucesso).IsFalse();
+        await Assert.That(retorno.Nota).IsNull();
+        await Assert.That((await Assert.That(retorno.Erros).HasSingleItem()).Codigo).IsEqualTo("0");
+        await Assert.That(retorno.Erros[0].Descricao).IsEqualTo("Consulta do RPS não retornou uma NFS-e.");
+        await Assert.That((await Assert.That(retorno.Alertas).HasSingleItem()).Codigo).IsEqualTo("100");
+        await Assert.That((await Assert.That(notas).HasSingleItem())).IsSameReferenceAs(nota);
+        await Assert.That(string.IsNullOrEmpty(nota.IdentificacaoNFSe.Numero)).IsTrue();
+        await Assert.That(retorno.XmlRetorno).IsEqualTo(xml);
     }
 
-    [Theory]
-    [InlineData(LayoutISSSaoPaulo.Layout1)]
-    [InlineData(LayoutISSSaoPaulo.Layout2)]
-    public void ConsultaComErroPreservaMensagemDaPrefeitura(LayoutISSSaoPaulo layout)
+    [Test]
+    [Arguments(LayoutISSSaoPaulo.Layout1)]
+    [Arguments(LayoutISSSaoPaulo.Layout2)]
+    public async Task ConsultaComErroPreservaMensagemDaPrefeitura(LayoutISSSaoPaulo layout)
     {
         var config = CriarConfiguracao(layout);
         var notas = new NotaServicoCollection(config);
@@ -47,17 +46,17 @@ public class TestConsultaRpsISSSaoPaulo
 
         var retorno = TratarRetorno(config, notas, xml);
 
-        Assert.False(retorno.Sucesso);
-        Assert.Null(retorno.Nota);
-        Assert.Equal("999", Assert.Single(retorno.Erros).Codigo);
-        Assert.Equal("Erro de teste", retorno.Erros[0].Descricao);
-        Assert.Empty(notas);
+        await Assert.That(retorno.Sucesso).IsFalse();
+        await Assert.That(retorno.Nota).IsNull();
+        await Assert.That((await Assert.That(retorno.Erros).HasSingleItem()).Codigo).IsEqualTo("999");
+        await Assert.That(retorno.Erros[0].Descricao).IsEqualTo("Erro de teste");
+        await Assert.That(notas).IsEmpty();
     }
 
-    [Theory]
-    [InlineData(LayoutISSSaoPaulo.Layout1)]
-    [InlineData(LayoutISSSaoPaulo.Layout2)]
-    public void ConsultaComNotaMantemAutorizacao(LayoutISSSaoPaulo layout)
+    [Test]
+    [Arguments(LayoutISSSaoPaulo.Layout1)]
+    [Arguments(LayoutISSSaoPaulo.Layout2)]
+    public async Task ConsultaComNotaMantemAutorizacao(LayoutISSSaoPaulo layout)
     {
         var config = CriarConfiguracao(layout);
         var notas = new NotaServicoCollection(config);
@@ -71,13 +70,13 @@ public class TestConsultaRpsISSSaoPaulo
 
         var retorno = TratarRetorno(config, notas, xml);
 
-        Assert.True(retorno.Sucesso);
-        Assert.Empty(retorno.Erros);
-        Assert.Same(nota, retorno.Nota);
-        Assert.Same(nota, Assert.Single(notas));
-        Assert.Equal("987", nota.IdentificacaoNFSe.Numero);
-        Assert.Equal("ABC123", nota.IdentificacaoNFSe.Chave);
-        Assert.Equal(new DateTime(2026, 10, 9, 8, 18, 15), nota.IdentificacaoNFSe.DataEmissao);
+        await Assert.That(retorno.Sucesso).IsTrue();
+        await Assert.That(retorno.Erros).IsEmpty();
+        await Assert.That(retorno.Nota).IsSameReferenceAs(nota);
+        await Assert.That((await Assert.That(notas).HasSingleItem())).IsSameReferenceAs(nota);
+        await Assert.That(nota.IdentificacaoNFSe.Numero).IsEqualTo("987");
+        await Assert.That(nota.IdentificacaoNFSe.Chave).IsEqualTo("ABC123");
+        await Assert.That(nota.IdentificacaoNFSe.DataEmissao).IsEqualTo(new DateTime(2026, 10, 9, 8, 18, 15));
     }
 
     private static ConfigNFSe CriarConfiguracao(LayoutISSSaoPaulo layout)

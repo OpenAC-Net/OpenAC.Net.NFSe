@@ -250,17 +250,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <summary>
     /// Define/Obtém o tempo de espera pela resposta do provedor.
     /// </summary>
-    public TimeSpan? TimeOut
-    {
-        get
-        {
-            TimeSpan? timeOut = null;
-            if (Configuracoes.WebServices.AjustaAguardaConsultaRet)
-                timeOut = TimeSpan.FromSeconds((int)Configuracoes.WebServices.AguardarConsultaRet);
-
-            return timeOut;
-        }
-    }
+    public TimeSpan? TimeOut => Configuracoes.WebServices.TimeoutOperacao;
 
     /// <summary>
     /// Obtém o certificado para ser usado na conexão ao provedor.
@@ -409,7 +399,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
@@ -462,7 +452,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             retornoWebservice.EnvelopeRetorno = cliente.EnvelopeRetorno;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
@@ -525,7 +515,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
@@ -584,7 +574,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
@@ -640,7 +630,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = ex.Message });
             return retornoWebservice;
@@ -705,7 +695,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSeRps: " + ex.Message });
             return retornoWebservice;
@@ -780,7 +770,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em ConsultaNFSe: " + ex.Message });
             return retornoWebservice;
@@ -843,7 +833,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSe: " + ex.Message });
             return retornoWebservice;
@@ -899,7 +889,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em CancelarNFSeLote: " + ex.Message });
             return retornoWebservice;
@@ -960,7 +950,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return retornoWebservice;
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Erro em SubstituirNFSe: " + ex.Message });
             return retornoWebservice;
@@ -1514,7 +1504,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             return estaVazio ? xmlTag : GetElement(tag, conteudoProcessado, ns);
         }
         catch (Exception ex) when (ex is not OperationCanceledException &&
-            !(Configuracoes.HttpTransport != null && ex is OpenDFeCommunicationException))
+            !(Configuracoes.ProviderHttpTransport != null && ex is OpenDFeCommunicationException))
         {
             WAlerta(id, tag, descricao, ex.ToString());
             return GetElement(tag, string.Empty, ns);
@@ -1606,7 +1596,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
     /// <param name="nomeArquivo"></param>
     protected void GravarArquivoEmDisco(string conteudoArquivo, string nomeArquivo)
     {
-        if (Configuracoes.Geral.Salvar == false) return;
+        if (Configuracoes.WebServices.Salvar == false) return;
 
         GravarArquivoEmDisco(TipoArquivo.Webservice, conteudoArquivo, nomeArquivo);
     }
@@ -1620,7 +1610,7 @@ public abstract class ProviderBase : IOpenLog, IDisposable
             _ => nomeArquivo.EndsWith("-ret.xml", StringComparison.OrdinalIgnoreCase)
                 ? NFSeTipoDocumento.RespostaTecnica : NFSeTipoDocumento.SolicitacaoTecnica
         };
-        Configuracoes.DocumentStore.SaveAsync(new NFSeDocument(documentType, conteudoArquivo, nomeArquivo,
+        Configuracoes.ProviderDocumentStore.SaveAsync(new NFSeDocument(documentType, conteudoArquivo, nomeArquivo,
             Configuracoes.PrestadorPadrao.CpfCnpj, data ?? DateTime.Today), Configuracoes,
             Configuracoes.OperationToken.Value).ConfigureAwait(false).GetAwaiter().GetResult();
     }

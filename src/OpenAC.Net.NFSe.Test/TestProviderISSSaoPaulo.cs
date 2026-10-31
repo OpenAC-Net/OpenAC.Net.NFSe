@@ -3,14 +3,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using OpenAC.Net.DFe.Core;
-using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.Providers;
-using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
@@ -25,28 +22,28 @@ public class TestProviderISSSaoPaulo
     private const string AssinaturaEsperada =
         "dZCSPerLU4J6T3VDd8iJ3v2wiVjdSsyptQ+Zu2bn0XAazU+X6lSSEfKFo41WXMX9kFkAkKIQKRgbSmoLXnkX/OdHCL9RnrTDLmeTbdB3iYIxhgmCkyuqsM9mSIv2TH2HPBXSuLAJUoMJUdBxOeFjuSgF3b8FKvkeGeOkNo+luFvnFHYN3On/TT528vzDSxeYcYF6NNHb1aDAVaIm9RpMo+7QFhbGMbAjMAJy4o5LUtKS1+bJaLJPvuq53jZOHWFw66Ah7U5t2i7VYDCrr6tTYmiH6bxFcG8zK97Up3Wlbd6ssh8rPdiou14HlnNZCsTuvmploRJNhEzTMe7Qed9Rbw==";
 
-    [Fact]
-    public void LayoutPadraoContinuaSendoLayout1()
+    [Test]
+    public async Task LayoutPadraoContinuaSendoLayout1()
     {
-        Assert.Equal(LayoutISSSaoPaulo.Layout1, new ConfigNFSe().WebServices.LayoutISSSaoPaulo);
+        await Assert.That(new ConfigNFSe().WebServices.LayoutISSSaoPaulo).IsEqualTo(LayoutISSSaoPaulo.Layout1);
     }
 
-    [Fact]
-    public void SaoPauloUsaEndpointQueAceitaLayouts1E2()
+    [Test]
+    public async Task SaoPauloUsaEndpointQueAceitaLayouts1E2()
     {
-        var municipio = Assert.Single(ProviderManager.Municipios, x => x.Codigo == 3550308);
+        var municipio = await Assert.That(ProviderManager.Municipios).HasSingleItem(x => x.Codigo == 3550308);
 
-        Assert.Equal(EndpointLayouts1E2, municipio.UrlHomologacao[TipoUrl.Enviar]);
-        Assert.Equal(EndpointLayouts1E2, municipio.UrlProducao[TipoUrl.Enviar]);
-        Assert.Equal(EndpointLayouts1E2, municipio.UrlProducao[TipoUrl.CancelarNFSe]);
-        Assert.Equal(EndpointLayouts1E2, municipio.UrlProducao[TipoUrl.ConsultarNFSe]);
-        Assert.Equal(EndpointLayouts1E2, municipio.UrlProducao[TipoUrl.ConsultarNFSeRps]);
-        Assert.Equal(EndpointLayouts1E2, municipio.UrlProducao[TipoUrl.ConsultarLoteRps]);
-        Assert.Equal(EndpointLayouts1E2, municipio.UrlProducao[TipoUrl.ConsultarSituacao]);
+        await Assert.That(municipio.UrlHomologacao[TipoUrl.Enviar]).IsEqualTo(EndpointLayouts1E2);
+        await Assert.That(municipio.UrlProducao[TipoUrl.Enviar]).IsEqualTo(EndpointLayouts1E2);
+        await Assert.That(municipio.UrlProducao[TipoUrl.CancelarNFSe]).IsEqualTo(EndpointLayouts1E2);
+        await Assert.That(municipio.UrlProducao[TipoUrl.ConsultarNFSe]).IsEqualTo(EndpointLayouts1E2);
+        await Assert.That(municipio.UrlProducao[TipoUrl.ConsultarNFSeRps]).IsEqualTo(EndpointLayouts1E2);
+        await Assert.That(municipio.UrlProducao[TipoUrl.ConsultarLoteRps]).IsEqualTo(EndpointLayouts1E2);
+        await Assert.That(municipio.UrlProducao[TipoUrl.ConsultarSituacao]).IsEqualTo(EndpointLayouts1E2);
     }
 
-    [Fact]
-    public void Layout1ExplicitoProduzOMesmoXmlDoPadrao()
+    [Test]
+    public async Task Layout1ExplicitoProduzOMesmoXmlDoPadrao()
     {
         using var certificado = CriarCertificado();
         var pfx = certificado.Export(X509ContentType.Pfx, "teste");
@@ -57,13 +54,13 @@ public class TestProviderISSSaoPaulo
         var xmlPadrao = CriarNotaLayout1(configuracaoPadrao).GetXml();
         var xmlExplicito = CriarNotaLayout1(configuracaoExplicita).GetXml();
 
-        Assert.Equal(xmlPadrao, xmlExplicito);
-        Assert.Contains("<ValorServicos>100.00</ValorServicos>", xmlPadrao);
-        Assert.DoesNotContain("<IBSCBS>", xmlPadrao);
+        await Assert.That(xmlExplicito).IsEqualTo(xmlPadrao);
+        await Assert.That(xmlPadrao).Contains("<ValorServicos>100.00</ValorServicos>");
+        await Assert.That(xmlPadrao).DoesNotContain("<IBSCBS>");
     }
 
-    [Fact]
-    public void SeletorDeLayout2AcionaOSerializerNovo()
+    [Test]
+    public async Task SeletorDeLayout2AcionaOSerializerNovo()
     {
         using var certificado = CriarCertificado();
         var config = CriarConfiguracao(certificado.Export(X509ContentType.Pfx, "teste"));
@@ -71,62 +68,62 @@ public class TestProviderISSSaoPaulo
 
         var xml = CriarNotaExemploOficial(config).GetXml();
 
-        Assert.Contains("<ValorFinalCobrado>20500.00</ValorFinalCobrado>", xml);
-        Assert.Contains("<IBSCBS>", xml);
-        Assert.DoesNotContain("<ValorServicos>", xml);
+        await Assert.That(xml).Contains("<ValorFinalCobrado>20500.00</ValorFinalCobrado>");
+        await Assert.That(xml).Contains("<IBSCBS>");
+        await Assert.That(xml).DoesNotContain("<ValorServicos>");
     }
 
-    [Fact]
-    public void CadeiaOficialTemConteudoPreenchimentosETamanhoEsperados()
+    [Test]
+    public async Task CadeiaOficialTemConteudoPreenchimentosETamanhoEsperados()
     {
         var cadeia = ISSSaoPauloLayout2.MontarCadeiaAssinatura(CriarNotaExemploOficial());
 
-        Assert.Equal(CadeiaOficial, cadeia);
-        Assert.Equal(106, cadeia.Length);
-        Assert.Equal("123456789012", cadeia[..12]);
-        Assert.Equal("RTNT ", cadeia.Substring(12, 5));
-        Assert.Equal("000000000001", cadeia.Substring(17, 12));
-        Assert.Equal("20260101", cadeia.Substring(29, 8));
-        Assert.Equal("000000002050000", cadeia.Substring(40, 15));
-        Assert.Equal("000000000500000", cadeia.Substring(55, 15));
-        Assert.Equal("02658", cadeia.Substring(70, 5));
+        await Assert.That(cadeia).IsEqualTo(CadeiaOficial);
+        await Assert.That(cadeia.Length).IsEqualTo(106);
+        await Assert.That(cadeia[..12]).IsEqualTo("123456789012");
+        await Assert.That(cadeia.Substring(12, 5)).IsEqualTo("RTNT ");
+        await Assert.That(cadeia.Substring(17, 12)).IsEqualTo("000000000001");
+        await Assert.That(cadeia.Substring(29, 8)).IsEqualTo("20260101");
+        await Assert.That(cadeia.Substring(40, 15)).IsEqualTo("000000002050000");
+        await Assert.That(cadeia.Substring(55, 15)).IsEqualTo("000000000500000");
+        await Assert.That(cadeia.Substring(70, 5)).IsEqualTo("02658");
     }
 
-    [Fact]
-    public void Sha1DaCadeiaOficialConfere()
+    [Test]
+    public async Task Sha1DaCadeiaOficialConfere()
     {
         var hash = SHA1.HashData(Encoding.ASCII.GetBytes(CadeiaOficial));
 
-        Assert.Equal("D30FFC47832BB2CD5397ACBA4393AE00565608CD", Convert.ToHexString(hash));
+        await Assert.That(Convert.ToHexString(hash)).IsEqualTo("D30FFC47832BB2CD5397ACBA4393AE00565608CD");
     }
 
-    [Fact]
-    public void AssinaturaRsaSha1DoExemploEhDeterministica()
+    [Test]
+    public async Task AssinaturaRsaSha1DoExemploEhDeterministica()
     {
         using var rsa = CriarRsa();
 
         var assinatura = ISSSaoPauloLayout2.AssinarRps(CriarNotaExemploOficial(), rsa);
 
-        Assert.Equal(AssinaturaEsperada, assinatura);
-        Assert.True(rsa.VerifyData(Encoding.ASCII.GetBytes(CadeiaOficial),
-            Convert.FromBase64String(assinatura), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1));
+        await Assert.That(assinatura).IsEqualTo(AssinaturaEsperada);
+        await Assert.That(rsa.VerifyData(Encoding.ASCII.GetBytes(CadeiaOficial),
+            Convert.FromBase64String(assinatura), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1)).IsTrue();
     }
 
-    public static IEnumerable<object[]> RetencoesPisCofins()
+    public static IEnumerable<(bool Pis, bool Cofins, bool Csll, int Esperado)> RetencoesPisCofins()
     {
-        yield return new object[] { false, false, false, 0 };
-        yield return new object[] { true, true, true, 3 };
-        yield return new object[] { true, true, false, 4 };
-        yield return new object[] { true, false, false, 5 };
-        yield return new object[] { false, true, false, 6 };
-        yield return new object[] { false, true, true, 7 };
-        yield return new object[] { false, false, true, 8 };
-        yield return new object[] { true, false, true, 9 };
+        yield return (false, false, false, 0);
+        yield return (true, true, true, 3);
+        yield return (true, true, false, 4);
+        yield return (true, false, false, 5);
+        yield return (false, true, false, 6);
+        yield return (false, true, true, 7);
+        yield return (false, false, true, 8);
+        yield return (true, false, true, 9);
     }
 
-    [Theory]
-    [MemberData(nameof(RetencoesPisCofins))]
-    public void RetencaoPisCofinsSegueAsOitoCombinacoesDoLayout2(bool pis, bool cofins, bool csll,
+    [Test]
+    [MethodDataSource(nameof(RetencoesPisCofins))]
+    public async Task RetencaoPisCofinsSegueAsOitoCombinacoesDoLayout2(bool pis, bool cofins, bool csll,
         int esperado)
     {
         var valores = new NotaServico(new ConfigNFSe()).Servico.Valores;
@@ -134,11 +131,11 @@ public class TestProviderISSSaoPaulo
         valores.ValorCofins = cofins ? 1 : 0;
         valores.ValorCsll = csll ? 1 : 0;
 
-        Assert.Equal(esperado, ISSSaoPauloLayout2.ObterRetencaoPisCofins(valores));
+        await Assert.That(ISSSaoPauloLayout2.ObterRetencaoPisCofins(valores)).IsEqualTo(esperado);
     }
 
-    [Fact]
-    public void XmlLayout2SegueOrdemEscolhasEGrupoMinimo()
+    [Test]
+    public async Task XmlLayout2SegueOrdemEscolhasEGrupoMinimo()
     {
         using var certificado = CriarCertificado();
         var nota = CriarNotaExemploOficial();
@@ -147,37 +144,36 @@ public class TestProviderISSSaoPaulo
         var rps = xml.Root!;
         var nomes = rps.Elements().Select(x => x.Name.LocalName).ToArray();
 
-        Assert.True(Array.IndexOf(nomes, "ValorFinalCobrado") < Array.IndexOf(nomes, "ValorIPI"));
-        Assert.True(Array.IndexOf(nomes, "ValorIPI") < Array.IndexOf(nomes, "ExigibilidadeSuspensa"));
-        Assert.True(Array.IndexOf(nomes, "ExigibilidadeSuspensa") < Array.IndexOf(nomes, "NBS"));
-        Assert.True(Array.IndexOf(nomes, "NBS") < Array.IndexOf(nomes, "cLocPrestacao"));
-        Assert.True(Array.IndexOf(nomes, "cLocPrestacao") < Array.IndexOf(nomes, "IBSCBS"));
-        Assert.DoesNotContain("ValorInicialCobrado", nomes);
-        Assert.DoesNotContain("ValorServicos", nomes);
-        Assert.Equal("20500.00", rps.Element("ValorFinalCobrado")?.Value);
-        Assert.Equal("118054000", rps.Element("NBS")?.Value);
-        Assert.Equal("3550308", rps.Element("cLocPrestacao")?.Value);
+        await Assert.That(Array.IndexOf(nomes, "ValorFinalCobrado") < Array.IndexOf(nomes, "ValorIPI")).IsTrue();
+        await Assert.That(Array.IndexOf(nomes, "ValorIPI") < Array.IndexOf(nomes, "ExigibilidadeSuspensa")).IsTrue();
+        await Assert.That(Array.IndexOf(nomes, "ExigibilidadeSuspensa") < Array.IndexOf(nomes, "NBS")).IsTrue();
+        await Assert.That(Array.IndexOf(nomes, "NBS") < Array.IndexOf(nomes, "cLocPrestacao")).IsTrue();
+        await Assert.That(Array.IndexOf(nomes, "cLocPrestacao") < Array.IndexOf(nomes, "IBSCBS")).IsTrue();
+        await Assert.That(nomes).DoesNotContain("ValorInicialCobrado");
+        await Assert.That(nomes).DoesNotContain("ValorServicos");
+        await Assert.That(rps.Element("ValorFinalCobrado")?.Value).IsEqualTo("20500.00");
+        await Assert.That(rps.Element("NBS")?.Value).IsEqualTo("118054000");
+        await Assert.That(rps.Element("cLocPrestacao")?.Value).IsEqualTo("3550308");
 
         var ibsCbs = rps.Element("IBSCBS")!;
-        Assert.Equal(new[] { "finNFSe", "indFinal", "cIndOp", "indDest", "valores" },
-            ibsCbs.Elements().Select(x => x.Name.LocalName));
-        Assert.Equal("200001", ibsCbs.Element("valores")?.Element("trib")?.Element("gIBSCBS")
-            ?.Element("cClassTrib")?.Value);
+        await Assert.That(ibsCbs.Elements().Select(x => x.Name.LocalName)).IsEquivalentTo(new[] { "finNFSe", "indFinal", "cIndOp", "indDest", "valores" }, TUnit.Assertions.Enums.CollectionOrdering.Matching);
+        await Assert.That(ibsCbs.Element("valores")?.Element("trib")?.Element("gIBSCBS")
+            ?.Element("cClassTrib")?.Value).IsEqualTo("200001");
     }
 
-    [Fact]
-    public void ExatamenteUmValorCobradoEhObrigatorio()
+    [Test]
+    public async Task ExatamenteUmValorCobradoEhObrigatorio()
     {
         var nota = CriarNotaExemploOficial();
         nota.Servico.Valores.ValorInicialCobrado = 100;
 
-        var erro = Assert.ThrowsAny<Exception>(() => ISSSaoPauloLayout2.MontarCadeiaAssinatura(nota));
+        var erro = await Assert.That(() => ISSSaoPauloLayout2.MontarCadeiaAssinatura(nota)).Throws<Exception>();
 
-        Assert.Contains("exatamente um", erro.Message);
+        await Assert.That(erro!.Message).Contains("exatamente um");
     }
 
-    [Fact]
-    public void LoteLayout2RecusaMaisDeCinquentaRpsAntesDaTransmissao()
+    [Test]
+    public async Task LoteLayout2RecusaMaisDeCinquentaRpsAntesDaTransmissao()
     {
         var config = new ConfigNFSe();
         config.WebServices.CodigoMunicipio = 3550308;
@@ -186,19 +182,19 @@ public class TestProviderISSSaoPaulo
         for (var i = 0; i < 51; i++)
             openNFSe.NotasServico.AddNew();
 
-        var erro = Assert.ThrowsAny<Exception>(() => openNFSe.Enviar(1));
+        var erro = await Assert.That(() => openNFSe.Enviar(1)).Throws<Exception>();
 
-        Assert.Contains("máximo de 50 RPS", erro.Message);
+        await Assert.That(erro!.Message).Contains("máximo de 50 RPS");
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("1")]
-    [InlineData("2")]
-    [InlineData("3")]
-    [InlineData("4")]
-    [InlineData("5")]
-    public void XmlLayout2ValidaNoXsdDistribuido(string? tipoOperacao)
+    [Test]
+    [Arguments(null)]
+    [Arguments("1")]
+    [Arguments("2")]
+    [Arguments("3")]
+    [Arguments("4")]
+    [Arguments("5")]
+    public async Task XmlLayout2ValidaNoXsdDistribuido(string? tipoOperacao)
     {
         using var certificado = CriarCertificado();
         var nota = CriarNotaExemploOficial();
@@ -216,13 +212,13 @@ public class TestProviderISSSaoPaulo
             .ToString(SaveOptions.DisableFormatting);
         xml = XmlSigning.AssinarXml(xml, "PedidoEnvioRPS", "", certificado);
 
-        ValidarXml(xml, ObterSchema("PedidoEnvioRPS_v02.xsd"));
+        await ValidarXml(xml, ObterSchema("PedidoEnvioRPS_v02.xsd"));
     }
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void RetornosV01EV02PreservamIdentificadoresEOriginal(bool layout2)
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task RetornosV01EV02PreservamIdentificadoresEOriginal(bool layout2)
     {
         var config = new ConfigNFSe();
         config.WebServices.CodigoMunicipio = 3550308;
@@ -246,31 +242,31 @@ public class TestProviderISSSaoPaulo
 
         var nota = openNFSe.NotasServico.Load(xml);
 
-        Assert.Equal("987", nota.IdentificacaoNFSe.Numero);
-        Assert.Equal("ABC123", nota.IdentificacaoNFSe.Chave);
-        Assert.Equal(42, nota.NumeroLote);
-        Assert.Equal(xml, nota.XmlOriginal);
+        await Assert.That(nota.IdentificacaoNFSe.Numero).IsEqualTo("987");
+        await Assert.That(nota.IdentificacaoNFSe.Chave).IsEqualTo("ABC123");
+        await Assert.That(nota.NumeroLote).IsEqualTo(42);
+        await Assert.That(nota.XmlOriginal).IsEqualTo(xml);
         if (layout2)
         {
-            Assert.Equal(new DateTime(2026, 8, 1, 10, 30, 0), nota.IdentificacaoNFSe.DataFatoGerador);
-            Assert.StartsWith("3550308", nota.IdentificacaoNFSe.ChaveNotaNacional);
-            Assert.Equal(complemento, nota.XmlRetornoComplementarIBSCBS);
+            await Assert.That(nota.IdentificacaoNFSe.DataFatoGerador).IsEqualTo(new DateTime(2026, 8, 1, 10, 30, 0));
+            await Assert.That(nota.IdentificacaoNFSe.ChaveNotaNacional).StartsWith("3550308");
+            await Assert.That(nota.XmlRetornoComplementarIBSCBS).IsEqualTo(complemento);
         }
         else
         {
-            Assert.Null(nota.IdentificacaoNFSe.DataFatoGerador);
-            Assert.True(string.IsNullOrEmpty(nota.IdentificacaoNFSe.ChaveNotaNacional));
-            Assert.True(string.IsNullOrEmpty(nota.XmlRetornoComplementarIBSCBS));
+            await Assert.That(nota.IdentificacaoNFSe.DataFatoGerador).IsNull();
+            await Assert.That(string.IsNullOrEmpty(nota.IdentificacaoNFSe.ChaveNotaNacional)).IsTrue();
+            await Assert.That(string.IsNullOrEmpty(nota.XmlRetornoComplementarIBSCBS)).IsTrue();
         }
     }
 
-    [Theory]
-    [InlineData("1")]
-    [InlineData("2")]
-    [InlineData("3")]
-    [InlineData("4")]
-    [InlineData("5")]
-    public void TipoOperacaoSegueOrdemDoLayout2(string tipoOperacao)
+    [Test]
+    [Arguments("1")]
+    [Arguments("2")]
+    [Arguments("3")]
+    [Arguments("4")]
+    [Arguments("5")]
+    public async Task TipoOperacaoSegueOrdemDoLayout2(string tipoOperacao)
     {
         using var certificado = CriarCertificado();
         var nota = CriarNotaExemploOficial();
@@ -278,46 +274,45 @@ public class TestProviderISSSaoPaulo
         var rps = XElement.Parse(ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false));
         var ibsCbs = rps.Element("IBSCBS")!;
 
-        Assert.Equal(tipoOperacao, ibsCbs.Element("tpOper")?.Value);
-        Assert.Equal(new[] { "finNFSe", "indFinal", "cIndOp", "tpOper", "indDest", "valores" },
-            ibsCbs.Elements().Select(elemento => elemento.Name.LocalName));
+        await Assert.That(ibsCbs.Element("tpOper")?.Value).IsEqualTo(tipoOperacao);
+        await Assert.That(ibsCbs.Elements().Select(elemento => elemento.Name.LocalName)).IsEquivalentTo(new[] { "finNFSe", "indFinal", "cIndOp", "tpOper", "indDest", "valores" }, TUnit.Assertions.Enums.CollectionOrdering.Matching);
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    public void TipoOperacaoNaoInformadoPreservaXmlAnterior(string? tipoOperacao)
+    [Test]
+    [Arguments(null)]
+    [Arguments("")]
+    [Arguments(" ")]
+    public async Task TipoOperacaoNaoInformadoPreservaXmlAnterior(string? tipoOperacao)
     {
         using var certificado = CriarCertificado();
         var nota = CriarNotaExemploOficial();
         var original = ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false);
         nota.Servico.Valores.IBSCBS!.TipoOperacao = tipoOperacao;
 
-        Assert.Equal(original, ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false));
+        await Assert.That(ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false)).IsEqualTo(original);
     }
 
-    [Theory]
-    [InlineData("0")]
-    [InlineData("6")]
-    [InlineData("01")]
-    [InlineData("abc")]
-    public void TipoOperacaoInvalidoNaoGeraXml(string tipoOperacao)
+    [Test]
+    [Arguments("0")]
+    [Arguments("6")]
+    [Arguments("01")]
+    [Arguments("abc")]
+    public async Task TipoOperacaoInvalidoNaoGeraXml(string tipoOperacao)
     {
         using var certificado = CriarCertificado();
         var nota = CriarNotaExemploOficial();
         nota.Servico.Valores.IBSCBS!.TipoOperacao = tipoOperacao;
 
-        var erro = Assert.ThrowsAny<Exception>(() =>
-            ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false));
+        var erro = await Assert.That(() =>
+            ISSSaoPauloLayout2.WriteXmlRps(nota, certificado, false, false)).Throws<Exception>();
 
-        Assert.Contains("tpOper", erro.Message);
+        await Assert.That(erro!.Message).Contains("tpOper");
     }
 
-    [Theory]
-    [InlineData("1")]
-    [InlineData("5")]
-    public void RetornoLayout2PreservaTipoOperacao(string tipoOperacao)
+    [Test]
+    [Arguments("1")]
+    [Arguments("5")]
+    public async Task RetornoLayout2PreservaTipoOperacao(string tipoOperacao)
     {
         var config = new ConfigNFSe();
         config.WebServices.CodigoMunicipio = 3550308;
@@ -329,7 +324,7 @@ public class TestProviderISSSaoPaulo
 
         var nota = openNFSe.NotasServico.Load(xml);
 
-        Assert.Equal(tipoOperacao, nota.Servico.Valores.IBSCBS?.TipoOperacao);
+        await Assert.That(nota.Servico.Valores.IBSCBS?.TipoOperacao).IsEqualTo(tipoOperacao);
     }
 
     private static ConfigNFSe CriarConfiguracao(byte[] pfx)
@@ -428,7 +423,7 @@ public class TestProviderISSSaoPaulo
         return Path.Combine(AppContext.BaseDirectory, "Schemas", "ISSSaoPaulo", "1.00", nome);
     }
 
-    private static void ValidarXml(string xml, string schema)
+    private static async Task ValidarXml(string xml, string schema)
     {
         var erros = new List<string>();
         var settings = new XmlReaderSettings
@@ -443,6 +438,6 @@ public class TestProviderISSSaoPaulo
         {
         }
 
-        Assert.True(erros.Count == 0, string.Join(Environment.NewLine, erros));
+        await Assert.That(erros).IsEmpty().Because(string.Join(Environment.NewLine, erros));
     }
 }

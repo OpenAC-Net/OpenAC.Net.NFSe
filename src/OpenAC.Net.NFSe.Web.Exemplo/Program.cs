@@ -13,10 +13,8 @@ builder.Services.AddOpenNFSeWeb(config =>
     config.WebServices.Usuario = builder.Configuration["NFSe:Usuario"] ?? "";
     config.WebServices.Senha = builder.Configuration["NFSe:Senha"] ?? "";
     config.Arquivos.PathSchemas = Path.Combine(AppContext.BaseDirectory, "Schemas");
-}, options =>
-{
-    options.TimeoutOperacao = TimeSpan.FromSeconds(100);
-    options.PersistenciaHabilitada = false;
+    config.WebServices.TimeoutOperacao = TimeSpan.FromSeconds(100);
+    config.Arquivos.Salvar = config.WebServices.Salvar = false;
 });
 builder.Services.AddOpenDANFSeWeb();
 

@@ -50,7 +50,7 @@ internal sealed class OpenNFSeWebClient : IOpenNFSeClient
         });
         var started = Stopwatch.GetTimestamp();
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        timeout.CancelAfter(options.TimeoutsPorOperacao.TryGetValue(operation, out var duration) ? duration : options.TimeoutOperacao);
+        timeout.CancelAfter(options.TimeoutsPorOperacao.TryGetValue(operation, out var duration) ? duration : Configuracoes.WebServices.TimeoutOperacao);
         var outcome = "success";
         try
         {

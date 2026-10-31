@@ -1,11 +1,12 @@
-﻿using OpenAC.Net.NFSe.Nota;
-using Xunit;
+using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Test;
 
+// Os testes usam as instâncias estáticas de SetupOpenNFSe.
+[NotInParallel("SetupOpenNFSe")]
 public class TestAbrasfV1
 {
-    [Fact]
+    [Test]
     public void EmissaoNota()
     {
         var openNFSe = SetupOpenNFSe.Abrasf;
@@ -57,16 +58,16 @@ public class TestAbrasfV1
         //enviando
         //var retorno = openNFSe.Enviar(1);
 
-        // Assert.True(retorno.Sucesso);
+        // await Assert.That(retorno.Sucesso).IsTrue();
     }
 
-    [Fact]
-    public void CancelarNota()
+    [Test]
+    public async Task CancelarNota()
     {
         var openNFSe = SetupOpenNFSe.Sigiss;
 
         //enviando requisicao de cancelamento
         var retorno = openNFSe.CancelarNFSe("a@a.com", "7125", "motivo teste testetestetesteteste");
-        Assert.True(retorno.Sucesso);
+        await Assert.That(retorno.Sucesso).IsTrue();
     }
 }
