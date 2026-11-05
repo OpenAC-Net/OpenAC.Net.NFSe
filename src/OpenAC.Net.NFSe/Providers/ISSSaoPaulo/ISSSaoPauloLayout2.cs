@@ -79,6 +79,15 @@ public static class ISSSaoPauloLayout2
     }
 
     /// <summary>
+    /// Monta a cadeia de 20 posições da assinatura de cancelamento (item 4.3.10 do manual).
+    /// Diferente do RPS, a Inscrição Municipal tem 8 posições em todos os layouts.
+    /// </summary>
+    public static string MontarCadeiaCancelamento(string inscricaoMunicipal, string numeroNFSe)
+    {
+        return inscricaoMunicipal.TrimStart('0').ZeroFill(8) + numeroNFSe.ZeroFill(12);
+    }
+
+    /// <summary>
     /// Assina a cadeia do Layout 2 com RSA-SHA1 e preenchimento PKCS#1 v1.5.
     /// </summary>
     public static string AssinarRps(NotaServico nota, RSA rsa)
