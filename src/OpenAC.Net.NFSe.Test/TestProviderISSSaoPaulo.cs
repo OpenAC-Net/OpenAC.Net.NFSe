@@ -92,6 +92,18 @@ public class TestProviderISSSaoPaulo
         Assert.Equal("02658", cadeia.Substring(70, 5));
     }
 
+    [Theory]
+    [InlineData("31000000", "9", "31000000000000000009")]
+    [InlineData("000031000000", "9", "31000000000000000009")]
+    [InlineData("3100000", "123", "03100000000000000123")]
+    public void CadeiaCancelamentoTemVintePosicoesEmTodosOsLayouts(string inscricao, string numero, string esperado)
+    {
+        var cadeia = ISSSaoPauloLayout2.MontarCadeiaCancelamento(inscricao, numero);
+
+        Assert.Equal(esperado, cadeia);
+        Assert.Equal(20, cadeia.Length);
+    }
+
     [Fact]
     public void Sha1DaCadeiaOficialConfere()
     {
