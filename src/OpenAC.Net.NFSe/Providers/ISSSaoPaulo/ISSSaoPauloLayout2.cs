@@ -179,6 +179,14 @@ public static class ISSSaoPauloLayout2
             rps.Add(new XElement("CodigoCEI", nota.ConstrucaoCivil.CodigoCEI));
         if (!string.IsNullOrWhiteSpace(nota.ConstrucaoCivil.Matricula))
             rps.Add(new XElement("MatriculaObra", nota.ConstrucaoCivil.Matricula));
+
+        var codigoLocalPrestacao = nota.Servico.MunicipioIncidencia > 0
+            ? nota.Servico.MunicipioIncidencia
+            : nota.Servico.CodigoMunicipio;
+
+        if (nota.TipoTributacao is TipoTributacao.ForaMun or TipoTributacao.ForaMunIsento or
+            TipoTributacao.ForaMunImune or TipoTributacao.ForaMunSuspensa)
+            rps.Add(new XElement("MunicipioPrestacao", codigoLocalPrestacao));
         if (nota.Material.NumeroEncapsulamento > 0)
             rps.Add(new XElement("NumeroEncapsulamento", nota.Material.NumeroEncapsulamento));
 
@@ -189,10 +197,6 @@ public static class ISSSaoPauloLayout2
         rps.Add(ElementoValor("ValorIPI", valores.ValorIpi!.Value));
         rps.Add(new XElement("ExigibilidadeSuspensa", valores.ExigibilidadeSuspensa!.Value ? 1 : 0));
         rps.Add(new XElement("NBS", nota.Servico.CodigoNbs));
-
-        var codigoLocalPrestacao = nota.Servico.MunicipioIncidencia > 0
-            ? nota.Servico.MunicipioIncidencia
-            : nota.Servico.CodigoMunicipio;
         rps.Add(new XElement("cLocPrestacao", codigoLocalPrestacao));
         rps.Add(WriteIBSCBS(nota));
 
