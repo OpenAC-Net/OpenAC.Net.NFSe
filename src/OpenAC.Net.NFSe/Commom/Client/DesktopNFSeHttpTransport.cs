@@ -1,12 +1,13 @@
+using OpenAC.Net.NFSe.Configuracao;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenAC.Net.NFSe.Configuracao;
 
 namespace OpenAC.Net.NFSe.Commom.Client;
 
@@ -42,8 +43,15 @@ internal sealed class DesktopNFSeHttpTransport : INFSeHttpTransport
 #if NET6_0_OR_GREATER || NETSTANDARD2_0
                 handler.SslProtocols = protocols;
 #elif NETFRAMEWORK
-                // O setter não existe nas referências antigas, mas está disponível em runtimes recentes.
-                typeof(HttpClientHandler).GetProperty("SslProtocols")?.SetValue(handler, protocols);
+                try
+                {
+                    typeof(HttpClientHandler).GetProperty("SslProtocols")?.SetValue(handler, protocols);
+                }
+                catch (TargetInvocationException ex) when (ex.InnerException is PlatformNotSupportedException)
+                {
+                    // A System.Net.Http 4.2.0.0 (NuGet) não suporta SslProtocols no handler.
+                    ServicePointManager.SecurityProtocol = configuration.WebServices.Protocolos;
+                }
 #endif
                 if (!validateServerCertificate)
                     handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;

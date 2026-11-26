@@ -720,8 +720,7 @@ internal sealed class ProviderISSSaoPaulo : ProviderBase
         }
 
         // Hash Cancelamento
-        var hash = Configuracoes.PrestadorPadrao.InscricaoMunicipal.ZeroFill(TamanhoInscricaoMunicipal) +
-                   retornoWebservice.NumeroNFSe.ZeroFill(12);
+        var hash = ISSSaoPauloLayout2.MontarCadeiaCancelamento(Configuracoes.PrestadorPadrao.InscricaoMunicipal, retornoWebservice.NumeroNFSe);
         var rsa = (RSA)Certificado.GetRSAPrivateKey();
         var hashBytes = Encoding.ASCII.GetBytes(hash);
         var signData = rsa.SignData(hashBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
