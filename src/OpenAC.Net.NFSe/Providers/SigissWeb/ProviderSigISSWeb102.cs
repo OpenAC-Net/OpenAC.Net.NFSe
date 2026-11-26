@@ -461,25 +461,27 @@ internal sealed class ProviderSigISSWeb102 : ProviderSigISSWeb
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "cidade_local_prest", 1, 100, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Municipio));
         notaTag.AddChild(AddTag(TipoCampo.Str, "", "uf_local_prest", 1, 2, Ocorrencia.NaoObrigatoria, nota.EnderecoPrestacao.Uf));
 
-        if (HasDestinatarioCbsIbs(nota.DestinatarioCBSIBS))
+        // Quando o destinatário IBS/CBS não for informado, usa o tomador
+        var destinatario = HasDestinatarioCbsIbs(nota.DestinatarioCBSIBS) ? nota.DestinatarioCBSIBS : nota.Tomador;
+        if (HasDestinatarioCbsIbs(destinatario))
         {
-            var cpfCnpjDest = nota.DestinatarioCBSIBS.CpfCnpj.OnlyNumbers();
+            var cpfCnpjDest = destinatario.CpfCnpj.OnlyNumbers();
             var pessoaDest = cpfCnpjDest.IsEmpty() ? string.Empty : cpfCnpjDest.Length == 11 ? "F" : "J";
 
             notaTag.AddChild(AddTag(TipoCampo.Str, "", "pessoa_destinatario_cbsibs", 1, 1, Ocorrencia.NaoObrigatoria, pessoaDest));
             notaTag.AddChild(AddTag(TipoCampo.Str, "", "cnpj_cpf_destinatario_cbsibs", 1, 14, Ocorrencia.NaoObrigatoria, cpfCnpjDest));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "ie_destinatario_cbsibs", 1, 15, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.InscricaoEstadual));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "im_destinatario_cbsibs", 1, 15, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.InscricaoMunicipal));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "razao_social_destinatario_cbsibs", 1, 100, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.RazaoSocial));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "endereco_destinatario_cbsibs", 1, 60, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Logradouro));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "numero_ende_destinatario_cbsibs", 1, 10, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Numero));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "complemento_ende_destinatario_cbsibs", 1, 40, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Complemento));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "bairro_destinatario_cbsibs", 1, 100, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Bairro));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "cep_destinatario_cbsibs", 1, 8, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Cep));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "cidade_destinatario_cbsibs", 1, 100, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Municipio));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "uf_destinatario_cbsibs", 1, 2, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Uf));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "pais_destinatario_cbsibs", 1, 50, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.Endereco.Pais));
-            notaTag.AddChild(AddTag(TipoCampo.Str, "", "email_destinatario_cbsibs", 1, 120, Ocorrencia.NaoObrigatoria, nota.DestinatarioCBSIBS.DadosContato.Email));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "ie_destinatario_cbsibs", 1, 15, Ocorrencia.NaoObrigatoria, destinatario.InscricaoEstadual));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "im_destinatario_cbsibs", 1, 15, Ocorrencia.NaoObrigatoria, destinatario.InscricaoMunicipal));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "razao_social_destinatario_cbsibs", 1, 100, Ocorrencia.NaoObrigatoria, destinatario.RazaoSocial));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "endereco_destinatario_cbsibs", 1, 60, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Logradouro));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "numero_ende_destinatario_cbsibs", 1, 10, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Numero));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "complemento_ende_destinatario_cbsibs", 1, 40, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Complemento));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "bairro_destinatario_cbsibs", 1, 100, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Bairro));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "cep_destinatario_cbsibs", 1, 8, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Cep));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "cidade_destinatario_cbsibs", 1, 100, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Municipio));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "uf_destinatario_cbsibs", 1, 2, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Uf));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "pais_destinatario_cbsibs", 1, 50, Ocorrencia.NaoObrigatoria, destinatario.Endereco.Pais));
+            notaTag.AddChild(AddTag(TipoCampo.Str, "", "email_destinatario_cbsibs", 1, 120, Ocorrencia.NaoObrigatoria, destinatario.DadosContato.Email));
         }
 
         var info = nota.Servico.Valores.IBSCBS;
