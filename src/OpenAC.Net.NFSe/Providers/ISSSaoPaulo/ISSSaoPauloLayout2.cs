@@ -79,6 +79,15 @@ public static class ISSSaoPauloLayout2
     }
 
     /// <summary>
+    /// Monta a cadeia de 20 posições da assinatura de cancelamento (item 4.3.10 do manual).
+    /// Diferente do RPS, a Inscrição Municipal tem 8 posições em todos os layouts.
+    /// </summary>
+    public static string MontarCadeiaCancelamento(string inscricaoMunicipal, string numeroNFSe)
+    {
+        return inscricaoMunicipal.TrimStart('0').ZeroFill(8) + numeroNFSe.ZeroFill(12);
+    }
+
+    /// <summary>
     /// Assina a cadeia do Layout 2 com RSA-SHA1 e preenchimento PKCS#1 v1.5.
     /// </summary>
     public static string AssinarRps(NotaServico nota, RSA rsa)
@@ -170,6 +179,14 @@ public static class ISSSaoPauloLayout2
             rps.Add(new XElement("CodigoCEI", nota.ConstrucaoCivil.CodigoCEI));
         if (!string.IsNullOrWhiteSpace(nota.ConstrucaoCivil.Matricula))
             rps.Add(new XElement("MatriculaObra", nota.ConstrucaoCivil.Matricula));
+
+        var codigoLocalPrestacao = nota.Servico.MunicipioIncidencia > 0
+            ? nota.Servico.MunicipioIncidencia
+            : nota.Servico.CodigoMunicipio;
+
+        if (nota.TipoTributacao is TipoTributacao.ForaMun or TipoTributacao.ForaMunIsento or
+            TipoTributacao.ForaMunImune or TipoTributacao.ForaMunSuspensa)
+            rps.Add(new XElement("MunicipioPrestacao", codigoLocalPrestacao));
         if (nota.Material.NumeroEncapsulamento > 0)
             rps.Add(new XElement("NumeroEncapsulamento", nota.Material.NumeroEncapsulamento));
 
@@ -180,10 +197,6 @@ public static class ISSSaoPauloLayout2
         rps.Add(ElementoValor("ValorIPI", valores.ValorIpi!.Value));
         rps.Add(new XElement("ExigibilidadeSuspensa", valores.ExigibilidadeSuspensa!.Value ? 1 : 0));
         rps.Add(new XElement("NBS", nota.Servico.CodigoNbs));
-
-        var codigoLocalPrestacao = nota.Servico.MunicipioIncidencia > 0
-            ? nota.Servico.MunicipioIncidencia
-            : nota.Servico.CodigoMunicipio;
         rps.Add(new XElement("cLocPrestacao", codigoLocalPrestacao));
         rps.Add(WriteIBSCBS(nota));
 
