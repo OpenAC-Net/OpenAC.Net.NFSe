@@ -1,15 +1,11 @@
-using System;
-using System.IO;
-using OpenAC.Net.NFSe.DANFSe.PDFSharp;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Extensions;
-using OpenAC.Net.NFSe.Nota;
 using Xunit;
 
 namespace OpenAC.Net.NFSe.Test;
 
 public class TestDANFSePDFSharp
 {
-    private const string OutDir = "/mnt/e/Programacao/OpenAC .Net/OpenAC.Net.NFSe/exemplos";
+    private static readonly string OutDir = Path.Combine(AppContext.BaseDirectory, "exemplos");
 
     [Fact]
     public void TestGerarPDFSimples()

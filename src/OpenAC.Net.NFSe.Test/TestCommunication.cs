@@ -1,6 +1,6 @@
+using OpenAC.Net.DFe.Core.Storage;
+using OpenAC.Net.DFe.Core.Http;
 using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Types;
@@ -74,8 +74,10 @@ public class TestCommunication
         var directory = Path.Combine(Path.GetTempPath(), "nfse-store-" + Guid.NewGuid().ToString("N"));
         try
         {
-            var document = new NFSeDocument(NFSeTipoDocumento.NFSe, "documento", "NFSe.xml", "", DateTime.Today);
-            await Task.WhenAll(Enumerable.Range(0, 12).Select(_ => DesktopNFSeDocumentStore.SaveToDirectoryAsync(document, directory)));
+            var config = new ConfigNFSe();
+            config.Arquivos.PathNFSe = directory;
+            var document = new NFSeDocument(config, NFSeCategorias.NFSe, "documento", "NFSe.xml", "", DateTime.Today);
+            await Task.WhenAll(Enumerable.Range(0, 12).Select(_ => config.DocumentStore.SaveAsync(document)));
             Assert.Equal(12, Directory.GetFiles(directory).Length);
             Assert.All(Directory.GetFiles(directory), file => Assert.Equal("documento", File.ReadAllText(file)));
         }
@@ -88,8 +90,10 @@ public class TestCommunication
         var filename = Path.GetTempFileName();
         try
         {
-            var document = new NFSeDocument(NFSeTipoDocumento.NFSe, "xml", "NFSe.xml", "", DateTime.Today);
-            await Assert.ThrowsAsync<IOException>(() => DesktopNFSeDocumentStore.SaveToDirectoryAsync(document, filename));
+            var config = new ConfigNFSe();
+            config.Arquivos.PathNFSe = filename;
+            var document = new NFSeDocument(config, NFSeCategorias.NFSe, "xml", "NFSe.xml", "", DateTime.Today);
+            await Assert.ThrowsAsync<IOException>(() => config.DocumentStore.SaveAsync(document));
         }
         finally { File.Delete(filename); }
     }
@@ -122,14 +126,13 @@ public class TestCommunication
         public void Post() { AuthenticationScheme = AuthScheme.Basic; ExecutePost(new StringContent("<xml/>")); }
         protected override string Authentication() => Convert.ToBase64String(Encoding.UTF8.GetBytes("user:password"));
     }
-    internal sealed class CallbackTransport(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> callback) : INFSeHttpTransport
+    internal sealed class CallbackTransport(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> callback) : IDFeHttpTransport
     {
-        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, ConfigNFSe configuration,
-            X509Certificate2? certificate, bool validateServerCertificate, CancellationToken cancellationToken = default) => callback(request, cancellationToken);
+        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, DFeHttpTransportOptions options, CancellationToken cancellationToken = default) => callback(request, cancellationToken);
     }
-    internal sealed class NullStore : INFSeDocumentStore
+    internal sealed class NullStore : IDFeDocumentStore
     {
-        public Task SaveAsync(NFSeDocument document, ConfigNFSe configuration, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task SaveAsync(IDFeDocument document, CancellationToken cancellationToken = default) => Task.CompletedTask;
     }
     private sealed class TrackedContent(byte[] bytes) : ByteArrayContent(bytes)
     {

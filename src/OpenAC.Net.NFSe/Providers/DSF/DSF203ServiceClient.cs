@@ -33,7 +33,6 @@ using System.Text;
 using System.Xml.Linq;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Types;
@@ -47,7 +46,8 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
 {
     #region Constructors
 
-    public DSF203ServiceClient(ProviderDSF203 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider, tipoUrl, certificado, SoapVersion.Soap11)
+    public DSF203ServiceClient(ProviderDSF203 provider, TipoUrl tipoUrl, X509Certificate2 certificado) : base(provider,
+        tipoUrl, certificado, SoapVersion.Soap11)
     {
     }
 
@@ -142,7 +142,8 @@ internal sealed class DSF203ServiceClient : NFSeSoapServiceClient, IServiceClien
         var element = xmlDocument.ElementAnyNs("Fault");
         if (element != null)
         {
-            var exMessage = $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
+            var exMessage =
+                $"{element.ElementAnyNs("faultcode").GetValue<string>()} - {element.ElementAnyNs("faultstring").GetValue<string>()}";
             throw new OpenDFeCommunicationException(exMessage);
         }
 

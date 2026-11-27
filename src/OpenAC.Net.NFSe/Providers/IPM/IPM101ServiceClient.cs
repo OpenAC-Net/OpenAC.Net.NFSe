@@ -30,12 +30,9 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.DFe.Core;
 using System;
-using System.Net;
 using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Types;

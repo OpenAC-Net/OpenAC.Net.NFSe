@@ -12,7 +12,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Configuracao;
 
 namespace OpenAC.Net.NFSe.DANFSe.PDFSharp.Extensions;
@@ -52,7 +51,8 @@ public static class DANFSePDFSharpExtensions
     /// <param name="nfse">Instância do componente OpenNFSe.</param>
     /// <param name="caminhoArquivo">Caminho do arquivo de destino.</param>
     /// <param name="options">Ação para customização das opções de impressão.</param>
-    public static void ImprimirPDF(this OpenNFSe nfse, string caminhoArquivo, Action<DANFSePDFSharpOptions>? options = null)
+    public static void ImprimirPDF(this OpenNFSe nfse, string caminhoArquivo,
+        Action<DANFSePDFSharpOptions>? options = null)
     {
         var danfse = new OpenDANFSePDFSharp(nfse.Configuracoes);
         options?.Invoke(danfse.Configuracoes);

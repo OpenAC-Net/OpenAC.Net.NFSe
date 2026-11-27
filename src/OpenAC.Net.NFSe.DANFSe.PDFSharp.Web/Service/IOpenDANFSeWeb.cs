@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using OpenAC.Net.NFSe.Nota;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.Document;
-using OpenAC.Net.NFSe.Web;
 using OpenAC.Net.NFSe.Web.Common;
 
 namespace OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.Service;

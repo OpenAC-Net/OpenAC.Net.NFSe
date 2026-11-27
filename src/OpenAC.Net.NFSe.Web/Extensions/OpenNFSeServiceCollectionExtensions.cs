@@ -1,17 +1,14 @@
+using OpenAC.Net.DFe.Core.Storage;
+using OpenAC.Net.DFe.Core.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 using OpenAC.Net.NFSe;
-using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Configuracao;
-using OpenAC.Net.NFSe.Storage;
 using OpenAC.Net.NFSe.Web.Accessor;
 using OpenAC.Net.NFSe.Web.Client;
-using OpenAC.Net.NFSe.Web.Common;
 using OpenAC.Net.NFSe.Web.Configuration;
 using OpenAC.Net.NFSe.Web.Provider;
 using OpenAC.Net.NFSe.Web.Store;
-using OpenAC.Net.NFSe.Web.Transport;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -36,7 +33,6 @@ public static class OpenNFSeServiceCollectionExtensions
             var configuration = new ConfigNFSe();
             configure(configuration);
             OpenNFSeClientFactory.ValidateCertificate(configuration, provider.GetRequiredService<IOptions<OpenNFSeWebOptions>>().Value);
-            provider.GetRequiredService<NFSeHttpClientRegistry>().Bind(configuration, NFSeTenant.Padrao);
             return ActivatorUtilities.CreateInstance<OpenNFSeWebClient>(provider, configuration);
         });
         return services;
@@ -63,12 +59,10 @@ public static class OpenNFSeServiceCollectionExtensions
                 && options.MargemExpiracaoCertificado >= TimeSpan.Zero
                 && options.TimeoutsPorOperacao.Values.All(timeout => timeout > TimeSpan.Zero), "Os tempos configurados são inválidos.")
             .ValidateOnStart();
-        services.AddHttpClient();
-        services.TryAddSingleton<NFSeHttpClientRegistry>();
-        services.TryAddSingleton<INFSeTenantContextAccessor>(provider => provider.GetRequiredService<NFSeHttpClientRegistry>());
-        services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<HttpClientFactoryOptions>, NFSeHttpClientOptions>());
-        services.TryAddSingleton<INFSeHttpTransport, NFSeHttpTransport>();
-        services.TryAddSingleton<INFSeDocumentStore, FileSystemNFSeDocumentStore>();
+        services.TryAddSingleton<NFSeTenantContextAccessor>();
+        services.TryAddSingleton<INFSeTenantContextAccessor>(provider => provider.GetRequiredService<NFSeTenantContextAccessor>());
+        services.TryAddSingleton<IDFeHttpTransport, DFeHttpTransport>();
+        services.TryAddSingleton<IDFeDocumentStore, FileSystemNFSeDocumentStore>();
         services.TryAddSingleton<IOpenNFSeClientFactory, OpenNFSeClientFactory>();
     }
 }

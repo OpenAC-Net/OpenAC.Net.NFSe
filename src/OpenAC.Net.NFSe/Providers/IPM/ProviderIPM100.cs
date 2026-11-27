@@ -37,7 +37,6 @@ using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;

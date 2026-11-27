@@ -19,7 +19,6 @@ using OpenAC.Net.NFSe.DANFSe.PDFSharp.Common;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Configuracao;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Layout;
 using OpenAC.Net.NFSe.Nota;
-using PdfSharp;
 using PdfSharp.Pdf;
 
 namespace OpenAC.Net.NFSe.DANFSe.PDFSharp;

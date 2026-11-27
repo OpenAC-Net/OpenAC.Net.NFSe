@@ -29,17 +29,12 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Types;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
 

@@ -14,7 +14,7 @@ public sealed class OpenNFSeWebOptions
     /// <summary>Obtém ou define o tempo máximo que uma conexão permanece no pool antes de ser renovada.</summary>
     public TimeSpan TempoVidaConexaoPool { get; set; } = TimeSpan.FromMinutes(10);
 
-    /// <summary>Obtém ou define o tempo de vida do handler gerenciado pelo <c>IHttpClientFactory</c>.</summary>
+    /// <summary>Obtém ou define o tempo de vida do handler gerenciado pelo pool do DFe.Core.</summary>
     public TimeSpan TempoVidaHandler { get; set; } = TimeSpan.FromMinutes(5);
 
     /// <summary>Obtém ou define o tempo máximo de cada tentativa individual.</summary>

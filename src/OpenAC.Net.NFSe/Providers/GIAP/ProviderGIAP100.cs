@@ -29,25 +29,16 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core;
 using OpenAC.Net.DFe.Core.Serializer;
-using OpenAC.Net.DFe.Core.Service;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;

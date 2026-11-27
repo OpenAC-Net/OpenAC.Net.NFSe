@@ -29,27 +29,15 @@
 // <summary></summary>
 // ***********************************************************************
 
-using OpenAC.Net.Core;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
-using OpenAC.Net.DFe.Core.Common;
-using OpenAC.Net.DFe.Core.Document;
 using OpenAC.Net.DFe.Core.Serializer;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Xml;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace OpenAC.Net.NFSe.Providers;
@@ -96,8 +84,8 @@ internal sealed class ProviderISSSalvador : ProviderABRASF
     #region RPS
     protected override void PrepararEnviar(RetornoEnviar retornoWebservice, NotaServicoCollection notas)
     {
-        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote não informado." });
-        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS não informado." });
+        if (retornoWebservice.Lote == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "Lote nï¿½o informado." });
+        if (notas.Count == 0) retornoWebservice.Erros.Add(new EventoRetorno { Codigo = "0", Descricao = "RPS nï¿½o informado." });
         if (retornoWebservice.Erros.Count > 0) return;
 
         var xmlLoteRps = new StringBuilder();
@@ -123,7 +111,7 @@ internal sealed class ProviderISSSalvador : ProviderABRASF
         xmlLote.Append("</EnviarLoteRpsEnvio>");
         ;
 
-        retornoWebservice.XmlEnvio = xmlLote.ToString().Replace("Id=", "id=");//para salvador o ID é minúsculo
+        retornoWebservice.XmlEnvio = xmlLote.ToString().Replace("Id=", "id=");//para salvador o ID ï¿½ minï¿½sculo
     }
 
    

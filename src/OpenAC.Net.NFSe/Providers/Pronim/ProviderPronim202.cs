@@ -29,8 +29,6 @@
 // <summary></summary>
 // ***********************************************************************
 
-using System.Linq;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Commom.Types;

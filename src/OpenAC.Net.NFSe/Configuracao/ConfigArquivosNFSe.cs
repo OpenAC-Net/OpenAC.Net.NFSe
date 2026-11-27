@@ -35,6 +35,7 @@ using System.Reflection;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core.Common;
 using OpenAC.Net.NFSe.Providers;
+using OpenAC.Net.NFSe.Storage;
 
 namespace OpenAC.Net.NFSe.Configuracao;
 
@@ -98,6 +99,24 @@ public sealed class ConfigArquivosNFSe : DFeArquivosConfigBase
     #endregion Properties
 
     #region Methods
+
+    /// <summary>Resolve a categoria preservando os diretórios anteriores de RPS, NFSe, SOAP e lotes.</summary>
+    public override string GetDocumentPath(string categoria, string? documentoContribuinte = null,
+        DateTime? data = null)
+    {
+        lock (OrdenacaoPath)
+        {
+            var date = data ?? DateTime.Today;
+            var taxpayer = documentoContribuinte ?? string.Empty;
+            return categoria switch
+            {
+                NFSeCategorias.Rps => GetPathRps(date, taxpayer),
+                NFSeCategorias.NFSe => GetPathNFSe(date, taxpayer),
+                NFSeCategorias.SolicitacaoSoap or NFSeCategorias.RespostaSoap => GetPathSoap(date, taxpayer),
+                _ => GetPathLote(date, taxpayer)
+            };
+        }
+    }
 
     /// <summary>
     /// Obtém o caminho completo para gravação de mensagens SOAP de acordo com a data e CNPJ.

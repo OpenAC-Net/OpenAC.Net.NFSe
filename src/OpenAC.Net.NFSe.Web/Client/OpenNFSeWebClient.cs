@@ -1,14 +1,16 @@
+using OpenAC.Net.DFe.Core.Storage;
+using OpenAC.Net.DFe.Core.Http;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenAC.Net.DFe.Core;
-using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Model;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
-using OpenAC.Net.NFSe.Storage;
+using OpenAC.Net.NFSe.Web.Accessor;
 using OpenAC.Net.NFSe.Web.Common;
+using OpenAC.Net.NFSe.Web.Transport;
 using OpenAC.Net.NFSe.Web.Configuration;
 using OpenAC.Net.NFSe.Web.Exception;
 using OpenAC.Net.NFSe.Web.Provider;
@@ -28,13 +30,22 @@ internal sealed class OpenNFSeWebClient : IOpenNFSeClient
     public ConfigNFSe Configuracoes => client.Configuracoes;
     public NotaServicoCollection NotasServico => client.NotasServico;
 
-    public OpenNFSeWebClient(ConfigNFSe configuration, INFSeHttpTransport transport, INFSeDocumentStore store,
-        ILogger<OpenNFSeWebClient> logger, IOptions<OpenNFSeWebOptions> options, string tenantId = NFSeTenant.Padrao)
+    public OpenNFSeWebClient(ConfigNFSe configuration, IDFeHttpTransport transport, IDFeDocumentStore store,
+        ILogger<OpenNFSeWebClient> logger, IOptions<OpenNFSeWebOptions> options, NFSeTenantContextAccessor tenants,
+        string tenantId = NFSeTenant.Padrao)
     {
-        client = new OpenNFSe(configuration, transport, store, () => NFSeWebCertificateResolver.Resolve(configuration.Certificados));
         this.logger = logger;
         this.options = options.Value;
         this.tenantId = tenantId;
+        configuration.WebServices.TimeoutTentativa = this.options.TimeoutTentativa;
+        configuration.WebServices.CircuitBreakerHabilitado = this.options.CircuitBreakerHabilitado;
+        configuration.WebServices.TempoVidaHandler = this.options.TempoVidaHandler;
+        configuration.WebServices.TempoVidaConexaoPool = this.options.TempoVidaConexaoPool;
+        configuration.Certificados.MargemValidadeCertificado = this.options.MargemExpiracaoCertificado;
+        tenants.Bind(configuration, tenantId);
+        client = new OpenNFSe(configuration,
+            new NFSeTenantHttpTransport(transport, tenants.GetPoolPartition(tenantId), this.options.MargemExpiracaoCertificado),
+            store, () => NFSeWebCertificateResolver.Resolve(configuration.Certificados));
     }
 
     private async Task<T> ExecuteAsync<T>(string operation, CancellationToken cancellationToken,

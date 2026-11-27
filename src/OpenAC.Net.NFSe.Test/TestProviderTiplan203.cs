@@ -1,6 +1,5 @@
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.Nota;
 using Xunit;

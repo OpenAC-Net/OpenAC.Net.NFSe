@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net462;net48;netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+        <TargetFrameworks>net462;net48;netstandard2.0;net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <AssemblyName>OpenAC.Net.NFSe.DANFSe.PDFSharp</AssemblyName>
         <RootNamespace>OpenAC.Net.NFSe.DANFSe.PDFSharp</RootNamespace>
@@ -39,10 +39,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" Condition="'$(TargetFramework)' != 'net9.0'" />
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
         <PackageReference Include="PDFsharp" Version="6.2.4" />
-        <PackageReference Include="QRCoder" Version="1.8.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400">
+        <PackageReference Include="QRCoder" Version="1.9.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="11.0.100">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

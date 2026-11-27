@@ -36,6 +36,9 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using OpenAC.Net.DFe.Core.Service;
+using OpenAC.Net.DFe.Core.Http;
 using OpenAC.Net.NFSe.Storage;
 using OpenAC.Net.Core.Extensions;
 using OpenAC.Net.DFe.Core;
@@ -57,7 +60,7 @@ namespace OpenAC.Net.NFSe.Commom.Client;
 /// Deve ser herdada por classes concretas que implementam a comunicação HTTP específica de cada provedor de NFSe,
 /// podendo sobrescrever métodos para autenticação e validação de certificados conforme necessário.
 /// </remarks>
-public abstract class NFSeHttpServiceClient : IDisposable
+public abstract class NFSeHttpServiceClient : DFeHttpServiceClient, IDisposable
 {
     #region Inner Types
 
@@ -269,7 +272,11 @@ public abstract class NFSeHttpServiceClient : IDisposable
     /// </summary>
     /// <param name="content">Conteúdo HTTP a ser enviado na requisição (pode ser nulo para métodos que não enviam corpo).</param>
     /// <param name="method">Método HTTP a ser utilizado (GET, POST, etc).</param>
-    protected void Execute(HttpContent? content, HttpMethod method)
+    protected void Execute(HttpContent? content, HttpMethod method) =>
+        ExecuteAsync(content, method, Provider.Configuracoes.OperationToken.Value).ConfigureAwait(false).GetAwaiter().GetResult();
+
+    /// <summary>Executa o envio assíncrono usando a base HTTP compartilhada do Core.</summary>
+    protected async Task ExecuteAsync(HttpContent? content, HttpMethod method, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -280,9 +287,6 @@ public abstract class NFSeHttpServiceClient : IDisposable
             if (!EnvelopeEnvio.IsEmpty())
                 GravarEnvio(EnvelopeEnvio, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoEnvio}_envio.xml");
 
-            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(
-                Provider.Configuracoes.OperationToken.Value);
-            timeout.CancelAfter(Provider.TimeOut ?? TimeSpan.FromSeconds(100));
             request.Headers.ExpectContinue = false;
 
             var assemblyName = GetType().Assembly.GetName();
@@ -302,11 +306,9 @@ public abstract class NFSeHttpServiceClient : IDisposable
                     break;
             }
 
-            var transport = Provider.Configuracoes.HttpTransport ?? DesktopNFSeHttpTransport.Instancia;
-            using var response = transport.SendAsync(request, Provider.Configuracoes, Certificado,
-                ValidarCertificadoServidor(), timeout.Token).ConfigureAwait(false).GetAwaiter().GetResult();
+            using var response = await EnviarRequisicaoAsync(request, cancellationToken).ConfigureAwait(false);
             StatusCode = response.StatusCode;
-            var bytesRetorno = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+            var bytesRetorno = await DFeHttpResponse.ReadAsByteArrayAsync(response.Content, cancellationToken).ConfigureAwait(false);
             EnvelopeRetorno = DecodificarResposta(bytesRetorno, response.Content.Headers.ContentType?.CharSet);
 
             GravarEnvio(EnvelopeRetorno, $"{DateTime.Now:yyyyMMddssfff}_{PrefixoResposta}_retorno.xml");
@@ -317,39 +319,18 @@ public abstract class NFSeHttpServiceClient : IDisposable
         }
     }
 
-    /// <summary>
-    /// Decodifica os bytes da resposta HTTP em string.
-    /// A maioria dos provedores responde em UTF-8, e vários (ex.: SigISS) declaram um encoding
-    /// divergente (ISO-8859-1) no header/prólogo enquanto o corpo é realmente UTF-8 — por isso não dá
-    /// para confiar no encoding declarado. Como uma sequência de bytes UTF-8 válida praticamente nunca
-    /// coincide com texto acentuado em single-byte, tentamos UTF-8 primeiro e só caímos no encoding
-    /// declarado (header) quando os bytes não são UTF-8 válido, usando ISO-8859-1 como padrão nesse caso.
-    /// </summary>
-    /// <param name="bytes">Bytes brutos do corpo da resposta.</param>
-    /// <param name="headerCharset">Charset informado no header Content-Type, se houver.</param>
-    /// <returns>Conteúdo da resposta decodificado.</returns>
-    protected virtual string DecodificarResposta(byte[] bytes, string? headerCharset)
-    {
-        if (bytes.Length == 0) return "";
+    /// <inheritdoc />
+    protected override IDFeHttpTransport TransporteHttp => Provider.Configuracoes.HttpTransport;
 
-        try
-        {
-            return new UTF8Encoding(false, true).GetString(bytes).Trim('﻿');
-        }
-        catch (DecoderFallbackException)
-        {
-            // Bytes não são UTF-8 válido: é um encoding single-byte. ISO-8859-1 é o padrão dos
-            // webservices fiscais; respeita o charset do header se ele informar algo válido.
-            var encoding = Encoding.GetEncoding("ISO-8859-1");
-            if (!string.IsNullOrWhiteSpace(headerCharset))
-            {
-                try { encoding = Encoding.GetEncoding(headerCharset.Trim('"')); }
-                catch { /* charset do header inválido: mantém ISO-8859-1 */ }
-            }
+    /// <inheritdoc />
+    protected override CancellationToken TokenOperacao => Provider.Configuracoes.OperationToken.Value;
 
-            return encoding.GetString(bytes).Trim('﻿');
-        }
-    }
+    /// <inheritdoc />
+    protected override DFeHttpTransportOptions CriarOpcoesHttp() =>
+        new(Provider.Configuracoes.WebServices, Certificado, ValidarCertificadoServidor())
+        {
+            AutomaticDecompression = DecompressionMethods.None
+        };
 
     /// <summary>
     /// Retorna a string de autenticação para ser utilizada no cabeçalho da requisição HTTP.
@@ -383,10 +364,10 @@ public abstract class NFSeHttpServiceClient : IDisposable
     {
         if (Provider.Configuracoes.WebServices.Salvar == false) return;
 
-        Provider.Configuracoes.DocumentStore.SaveAsync(new NFSeDocument(
-            nomeArquivo.Contains("_retorno") ? NFSeTipoDocumento.RespostaSoap : NFSeTipoDocumento.SolicitacaoSoap,
+        Provider.Configuracoes.DocumentStore.SaveAsync(new NFSeDocument(Provider.Configuracoes,
+            nomeArquivo.Contains("_retorno") ? NFSeCategorias.RespostaSoap : NFSeCategorias.SolicitacaoSoap,
             conteudoArquivo, nomeArquivo, Provider.Configuracoes.PrestadorPadrao.CpfCnpj, DateTime.Now),
-            Provider.Configuracoes, Provider.Configuracoes.OperationToken.Value).ConfigureAwait(false).GetAwaiter().GetResult();
+            Provider.Configuracoes.OperationToken.Value).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     /// <inheritdoc />

@@ -31,7 +31,6 @@
 
 using System;
 using System.Net.Http;
-using OpenAC.Net.NFSe.Commom;
 using OpenAC.Net.NFSe.Commom.Client;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Types;

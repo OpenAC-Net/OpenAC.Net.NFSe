@@ -30,7 +30,6 @@
 // ***********************************************************************
 
 using OpenAC.Net.Core.Extensions;
-using OpenAC.Net.DFe.Core.Extensions;
 using OpenAC.Net.DFe.Core.Serializer;
 using OpenAC.Net.NFSe.Commom.Interface;
 using OpenAC.Net.NFSe.Commom.Model;
