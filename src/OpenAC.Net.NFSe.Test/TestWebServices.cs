@@ -1,12 +1,12 @@
 using OpenAC.Net.DFe.Core.Storage;
 using OpenAC.Net.DFe.Core.Http;
-using System.Collections.Concurrent;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using OpenAC.Net.NFSe.Configuracao;
 using OpenAC.Net.NFSe.DANFSe.PDFSharp.Web.Service;
@@ -29,6 +29,7 @@ public class TestWebServices
         var services = Services();
         services.AddOpenNFSeWeb(Configure);
         using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = true, ValidateOnBuild = true });
+        Assert.IsType<DFeHttpTransport>(provider.GetRequiredService<IDFeHttpTransport>());
         using var first = provider.CreateScope();
         using var second = provider.CreateScope();
         var firstClient = first.ServiceProvider.GetRequiredService<IOpenNFSeClient>();
@@ -44,11 +45,11 @@ public class TestWebServices
     }
 
     [Fact]
-    public async Task FactoryIsolatesTenantStateAndHttpHandlers()
+    public async Task FactoryPassesIsolatedTenantPartitionsToTransport()
     {
-        var filter = new StubFilter();
+        var transport = new RecordingTransport();
         var services = Services();
-        services.AddSingleton<IHttpMessageHandlerBuilderFilter>(filter);
+        services.AddSingleton<IDFeHttpTransport>(transport);
         services.AddOpenNFSeWebMultiTenant<TenantConfigurations, TenantCertificates>();
         using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = true, ValidateOnBuild = true });
         var factory = provider.GetRequiredService<IOpenNFSeClientFactory>();
@@ -61,29 +62,29 @@ public class TestWebServices
         var accessor = provider.GetRequiredService<INFSeTenantContextAccessor>();
         Assert.Equal("tenant-a", accessor.GetTenant(first.Configuracoes));
         Assert.Equal("tenant-b", accessor.GetTenant(second.Configuracoes));
-        await SendAsync(provider, first.Configuracoes, HttpMethod.Get);
-        await SendAsync(provider, second.Configuracoes, HttpMethod.Get);
-        await SendAsync(provider, third.Configuracoes, HttpMethod.Get);
-        Assert.Equal(2, filter.Names.Distinct().Count());
-        Assert.All(filter.Names, name => { Assert.DoesNotContain("tenant-a", name); Assert.DoesNotContain("tenant-b", name); });
+        await SendAsync(first.Configuracoes, HttpMethod.Get);
+        await SendAsync(second.Configuracoes, HttpMethod.Get);
+        await SendAsync(third.Configuracoes, HttpMethod.Get);
+        Assert.Equal(transport.PoolKeys[0], transport.PoolKeys[2]);
+        Assert.NotEqual(transport.PoolKeys[0], transport.PoolKeys[1]);
     }
 
     [Fact]
-    public async Task CertificateRotationAndConnectionSettingsCreateIndependentHandlers()
+    public async Task CertificateRotationAndConnectionSettingsChangeThePoolKey()
     {
-        var filter = new StubFilter();
-        var services = Services(); services.AddSingleton<IHttpMessageHandlerBuilderFilter>(filter);
+        var transport = new RecordingTransport();
+        var services = Services(); services.AddSingleton<IDFeHttpTransport>(transport);
         services.AddOpenNFSeWeb(Configure);
         using var provider = services.BuildServiceProvider();
         using var client = await provider.GetRequiredService<IOpenNFSeClientFactory>().CreateAsync();
-        await SendAsync(provider, client.Configuracoes, HttpMethod.Get);
+        await SendAsync(client.Configuracoes, HttpMethod.Get);
         client.Configuracoes.Certificados.CertificadoBytes = CreateCertificate();
-        await SendAsync(provider, client.Configuracoes, HttpMethod.Get);
+        await SendAsync(client.Configuracoes, HttpMethod.Get);
         client.Configuracoes.WebServices.Proxy = "http://proxy.invalid:8080";
-        await SendAsync(provider, client.Configuracoes, HttpMethod.Get);
+        await SendAsync(client.Configuracoes, HttpMethod.Get);
         client.Configuracoes.WebServices.Protocolos = SecurityProtocolType.Tls12;
-        await SendAsync(provider, client.Configuracoes, HttpMethod.Get);
-        Assert.Equal(4, filter.Names.Distinct().Count());
+        await SendAsync(client.Configuracoes, HttpMethod.Get);
+        Assert.Equal(4, transport.PoolKeys.Distinct().Count());
     }
 
     [Fact]
@@ -101,15 +102,22 @@ public class TestWebServices
     [Fact]
     public async Task RetryIsLimitedToSafeHttpMethods()
     {
-        var filter = new StubFilter { StatusCode = HttpStatusCode.ServiceUnavailable };
-        var services = Services(); services.AddSingleton<IHttpMessageHandlerBuilderFilter>(filter);
+        var calls = 0;
+        await using var endpoint = await StartEndpointAsync(context =>
+        {
+            Interlocked.Increment(ref calls);
+            context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+            return Task.CompletedTask;
+        });
+        var services = Services();
         services.AddOpenNFSeWeb(config => { Configure(config); config.WebServices.Tentativas = 2; config.WebServices.IntervaloTentativas = 0; });
         using var provider = services.BuildServiceProvider();
         using var client = await provider.GetRequiredService<IOpenNFSeClientFactory>().CreateAsync();
-        await SendAsync(provider, client.Configuracoes, HttpMethod.Get);
-        Assert.Equal(2, filter.Calls);
-        await SendAsync(provider, client.Configuracoes, HttpMethod.Post);
-        Assert.Equal(3, filter.Calls);
+        var address = endpoint.Urls.Single();
+        await SendAsync(client.Configuracoes, HttpMethod.Get, address);
+        Assert.Equal(2, Volatile.Read(ref calls));
+        await SendAsync(client.Configuracoes, HttpMethod.Post, address);
+        Assert.Equal(3, Volatile.Read(ref calls));
     }
 
     [Fact]
@@ -186,25 +194,30 @@ public class TestWebServices
     [Fact]
     public async Task WebTimeoutIncludesResponseBodyRead()
     {
+        await using var endpoint = await StartEndpointAsync(async context =>
+        {
+            await context.Response.StartAsync(context.RequestAborted);
+            await Task.Delay(Timeout.InfiniteTimeSpan, context.RequestAborted);
+        });
         var services = Services();
-        services.AddSingleton<IHttpMessageHandlerBuilderFilter>(new StubFilter { ContentFactory = () => new SlowContent() });
         services.AddOpenNFSeWeb(config =>
         {
             Configure(config);
-            config.WebServices.TimeOut = TimeSpan.FromMilliseconds(100);
+            config.WebServices.TimeOut = TimeSpan.FromSeconds(1);
         });
         using var provider = services.BuildServiceProvider();
         using var client = await provider.GetRequiredService<IOpenNFSeClientFactory>().CreateAsync();
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => SendAsync(provider, client.Configuracoes, HttpMethod.Get));
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            SendAsync(client.Configuracoes, HttpMethod.Get, endpoint.Urls.Single()));
     }
 
-    private sealed class SlowContent : HttpContent
+    private static async Task<WebApplication> StartEndpointAsync(RequestDelegate handler)
     {
-        protected override Task SerializeToStreamAsync(Stream stream, TransportContext? context) =>
-            SerializeToStreamAsync(stream, context, CancellationToken.None);
-        protected override Task SerializeToStreamAsync(Stream stream, TransportContext? context, CancellationToken cancellationToken) =>
-            Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken);
-        protected override bool TryComputeLength(out long length) { length = 0; return false; }
+        var endpoint = WebApplication.CreateSlimBuilder().Build();
+        endpoint.Urls.Add("http://127.0.0.1:0");
+        endpoint.Run(handler);
+        await endpoint.StartAsync();
+        return endpoint;
     }
 
     private static ServiceCollection Services(string? root = null)
@@ -220,10 +233,10 @@ public class TestWebServices
         config.Certificados.CertificadoBytes = Certificate;
         config.Geral.Salvar = config.Arquivos.Salvar = config.WebServices.Salvar = false;
     }
-    private static async Task SendAsync(IServiceProvider provider, ConfigNFSe config, HttpMethod method)
+    private static async Task SendAsync(ConfigNFSe config, HttpMethod method, string address = "https://example.invalid/nfse")
     {
         using var certificate = new X509Certificate2(config.Certificados.CertificadoBytes, (string?)null, X509KeyStorageFlags.EphemeralKeySet);
-        using var request = new HttpRequestMessage(method, "https://example.invalid/nfse");
+        using var request = new HttpRequestMessage(method, address);
         if (method == HttpMethod.Post) request.Content = new StringContent("<xml/>");
         using var response = await config.HttpTransport.SendAsync(request, new DFeHttpTransportOptions(config.WebServices, certificate));
     }
@@ -251,21 +264,15 @@ public class TestWebServices
         public string ContentRootPath { get; set; } = "";
         public IFileProvider ContentRootFileProvider { get; set; } = new NullFileProvider();
     }
-    private sealed class StubFilter : IHttpMessageHandlerBuilderFilter
+    private sealed class RecordingTransport : IDFeHttpTransport
     {
-        public ConcurrentBag<string> Names { get; } = [];
-        public HttpStatusCode StatusCode { get; init; } = HttpStatusCode.OK;
-        public Func<HttpContent> ContentFactory { get; init; } = () => new StringContent("test");
-        private int calls;
-        public int Calls => calls;
-        public Action<HttpMessageHandlerBuilder> Configure(Action<HttpMessageHandlerBuilder> next) => builder =>
+        public List<string> PoolKeys { get; } = [];
+
+        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, DFeHttpTransportOptions options,
+            CancellationToken cancellationToken = default)
         {
-            next(builder); Names.Add(builder.Name!); builder.PrimaryHandler.Dispose(); builder.PrimaryHandler = new StubHandler(this);
-        };
-        private sealed class StubHandler(StubFilter owner) : HttpMessageHandler
-        {
-            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            { Interlocked.Increment(ref owner.calls); return Task.FromResult(new HttpResponseMessage(owner.StatusCode) { Content = owner.ContentFactory() }); }
+            PoolKeys.Add(options.GetPoolKey(request.RequestUri!));
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("test") });
         }
     }
 }

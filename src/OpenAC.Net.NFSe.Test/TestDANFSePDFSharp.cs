@@ -5,7 +5,7 @@ namespace OpenAC.Net.NFSe.Test;
 
 public class TestDANFSePDFSharp
 {
-    private const string OutDir = "/mnt/e/Programacao/OpenAC .Net/OpenAC.Net.NFSe/exemplos";
+    private static readonly string OutDir = Path.Combine(AppContext.BaseDirectory, "exemplos");
 
     [Fact]
     public void TestGerarPDFSimples()

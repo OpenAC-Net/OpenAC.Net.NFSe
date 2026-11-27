@@ -3,16 +3,16 @@ using OpenAC.Net.DFe.Core.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenAC.Net.NFSe.Configuracao;
+using OpenAC.Net.NFSe.Web.Accessor;
 using OpenAC.Net.NFSe.Web.Common;
 using OpenAC.Net.NFSe.Web.Configuration;
 using OpenAC.Net.NFSe.Web.Provider;
-using OpenAC.Net.NFSe.Web.Transport;
 
 namespace OpenAC.Net.NFSe.Web.Client;
 
 internal sealed class OpenNFSeClientFactory(INFSeConfigurationProvider<ConfigNFSe> configurations,
     INFSeCertificateProvider certificates, IDFeHttpTransport transport, IDFeDocumentStore store,
-    ILoggerFactory logs, IOptions<OpenNFSeWebOptions> options, NFSeHttpClientRegistry registry) : IOpenNFSeClientFactory
+    ILoggerFactory logs, IOptions<OpenNFSeWebOptions> options, NFSeTenantContextAccessor tenants) : IOpenNFSeClientFactory
 {
     public async ValueTask<IOpenNFSeClient> CreateAsync(string tenantId = NFSeTenant.Padrao,
         CancellationToken cancellationToken = default)
@@ -22,8 +22,7 @@ internal sealed class OpenNFSeClientFactory(INFSeConfigurationProvider<ConfigNFS
             ?? throw new InvalidOperationException("O provider não retornou a configuração da empresa.");
         await certificates.ConfigureAsync(tenantId, configuration.Certificados, cancellationToken).ConfigureAwait(false);
         ValidateCertificate(configuration, options.Value);
-        registry.Bind(configuration, tenantId);
-        return new OpenNFSeWebClient(configuration, transport, store, logs.CreateLogger<OpenNFSeWebClient>(), options, tenantId);
+        return new OpenNFSeWebClient(configuration, transport, store, logs.CreateLogger<OpenNFSeWebClient>(), options, tenants, tenantId);
     }
 
     internal static void ValidateCertificate(ConfigNFSe configuration, OpenNFSeWebOptions options)

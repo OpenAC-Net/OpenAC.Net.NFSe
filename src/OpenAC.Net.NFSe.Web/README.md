@@ -44,7 +44,7 @@ var result = await client.ConsultaNFSeAsync(numero, cancellationToken: cancellat
 
 `factory` implementa `IOpenNFSeClientFactory`. Cada chamada deve receber uma configuração nova, exclusiva para aquele cliente. Os providers são singletons e precisam ser seguros para concorrência. Resolva `empresaId` a partir do contexto autenticado da aplicação consumidora.
 
-Os handlers HTTP são separados por empresa, certificado, endpoint, TLS, proxy e regras de comunicação. Credenciais e cabeçalhos de autenticação são aplicados por requisição. Cookies não são compartilhados. O `IHttpClientFactory` gerencia a renovação de handlers e conexões.
+Os handlers HTTP são separados por empresa, certificado, endpoint, TLS, proxy e regras de comunicação. Credenciais e cabeçalhos de autenticação são aplicados por requisição. Cookies não são compartilhados. O pool do `DFeHttpTransport` gerencia a renovação de handlers e conexões.
 
 ## Comunicação e limites
 

@@ -5,7 +5,7 @@
 [![Discord](https://img.shields.io/badge/Chat%20on-Discord-purple.svg)](https://discord.com/invite/brdmJ7Yv6w)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Target Frameworks](https://img.shields.io/badge/.NET%20Framework-4.6.2%20%7C%204.7.0%20%7C%204.8-blue.svg)](https://dotnet.microsoft.com/)
-[![Target Frameworks](https://img.shields.io/badge/.NET%20Core%20%2F%20Standard-netstandard2.0%20%7C%20net6.0%20%7C%20net7.0%20%7C%20net8.0%20%7C%20net9.0%20%7C%20net10.0-blue.svg)](https://dotnet.microsoft.com/)
+[![Target Frameworks](https://img.shields.io/badge/.NET%20Core%20%2F%20Standard-netstandard2.0%20%7C%20net6.0%20%7C%20net7.0%20%7C%20net8.0%20%7C%20net9.0%20%7C%20net10.0%20%7C%20net11.0-blue.svg)](https://dotnet.microsoft.com/)
 
 Biblioteca .NET multiplataforma para geração, assinatura, transmissão, consulta e impressão de **NFS-e (Nota Fiscal de Serviço Eletrônica)** para centenas de municípios brasileiros.
 
@@ -41,7 +41,7 @@ Desenvolvida pelo time **OpenAC .Net**, a biblioteca abstrai as particularidades
   - Métodos `Async` com `CancellationToken`, preservando a API síncrona existente.
 - **Integração ASP.NET Core**:
   - Registro por escopo com `AddOpenNFSeWeb` e clientes independentes por empresa.
-  - `IHttpClientFactory`, timeouts por operação, retentativas para métodos HTTP seguros e circuit breaker.
+  - Pool HTTP do DFe.Core por tenant, timeouts por operação, retentativas para métodos HTTP seguros e circuit breaker.
   - Logs, rastreamento e métricas de operações.
   - DANFSe em memória e respostas HTTP para Minimal APIs.
 - **Demo Avalonia**:

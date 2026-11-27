@@ -30,6 +30,7 @@
 // ***********************************************************************
 
 using OpenAC.Net.DFe.Core.Common;
+using OpenAC.Net.DFe.Core.Http;
 using OpenAC.Net.NFSe.Nota;
 
 namespace OpenAC.Net.NFSe.Configuracao;
@@ -52,7 +53,6 @@ public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebService
         Certificados = new ConfigCertificadosNFSe();
         Arquivos = new ConfigArquivosNFSe();
         PrestadorPadrao = new DadosPrestador();
-        HttpTransport = OpenAC.Net.NFSe.Commom.Client.DesktopNFSeHttpTransport.Instancia;
     }
 
     #endregion Constructor
@@ -63,8 +63,7 @@ public sealed class ConfigNFSe : DFeConfigBase<ConfigGeralNFSe, ConfigWebService
         set;
     }
 
-    internal bool TransportePersonalizado => !ReferenceEquals(HttpTransport,
-        OpenAC.Net.NFSe.Commom.Client.DesktopNFSeHttpTransport.Instancia);
+    internal bool TransportePersonalizado => !ReferenceEquals(HttpTransport, DFeHttpTransport.Instance);
 
     #region Properties
 
